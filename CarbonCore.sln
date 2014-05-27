@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.GrammarParser", "GrammarParser\CarbonCore.GrammarParser.csproj", "{50C22F18-89F6-48F3-A29F-CA25FDADDB90}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.JSharpBridge", "JSharpBridge\CarbonCore.JSharpBridge.csproj", "{770A888A-B717-41A2-BB15-46DDC782D9CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.ToolFramework", "ToolFramework\CarbonCore.ToolFramework.csproj", "{E4643DF2-D2DB-4E99-AB4B-D8CE4FD94D81}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.Utils", "Utils\CarbonCore.Utils.csproj", "{E05836D9-0BB3-4BFA-89E6-F5ED40A9D93C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.UtilsCommandLine", "UtilsCommandLine\CarbonCore.UtilsCommandLine.csproj", "{E99C6721-99A5-4DC3-BD9D-DC88F65D217A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.UtilsDX", "UtilsDX\CarbonCore.UtilsDX.csproj", "{C3E6C35A-FE50-481B-9B6A-559DFDFFB52E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.UtilsSDL", "UtilsSDL\CarbonCore.UtilsSDL.csproj", "{DAE16936-862E-4E1E-8BFC-3C917FAC5FDD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.UtilsWPF", "UtilsWPF\CarbonCore.UtilsWPF.csproj", "{75FF83F3-C123-4982-91F7-09D0F8A66536}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{50C22F18-89F6-48F3-A29F-CA25FDADDB90}.Debug|x64.ActiveCfg = Debug|x64
+		{50C22F18-89F6-48F3-A29F-CA25FDADDB90}.Debug|x64.Build.0 = Debug|x64
+		{50C22F18-89F6-48F3-A29F-CA25FDADDB90}.Release|x64.ActiveCfg = Release|x64
+		{50C22F18-89F6-48F3-A29F-CA25FDADDB90}.Release|x64.Build.0 = Release|x64
+		{770A888A-B717-41A2-BB15-46DDC782D9CE}.Debug|x64.ActiveCfg = Debug|x64
+		{770A888A-B717-41A2-BB15-46DDC782D9CE}.Debug|x64.Build.0 = Debug|x64
+		{770A888A-B717-41A2-BB15-46DDC782D9CE}.Release|x64.ActiveCfg = Release|x64
+		{770A888A-B717-41A2-BB15-46DDC782D9CE}.Release|x64.Build.0 = Release|x64
+		{E4643DF2-D2DB-4E99-AB4B-D8CE4FD94D81}.Debug|x64.ActiveCfg = Debug|x64
+		{E4643DF2-D2DB-4E99-AB4B-D8CE4FD94D81}.Debug|x64.Build.0 = Debug|x64
+		{E4643DF2-D2DB-4E99-AB4B-D8CE4FD94D81}.Release|x64.ActiveCfg = Release|x64
+		{E4643DF2-D2DB-4E99-AB4B-D8CE4FD94D81}.Release|x64.Build.0 = Release|x64
+		{E05836D9-0BB3-4BFA-89E6-F5ED40A9D93C}.Debug|x64.ActiveCfg = Debug|x64
+		{E05836D9-0BB3-4BFA-89E6-F5ED40A9D93C}.Debug|x64.Build.0 = Debug|x64
+		{E05836D9-0BB3-4BFA-89E6-F5ED40A9D93C}.Release|x64.ActiveCfg = Release|x64
+		{E05836D9-0BB3-4BFA-89E6-F5ED40A9D93C}.Release|x64.Build.0 = Release|x64
+		{E99C6721-99A5-4DC3-BD9D-DC88F65D217A}.Debug|x64.ActiveCfg = Debug|x64
+		{E99C6721-99A5-4DC3-BD9D-DC88F65D217A}.Debug|x64.Build.0 = Debug|x64
+		{E99C6721-99A5-4DC3-BD9D-DC88F65D217A}.Release|x64.ActiveCfg = Release|x64
+		{E99C6721-99A5-4DC3-BD9D-DC88F65D217A}.Release|x64.Build.0 = Release|x64
+		{C3E6C35A-FE50-481B-9B6A-559DFDFFB52E}.Debug|x64.ActiveCfg = Debug|x64
+		{C3E6C35A-FE50-481B-9B6A-559DFDFFB52E}.Debug|x64.Build.0 = Debug|x64
+		{C3E6C35A-FE50-481B-9B6A-559DFDFFB52E}.Release|x64.ActiveCfg = Release|x64
+		{C3E6C35A-FE50-481B-9B6A-559DFDFFB52E}.Release|x64.Build.0 = Release|x64
+		{DAE16936-862E-4E1E-8BFC-3C917FAC5FDD}.Debug|x64.ActiveCfg = Debug|x64
+		{DAE16936-862E-4E1E-8BFC-3C917FAC5FDD}.Debug|x64.Build.0 = Debug|x64
+		{DAE16936-862E-4E1E-8BFC-3C917FAC5FDD}.Release|x64.ActiveCfg = Release|x64
+		{DAE16936-862E-4E1E-8BFC-3C917FAC5FDD}.Release|x64.Build.0 = Release|x64
+		{75FF83F3-C123-4982-91F7-09D0F8A66536}.Debug|x64.ActiveCfg = Debug|x64
+		{75FF83F3-C123-4982-91F7-09D0F8A66536}.Debug|x64.Build.0 = Debug|x64
+		{75FF83F3-C123-4982-91F7-09D0F8A66536}.Release|x64.ActiveCfg = Release|x64
+		{75FF83F3-C123-4982-91F7-09D0F8A66536}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

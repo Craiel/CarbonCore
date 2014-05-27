@@ -1,0 +1,25 @@
+﻿<#@ template debug="true" hostSpecific="true" #>
+<#@ assembly name="EnvDTE" #>
+<#@ assembly name="$(ProjectDir)..\CodeGeneration\bin\$(ConfigurationName)\CarbonCore.CodeGeneration.dll" #>
+<#@ import namespace="EnvDTE" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="CarbonCore.CodeGeneration" #>
+namespace CarbonCore.Resources
+{
+    using System;
+    
+    public static class Static
+    {
+        // -------------------------------------------------------------------
+        // Public
+        // -------------------------------------------------------------------
+<#
+ResourceGeneration.Initialize(this.Host, Host.TemplateFile);
+ResourceGeneration.LocateResources();
+foreach(string line in ResourceGeneration.SharpResult)
+{
+    WriteLine("        " + line);
+}
+#>
+    }
+}
