@@ -160,7 +160,7 @@
             for (int i = 0; i < other.Length; i++)
             {
                 string otherValue = other[i].ToString();
-                result = this.HasDelimiter(result, otherValue) ? 
+                result = string.IsNullOrEmpty(this.path) || this.HasDelimiter(result, otherValue) ? 
                     string.Concat(result, otherValue) :
                     string.Concat(result, DirectorySeparator, otherValue);
             }
