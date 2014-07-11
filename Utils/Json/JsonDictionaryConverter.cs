@@ -51,7 +51,53 @@
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            throw new NotImplementedException();
+            System.Diagnostics.Trace.Assert(reader.TokenType == JsonToken.StartArray);
+
+            var resultDictionary = Activator.CreateInstance(objectType, null);
+
+            Type[] genericArguments = objectType.GetGenericArguments();
+            System.Diagnostics.Trace.Assert(genericArguments != null && genericArguments.Length == 2);
+
+            Type keyType = objectType.GetGenericArguments()[0];
+            Type valueType = objectType.GetGenericArguments()[1];
+
+            try
+            {
+                // Start array
+                reader.Read();
+                while (reader.TokenType != JsonToken.EndArray)
+                {
+                    // Start object
+                    reader.Read();
+
+                    // Key
+                    // Note: This is a little weird, for the first one we have to read directly without skipping to the value
+                    //       ReadString() of the "0" key will skip the value as well...
+                    System.Diagnostics.Trace.Assert(reader.Value.Equals("0"));
+                    var keyValue = this.DeserializeValue(reader, keyType, existingValue, serializer);
+                    reader.Read();
+
+                    // Value
+                    // Note: For this we have to first read the key token, then read the post value after
+                    System.Diagnostics.Trace.Assert(reader.Value.Equals("1"));
+                    reader.Read();
+                    var valueValue = this.DeserializeValue(reader, valueType, existingValue, serializer);
+                    reader.Read();
+
+                    // End object
+                    reader.Read();
+
+                    ((IDictionary)resultDictionary).Add(keyValue, valueValue);
+                }
+
+                // Note Here we are at EndArray token, do not skip or read that one here!
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Trace.TraceError("Error reading Json Dictionary: {0}", e);
+            }
+
+            return resultDictionary;
         }
 
         public override bool CanConvert(Type objectType)
@@ -62,24 +108,28 @@
         // -------------------------------------------------------------------
         // Private
         // -------------------------------------------------------------------
+        private object DeserializeValue(JsonReader reader, Type type, object existingValue, JsonSerializer serializer)
+        {
+            JsonConverter converter = this.FindConverter(type);
+            return converter.ReadJson(reader, type, existingValue, serializer);
+        }
+
         private void SerializeValue(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            JsonConverter converter = this.FindConverter(value);
+            JsonConverter converter = this.FindConverter(value.GetType());
             converter.WriteJson(writer, value, serializer);
         }
 
-        private JsonConverter FindConverter(object data)
+        private JsonConverter FindConverter(Type type)
         {
-            Type keyType = data.GetType();
-
-            object[] converterAttributes = keyType.GetCustomAttributes(typeof(JsonConverterAttribute), true);
+            object[] converterAttributes = type.GetCustomAttributes(typeof(JsonConverterAttribute), true);
             if (converterAttributes.Length <= 0)
             {
-                if (keyType.IsClass)
+                if (type.IsClass)
                 {
                     return new JsonDefaultClassStringConverter();
                 }
-
+                
                 return new JsonDefaultConverter();
             }
 

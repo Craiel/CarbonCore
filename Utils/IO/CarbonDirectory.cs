@@ -75,6 +75,18 @@
             return new CarbonDirectory(this.CombineBefore(other));
         }
 
+        public CarbonDirectory GetParent()
+        {
+            var info = new DirectoryInfo(this.Path);
+            if (info.Parent != null)
+            {
+                int index = this.Path.LastIndexOf(System.IO.Path.DirectorySeparatorChar + info.Parent.Name + System.IO.Path.DirectorySeparatorChar, System.StringComparison.Ordinal);
+                return new CarbonDirectory(this.Path.Substring(0, index));
+            }
+
+            return null;
+        }
+
         public CarbonFile ToFile<T>(params T[] other)
         {
             return new CarbonFile(this.CombineBefore(other));
