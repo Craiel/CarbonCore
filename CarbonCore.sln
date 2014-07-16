@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.UtilsSDL", "Util
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.UtilsWPF", "UtilsWPF\CarbonCore.UtilsWPF.csproj", "{75FF83F3-C123-4982-91F7-09D0F8A66536}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.Tests", "Tests\CarbonCore.Tests.csproj", "{322F5DB2-87ED-41EC-9A8B-AA14E1F9ACD3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.Resources", "Resources\CarbonCore.Resources.csproj", "{AAB4906E-DE39-4678-A155-14579CC7F4EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -55,6 +59,14 @@ Global
 		{75FF83F3-C123-4982-91F7-09D0F8A66536}.Debug|x64.Build.0 = Debug|x64
 		{75FF83F3-C123-4982-91F7-09D0F8A66536}.Release|x64.ActiveCfg = Release|x64
 		{75FF83F3-C123-4982-91F7-09D0F8A66536}.Release|x64.Build.0 = Release|x64
+		{322F5DB2-87ED-41EC-9A8B-AA14E1F9ACD3}.Debug|x64.ActiveCfg = Debug|x64
+		{322F5DB2-87ED-41EC-9A8B-AA14E1F9ACD3}.Debug|x64.Build.0 = Debug|x64
+		{322F5DB2-87ED-41EC-9A8B-AA14E1F9ACD3}.Release|x64.ActiveCfg = Release|x64
+		{322F5DB2-87ED-41EC-9A8B-AA14E1F9ACD3}.Release|x64.Build.0 = Release|x64
+		{AAB4906E-DE39-4678-A155-14579CC7F4EC}.Debug|x64.ActiveCfg = Debug|x64
+		{AAB4906E-DE39-4678-A155-14579CC7F4EC}.Debug|x64.Build.0 = Debug|x64
+		{AAB4906E-DE39-4678-A155-14579CC7F4EC}.Release|x64.ActiveCfg = Release|x64
+		{AAB4906E-DE39-4678-A155-14579CC7F4EC}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
