@@ -153,6 +153,11 @@
 
         public CarbonDirectory GetDirectory()
         {
+            if (string.IsNullOrEmpty(this.DirectoryName))
+            {
+                return null;
+            }
+
             return new CarbonDirectory(this.DirectoryName);
         }
         
