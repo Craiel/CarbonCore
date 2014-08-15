@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.UtilsCommandLine
+﻿namespace CarbonCore.UtilsCommandLine.Logic
 {
     using System.Collections.Generic;
 

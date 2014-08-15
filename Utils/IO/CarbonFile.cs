@@ -131,6 +131,17 @@
             return XmlWriter.Create(this.Path);
         }
 
+        public string ReadAsString()
+        {
+            using (FileStream stream = this.OpenRead())
+            {
+                using (var reader = new StreamReader(stream))
+                {
+                    return reader.ReadToEnd();
+                }
+            }
+        }
+
         public void Delete()
         {
             File.Delete(this.Path);

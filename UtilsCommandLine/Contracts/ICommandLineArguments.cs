@@ -17,5 +17,7 @@
         ICommandLineSwitchDefinition Define(string shortString, string longString, CommandLineSwitchSetDelegate action);
 
         void ClearDefines();
+
+        void PrintArgumentUse();
     }
 }

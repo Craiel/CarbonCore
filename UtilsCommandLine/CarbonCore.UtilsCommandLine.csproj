@@ -38,12 +38,12 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandLineArguments.cs" />
-    <Compile Include="CommandLineSwitch.cs" />
+    <Compile Include="Logic\CommandLineArguments.cs" />
+    <Compile Include="Logic\CommandLineSwitch.cs" />
     <Compile Include="Contracts\ICommandLineArguments.cs" />
     <Compile Include="Contracts\ICommandLineSwitch.cs" />
     <Compile Include="Contracts\ICommandLineSwitchDefinition.cs" />
-    <Compile Include="CommandLineSwitchDefinition.cs" />
+    <Compile Include="Logic\CommandLineSwitchDefinition.cs" />
     <Compile Include="IoC\IoC.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

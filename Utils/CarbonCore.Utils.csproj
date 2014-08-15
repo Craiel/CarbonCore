@@ -63,6 +63,8 @@
   <ItemGroup>
     <Compile Include="AssemblyExtensions.cs" />
     <Compile Include="CollectionExtensions.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Contracts\IJsonConfig.cs" />
     <Compile Include="Contracts\IoC\ICarbonContainer.cs" />
     <Compile Include="Contracts\IoC\ICarbonModule.cs" />
     <Compile Include="Contracts\IoC\ICarbonQuickBinding.cs" />
@@ -77,6 +79,7 @@
     <Compile Include="IoC\CarbonQuickBinding.cs" />
     <Compile Include="IoC\DependsOnModuleAttribute.cs" />
     <Compile Include="IoC\Factory.cs" />
+    <Compile Include="Json\JsonConfig.cs" />
     <Compile Include="Json\JsonCarbonDirectoryConverter.cs" />
     <Compile Include="Json\JsonCarbonFileConverter.cs" />
     <Compile Include="Json\JsonConcreteTypeConverter.cs" />

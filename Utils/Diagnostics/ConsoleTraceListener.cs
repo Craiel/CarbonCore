@@ -25,10 +25,7 @@ namespace CarbonCore.Utils.Diagnostics
         
         public override void TraceEvent(TraceEventCache eventCache, string source, TraceEventType eventType, int id, string format, params object[] args)
         {
-            if (!this.attributesProcessed)
-            {
-                this.ProcessAttributes();
-            }
+            this.ProcessAttributes();
             
             this.formatter.Set("Source", source);
             this.formatter.Set("EventType", eventType.ToString());
@@ -40,12 +37,14 @@ namespace CarbonCore.Utils.Diagnostics
 
         public override void Write(string message)
         {
-            this.formatter.Set("Message", message);
-            System.Console.Write(this.formatter.Format(this.template));
+            // Disabling this for now, some weird results coming in here...
+            return;
         }
 
         public override void WriteLine(string message)
         {
+            this.ProcessAttributes();
+
             this.formatter.Set("Message", message);
             System.Console.WriteLine(this.formatter.Format(this.template));
         }
@@ -57,6 +56,11 @@ namespace CarbonCore.Utils.Diagnostics
 
         private void ProcessAttributes()
         {
+            if (this.attributesProcessed)
+            {
+                return;
+            }
+
             lock (this.Attributes)
             {
                 this.attributesProcessed = true;

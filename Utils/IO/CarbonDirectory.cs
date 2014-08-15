@@ -1,5 +1,6 @@
 ﻿namespace CarbonCore.Utils.IO
 {
+    using System.Collections.Generic;
     using System.IO;
 
     using CarbonCore.Utils.Json;
@@ -53,6 +54,53 @@
         public static CarbonDirectory GetTempDirectory()
         {
             return TempDirectory.ToDirectory(System.IO.Path.GetRandomFileName());
+        }
+        
+        public static IList<CarbonFile> GetFiles(IEnumerable<CarbonDirectory> directories, string filter, SearchOption option = SearchOption.TopDirectoryOnly)
+        {
+            System.Diagnostics.Debug.Assert(directories != null, "Directories need to be specified");
+            System.Diagnostics.Debug.Assert(!string.IsNullOrEmpty(filter), "Filter needs to be specified");
+            
+            IList<CarbonFile> results = new List<CarbonFile>();
+            foreach (CarbonDirectory directory in directories)
+            {
+                if (directory.IsNull || !directory.Exists)
+                {
+                    System.Diagnostics.Trace.TraceWarning("Specified directory is invalid: {0}", directory.ToString());
+                    continue;
+                }
+
+                CarbonFile[] files = directory.GetFiles(filter, option);
+                if (files == null)
+                {
+                    continue;
+                }
+
+                foreach (CarbonFile file in files)
+                {
+                    if (results.Contains(file))
+                    {
+                        continue;
+                    }
+
+                    results.Add(file);
+                }
+            }
+
+            return results;
+        }
+
+        public static IList<CarbonDirectory> ReRootDirectories(CarbonDirectory root, IEnumerable<CarbonDirectory> directories)
+        {
+            IList<CarbonDirectory> results = new List<CarbonDirectory>();
+            foreach (CarbonDirectory directory in directories)
+            {
+                System.Diagnostics.Debug.Assert(!directory.IsRelative, "Can not re-root absolute directories!");
+
+                results.Add(root.ToDirectory(directory));
+            }
+
+            return results;
         }
 
         public void Create()

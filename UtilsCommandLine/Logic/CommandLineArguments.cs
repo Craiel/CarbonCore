@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.UtilsCommandLine
+﻿namespace CarbonCore.UtilsCommandLine.Logic
 {
     using System.Collections.Generic;
     using System.Text;
@@ -126,6 +126,15 @@
         public void ClearDefines()
         {
             this.definitions.Clear();
+        }
+
+        public void PrintArgumentUse()
+        {
+            System.Diagnostics.Trace.TraceInformation("Argument use: ");
+            foreach (ICommandLineSwitchDefinition definition in this.definitions)
+            {
+                System.Diagnostics.Trace.TraceInformation(" {0} / {1} - {2} {3}", definition.Short, definition.Long, definition.Description, definition.RequireArgument ? "(required)" : string.Empty);
+            }
         }
 
         // -------------------------------------------------------------------

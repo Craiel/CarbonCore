@@ -1,7 +1,5 @@
-﻿namespace CarbonCore.UtilsCommandLine
+﻿namespace CarbonCore.UtilsCommandLine.Logic
 {
-    using System;
-
     using CarbonCore.UtilsCommandLine.Contracts;
 
     public class CommandLineSwitchDefinition : ICommandLineSwitchDefinition
