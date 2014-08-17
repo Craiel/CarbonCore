@@ -86,9 +86,9 @@
             return this.path;
         }
 
-        public virtual bool CopyTo(CarbonPath target)
+        public virtual bool CopyTo(CarbonPath target, bool overwrite = false)
         {
-            throw new NotImplementedException();   
+            throw new NotImplementedException();
         }
 
         public T ToRelative<T>(CarbonPath other) where T : CarbonPath

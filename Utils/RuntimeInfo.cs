@@ -22,8 +22,12 @@
 
         public static CarbonDirectory Path { get; private set; }
 
+        public static CarbonDirectory WorkingDirectory { get; private set; }
+
         private static void UpdateRuntimeInfo()
         {
+            WorkingDirectory = new CarbonDirectory(System.IO.Directory.GetCurrentDirectory());
+
             if (ProcessName == null)
             {
                 Process process = Process.GetCurrentProcess();

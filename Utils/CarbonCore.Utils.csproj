@@ -79,6 +79,8 @@
     <Compile Include="IoC\CarbonQuickBinding.cs" />
     <Compile Include="IoC\DependsOnModuleAttribute.cs" />
     <Compile Include="IoC\Factory.cs" />
+    <Compile Include="IO\CarbonDirectoryFilter.cs" />
+    <Compile Include="IO\CarbonFileResult.cs" />
     <Compile Include="Json\JsonConfig.cs" />
     <Compile Include="Json\JsonCarbonDirectoryConverter.cs" />
     <Compile Include="Json\JsonCarbonFileConverter.cs" />
@@ -144,9 +146,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="UnitTests\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

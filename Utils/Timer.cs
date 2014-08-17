@@ -15,8 +15,8 @@
 
         private bool isLastTimeValid;
 
-        private TimeSpan elapsedTime;
-        private TimeSpan actualElapsedTime;
+        private long elapsedTime;
+        private long actualElapsedTime;
 
         // -------------------------------------------------------------------
         // Constructor
@@ -31,7 +31,7 @@
         // -------------------------------------------------------------------
         public float TimeModifier { get; set; }
 
-        public TimeSpan ElapsedTime
+        public long ElapsedTime
         {
             get
             {
@@ -44,7 +44,7 @@
             }
         }
 
-        public TimeSpan ActualElapsedTime
+        public long ActualElapsedTime
         {
             get
             {
@@ -57,7 +57,7 @@
             }
         }
 
-        public TimeSpan TimeLostToPause
+        public long TimeLostToPause
         {
             get
             {
@@ -68,15 +68,15 @@
         public bool AutoUpdate { get; set; }
         public bool IsPaused { get; set; }
 
-        public static TimeSpan CounterToTimeSpan(float delta)
+        public static TimeSpan TimeToTimeSpan(long time)
         {
-            return TimeSpan.FromTicks((long)(delta * 10000000.0f) / Frequency);
+            return TimeSpan.FromTicks((long)(time * 10000000.0f) / Frequency);
         }
 
         public void Reset()
         {
-            this.elapsedTime = TimeSpan.Zero;
-            this.actualElapsedTime = TimeSpan.Zero;
+            this.elapsedTime = 0;
+            this.actualElapsedTime = 0;
         }
 
         public void Pause()
@@ -99,10 +99,10 @@
             }
             else
             {
-                this.actualElapsedTime += CounterToTimeSpan(time - this.lastTime);
+                this.actualElapsedTime += time - this.lastTime;
                 if (!this.IsPaused)
                 {
-                    this.elapsedTime += CounterToTimeSpan((time - this.lastTime) * this.TimeModifier);
+                    this.elapsedTime += (long)((time - this.lastTime) * this.TimeModifier);
                 }
             }
 

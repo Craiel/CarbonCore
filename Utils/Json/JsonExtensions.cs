@@ -71,7 +71,7 @@
         {
             // Check if we need to create directories
             CarbonDirectory directory = file.GetDirectory();
-            if (!directory.IsNull && !directory.Exists)
+            if (directory != null && !directory.IsNull && !directory.Exists)
             {
                 directory.Create();
             }

@@ -7,8 +7,8 @@
 
     public abstract class ThreadQueuedComponent : IThreadQueueComponent
     {
-        private static readonly TimeSpan OperationWarningTimespan = TimeSpan.FromSeconds(2);
-        private static readonly TimeSpan OperationErrorTimespan = TimeSpan.FromSeconds(5);
+        private static readonly long OperationWarningTimespan = TimeSpan.FromSeconds(2).Ticks;
+        private static readonly long OperationErrorTimespan = TimeSpan.FromSeconds(5).Ticks;
 
         private Queue<IThreadQueueOperation> queuedOperations;
         private List<IThreadQueueOperation> lastOperations;
@@ -32,7 +32,7 @@
         // -------------------------------------------------------------------
         // Protected
         // -------------------------------------------------------------------
-        protected void ProcessOperations(TimeSpan time)
+        protected void ProcessOperations(long time)
         {
             if (this.queuedOperations != null)
             {
@@ -51,7 +51,7 @@
             }
         }
 
-        protected void QueueOperation(Func<IThreadQueueOperationPayload, bool> action, TimeSpan time)
+        protected void QueueOperation(Func<IThreadQueueOperationPayload, bool> action, long time)
         {
             if (action == null)
             {
@@ -75,7 +75,7 @@
 
             foreach (IThreadQueueOperation operation in this.lastOperations)
             {
-                TimeSpan timeToUpdate = operation.ExecutionTime - operation.QueueTime;
+                long timeToUpdate = operation.ExecutionTime - operation.QueueTime;
                 if (timeToUpdate > OperationErrorTimespan)
                 {
                     slowError++;

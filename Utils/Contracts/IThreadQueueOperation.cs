@@ -15,7 +15,7 @@
 
         IThreadQueueOperationPayload Payload { get; set; }
 
-        TimeSpan QueueTime { get; }
-        TimeSpan ExecutionTime { get; set; }
+        long QueueTime { get; }
+        long ExecutionTime { get; set; }
     }
 }

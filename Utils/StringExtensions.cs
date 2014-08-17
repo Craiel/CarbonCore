@@ -1,7 +1,6 @@
 ﻿namespace CarbonCore.Utils
 {
     using System;
-    using System.Collections.Generic;
     using System.Text;
 
     public static class StringExtensions

@@ -55,35 +55,37 @@
         {
             return TempDirectory.ToDirectory(System.IO.Path.GetRandomFileName());
         }
-        
-        public static IList<CarbonFile> GetFiles(IEnumerable<CarbonDirectory> directories, string filter, SearchOption option = SearchOption.TopDirectoryOnly)
+
+        public static IList<CarbonFileResult> GetFiles(IEnumerable<CarbonDirectoryFilter> filters)
         {
-            System.Diagnostics.Debug.Assert(directories != null, "Directories need to be specified");
-            System.Diagnostics.Debug.Assert(!string.IsNullOrEmpty(filter), "Filter needs to be specified");
-            
-            IList<CarbonFile> results = new List<CarbonFile>();
-            foreach (CarbonDirectory directory in directories)
+            System.Diagnostics.Debug.Assert(filters != null, "Filters need to be specified");
+
+            IList<CarbonFileResult> results = new List<CarbonFileResult>();
+            foreach (CarbonDirectoryFilter filter in filters)
             {
-                if (directory.IsNull || !directory.Exists)
+                if (filter.Directory.IsNull || !filter.Directory.Exists)
                 {
-                    System.Diagnostics.Trace.TraceWarning("Specified directory is invalid: {0}", directory.ToString());
+                    System.Diagnostics.Trace.TraceWarning("Specified directory is invalid: {0}", filter.Directory.ToString());
                     continue;
                 }
 
-                CarbonFile[] files = directory.GetFiles(filter, option);
-                if (files == null)
+                foreach (string filterString in filter.FilterStrings)
                 {
-                    continue;
-                }
-
-                foreach (CarbonFile file in files)
-                {
-                    if (results.Contains(file))
+                    CarbonFileResult[] files = filter.Directory.GetFiles(filterString, filter.Option);
+                    if (files == null)
                     {
                         continue;
                     }
 
-                    results.Add(file);
+                    foreach (CarbonFileResult file in files)
+                    {
+                        if (results.Contains(file))
+                        {
+                            continue;
+                        }
+
+                        results.Add(file);
+                    }
                 }
             }
 
@@ -92,10 +94,12 @@
 
         public static IList<CarbonDirectory> ReRootDirectories(CarbonDirectory root, IEnumerable<CarbonDirectory> directories)
         {
+            System.Diagnostics.Trace.Assert(root != null && !root.IsNull, "Re-root requires valid root directory");
+
             IList<CarbonDirectory> results = new List<CarbonDirectory>();
             foreach (CarbonDirectory directory in directories)
             {
-                System.Diagnostics.Debug.Assert(!directory.IsRelative, "Can not re-root absolute directories!");
+                System.Diagnostics.Debug.Assert(directory.IsRelative, "Can not re-root absolute directories!");
 
                 results.Add(root.ToDirectory(directory));
             }
@@ -140,18 +144,25 @@
             return new CarbonFile(this.CombineBefore(other));
         }
 
-        public CarbonFile[] GetFiles(string pattern, SearchOption options = SearchOption.TopDirectoryOnly)
+        public CarbonFileResult[] GetFiles(string pattern, SearchOption options = SearchOption.TopDirectoryOnly)
         {
             if (!this.Exists)
             {
-                return new CarbonFile[0];
+                return new CarbonFileResult[0];
             }
 
             string[] files = Directory.GetFiles(this.DirectoryName, pattern, options);
-            var results = new CarbonFile[files.Length];
+            var results = new CarbonFileResult[files.Length];
             for (int i = 0; i < files.Length; i++)
             {
-                results[i] = new CarbonFile(files[i]);
+                string relative = files[i].Replace(this.ToString(), string.Empty);
+                var result = new CarbonFileResult
+                                 {
+                                     Root = this,
+                                     Absolute = new CarbonFile(files[i]),
+                                     Relative = new CarbonFile(relative)
+                                 };
+                results[i] = result;
             }
 
             return results;

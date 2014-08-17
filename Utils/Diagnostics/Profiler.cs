@@ -51,8 +51,8 @@
                     "Region Statistic - {0}: Count {1}, Total Time {2}, Average {3:f2}ms",
                     statistic.Name, 
                     statistic.Count, 
-                    Timer.CounterToTimeSpan((long)statistic.Time).ToString(@"hh\:mm\:ss\:fff"),
-                    Timer.CounterToTimeSpan((long)statistic.AverageTime).TotalMilliseconds);
+                    Timer.TimeToTimeSpan((long)statistic.Time).ToString(@"hh\:mm\:ss\:fff"),
+                    Timer.TimeToTimeSpan((long)statistic.AverageTime).TotalMilliseconds);
             }
         }
     }

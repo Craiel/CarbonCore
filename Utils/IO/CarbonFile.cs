@@ -203,6 +203,29 @@
             return typed.Path == this.Path;
         }
 
+        public override bool CopyTo(CarbonPath target, bool overwrite = false)
+        {
+            var targetFile = target as CarbonFile;
+            if (targetFile == null)
+            {
+                var targetDirectory = (CarbonDirectory)target;
+                targetFile = this.IsRelative ? targetDirectory.ToFile(this) : targetDirectory.ToFile(this.FileName);
+            }
+
+            targetFile.GetDirectory().Create();
+            try
+            {
+                File.Copy(this.Path, targetFile.Path, overwrite);
+                return targetFile.Exists;
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Trace.TraceError("Failed to copy file {0} to {1}: {2}", this, targetFile, e);
+            }
+
+            return false;
+        }
+
         public bool Equals(CarbonFile other, StringComparison comparison)
         {
             return other.GetPath().Equals(this.Path, comparison);

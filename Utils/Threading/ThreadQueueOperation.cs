@@ -9,7 +9,7 @@
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
-        public ThreadQueueOperation(Func<IThreadQueueOperationPayload, bool> action, TimeSpan queueTime)
+        public ThreadQueueOperation(Func<IThreadQueueOperationPayload, bool> action, long queueTime)
         {
             this.Action = action;
             this.QueueTime = queueTime;
@@ -24,8 +24,8 @@
 
         public IThreadQueueOperationPayload Payload { get; set; }
 
-        public TimeSpan QueueTime { get; private set; }
+        public long QueueTime { get; private set; }
 
-        public TimeSpan ExecutionTime { get; set; }
+        public long ExecutionTime { get; set; }
     }
 }
