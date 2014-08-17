@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="ApplicationExtension.cs" />
     <Compile Include="Collections\ExtendedObservableCollection.cs" />
+    <Compile Include="RelayCommandGeneric.cs" />
     <Compile Include="ImageExtension.cs" />
     <Compile Include="IoC\IoC.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

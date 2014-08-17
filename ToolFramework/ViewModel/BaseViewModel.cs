@@ -56,6 +56,18 @@
             this.PropertyChanged(this, new PropertyChangedEventArgs(source));
         }
 
+        protected void NotifyPropertyChangedExplicit(string propertyName)
+        {
+            System.Diagnostics.Trace.Assert(!string.IsNullOrEmpty(propertyName), "Explicit notify must have value, call All instead!");
+
+            if (this.PropertyChanged == null)
+            {
+                return;
+            }
+
+            this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         protected void NotifyPropertyChangedAll()
         {
             if (this.PropertyChanged == null)
@@ -110,7 +122,7 @@
             // Todo: Create undo / redo event
 
             this.NotifyPropertyChangedDetailed(oldValue, value, propertyName);
-            this.NotifyPropertyChanged(propertyName);
+            this.NotifyPropertyChangedExplicit(propertyName);
         }
 
         protected void PropertySet<T>(T target, T value, out T result, [CallerMemberName] string propertyName = null)
@@ -133,7 +145,7 @@
             // Todo: Create undo / redo event
 
             this.NotifyPropertyChangedDetailed(oldValue, value, propertyName);
-            this.NotifyPropertyChanged(propertyName);
+            this.NotifyPropertyChangedExplicit(propertyName);
         }
 
         protected void InvokeMainThread(Action action)
