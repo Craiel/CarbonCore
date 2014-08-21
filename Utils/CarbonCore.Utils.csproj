@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyExtensions.cs" />
+    <Compile Include="AttributedPropertyInfo.cs" />
     <Compile Include="CollectionExtensions.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Contracts\IJsonConfig.cs" />

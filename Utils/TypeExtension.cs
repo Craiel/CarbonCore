@@ -21,6 +21,23 @@
             return type.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == interfaceType);
         }
 
+        public static T GetCustomAttribute<T>(this Type type, bool inherit = false)
+            where T : Attribute
+        {
+            object[] results = type.GetCustomAttributes(type, inherit);
+            if (results.Length <= 0)
+            {
+                return null;
+            }
+            
+            if (results.Length > 1)
+            {
+                throw new InvalidDataException("Expected only one attribute but found " + results.Length);
+            }
+
+            return results[0] as T;
+        }
+
         public static object ConvertValue(this Type type, object source)
         {
             bool isNullable = type.IsClass;
