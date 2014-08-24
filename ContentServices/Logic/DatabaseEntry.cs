@@ -3,17 +3,17 @@
     using System.Collections.Generic;
 
     using CarbonCore.ContentServices.Contracts;
-    using CarbonCore.ContentServices.Logic.Attributes;
-    using CarbonCore.Utils;
 
     public class DatabaseEntry : ContentEntry, IDatabaseEntry
     {
+        private readonly DatabaseEntryDescriptor descriptor;
+
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
         public DatabaseEntry()
         {
-            this.Descriptor = DatabaseEntryDescriptor.GetDescriptor(this.GetType());
+            this.descriptor = DatabaseEntryDescriptor.GetDescriptor(this.GetType());
         }
 
         // -------------------------------------------------------------------
@@ -21,13 +21,19 @@
         // -------------------------------------------------------------------
         public IList<string> GetElementNames()
         {
-            return this.Descriptor.GetElementNames();
+            IList<string> results = new List<string>();
+            foreach (DatabaseEntryElementDescriptor element in this.descriptor.Elements)
+            {
+                results.Add(element.Name);
+            }
+
+            return results;
         }
 
         public IList<object> GetValues()
         {
             IList<object> result = new List<object>();
-            foreach (AttributedPropertyInfo<DatabaseEntryElementAttribute> info in this.Descriptor.PropertyInfos)
+            foreach (DatabaseEntryElementDescriptor info in this.descriptor.Elements)
             {
                 result.Add(info.Property.GetValue(this));
             }
@@ -35,18 +41,9 @@
             return result;
         }
 
-        public void SetValues(IDictionary<string, object> values)
+        public DatabaseEntryDescriptor GetDescriptor()
         {
-            foreach (string name in values.Keys)
-            {
-                AttributedPropertyInfo<DatabaseEntryElementAttribute> element = this.Descriptor.GetElementByName(name);
-                element.Property.SetValue(this, values[name]);
-            }
+            return this.descriptor;
         }
-
-        // -------------------------------------------------------------------
-        // Protected
-        // -------------------------------------------------------------------
-        protected DatabaseEntryDescriptor Descriptor { get; private set; }
     }
 }

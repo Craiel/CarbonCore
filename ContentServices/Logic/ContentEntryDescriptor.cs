@@ -1,10 +1,11 @@
-﻿namespace CarbonCore.ContentServices.Logic.Attributes
+﻿namespace CarbonCore.ContentServices.Logic
 {
     using System;
     using System.Collections.Generic;
     using System.Reflection;
 
     using CarbonCore.ContentServices.Contracts;
+    using CarbonCore.ContentServices.Logic.Attributes;
     using CarbonCore.Utils;
 
     public class ContentEntryDescriptor

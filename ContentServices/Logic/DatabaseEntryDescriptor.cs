@@ -1,18 +1,20 @@
-﻿namespace CarbonCore.ContentServices.Logic.Attributes
+﻿namespace CarbonCore.ContentServices.Logic
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Reflection;
 
     using CarbonCore.ContentServices.Contracts;
+    using CarbonCore.ContentServices.Logic.Attributes;
     using CarbonCore.Utils;
 
     public class DatabaseEntryDescriptor
     {
         public static readonly IDictionary<Type, DatabaseEntryDescriptor> Descriptors = new Dictionary<Type, DatabaseEntryDescriptor>();
 
-        private readonly IDictionary<string, AttributedPropertyInfo<DatabaseEntryElementAttribute>> elementNameLookup;
-
+        private readonly IDictionary<string, DatabaseEntryElementDescriptor> elementNameLookup;
+        
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
@@ -22,8 +24,9 @@
 
             this.Type = targetType;
 
-            this.PropertyInfos = new List<AttributedPropertyInfo<DatabaseEntryElementAttribute>>();
-            this.elementNameLookup = new Dictionary<string, AttributedPropertyInfo<DatabaseEntryElementAttribute>>();
+            this.Elements = new List<DatabaseEntryElementDescriptor>();
+
+            this.elementNameLookup = new Dictionary<string, DatabaseEntryElementDescriptor>();
 
             this.Analyze();
         }
@@ -33,11 +36,13 @@
         // -------------------------------------------------------------------
         public Type Type { get; private set; }
 
+        public string TableName { get; private set; }
+        
         public DatabaseEntryAttribute EntryAttribute { get; private set; }
 
-        public AttributedPropertyInfo<DatabaseEntryPrimaryKeyAttribute> PropertyPrimaryKey { get; private set; }
+        public DatabaseEntryElementDescriptor PrimaryKey { get; private set; }
 
-        public IList<AttributedPropertyInfo<DatabaseEntryElementAttribute>> PropertyInfos { get; private set; }
+        public IList<DatabaseEntryElementDescriptor> Elements { get; private set; }
 
         public static DatabaseEntryDescriptor GetDescriptor<T>()
         {
@@ -70,18 +75,7 @@
             return other.Type == this.Type;
         }
 
-        public IList<string> GetElementNames()
-        {
-            IList<string> result = new List<string>();
-            foreach (AttributedPropertyInfo<DatabaseEntryElementAttribute> info in this.PropertyInfos)
-            {
-                result.Add(info.Attribute.Name ?? info.Property.Name);
-            }
-
-            return result;
-        }
-
-        public AttributedPropertyInfo<DatabaseEntryElementAttribute> GetElementByName(string name)
+        public DatabaseEntryElementDescriptor GetElementByName(string name)
         {
             if (this.elementNameLookup.ContainsKey(name))
             {
@@ -96,10 +90,22 @@
         // -------------------------------------------------------------------
         private void Analyze()
         {
-            this.PropertyPrimaryKey = null;
-            this.PropertyInfos.Clear();
+            this.PrimaryKey = null;
+            this.Elements.Clear();
 
-            this.EntryAttribute = this.Type.GetCustomAttribute<DatabaseEntryAttribute>();
+            IEnumerable<Attribute> typeAttributes = this.Type.GetCustomAttributes();
+            foreach (Attribute attribute in typeAttributes)
+            {
+                var typed = attribute as DatabaseEntryAttribute;
+                if (typed != null)
+                {
+                    this.EntryAttribute = typed;
+                    break;
+                }
+            }
+
+            System.Diagnostics.Trace.Assert(this.EntryAttribute != null, "The Main attribute is not defined");
+            this.TableName = this.EntryAttribute.Table;
 
             PropertyInfo[] properties = this.Type.GetProperties();
             foreach (PropertyInfo info in properties)
@@ -108,27 +114,39 @@
                 foreach (object attribute in attributes)
                 {
                     Type attributeType = attribute.GetType();
-                    AttributedPropertyInfo<DatabaseEntryElementAttribute> element = null;
+                    DatabaseEntryElementDescriptor element = null;
 
-                    if (attributeType == typeof(DatabaseEntryPrimaryKeyAttribute))
+                    if (attributeType == typeof(DatabaseEntryElementAttribute))
                     {
-                        element = new AttributedPropertyInfo<DatabaseEntryElementAttribute>(this.Type, (DatabaseEntryElementAttribute)attribute, info);
-                        this.PropertyPrimaryKey = new AttributedPropertyInfo<DatabaseEntryPrimaryKeyAttribute>(this.Type, (DatabaseEntryPrimaryKeyAttribute)attribute, info);
-                    }
-                    else if (attributeType == typeof(DatabaseEntryElementAttribute))
-                    {
-                        element = new AttributedPropertyInfo<DatabaseEntryElementAttribute>(this.Type, (DatabaseEntryElementAttribute)attribute, info);
-                    }
+                        var typed = (DatabaseEntryElementAttribute)attribute;
 
+                        element = new DatabaseEntryElementDescriptor(this.Type, (DatabaseEntryElementAttribute)attribute, info);
+                        this.elementNameLookup.Add(element.Name, element);
+
+                        if (typed.PrimaryKeyMode != PrimaryKeyMode.None)
+                        {
+                            if (this.PrimaryKey != null)
+                            {
+                                throw new InvalidDataException(
+                                    "Primary key was already defined, multiple is not supported yet!");
+                            }
+
+                            if (!info.PropertyType.IsNullable())
+                            {
+                                throw new InvalidDataException(string.Format("Primary key type needs to be nullable: {0} on {1}", info.Name, this.Type));
+                            }
+                            this.PrimaryKey = element;
+                        }
+                    }
+                        
                     if (element != null)
                     {
-                        this.PropertyInfos.Add(element);
-                        this.elementNameLookup.Add(element.Attribute.Name ?? element.Property.Name, element);
+                        this.Elements.Add(element);
                     }
                 }
             }
 
-            if (this.PropertyPrimaryKey == null)
+            if (this.PrimaryKey == null)
             {
                 System.Diagnostics.Trace.TraceWarning("DatabaseEntry has no Primary key defined: {0}", this.Type);
             }

@@ -38,6 +38,11 @@
             return results[0] as T;
         }
 
+        public static bool IsNullable(this Type type)
+        {
+            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
+        }
+
         public static object ConvertValue(this Type type, object source)
         {
             bool isNullable = type.IsClass;

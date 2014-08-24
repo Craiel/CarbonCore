@@ -1,8 +1,8 @@
 ﻿namespace CarbonCore.ContentServices.Logic
 {
     using System;
+    using System.Data;
 
-    using CarbonCore.ContentServices.Logic.Attributes;
     using CarbonCore.Utils;
 
     public enum DatabaseQueryCriterionType
@@ -16,19 +16,25 @@
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
-        public DatabaseQueryCriterion(AttributedPropertyInfo<DatabaseEntryElementAttribute> attribute, params object[] values)
+        public DatabaseQueryCriterion(string name, Type internalType, SqlDbType databaseType, params object[] values)
         {
-            System.Diagnostics.Trace.Assert(attribute != null);
+            System.Diagnostics.Trace.Assert(!string.IsNullOrEmpty(name));
             System.Diagnostics.Trace.Assert(values != null && values.Length > 0);
 
-            this.Attribute = attribute;
+            this.Name = name;
+            this.InternalType = internalType;
+            this.DatabaseType = databaseType;
             this.Values = values;
         }
 
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public AttributedPropertyInfo<DatabaseEntryElementAttribute> Attribute { get; private set; }
+        public string Name { get; private set; }
+
+        public Type InternalType { get; private set; }
+
+        public SqlDbType DatabaseType { get; private set; }
 
         public object[] Values { get; private set; }
 

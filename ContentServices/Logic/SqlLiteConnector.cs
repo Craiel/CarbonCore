@@ -1,6 +1,7 @@
 ﻿namespace CarbonCore.ContentServices.Logic
 {
     using System.Data;
+    using System.Data.Common;
     using System.Data.SQLite;
     using System.Threading;
 
@@ -31,6 +32,14 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
+        public string NotNullStatement
+        {
+            get
+            {
+                return SqlNotNull;
+            }
+        }
+
         public virtual void Dispose()
         {
             this.Disconnect();
@@ -70,6 +79,13 @@
             
             this.connection.ConnectionString = string.Format("Data Source={0}", connectionTarget);
             return this.OpenConnection();
+        }
+
+        public DbCommand CreateCommand()
+        {
+            System.Diagnostics.Trace.Assert(this.connection != null);
+
+            return this.connection.CreateCommand();
         }
 
         public void Disconnect()

@@ -18,6 +18,7 @@
             TypeToDbType.Add(SqlDbType.BigInt, typeof(long));
             TypeToDbType.Add(SqlDbType.Float, typeof(float));
             TypeToDbType.Add(SqlDbType.VarBinary, typeof(byte[]));
+            TypeToDbType.Add(SqlDbType.Bit, typeof(bool));
         }
 
         public static Type GetInternalType(SqlDbType type)
@@ -45,6 +46,16 @@
             }
 
             throw new DataException(string.Format("Type for internal type {0} is not implemented", internalType));
+        }
+
+        public static object TranslateValue(Type target, object value)
+        {
+            return value;
+        }
+
+        public static object TranslateValue(SqlDbType target, object value)
+        {
+            return value;
         }
     }
 }

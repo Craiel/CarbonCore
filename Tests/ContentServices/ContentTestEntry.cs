@@ -7,7 +7,7 @@
     public class ContentTestEntry : DatabaseEntry
     {
         [ContentEntryElement(IgnoreClone = true)]
-        [DatabaseEntryPrimaryKey]
+        [DatabaseEntryElement(PrimaryKeyMode = PrimaryKeyMode.Autoincrement)]
         public int? Id { get; set; }
 
         [DatabaseEntryElement]

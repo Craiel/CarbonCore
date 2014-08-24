@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
 
-    using CarbonCore.ContentServices.Logic.Attributes;
     using CarbonCore.Utils;
 
     public class DatabaseQuery
@@ -30,6 +29,14 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
+        public DatabaseEntryDescriptor Descriptor
+        {
+            get
+            {
+                return this.descriptor;
+            }
+        }
+
         public ReadOnlyCollection<DatabaseQueryCriterion> Criterion
         {
             get
@@ -54,7 +61,8 @@
 
         public DatabaseQuery IsEqual(string element, params object[] values)
         {
-            var criterion = new DatabaseQueryCriterion(this.descriptor.GetElementByName(element), values)
+            DatabaseEntryElementDescriptor elementDescriptor = this.descriptor.GetElementByName(element);
+            var criterion = new DatabaseQueryCriterion(elementDescriptor.Name, elementDescriptor.InternalType, elementDescriptor.DatabaseType, values)
                                 {
                                     Type = DatabaseQueryCriterionType.Equals
                                 };
@@ -64,7 +72,8 @@
 
         public DatabaseQuery Contains(string element, params object[] values)
         {
-            var criterion = new DatabaseQueryCriterion(this.descriptor.GetElementByName(element), values)
+            DatabaseEntryElementDescriptor elementDescriptor = this.descriptor.GetElementByName(element);
+            var criterion = new DatabaseQueryCriterion(element, elementDescriptor.InternalType, elementDescriptor.DatabaseType, values)
                                 {
                                     Type = DatabaseQueryCriterionType.Contains
                                 };
@@ -74,7 +83,7 @@
 
         public DatabaseQuery OrderBy(string element, bool ascending = true)
         {
-            var orderEntry = new DatabaseQueryOrder(this.descriptor.GetElementByName(element))
+            var orderEntry = new DatabaseQueryOrder(element)
                                  {
                                      Ascending = ascending
                                  };

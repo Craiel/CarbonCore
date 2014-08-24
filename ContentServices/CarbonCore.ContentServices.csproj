@@ -49,12 +49,12 @@
     <Compile Include="Contracts\ISqlLiteConnector.cs" />
     <Compile Include="IoC\IoC.cs" />
     <Compile Include="Logic\Attributes\ContentEntryElementAttribute.cs" />
-    <Compile Include="Logic\Attributes\ContentEntryDescriptor.cs" />
+    <Compile Include="Logic\ContentEntryDescriptor.cs" />
     <Compile Include="Logic\Attributes\DatabaseEntryAttribute.cs" />
-    <Compile Include="Logic\Attributes\DatabaseEntryDescriptor.cs" />
-    <Compile Include="Logic\Attributes\DatabaseEntryPrimaryKeyAttribute.cs" />
+    <Compile Include="Logic\DatabaseEntryDescriptor.cs" />
     <Compile Include="Logic\Attributes\DatabaseEntryElementAttribute.cs" />
     <Compile Include="Logic\ContentEntry.cs" />
+    <Compile Include="Logic\DatabaseEntryElementDescriptor.cs" />
     <Compile Include="Logic\DatabaseQueryCriterion.cs" />
     <Compile Include="Logic\DatabaseService.cs" />
     <Compile Include="Logic\DatabaseQueryOrder.cs" />
