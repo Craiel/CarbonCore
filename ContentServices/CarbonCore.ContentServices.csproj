@@ -36,21 +36,32 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite">
+      <HintPath>..\External\sqllite\1.0.93.0\System.Data.SQLite.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\IContentEntry.cs" />
     <Compile Include="Contracts\IDatabaseEntry.cs" />
+    <Compile Include="Contracts\IDatabaseService.cs" />
+    <Compile Include="Contracts\IDataConnector.cs" />
+    <Compile Include="Contracts\ISqlLiteConnector.cs" />
     <Compile Include="IoC\IoC.cs" />
+    <Compile Include="Logic\Attributes\ContentEntryElementAttribute.cs" />
+    <Compile Include="Logic\Attributes\ContentEntryDescriptor.cs" />
+    <Compile Include="Logic\Attributes\DatabaseEntryAttribute.cs" />
     <Compile Include="Logic\Attributes\DatabaseEntryDescriptor.cs" />
     <Compile Include="Logic\Attributes\DatabaseEntryPrimaryKeyAttribute.cs" />
-    <Compile Include="Logic\Attributes\DatabaseEntryAttribute.cs" />
     <Compile Include="Logic\Attributes\DatabaseEntryElementAttribute.cs" />
-    <Compile Include="Logic\ContentCriterion.cs" />
-    <Compile Include="Logic\ContentManager.cs" />
-    <Compile Include="Logic\ContentOrder.cs" />
-    <Compile Include="Logic\ContentQuery.cs" />
-    <Compile Include="Logic\ContentQueryResult.cs" />
-    <Compile Include="Logic\ContentReflection.cs" />
-    <Compile Include="Logic\ContentReflectionProperty.cs" />
+    <Compile Include="Logic\ContentEntry.cs" />
+    <Compile Include="Logic\DatabaseQueryCriterion.cs" />
+    <Compile Include="Logic\DatabaseService.cs" />
+    <Compile Include="Logic\DatabaseQueryOrder.cs" />
+    <Compile Include="Logic\DatabaseQuery.cs" />
+    <Compile Include="Logic\DatabaseQueryResult.cs" />
+    <Compile Include="Logic\DatabaseEntry.cs" />
+    <Compile Include="Logic\SqlLiteConnector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

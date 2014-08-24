@@ -1,59 +1,74 @@
 ﻿namespace CarbonCore.ContentServices.Logic
 {
-    using System;
     using System.Collections.Generic;
-    using System.Data;
-    using System.Data.SQLite;
-    using System.Globalization;
-    using System.Text;
 
+    using CarbonCore.ContentServices.Contracts;
+    using CarbonCore.Utils.Contracts.IoC;
     using CarbonCore.Utils.IO;
 
-    using Core.Engine.Contracts.Resource;
-    using Core.Engine.Resource.Content;
-    using Core.Engine.Resource.Generic;
-
-    public class ContentManager : IContentManager
+    public class DatabaseService : IDatabaseService
     {
-        private const string SqlNotNull = " NOT NULL";
-        private const string SqlLastId = "SELECT last_insert_rowid()";
-        
-        private readonly SQLiteFactory factory;
-        private readonly IList<string> checkedTableList;
+        private readonly ISqlLiteConnector connector;
 
-        private readonly IDictionary<int, ContentLink> contentLinkCache;
-
-        private readonly IDictionary<int, ContentQueryResult> contentQueryCache;
-
-        private CarbonFile file;
-
-        private SQLiteConnection connection;
+        private CarbonFile activeFile;
 
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
-        public ContentManager()
+        public DatabaseService(IFactory factory)
         {
-            this.factory = new SQLiteFactory();
-            this.checkedTableList = new List<string>();
-            this.contentLinkCache = new Dictionary<int, ContentLink>();
-            this.contentQueryCache = new Dictionary<int, ContentQueryResult>();
-        }
-
-        public void Dispose()
-        {
-            this.Disconnect();
+            this.connector = factory.Resolve<ISqlLiteConnector>();
         }
 
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public ContentQueryResult<T> TypedLoad<T>(ContentQuery<T> criteria) where T : ICarbonContent
+        public void Dispose()
+        {
+            if (this.connector != null)
+            {
+                this.connector.Dispose();
+            }
+        }
+
+        public void Initialize(CarbonFile file)
+        {
+            this.activeFile = file;
+            this.connector.SetFile(this.activeFile);
+            this.connector.Connect();
+        }
+
+        public void Save<T>(ref T entry) where T : IDatabaseEntry
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Save<T>(IList<T> entries) where T : IDatabaseEntry
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public T Load<T>(int id) where T : IDatabaseEntry
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IList<T> Load<T>(IList<int> idValues = null) where T : IDatabaseEntry
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Delete<T>(IList<int> idValues = null) where T : IDatabaseEntry
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /*public ContentQueryResult<T> TypedLoad<T>(ContentQuery<T> criteria) where T : ICarbonContent
         {
             return new ContentQueryResult<T>(this, this.GetCommand(criteria));
         }
 
-        public ContentQueryResult Load(ContentQuery criteria, bool useResultCache = true)
+        public DatabaseQueryResult Load(DatabaseQuery criteria, bool useResultCache = true)
         {
             if (useResultCache)
             {
@@ -63,13 +78,13 @@
                     return this.contentQueryCache[hash];
                 }
 
-                var result = new ContentQueryResult(this, this.GetCommand(criteria));
+                var result = new DatabaseQueryResult(this, this.GetCommand(criteria));
                 this.contentQueryCache.Add(hash, result);
                 
                 return result;
             }
 
-            return new ContentQueryResult(this, this.GetCommand(criteria));
+            return new DatabaseQueryResult(this, this.GetCommand(criteria));
         }
 
         public T Load<T>(ContentLink link)
@@ -167,7 +182,7 @@
             {
                 if (!this.contentLinkCache.ContainsKey(id))
                 {
-                    ContentQueryResult result = this.Load(new ContentQuery(typeof(ContentLink)).IsEqual("Id", id));
+                    DatabaseQueryResult result = this.Load(new DatabaseQuery(typeof(ContentLink)).IsEqual("Id", id));
                     this.contentLinkCache.Add(id, (ContentLink)result.UniqueResult(typeof(ContentLink)));
                 }
 
@@ -177,7 +192,6 @@
 
         public void ClearCache()
         {
-            this.contentLinkCache.Clear();
             this.contentQueryCache.Clear();
         }
 
@@ -189,7 +203,7 @@
         // -------------------------------------------------------------------
         // Private
         // -------------------------------------------------------------------
-        private SQLiteCommand GetCommand(ContentQuery criteria)
+        private SQLiteCommand GetCommand(DatabaseQuery criteria)
         {
             this.Connect();
             this.CheckTable(criteria.Type);
@@ -201,7 +215,7 @@
             return command;
         }
 
-        private string BuildSelectStatement(ContentQuery criteria)
+        private string BuildSelectStatement(DatabaseQuery criteria)
         {
             string what = this.BuildSelect(criteria.Type);
             string where = this.BuildWhereClause(criteria.Criterion);
@@ -305,10 +319,10 @@
             return string.Format("INSERT INTO {0} ({1})", tableName, builder);
         }
 
-        private string BuildWhereClause(IEnumerable<ContentCriterion> criteria)
+        private string BuildWhereClause(IEnumerable<DatabaseQueryCriterion> criteria)
         {
             IList<string> segments = new List<string>();
-            foreach (ContentCriterion criterion in criteria)
+            foreach (DatabaseQueryCriterion criterion in criteria)
             {
                 switch (criterion.Type)
                 {
@@ -329,7 +343,7 @@
             return string.Join(" AND ", segments);
         }
 
-        private string BuildEqualsSegment(ContentCriterion criterion)
+        private string BuildEqualsSegment(DatabaseQueryCriterion criterion)
         {
             if (criterion.Values == null || criterion.Values.Length == 0 ||
                 (criterion.Values.Length == 1 && criterion.Values[0] == null))
@@ -355,7 +369,7 @@
             return segmentString;
         }
 
-        private string BuildContainsSegment(ContentCriterion criterion)
+        private string BuildContainsSegment(DatabaseQueryCriterion criterion)
         {
             if (criterion.Values == null || criterion.Values.Length == 0)
             {
@@ -423,10 +437,10 @@
             return string.Format("'{0}'", value);
         }
 
-        private string BuildOrder(IEnumerable<ContentOrder> orders)
+        private string BuildOrder(IEnumerable<DatabaseQueryOrder> orders)
         {
             IList<string> segments = new List<string>();
-            foreach (ContentOrder order in orders)
+            foreach (DatabaseQueryOrder order in orders)
             {
                 segments.Add(string.Format("ORDER BY {0} {1}", order.PropertyInfo.Name, order.Ascending ? "ASC" : "DESC"));
             }
@@ -434,40 +448,7 @@
             return string.Join(" ", segments);
         }
 
-        private void Connect()
-        {
-            if (this.connection != null)
-            {
-                return;
-            }
-
-            // Todo:
-            // - Load the database from the resource manager
-            // - Pull the data into the memory database
-            // - Release the resource
-            // 
-            // this.connection.ConnectionString = "Data Source=:memory:";
-            this.connection = this.factory.CreateConnection() as SQLiteConnection;
-            if (this.connection == null)
-            {
-                System.Diagnostics.Trace.TraceError("Could not create connection");
-                return;
-            }
-
-            this.connection.ConnectionString = string.Format("Data Source={0}", this.file);
-            this.connection.Open();
-        }
-
-        private void Disconnect()
-        {
-            if (this.connection != null)
-            {
-                this.connection.Dispose();
-                this.connection = null;
-            }
-
-            this.checkedTableList.Clear();
-        }
+        
         
         private void CheckTable(Type type)
         {
@@ -565,49 +546,6 @@
             this.checkedTableList.Add(tableName);
         }
 
-        private string GetTableType(Type internalType)
-        {
-            string arguments = string.Empty;
-            if (internalType.IsGenericType && internalType.GetGenericTypeDefinition() == typeof(Nullable<>))
-            {
-                internalType = internalType.GetGenericArguments()[0];
-            }
-            else
-            {
-                if (!internalType.IsClass)
-                {
-                    arguments = " NOT NULL";
-                }
-            }
-
-            if (internalType == typeof(string))
-            {
-                return string.Concat("VARCHAR", arguments);
-            }
-
-            if (internalType.IsEnum
-                || internalType == typeof(int)
-                || internalType == typeof(uint)
-                || internalType == typeof(long)
-                || internalType == typeof(ulong)
-                || internalType == typeof(bool)
-                || internalType == typeof(ContentLink)
-                || internalType == typeof(DateTime))
-            {
-                return string.Concat("INTEGER", arguments);
-            }
-
-            if (internalType == typeof(float))
-            {
-                return string.Concat("FLOAT", arguments);
-            }
-
-            if (internalType == typeof(byte[]))
-            {
-                return string.Concat("BLOB", arguments);
-            }
-
-            throw new DataException("Type for value is not implemented: " + internalType);
-        }
+        */
     }
 }

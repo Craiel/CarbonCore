@@ -1,6 +1,7 @@
 ﻿namespace CarbonCore.ContentServices.Contracts
 {
-    public interface IDatabaseEntry : IContentEntry
+    public interface IContentEntry
     {
+        IContentEntry Clone();
     }
 }

@@ -64,13 +64,16 @@
     <Compile Include="AssemblyExtensions.cs" />
     <Compile Include="AttributedPropertyInfo.cs" />
     <Compile Include="CollectionExtensions.cs" />
+    <Compile Include="Collections\ExtendedDictionary.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Contracts\IExtendedDictionary.cs" />
     <Compile Include="Contracts\IJsonConfig.cs" />
     <Compile Include="Contracts\IoC\ICarbonContainer.cs" />
     <Compile Include="Contracts\IoC\ICarbonModule.cs" />
     <Compile Include="Contracts\IoC\ICarbonQuickBinding.cs" />
     <Compile Include="Contracts\IoC\IFactory.cs" />
     <Compile Include="Contracts\IThreadQueueComponent.cs" />
+    <Compile Include="DatabaseUtils.cs" />
     <Compile Include="Diagnostics\ContextualLog.cs" />
     <Compile Include="Diagnostics\ProgressRegion.cs" />
     <Compile Include="Formatting\FormatHandler.cs" />

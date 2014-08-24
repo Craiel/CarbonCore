@@ -1,19 +1,15 @@
 ﻿namespace CarbonCore.ContentServices.Logic
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Data.Common;
     using System.IO;
 
-    using CarbonCore.Utils;
-
-    using Core.Engine.Contracts.Resource;
-    using Core.Engine.Resource.Content;
+    using CarbonCore.ContentServices.Contracts;
     
-    public class ContentQueryResult
+    public class DatabaseQueryResult
     {
-        private readonly IContentManager contentManager;
+        private readonly IDatabaseService provider;
 
         private readonly DbCommand command;
 
@@ -22,9 +18,9 @@
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
-        public ContentQueryResult(IContentManager contentManager, DbCommand command)
+        public DatabaseQueryResult(IDatabaseService provider, DbCommand command)
         {
-            this.contentManager = contentManager;
+            this.provider = provider;
             this.command = command;
         }
 
@@ -40,10 +36,10 @@
             }
         }
 
-        public IList ToList(Type type)
+        public IList<object> ToList()
         {
             this.EvaluateCommand();
-            return this.ProcessResults(type);
+            return new List<object>(this.results);
         }
 
         public object UniqueResult()
@@ -56,18 +52,7 @@
 
             return this.results[0];
         }
-
-        public object UniqueResult(Type targetType)
-        {
-            this.EvaluateCommand();
-            if (this.results.Count != 1)
-            {
-                throw new InvalidDataException("Expected unique result but got " + this.results.Count);
-            }
-
-            return this.ProcessResults(targetType)[0];
-        }
-
+        
         private void EvaluateCommand()
         {
             if (this.results != null)
@@ -91,7 +76,7 @@
             }
         }
 
-        private IList ProcessResults(Type targetType)
+        /*private IList ProcessResults(Type targetType)
         {
             IList<ContentReflectionProperty> properties = ContentReflection.GetPropertyInfos(targetType);
             IList processed = new List<object>();
@@ -149,6 +134,6 @@
             }
 
             return type.ConvertValue(source);
-        }
+        }*/
     }
 }

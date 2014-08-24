@@ -2,7 +2,7 @@
 {
     using System;
 
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Class)]
     public class DatabaseEntryAttribute : Attribute
     {
         // -------------------------------------------------------------------

@@ -49,6 +49,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ContentServices\ContentEntryTests.cs" />
+    <Compile Include="ContentServices\ContentTestData.cs" />
+    <Compile Include="ContentServices\ContentTestEntry.cs" />
+    <Compile Include="ContentServices\DatabaseServiceTests.cs" />
     <Compile Include="Contracts\IFrameworkTestMain.cs" />
     <Compile Include="Contracts\IFrameworkTestMainViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -62,6 +66,10 @@
     <Compile Include="Utils\AssemblyTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ContentServices\CarbonCore.ContentServices.csproj">
+      <Project>{5D3507BD-D8DD-4255-A262-8E360E936F10}</Project>
+      <Name>CarbonCore.ContentServices</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ToolFramework\CarbonCore.ToolFramework.csproj">
       <Project>{E4643DF2-D2DB-4E99-AB4B-D8CE4FD94D81}</Project>
       <Name>CarbonCore.ToolFramework</Name>
