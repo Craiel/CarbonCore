@@ -43,6 +43,26 @@
             return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
 
+        public static object GetDefault(this Type type)
+        {
+            if (type.IsValueType)
+            {
+                return Activator.CreateInstance(type);
+            }
+
+            return null;
+        }
+
+        public static Type GetActualType(this Type type)
+        {
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+            {
+                return type.GetGenericArguments()[0];
+            }
+
+            return type;
+        }
+
         public static object ConvertValue(this Type type, object source)
         {
             bool isNullable = type.IsClass;

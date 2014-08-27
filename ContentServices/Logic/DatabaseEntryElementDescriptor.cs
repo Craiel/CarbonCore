@@ -6,6 +6,7 @@
 
     using CarbonCore.ContentServices.Logic.Attributes;
     using CarbonCore.Utils;
+    using CarbonCore.Utils.Database;
 
     public class DatabaseEntryElementDescriptor : AttributedPropertyInfo<DatabaseEntryElementAttribute>
     {

@@ -11,11 +11,7 @@
 
         void Save<T>(ref T entry) where T : IDatabaseEntry;
 
-        void Save<T>(IList<T> entries) where T : IDatabaseEntry;
-
-        T Load<T>(int id) where T : IDatabaseEntry;
-
-        IList<T> Load<T>(IList<int> idValues = null) where T : IDatabaseEntry;
+        T Load<T>(object key) where T : IDatabaseEntry;
 
         void Delete<T>(IList<int> idValues = null) where T : IDatabaseEntry;
     }

@@ -1,7 +1,8 @@
-﻿namespace CarbonCore.Utils
+﻿namespace CarbonCore.Utils.Database
 {
     using System;
     using System.Data;
+    using System.IO;
 
     using CarbonCore.Utils.Collections;
     using CarbonCore.Utils.Contracts;
@@ -34,13 +35,9 @@
 
         public static SqlDbType GetDatabaseType(Type internalType)
         {
-            if (internalType.IsGenericType && internalType.GetGenericTypeDefinition() == typeof(Nullable<>))
-            {
-                internalType = internalType.GetGenericArguments()[0];
-            }
-
+            Type actualType = internalType.GetActualType();
             SqlDbType type;
-            if (TypeToDbType.TryGetKey(internalType, out type))
+            if (TypeToDbType.TryGetKey(actualType, out type))
             {
                 return type;
             }
@@ -48,14 +45,35 @@
             throw new DataException(string.Format("Type for internal type {0} is not implemented", internalType));
         }
 
-        public static object TranslateValue(Type target, object value)
+        public static string GetDatabaseTypeString(Type internalType)
         {
-            return value;
+            SqlDbType databaseType = GetDatabaseType(internalType);
+            return GetDatabaseTypeString(databaseType);
         }
 
-        public static object TranslateValue(SqlDbType target, object value)
+        public static string GetDatabaseTypeString(SqlDbType type)
         {
-            return value;
+            switch (type)
+            {
+                case SqlDbType.Int:
+                    return "INTEGER";
+
+                default:
+                    {
+                        return type.ToString().ToUpperInvariant();
+                    }
+            }
+        }
+
+        public static object GetInternalValue(SqlDbType databaseType, object source)
+        {
+            Type internalType;
+            if (!TypeToDbType.TryGetValue(databaseType, out internalType))
+            {
+                throw new InvalidDataException("Could not map db type for " + databaseType);
+            }
+
+            return internalType.ConvertValue(source);
         }
     }
 }

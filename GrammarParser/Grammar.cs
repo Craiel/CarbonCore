@@ -12,6 +12,8 @@
         private readonly IList<TermIdentifierKey> identifierKeyTerms;
         private readonly IList<TermComment> commentTerms;
         private readonly IList<TermString> stringTerms;
+
+        private readonly IDictionary<string, BaseTerm> termStringLookup;
         
         // -------------------------------------------------------------------
         // Constructor
@@ -22,6 +24,7 @@
             this.identifierKeyTerms = new List<TermIdentifierKey>();
             this.commentTerms = new List<TermComment>();
             this.stringTerms = new List<TermString>();
+            this.termStringLookup = new Dictionary<string, BaseTerm>();
         }
 
         // -------------------------------------------------------------------
@@ -118,12 +121,16 @@
 
         protected void ToTerm<T>(string text, T key)
         {
-            this.AddTerm(new TermKey(key.ToString(), text, key));
+            var term = new TermKey(key.ToString(), text, key);
+            this.AddTerm(term);
+            this.termStringLookup.Add(text, term);
         }
 
         protected void ToIdentifierTerm<T>(string text, T key)
         {
-            this.AddTerm(new TermIdentifierKey(key.ToString(), text, key));
+            var term = new TermIdentifierKey(key.ToString(), text, key);
+            this.AddTerm(term);
+            this.termStringLookup.Add(text, term);
         }
     }
 }

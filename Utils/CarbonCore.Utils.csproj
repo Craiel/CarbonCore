@@ -73,7 +73,9 @@
     <Compile Include="Contracts\IoC\ICarbonQuickBinding.cs" />
     <Compile Include="Contracts\IoC\IFactory.cs" />
     <Compile Include="Contracts\IThreadQueueComponent.cs" />
-    <Compile Include="DatabaseUtils.cs" />
+    <Compile Include="Database\DatabaseUtils.cs" />
+    <Compile Include="Database\SqlStatement.cs" />
+    <Compile Include="Database\SqlStatementType.cs" />
     <Compile Include="Diagnostics\ContextualLog.cs" />
     <Compile Include="Diagnostics\ProgressRegion.cs" />
     <Compile Include="Formatting\FormatHandler.cs" />

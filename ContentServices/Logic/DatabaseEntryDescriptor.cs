@@ -85,6 +85,17 @@
             return null;
         }
 
+        public IList<string> GetElementNames()
+        {
+            IList<string> results = new List<string>();
+            foreach (DatabaseEntryElementDescriptor element in this.Elements)
+            {
+                results.Add(element.Name);
+            }
+
+            return results;
+        }
+
         // -------------------------------------------------------------------
         // Private
         // -------------------------------------------------------------------

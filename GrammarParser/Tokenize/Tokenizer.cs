@@ -13,8 +13,18 @@
     public class Tokenizer : ITokenizer<Token>
     {
         // -------------------------------------------------------------------
+        // Constructor
+        // -------------------------------------------------------------------
+        public Tokenizer()
+        {
+            this.IsCaseSensitive = true;
+        }
+
+        // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
+        public bool IsCaseSensitive { get; set; }
+
         public IList<Token> Tokenize(IGrammar grammar, StreamReader reader)
         {
             string data = reader.ReadToEnd();
@@ -88,13 +98,17 @@
 
                     default:
                         {
-                            data.PendingContent += data.CurrentChar;
-
                             if (this.CheckPunctuation(data))
                             {
-                                return true;
+                                // Rewind the punctuation if we have data, to get it as a stand alone entry
+                                if (!string.IsNullOrEmpty(data.PendingContent))
+                                {
+                                    data.CurrentOffset--;
+                                    return true;
+                                }
                             }
-                            
+
+                            data.PendingContent += data.CurrentChar;
                             break;
                         }
                 }
@@ -178,6 +192,11 @@
         {
             // Get the list of potential matches from the cache
             char key = data.PendingContent[0];
+            if (!this.IsCaseSensitive)
+            {
+                key = char.ToLowerInvariant(key);
+            }
+
             if (!data.KeyCache.ContainsKey(key))
             {
                 return false;
@@ -194,9 +213,15 @@
             
             if (potentialMatches.Count == 1)
             {
-                var token = data.NewToken(potentialMatches[0], potentialMatches[0].Keyword);
-                data.Finalize(token);
-                return true;
+                var comparison = this.IsCaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
+                if (potentialMatches[0].Keyword.Equals(data.PendingContent.Substring(0, potentialMatches[0].Keyword.Length), comparison))
+                {
+                    var token = data.NewToken(potentialMatches[0], potentialMatches[0].Keyword);
+                    data.Finalize(token);
+                    return true;
+                }
+
+                return false;
             }
 
             IList<TermKey> closedMatches = new List<TermKey>();
@@ -224,10 +249,21 @@
             {
                 bool nextStep = true;
                 string termValue = data.PendingContent.Substring(0, i + 1);
+                if (!this.IsCaseSensitive)
+                {
+                    termValue = termValue.ToLowerInvariant();
+                }
+
                 IList<TermKey> checkList = new List<TermKey>(potentialMatches);
                 for (int index = 0; index < checkList.Count; index++)
                 {
-                    if (checkList[index].Keyword.Length <= i)
+                    string keyword = checkList[index].Keyword;
+                    if (!this.IsCaseSensitive)
+                    {
+                        keyword = keyword.ToLowerInvariant();
+                    }
+
+                    if (keyword.Length <= i)
                     {
                         if (nextStep)
                         {
@@ -239,7 +275,7 @@
                         potentialMatches.Remove(checkList[index]);
                         nextStep = false;
                     }
-                    else if (!checkList[index].Keyword.StartsWith(termValue))
+                    else if (!keyword.StartsWith(termValue))
                     {
                         potentialMatches.Remove(checkList[index]);
                     }

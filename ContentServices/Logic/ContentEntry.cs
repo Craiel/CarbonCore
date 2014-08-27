@@ -4,7 +4,6 @@
     using System.Reflection;
 
     using CarbonCore.ContentServices.Contracts;
-    using CarbonCore.ContentServices.Logic.Attributes;
 
     public class ContentEntry : IContentEntry
     {

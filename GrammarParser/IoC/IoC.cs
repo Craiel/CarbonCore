@@ -12,6 +12,7 @@
             // Grammars don't need to be instantiated, register as singletons
             this.For<IJavaGrammar>().Use<JavaGrammar>().Singleton();
             this.For<ICommandLineGrammar>().Use<CommandLineGrammar>().Singleton();
+            this.For<ISqlGrammar>().Use<SqlGrammar>().Singleton();
         }
     }
 }

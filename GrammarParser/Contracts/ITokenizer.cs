@@ -5,6 +5,8 @@
 
     public interface ITokenizer<T> where T : IToken
     {
+        bool IsCaseSensitive { get; set; }
+
         IList<T> Tokenize(IGrammar grammar, StreamReader reader);
         IList<T> Tokenize(IGrammar grammar, string data);
     }

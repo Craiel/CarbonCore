@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="Contracts\Grammars\ICommandLineGrammar.cs" />
     <Compile Include="Contracts\Grammars\IJavaGrammar.cs" />
+    <Compile Include="Contracts\Grammars\ISqlGrammar.cs" />
     <Compile Include="Contracts\IToken.cs" />
     <Compile Include="Contracts\ITokenizer.cs" />
     <Compile Include="Contracts\PostProcessing\IProcessingData.cs" />
@@ -51,6 +52,8 @@
     <Compile Include="Grammar.cs" />
     <Compile Include="Grammars\CommandLineGrammar.cs" />
     <Compile Include="Grammars\CommandLineTermKey.cs" />
+    <Compile Include="Grammars\SqlTermKey.cs" />
+    <Compile Include="Grammars\SqlGrammar.cs" />
     <Compile Include="Grammars\JavaGrammar.cs" />
     <Compile Include="Grammars\JavaGrammar.Static.cs" />
     <Compile Include="Grammars\JavaTermKey.cs" />
