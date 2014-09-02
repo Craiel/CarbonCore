@@ -25,8 +25,20 @@
 
         public void Dispose()
         {
-            // Assign the result when we leave the region
-            this.toolAction.Result = this.Result;
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        // -------------------------------------------------------------------
+        // Protected
+        // -------------------------------------------------------------------
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // Assign the result when we leave the region
+                this.toolAction.Result = this.Result;
+            }
         }
     }
 }

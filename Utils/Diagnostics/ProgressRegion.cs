@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class ProgressRegion : IDisposable
+    public sealed class ProgressRegion : IDisposable
     {
         // -------------------------------------------------------------------
         // Constructor

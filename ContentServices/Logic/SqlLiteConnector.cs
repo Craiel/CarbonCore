@@ -1,11 +1,13 @@
 ﻿namespace CarbonCore.ContentServices.Logic
 {
+    using System;
     using System.Data;
     using System.Data.Common;
     using System.Data.SQLite;
     using System.Threading;
 
     using CarbonCore.ContentServices.Contracts;
+    using CarbonCore.Utils.Database;
     using CarbonCore.Utils.IO;
 
     public class SqlLiteConnector : ISqlLiteConnector
@@ -40,9 +42,10 @@
             }
         }
 
-        public virtual void Dispose()
+        public void Dispose()
         {
-            this.Disconnect();
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public void SetFile(CarbonFile newFile)
@@ -52,9 +55,6 @@
             this.file = newFile;
         }
 
-        // -------------------------------------------------------------------
-        // Protected
-        // -------------------------------------------------------------------
         public bool Connect()
         {
             System.Diagnostics.Trace.Assert(this.connection == null);
@@ -81,11 +81,23 @@
             return this.OpenConnection();
         }
 
-        public DbCommand CreateCommand()
+        public DbCommand CreateCommand(SqlStatement statement)
         {
             System.Diagnostics.Trace.Assert(this.connection != null);
 
-            return this.connection.CreateCommand();
+            DbCommand command = this.connection.CreateCommand();
+            if (statement != null)
+            {
+                System.Diagnostics.Trace.TraceInformation("SQLite: {0}", statement.ToString());
+                statement.IntoCommand(command);
+            }
+
+            return command;
+        }
+
+        public DbTransaction BeginTransaction()
+        {
+            return this.connection.BeginTransaction();
         }
 
         public void Disconnect()
@@ -94,6 +106,18 @@
             {
                 this.connection.Dispose();
                 this.connection = null;
+            }
+        }
+
+        // -------------------------------------------------------------------
+        // Protected
+        // -------------------------------------------------------------------
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this.Disconnect();
+                this.factory.Dispose();
             }
         }
 

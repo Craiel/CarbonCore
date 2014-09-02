@@ -54,5 +54,22 @@
             Assert.NotNull(assemblies);
             Assert.GreaterOrEqual(assemblies.Count, 1);
         }
+
+        [Test]
+        public void ResourceExtractionTests()
+        {
+            CarbonDirectory testDirectory = CarbonDirectory.GetTempDirectory();
+
+            IList<CarbonFile> resources = this.GetType().Assembly.ExtractResources(testDirectory, "TESTBLA");
+            Assert.AreEqual(0, resources.Count, "Giving wrong path must extract none");
+
+            resources = this.GetType().Assembly.ExtractResources(testDirectory);
+            Assert.AreEqual(4, resources.Count, "Giving no path must extract all");
+
+            resources = this.GetType().Assembly.ExtractResources(testDirectory, "Resources.FileEntries");
+            Assert.AreEqual(3, resources.Count, "Giving path must extract partial resources");
+
+            testDirectory.Delete(true);
+        }
     }
 }

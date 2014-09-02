@@ -1,7 +1,6 @@
 ﻿namespace CarbonCore.JSharpBridge.Core
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
     
     public class BridgeThread : IDisposable
     {

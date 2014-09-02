@@ -63,10 +63,8 @@
 
         public void Dispose()
         {
-            this.innerContainer.ChildLifetimeScopeBeginning -= this.ChildLifetimeScopeBeginning;
-            this.innerContainer.CurrentScopeEnding -= this.CurrentScopeEnding;
-            this.innerContainer.ResolveOperationBeginning -= this.ResolveOperationBeginning;
-            this.innerContainer.Dispose();
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public ILifetimeScope BeginLifetimeScope()
@@ -92,6 +90,22 @@
         public T Resolve<T>(params Parameter[] parameter)
         {
             return this.innerContainer.Resolve<T>(parameter);
+        }
+
+        // -------------------------------------------------------------------
+        // Protected
+        // -------------------------------------------------------------------
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposing)
+            {
+                return;
+            }
+
+            this.innerContainer.ChildLifetimeScopeBeginning -= this.ChildLifetimeScopeBeginning;
+            this.innerContainer.CurrentScopeEnding -= this.CurrentScopeEnding;
+            this.innerContainer.ResolveOperationBeginning -= this.ResolveOperationBeginning;
+            this.innerContainer.Dispose();
         }
     }
 }

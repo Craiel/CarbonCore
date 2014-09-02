@@ -13,6 +13,7 @@
     public class SqlStatement : ISqlStatement
     {
         protected const string WhereParameterPrefix = "@WHR_";
+        protected const string WhereInParameterPrefix = "@WHRI_";
 
         private readonly IList<string> what;
         private readonly IDictionary<string, string> whatProperties;
@@ -22,7 +23,8 @@
         private readonly IDictionary<string, object> values;
         private readonly IDictionary<string, string> valueProperties;
 
-        private readonly IDictionary<string, object> where; 
+        private readonly IDictionary<string, object> where;
+        private readonly IDictionary<string, IList<object>> whereIn;
 
         private string table;
 
@@ -39,6 +41,7 @@
             this.values = new Dictionary<string, object>();
             this.valueProperties = new Dictionary<string, string>();
             this.where = new Dictionary<string, object>();
+            this.whereIn = new Dictionary<string, IList<object>>();
         }
 
         // -------------------------------------------------------------------
@@ -91,6 +94,14 @@
             this.where.Add(name, value);
             return this;
         }
+
+        public SqlStatement InConstraint(string name, IList<object> inValues)
+        {
+            System.Diagnostics.Trace.Assert(inValues != null && inValues.Count > 0);
+
+            this.whereIn.Add(name, inValues);
+            return this;
+        }
         
         public override string ToString()
         {
@@ -135,21 +146,7 @@
 
         public virtual void IntoCommand(DbCommand target)
         {
-            target.CommandText = this.ToString();
-
-            foreach (string key in this.values.Keys)
-            {
-                DbParameter parameter = target.CreateParameter();
-                parameter.ParameterName = key;
-                parameter.Value = this.values[key] ?? DBNull.Value;
-            }
-
-            foreach (string key in this.where.Keys)
-            {
-                DbParameter parameter = target.CreateParameter();
-                parameter.ParameterName = key;
-                parameter.Value = this.where[key] ?? DBNull.Value;
-            }
+            throw new NotImplementedException();
         }
 
         // -------------------------------------------------------------------
@@ -171,6 +168,14 @@
             }
         }
 
+        protected IDictionary<string, IList<object>> WhereIn
+        {
+            get
+            {
+                return this.whereIn;
+            }
+        }
+
         // -------------------------------------------------------------------
         // Private
         // -------------------------------------------------------------------
@@ -178,7 +183,7 @@
         {
             System.Diagnostics.Trace.Assert(!string.IsNullOrEmpty(this.table));
 
-            return string.Format("DROP TABLE IF EXISTS {0}", this.table);
+            return string.Format("DROP TABLE {0}", this.table);
         }
 
         private string BuildCreate()
@@ -207,14 +212,7 @@
             var builder = new StringBuilder();
             builder.AppendFormat("DELETE FROM {0}", this.table);
 
-            if (this.where.Count > 0)
-            {
-                builder.Append(" WHERE ");
-                foreach (string key in this.where.Keys)
-                {
-                    builder.AppendFormat("{0} = {1}", key, WhereParameterPrefix + key);
-                }
-            }
+            builder.Append(this.BuildWhereSegment());
 
             return builder.ToString();
         }
@@ -272,7 +270,7 @@
 
         private string BuildWhereSegment()
         {
-            if (this.where.Count <= 0)
+            if (this.where.Count <= 0 && this.whereIn.Count <= 0)
             {
                 return string.Empty;
             }
@@ -283,6 +281,10 @@
             foreach (string key in this.where.Keys)
             {
                 segments.Add(string.Format("{0} = {1}", key, WhereParameterPrefix + key));
+            }
+            foreach (string key in this.whereIn.Keys)
+            {
+                segments.Add(string.Format("{0} IN ({1})", key, WhereInParameterPrefix + key));
             }
 
             builder.Append(string.Join(" AND ", segments));

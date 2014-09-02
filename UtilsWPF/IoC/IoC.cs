@@ -5,8 +5,5 @@
     [DependsOnModule(typeof(UtilsModule))]
     public class UtilsWPFModule : CarbonModule
     {
-        public UtilsWPFModule()
-        {
-        }
     }
 }

@@ -43,21 +43,30 @@
 
         public object Tag { get; set; }
 
+        public bool Discard { get; set; }
+
         public void Dispose()
         {
-            this.Dispose(false);
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
-        public void Dispose(bool discard)
+        // -------------------------------------------------------------------
+        // Protected
+        // -------------------------------------------------------------------
+        protected virtual void Dispose(bool disposing)
         {
+            if (!disposing)
+            {
+                return;
+            }
+
             this.timer.Stop();
 
-            if (!discard)
+            if (!this.Discard)
             {
                 Profiler.RegionFinish(this);
             }
-
-            GC.SuppressFinalize(this);
         }
     }
 }

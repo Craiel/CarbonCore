@@ -32,10 +32,10 @@
         // http://stackoverflow.com/questions/218060/random-gaussian-variables
         public static double NextGaussian(this Random random, double mu = 0, double sigma = 1)
         {
-            double u1 = random.NextDouble(); //these are uniform(0,1) random doubles
+            double u1 = random.NextDouble(); // these are uniform(0,1) random doubles
             double u2 = random.NextDouble();
-            double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) * Math.Sin(2.0 * Math.PI * u2); //random normal(0,1)
-            return mu + sigma * randStdNormal; //random normal(mean,stdDev^2)
+            double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) * Math.Sin(2.0 * Math.PI * u2); // random normal(0,1)
+            return mu + sigma * randStdNormal; // random normal(mean,stdDev^2)
         }
 
         public static float NextFloat(this Random random)

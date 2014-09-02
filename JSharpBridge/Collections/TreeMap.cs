@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CarbonCore.JSharpBridge.Collections
+﻿namespace CarbonCore.JSharpBridge.Collections
 {
+    using System;
+
     public class TreeMap : JavaHashMap
     {
         public TreeMap(JavaHashMap init = null)

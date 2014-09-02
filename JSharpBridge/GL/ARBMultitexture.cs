@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CarbonCore.JSharpBridge.GL
+﻿namespace CarbonCore.JSharpBridge.GL
 {
+    using System;
+
     public static class ARBMultitexture
     {
         public static void GlActiveTextureARB(int par0)

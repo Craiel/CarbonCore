@@ -38,7 +38,6 @@ namespace CarbonCore.Utils.Diagnostics
         public override void Write(string message)
         {
             // Disabling this for now, some weird results coming in here...
-            return;
         }
 
         public override void WriteLine(string message)

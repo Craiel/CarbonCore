@@ -49,14 +49,9 @@
             this.Results.Add(token);
 
             int tokenContentDiff = this.PendingContent.Length - token.Contents.Length;
-            if (tokenContentDiff > 0)
-            {
-                this.PendingContent = this.PendingContent.Substring(token.Contents.Length, tokenContentDiff);
-            }
-            else
-            {
-                this.PendingContent = string.Empty;
-            }
+            this.PendingContent = tokenContentDiff > 0 
+                ? this.PendingContent.Substring(token.Contents.Length, tokenContentDiff) 
+                : string.Empty;
         }
 
         public Token NewToken(BaseTerm term, string content)

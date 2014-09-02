@@ -22,10 +22,10 @@
         private readonly IFactory factory;
         private readonly Random random = new Random((int)DateTime.Now.Ticks);
 
+        private readonly IList<int> cyclesTested;
+
         private IFrameworkTestMainViewModel viewModel;
 
-        private IList<int> cyclesTested;
-        
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
@@ -61,7 +61,7 @@
         // -------------------------------------------------------------------
         // Protected
         // -------------------------------------------------------------------
-        protected override void StartupInitializeCustomActions(System.Collections.Generic.IList<IToolAction> target)
+        protected override void StartupInitializeCustomActions(IList<IToolAction> target)
         {
             // Create 2 non-dispatched actions
             IToolAction action = RelayToolAction.Create(this.TestAction);

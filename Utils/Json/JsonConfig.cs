@@ -1,7 +1,6 @@
 ﻿namespace CarbonCore.Utils.Json
 {
     using System;
-    using System.IO;
 
     using CarbonCore.Utils.Contracts;
     using CarbonCore.Utils.IO;

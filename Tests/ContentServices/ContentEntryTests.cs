@@ -1,24 +1,18 @@
 ﻿namespace CarbonCore.Tests.ContentServices
 {
-    using Autofac;
-
-    using CarbonCore.ContentServices.IoC;
-    using CarbonCore.Utils.IoC;
+    using System.IO;
 
     using NUnit.Framework;
 
     [TestFixture]
     public class ContentEntryTests
     {
-        private IContainer container;
-
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
         [SetUp]
         public void Setup()
         {
-            this.container = CarbonContainerBuilder.Build<ContentServicesModule>();
         }
 
         [TearDown]
@@ -43,6 +37,25 @@
 
             clone2.TestString = "Another test clone";
             Assert.AreNotEqual(clone, clone2, "Clones must mis-match after changing data");
+        }
+        
+        [Test]
+        public void SaveLoadTests()
+        {
+            var clone = (ContentTestEntry)ContentTestData.TestEntry.Clone();
+            using (var stream = new MemoryStream())
+            {
+                Assert.IsFalse(ContentTestData.TestEntry2.Save(stream), "Entry with no save implementation should fail saving");
+
+                clone.Save(stream);
+                Assert.Greater(stream.Position, 0, "Entry should write itself to the stream");
+
+                stream.Seek(0, SeekOrigin.Begin);
+                var loadTest = new ContentTestEntry();
+                loadTest.Load(stream);
+
+                Assert.AreEqual(clone, loadTest, "Loading should result in an equal state");
+            }
         }
     }
 }

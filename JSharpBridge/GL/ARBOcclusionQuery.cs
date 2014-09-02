@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CarbonCore.JSharpBridge.GL
+﻿namespace CarbonCore.JSharpBridge.GL
 {
+    using System;
+
     using CarbonCore.JSharpBridge.IO;
 
     public static class ARBOcclusionQuery

@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Text;
     using System.Xml;
 
     using CarbonCore.Utils.Json;
@@ -131,11 +132,12 @@
             return XmlWriter.Create(this.Path);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = "Checked")]
         public string ReadAsString()
         {
             using (FileStream stream = this.OpenRead())
             {
-                using (var reader = new StreamReader(stream))
+                using (var reader = new StreamReader(stream, Encoding.UTF8, false, 4096, true))
                 {
                     return reader.ReadToEnd();
                 }

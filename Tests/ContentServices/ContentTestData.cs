@@ -14,5 +14,13 @@
             TestByteArray =
                 new byte[] { 20, 50, 20, 50, 10 }
         };
+
+        public static ContentTestEntry2 TestEntry2 = new ContentTestEntry2
+        {
+            OtherTestString = "another test",
+            OtherTestBool = true,
+            OtherTestFloat = 5.1f,
+            OtherTestLong = 523,
+        };
     }
 }

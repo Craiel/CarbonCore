@@ -146,6 +146,7 @@
                             {
                                 throw new InvalidDataException(string.Format("Primary key type needs to be nullable: {0} on {1}", info.Name, this.Type));
                             }
+
                             this.PrimaryKey = element;
                         }
                     }

@@ -98,7 +98,7 @@
             return new Iterator(set.GetEnumerator());
         }
 
-        public static Iterator Iterator(this Dictionary<object,object>.KeyCollection collection)
+        public static Iterator Iterator(this Dictionary<object, object>.KeyCollection collection)
         {
             return new Iterator(collection.GetEnumerator());
         }

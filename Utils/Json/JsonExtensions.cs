@@ -10,6 +10,8 @@
 
     public static class JsonExtensions
     {
+        private const int DefaultStreamBufferSize = 4096;
+
         // ------------------------------------------------------------------- 
         // Public 
         // ------------------------------------------------------------------- 
@@ -35,6 +37,7 @@
             return builder.ToString();
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = "Checked")]
         public static T LoadFromFile<T>(CarbonFile file, bool compressed = true)
         {
             if (!file.Exists)
@@ -42,31 +45,37 @@
                 throw new FileNotFoundException("Could not load file", file.ToString());
             }
             
-            string rawData;
             using (var stream = file.OpenRead())
             {
-                if (compressed)
+                return LoadFromStream<T>(stream, compressed);
+            }
+        }
+
+        public static T LoadFromStream<T>(Stream source, bool compressed = true)
+        {
+            string rawData;
+            if (compressed)
+            {
+                using (var compressedStream = new GZipStream(source, CompressionMode.Decompress, true))
                 {
-                    using (var compressedStream = new GZipStream(stream, CompressionMode.Decompress))
-                    {
-                        using (var reader = new StreamReader(compressedStream))
-                        {
-                            rawData = reader.ReadToEnd();
-                        }
-                    }
-                }
-                else
-                {
-                    using (var reader = new StreamReader(stream))
+                    using (var reader = new StreamReader(compressedStream, Encoding.UTF8, false, DefaultStreamBufferSize, true))
                     {
                         rawData = reader.ReadToEnd();
                     }
+                }
+            }
+            else
+            {
+                using (var reader = new StreamReader(source, Encoding.UTF8, false, DefaultStreamBufferSize, true))
+                {
+                    rawData = reader.ReadToEnd();
                 }
             }
 
             return LoadFromData<T>(rawData);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = "Checked")]
         public static void SaveToFile<T>(CarbonFile file, T data, bool compress = true, Formatting formatting = Formatting.None)
         {
             // Check if we need to create directories
@@ -82,22 +91,35 @@
             // Write to disk either compressed or bare
             using (var stream = file.OpenCreate())
             {
-                if (compress)
+                SaveToStream(stream, serialized, compress, formatting);
+            }
+        }
+
+        public static void SaveToStream<T>(Stream target, T data, bool compress = true, Formatting formatting = Formatting.None)
+        {
+            // Serialize
+            string serialized = SaveToData(data, formatting);
+
+            SaveToStream(target, serialized, compress);
+        }
+
+        private static void SaveToStream(Stream target, string serializedData, bool compress = true)
+        {
+            if (compress)
+            {
+                using (var compressedStream = new GZipStream(target, CompressionMode.Compress, true))
                 {
-                    using (var compressedStream = new GZipStream(stream, CompressionMode.Compress))
+                    using (var writer = new StreamWriter(compressedStream, Encoding.UTF8, DefaultStreamBufferSize, true))
                     {
-                        using (var writer = new StreamWriter(compressedStream))
-                        {
-                            writer.Write(serialized);
-                        }
+                        writer.Write(serializedData);
                     }
                 }
-                else
+            }
+            else
+            {
+                using (var writer = new StreamWriter(target, Encoding.UTF8, DefaultStreamBufferSize, true))
                 {
-                    using (var writer = new StreamWriter(stream))
-                    {
-                        writer.Write(serialized);
-                    }
+                    writer.Write(serializedData);
                 }
             }
         }

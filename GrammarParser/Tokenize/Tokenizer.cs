@@ -245,10 +245,10 @@
         private void FilterKeyTokenMatches(TokenizeData<Token> data, IList<TermKey> potentialMatches, IList<TermKey> closedMatches)
         {
             // Now we check the actual matches
-            for (int i = 1; i < data.PendingContent.Length; i++)
+            for (int i = 1; i <= data.PendingContent.Length; i++)
             {
                 bool nextStep = true;
-                string termValue = data.PendingContent.Substring(0, i + 1);
+                string termValue = data.PendingContent.Substring(0, i);
                 if (!this.IsCaseSensitive)
                 {
                     termValue = termValue.ToLowerInvariant();
@@ -263,7 +263,11 @@
                         keyword = keyword.ToLowerInvariant();
                     }
 
-                    if (keyword.Length <= i)
+                    if (!keyword.StartsWith(termValue))
+                    {
+                        potentialMatches.Remove(checkList[index]);
+                    }
+                    else if (keyword.Length <= i || keyword.Length == termValue.Length)
                     {
                         if (nextStep)
                         {
@@ -275,13 +279,9 @@
                         potentialMatches.Remove(checkList[index]);
                         nextStep = false;
                     }
-                    else if (!keyword.StartsWith(termValue))
-                    {
-                        potentialMatches.Remove(checkList[index]);
-                    }
                 }
 
-                if (potentialMatches.Count <= 0 || i >= data.PendingContent.Length - 1)
+                if (potentialMatches.Count <= 0 || i >= data.PendingContent.Length)
                 {
                     return;
                 }
@@ -313,15 +313,9 @@
                 content += current;
             }
 
-            Token token;
-            if (data.IdentifierKeyCache.ContainsKey(content))
-            {
-                token = data.NewToken(data.IdentifierKeyCache[content], content);
-            }
-            else
-            {
-                token = data.NewToken(data.Grammar.Identifier, content);
-            }
+            Token token = data.IdentifierKeyCache.ContainsKey(content) 
+                ? data.NewToken(data.IdentifierKeyCache[content], content) 
+                : data.NewToken(data.Grammar.Identifier, content);
             
             data.Finalize(token);
             return true;

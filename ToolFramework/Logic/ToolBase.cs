@@ -78,14 +78,10 @@
             }
         }
 
-        public virtual void Dispose()
+        public void Dispose()
         {
-            if (this.MainWindow != null)
-            {
-                this.MainWindow.Closing -= this.OnMainWindowClosing;
-                this.MainWindow.Closed -= this.OnMainWindowClosed;
-                this.MainWindow = null;
-            }
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         // -------------------------------------------------------------------
@@ -94,6 +90,21 @@
         protected Type MainWindowType { get; set; }
 
         protected object DataContext { get; set; }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposing)
+            {
+                return;
+            }
+
+            if (this.MainWindow != null)
+            {
+                this.MainWindow.Closing -= this.OnMainWindowClosing;
+                this.MainWindow.Closed -= this.OnMainWindowClosed;
+                this.MainWindow = null;
+            }
+        }
 
         protected virtual void StartupInitializeLogic(IToolAction toolAction, CancellationToken cancellationToken)
         {

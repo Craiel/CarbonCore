@@ -14,7 +14,7 @@
     using NUnit.Framework;
 
     [TestFixture]
-    public class AssemblyTests
+    public class GrammarTests
     {
         private IContainer container;
 

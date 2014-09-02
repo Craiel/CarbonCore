@@ -40,7 +40,7 @@
 
         public static bool IsNullable(this Type type)
         {
-            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
+            return type.IsClass || (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>));
         }
 
         public static object GetDefault(this Type type)
@@ -128,6 +128,12 @@
                 else
                 {
                     name = Enum.GetName(targetType, source);
+                }
+
+                // In case of null we return default
+                if (name == null)
+                {
+                    return Activator.CreateInstance(targetType);
                 }
 
                 return Enum.Parse(targetType, name);

@@ -4,6 +4,7 @@
 
     using CarbonCore.JSharpBridge.IO;
 
+    [Serializable]
     public class BridgeGLException : Exception
     {
     }

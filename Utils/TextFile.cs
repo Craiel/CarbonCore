@@ -43,11 +43,7 @@
 
         public void Dispose()
         {
-            lock (this.fileLock)
-            {
-                this.Close();
-            }
-
+            this.Dispose(true);
             GC.SuppressFinalize(this);
         }
 
@@ -98,6 +94,22 @@
                 }
 
                 this.writer = null;
+            }
+        }
+
+        // -------------------------------------------------------------------
+        // Protected
+        // -------------------------------------------------------------------
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposing)
+            {
+                return;
+            }
+
+            lock (this.fileLock)
+            {
+                this.Close();
             }
         }
 

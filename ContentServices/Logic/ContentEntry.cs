@@ -1,12 +1,16 @@
 ﻿namespace CarbonCore.ContentServices.Logic
 {
     using System;
+    using System.IO;
     using System.Reflection;
 
     using CarbonCore.ContentServices.Contracts;
 
     public class ContentEntry : IContentEntry
     {
+        // -------------------------------------------------------------------
+        // Public
+        // -------------------------------------------------------------------
         public IContentEntry Clone()
         {
             Type localType = this.GetType();
@@ -19,6 +23,40 @@
             }
 
             return clone;
+        }
+
+        public virtual bool CopyFrom(IContentEntry source)
+        {
+            System.Diagnostics.Trace.Assert(source != null);
+
+            if (source.GetType() != this.GetType())
+            {
+                System.Diagnostics.Trace.TraceError("Attempt to copy from different type, expected {0} but was {1}", this.GetType(), source.GetType());
+                return false;
+            }
+
+            // This will clone the properties into ourselves, currently this does not consider any exclusion rules
+            PropertyInfo[] propertyInfos = source.GetType().GetProperties();
+            foreach (PropertyInfo info in propertyInfos)
+            {
+                info.SetValue(this, info.GetValue(source));
+            }
+
+            return false;
+        }
+
+        public virtual bool Load(Stream source)
+        {
+            System.Diagnostics.Trace.TraceError("Content entry of type {0} is not implementing Load!", this.GetType());
+
+            return false;
+        }
+
+        public virtual bool Save(Stream target)
+        {
+            System.Diagnostics.Trace.TraceError("Content entry of type {0} is not implementing Save!", this.GetType());
+
+            return false;
         }
 
         public override int GetHashCode()

@@ -15,7 +15,7 @@
     using CarbonCore.UtilsWPF;
     using CarbonCore.UtilsWPF.Collections;
 
-    public class ToolActionDialogViewModel : BaseViewModel, IToolActionDialogViewModel
+    public class ToolActionDialogViewModel : BaseViewModel, IToolActionDialogViewModel, IDisposable
     {
         private readonly IFactory factory;
         private readonly ExtendedObservableCollection<IToolActionViewModel> activeActions;
@@ -170,6 +170,12 @@
             }
         }
 
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
         public void SetActions(IList<IToolAction> newActions)
         {
             if (this.actions != null)
@@ -181,6 +187,17 @@
 
             this.MainProgress = 0;
             this.MainProgressMax = newActions.Count;
+        }
+
+        // -------------------------------------------------------------------
+        // Protected
+        // -------------------------------------------------------------------
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this.cancellationTokenSource.Dispose();
+            }
         }
 
         // -------------------------------------------------------------------

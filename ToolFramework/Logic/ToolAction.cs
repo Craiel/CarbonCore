@@ -1,5 +1,6 @@
 ﻿namespace CarbonCore.ToolFramework.Logic
 {
+    using System;
     using System.Threading;
     using System.Windows.Threading;
 
@@ -30,7 +31,13 @@
 
         public abstract void Execute(CancellationToken token);
 
-        public virtual void Dispose()
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
         {
         }
     }
