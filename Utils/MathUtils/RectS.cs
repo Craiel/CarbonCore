@@ -22,7 +22,7 @@ namespace CarbonCore.Utils.MathUtils
         }
 
         public RectS(RectS that)
-            : this(that.TopLeft, that.BottomRight)
+            : this(that.LeftTop, that.RightBottom)
         {
         }
 
@@ -34,13 +34,15 @@ namespace CarbonCore.Utils.MathUtils
         // ------------------------------------------------------------------- 
         // Public 
         // -------------------------------------------------------------------
+        public static RectS Zero = new RectS(0, 0, 0, 0);
+
         public short Top { get; set; }
         public short Left { get; set; }
         public short Bottom { get; set; }
         public short Right { get; set; }
 
         [JsonIgnore]
-        public Vector2S TopLeft
+        public Vector2S LeftTop
         {
             get
             {
@@ -49,7 +51,7 @@ namespace CarbonCore.Utils.MathUtils
         }
 
         [JsonIgnore]
-        public Vector2S BottomRight
+        public Vector2S RightBottom
         {
             get
             {
@@ -93,12 +95,27 @@ namespace CarbonCore.Utils.MathUtils
             }
         }
 
+        public bool IsZero
+        {
+            get
+            {
+                return this.Equals(Zero);
+            }
+        }
+
         public bool Contains(Vector2S p)
         {
             return p.X >= this.Left
             && p.Y >= this.Top
             && p.X <= this.Right
             && p.Y <= this.Bottom;
+        }
+
+        public RectS Encompass(RectS other)
+        {
+            Vector2S upperLeft = this.LeftTop.Min(other.LeftTop);
+            Vector2S size = this.RightBottom.Max(other.RightBottom) - upperLeft;
+            return new RectS(upperLeft, size);
         }
 
         public IntersectionType Intersects(Vector2S p)

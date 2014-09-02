@@ -150,5 +150,10 @@ namespace CarbonCore.Utils.MathUtils
         {
             return Tuple.Create(this.Top, this.Left, this.Bottom, this.Right).GetHashCode();
         }
+
+        public RectS ToRectS()
+        {
+            return new RectS((short)this.Left, (short)this.Top, (short)this.Width, (short)this.Height);
+        }
     }
 }

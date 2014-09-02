@@ -22,7 +22,7 @@
         }
 
         public RectF(RectF that)
-            : this(that.TopLeft, that.BottomRight)
+            : this(that.LeftTop, that.RightBottom)
         {
         }
 
@@ -40,7 +40,7 @@
         public float Right { get; set; }
 
         [JsonIgnore]
-        public Vector2F TopLeft
+        public Vector2F LeftTop
         {
             get
             {
@@ -49,7 +49,7 @@
         }
 
         [JsonIgnore]
-        public Vector2F BottomRight
+        public Vector2F RightBottom
         {
             get
             {
@@ -100,7 +100,7 @@
             && p.X <= this.Right
             && p.Y <= this.Bottom;
         }
-
+        
         public IntersectionType Intersects(Vector2F p)
         {
             if (p.X > this.Left && p.Y > this.Top && p.X < this.Right && p.Y < this.Bottom)

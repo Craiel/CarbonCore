@@ -30,7 +30,7 @@
 
             this.dataDirectory = CarbonDirectory.GetTempDirectory();
 
-            IList<CarbonFile> files = this.GetType().Assembly.ExtractResources("Test", this.dataDirectory);
+            IList<CarbonFile> files = this.GetType().Assembly.ExtractResources(this.dataDirectory, "Test");
             Assert.AreEqual(3, files.Count, "Must extract all resources properly");
         }
 
