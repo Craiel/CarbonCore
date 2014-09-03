@@ -144,7 +144,12 @@
             return new CarbonFile(this.CombineBefore(other));
         }
 
-        public CarbonFileResult[] GetFiles(string pattern, SearchOption options = SearchOption.TopDirectoryOnly)
+        public long GetFreeSpace()
+        {
+            return this.Drive.AvailableFreeSpace;
+        }
+
+        public CarbonFileResult[] GetFiles(string pattern = "*", SearchOption options = SearchOption.TopDirectoryOnly)
         {
             if (!this.Exists)
             {

@@ -30,7 +30,7 @@
 
             this.dataDirectory = CarbonDirectory.GetTempDirectory();
 
-            IList<CarbonFile> files = this.GetType().Assembly.ExtractResources(this.dataDirectory, "Test");
+            IList<CarbonFile> files = this.GetType().Assembly.ExtractResources(this.dataDirectory, "Resources.FileEntries");
             Assert.AreEqual(3, files.Count, "Must extract all resources properly");
         }
 
@@ -52,7 +52,7 @@
                 Assert.NotNull(service, "Service must resolve properly");
 
                 service.AddProvider(new FileServiceMemoryProvider());
-                service.AddProvider(new FileServiceDiskProvider());
+                service.AddProvider(new FileServiceDiskProvider(this.dataDirectory));
                 service.AddProvider(new FileServicePackProvider());
 
                 Assert.AreEqual(3, service.GetProviders().Count, "Must have all three providers registered");
@@ -75,7 +75,7 @@
         {
             using (var service = this.container.Resolve<IFileService>())
             {
-                service.AddProvider(new FileServiceDiskProvider());
+                service.AddProvider(new FileServiceDiskProvider(this.dataDirectory));
 
                 Assert.True(false, "Todo");
             }

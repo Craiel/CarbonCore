@@ -3,6 +3,7 @@
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
+    using System.IO;
     using System.Text.RegularExpressions;
 
     public abstract class CarbonPath
@@ -14,6 +15,8 @@
         private static readonly Regex Win32AbsolutePathRegex = new Regex(@"^([a-z]):[\\\/]+(.*)$", RegexOptions.IgnoreCase);
 
         private string path;
+
+        private DriveInfo drive;
 
         // -------------------------------------------------------------------
         // Constructor
@@ -154,6 +157,19 @@
             }
         }
 
+        protected DriveInfo Drive
+        {
+            get
+            {
+                if (this.drive == null)
+                {
+                    this.UpdateDrive();
+                }
+
+                return this.drive;
+            }
+        }
+
         protected string CombineBefore<T>(params T[] other)
         {
             string result = this.Path;
@@ -191,6 +207,27 @@
             }
 
             return new Uri(other.GetUri(UriKind.Absolute), this.path).AbsolutePath;
+        }
+
+        protected void UpdateDrive()
+        {
+            System.Diagnostics.Trace.Assert(!this.IsRelative);
+
+            foreach (DriveInfo info in DriveInfo.GetDrives())
+            {
+                if (!info.IsReady)
+                {
+                    continue;
+                }
+
+                if (!this.GetPath().StartsWith(info.RootDirectory.FullName))
+                {
+                    continue;
+                }
+
+                this.drive = info;
+                break;
+            }
         }
     }
 }

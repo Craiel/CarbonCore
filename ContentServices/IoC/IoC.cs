@@ -12,6 +12,7 @@
             this.For<ISqlLiteConnector>().Use<SqlLiteConnector>();
 
             this.For<IDatabaseService>().Use<DatabaseService>();
+            this.For<IFileService>().Use<FileService>();
         }
     }
 }

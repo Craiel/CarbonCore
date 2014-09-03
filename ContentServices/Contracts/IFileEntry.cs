@@ -1,6 +1,8 @@
 ﻿namespace CarbonCore.ContentServices.Contracts
 {
-    public interface IFileEntry : IContentEntry
+    using System;
+
+    public interface IFileEntry : IContentEntry, IDisposable
     {
         byte[] Data { get; }
 

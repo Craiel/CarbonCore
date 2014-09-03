@@ -3,13 +3,14 @@
     using System;
     using System.Collections.Generic;
     using System.Globalization;
+    using System.Linq;
     using System.Reflection;
 
     using CarbonCore.Utils.IO;
 
     public static class AssemblyExtensions
     {
-        private const string Delimiter = ".";
+        private const char ResourceDelimiter = '.';
 
         // -------------------------------------------------------------------
         // Public
@@ -88,11 +89,21 @@
             }
 
             string assemblyRoot = assembly.GetName().Name + '.';
+            if (!string.IsNullOrEmpty(path))
+            {
+                assemblyRoot += path;
+            }
+
             target.Create();
             IList<CarbonFile> results = new List<CarbonFile>();
             foreach (string resource in resources)
             {
-                string localizedResourcePath = resource.Replace(assemblyRoot, string.Empty);
+                if (!resource.StartsWith(assemblyRoot))
+                {
+                    continue;
+                }
+
+                string localizedResourcePath = resource.Replace(assemblyRoot, string.Empty).TrimStart(ResourceDelimiter);
 
                 // Ignore internal resources
                 if (localizedResourcePath.StartsWith("g."))
@@ -100,18 +111,26 @@
                     continue;
                 }
 
-                // Filter out resources we don't want to extract
-                if (string.IsNullOrEmpty(path) || !localizedResourcePath.StartsWith(path))
+                // Files with *.*.*.ext are translated to *\*\*.ext
+                string[] segments = localizedResourcePath.Split(new[] { ResourceDelimiter }, StringSplitOptions.RemoveEmptyEntries);
+                string extension = segments[segments.Length - 1];
+                if (segments.Length == 1 || segments[segments.Length - 1].Length > 5)
                 {
-                    continue;
+                    extension = string.Empty;
+                }
+                else
+                {
+                    segments = segments.Take(segments.Length - 1).ToArray();
                 }
 
-                // Files with *.*.*.ext are translated to *\*\*.ext
-                var internalFile = new CarbonFile(resource);
-                string internalFilePath = internalFile.FileNameWithoutExtension.Replace(Delimiter, System.IO.Path.DirectorySeparatorChar.ToString(CultureInfo.InvariantCulture));
-                internalFile = new CarbonFile(internalFilePath + internalFile.Extension);
+                string file = string.Join(System.IO.Path.DirectorySeparatorChar.ToString(CultureInfo.InvariantCulture), segments);
+                if (!string.IsNullOrEmpty(extension))
+                {
+                    file = string.Concat(file, ".", extension);
+                }
 
-                var targetFile = target.ToFile(internalFile);
+                var targetFile = target.ToFile(file);
+
                 targetFile.GetDirectory().Create();
                 using (var stream = assembly.GetManifestResourceStream(resource))
                 {
@@ -119,6 +138,7 @@
                     using (var writer = targetFile.OpenCreate())
                     {
                         stream.CopyTo(writer);
+                        System.Diagnostics.Trace.TraceInformation("Extracted {0} to {1} ({2})", resource, targetFile, targetFile.Size);
                     }
                 }
 

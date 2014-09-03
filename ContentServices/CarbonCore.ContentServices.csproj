@@ -64,6 +64,7 @@
     <Compile Include="Logic\DatabaseQueryOrder.cs" />
     <Compile Include="Logic\DatabaseQuery.cs" />
     <Compile Include="Logic\DatabaseEntry.cs" />
+    <Compile Include="Logic\FileService.cs" />
     <Compile Include="Logic\FileServiceDiskProvider.cs" />
     <Compile Include="Logic\FileServiceMemoryProvider.cs" />
     <Compile Include="Logic\FileServicePackProvider.cs" />
