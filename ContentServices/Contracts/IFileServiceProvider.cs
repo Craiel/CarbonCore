@@ -13,11 +13,11 @@
         long BytesRead { get; }
         long BytesWritten { get; }
 
-        bool Load(IFileInfo key, out byte[] data);
-        bool Save(IFileInfo key, byte[] data);
+        bool Load(IFileEntry key, out byte[] data);
+        bool Save(IFileEntry key, byte[] data);
 
         void Initialize();
 
-        IList<IFileInfo> GetFiles();
+        IList<IFileEntry> GetFiles();
     }
 }

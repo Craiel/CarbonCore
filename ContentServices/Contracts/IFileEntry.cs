@@ -2,10 +2,17 @@
 {
     using System;
 
-    public interface IFileEntry : IContentEntry, IDisposable
+    public interface IFileEntry : IDatabaseEntry
     {
-        byte[] Data { get; }
+        string Hash { get; set; }
 
-        void UpdateData(byte[] newData);
+        int Version { get; set; }
+
+        bool IsDeleted { get; set; }
+
+        long Size { get; set; }
+
+        DateTime CreateDate { get; set; }
+        DateTime ModifyDate { get; set; }
     }
 }

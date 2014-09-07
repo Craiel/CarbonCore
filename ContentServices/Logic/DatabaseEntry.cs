@@ -4,14 +4,14 @@
 
     using CarbonCore.ContentServices.Contracts;
 
-    public class DatabaseEntry : ContentEntry, IDatabaseEntry
+    public abstract class DatabaseEntry : ContentEntry, IDatabaseEntry
     {
         private readonly DatabaseEntryDescriptor descriptor;
 
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
-        public DatabaseEntry()
+        protected DatabaseEntry()
         {
             this.descriptor = DatabaseEntryDescriptor.GetDescriptor(this.GetType());
         }

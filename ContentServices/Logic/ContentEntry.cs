@@ -6,7 +6,7 @@
 
     using CarbonCore.ContentServices.Contracts;
 
-    public class ContentEntry : IContentEntry
+    public abstract class ContentEntry : IContentEntry
     {
         // -------------------------------------------------------------------
         // Public
@@ -59,10 +59,7 @@
             return false;
         }
 
-        public override int GetHashCode()
-        {
-            throw new NotImplementedException();
-        }
+        public abstract int GetHashCode();
 
         public override bool Equals(object obj)
         {

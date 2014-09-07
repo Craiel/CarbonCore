@@ -1,11 +1,13 @@
 ﻿namespace CarbonCore.Tests.ContentServices
 {
+    using System;
     using System.Collections.Generic;
 
     using Autofac;
 
     using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.IoC;
+    using CarbonCore.ContentServices.Logic;
     using CarbonCore.Utils;
     using CarbonCore.Utils.IO;
     using CarbonCore.Utils.IoC;
@@ -15,6 +17,13 @@
     [TestFixture]
     public class FileServiceTests
     {
+        private static readonly string[] TestFiles =
+            {
+                "4A6UZbySwCB5AUbcDjh8KVnc2gM=", 
+                "dioiZTphkzdDCloj8+lb0q3iYH4=",
+                "UAfwmhkZ5Cz0MgP4kf35CbHrVpQ="
+            };
+
         private IContainer container;
 
         private CarbonDirectory dataDirectory;
@@ -72,7 +81,7 @@
                     Assert.True(false, "Todo");
 
                     service.RemoveProvider(provider);
-                    Assert.AreEqual(0, service.GetFileInfos().Count, "After removal service must have no files");
+                    Assert.AreEqual(0, service.GetFileEntries().Count, "After removal service must have no files");
                 }
             }
         }
@@ -89,10 +98,21 @@
 
                     service.AddProvider(provider);
 
-                    Assert.True(false, "Todo");
+                    foreach (string file in TestFiles)
+                    {
+                        var testFile = this.dataDirectory.ToFile(file);
+                        IFileEntry entry = provider.CreateEntry(testFile);
+                        IFileEntryData entryData = new FileEntryData { Data = testFile.ReadAsByte() };
 
+                        // Have to set the hash explicit here since these files are already hashed names
+                        entry.Hash = file;
+                        service.Save(entry, entryData);
+                    }
+
+                    Assert.AreEqual(3, service.GetFileEntries().Count, "Disk Service needs to have 3 files");
+                    
                     service.RemoveProvider(provider);
-                    Assert.AreEqual(0, service.GetFileInfos().Count, "After removal service must have no files");
+                    Assert.AreEqual(0, service.GetFileEntries().Count, "After removal service must have no files");
                 }
             }
         }
@@ -110,7 +130,7 @@
                     Assert.True(false, "Todo");
 
                     service.RemoveProvider(provider);
-                    Assert.AreEqual(0, service.GetFileInfos().Count, "After removal service must have no files");
+                    Assert.AreEqual(0, service.GetFileEntries().Count, "After removal service must have no files");
                 }
             }
         }

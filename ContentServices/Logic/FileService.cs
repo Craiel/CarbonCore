@@ -8,7 +8,8 @@
     public class FileService : IFileService
     {
         private readonly IList<IFileServiceProvider> providers;
-        private IDictionary<IFileInfo, IFileServiceProvider> fileProviderLookup;
+        private readonly IList<IFileEntry> fileEntryLookup; 
+        private readonly IDictionary<IFileEntry, IFileServiceProvider> fileProviderLookup;
 
         // -------------------------------------------------------------------
         // Constructor
@@ -16,7 +17,8 @@
         public FileService()
         {
             this.providers = new List<IFileServiceProvider>();
-            this.fileProviderLookup = new Dictionary<IFileInfo, IFileServiceProvider>();
+            this.fileEntryLookup = new List<IFileEntry>();
+            this.fileProviderLookup = new Dictionary<IFileEntry, IFileServiceProvider>();
         }
 
         // -------------------------------------------------------------------
@@ -30,34 +32,59 @@
             }
         }
 
-        public T Load<T>(IFileInfo key) where T : IFileEntry
+        public IFileEntryData Load(IFileEntry key)
         {
             throw new NotImplementedException();
         }
 
-        public bool Save(IFileInfo key, IFileEntry source)
+        public bool Save(IFileEntry key, IFileEntryData data, IFileServiceProvider targetProvider = null)
+        {
+            // Save to a specific provider or into the first available one...
+
+            if (targetProvider == null)
+            {
+                foreach (IFileServiceProvider provider in this.providers)
+                {
+                    if (provider.Capacity > data.Data.Length)
+                    {
+                        targetProvider = provider;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                System.Diagnostics.Trace.Assert(this.providers.Contains(targetProvider), "Target provider must be registered");
+            }
+
+            if (targetProvider == null)
+            {
+                throw new InvalidOperationException("Could not determine operator with enough capacity");
+            }
+
+            if (targetProvider.Save(key, data.Data))
+            {
+                this.fileEntryLookup.Add(key);
+                this.fileProviderLookup.Add(key, targetProvider);
+                return true;
+            }
+
+            return false;
+        }
+        
+        public bool Delete(IFileEntry key)
         {
             throw new NotImplementedException();
         }
-
-        public bool Delete(IFileInfo key)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Reload(IFileInfo key, IFileEntry target)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Release(IFileInfo key, ref IFileEntry data)
-        {
-            throw new NotImplementedException();
-        }
-
+        
         public void Dispose()
         {
-            throw new System.NotImplementedException();
+            IList<IFileServiceProvider> providerList = new List<IFileServiceProvider>(this.providers);
+            foreach (IFileServiceProvider provider in providerList)
+            {
+                this.MixOutProvider(provider);
+                provider.Dispose();
+            }
         }
         
         public void AddProvider(IFileServiceProvider provider)
@@ -74,14 +101,14 @@
             this.MixOutProvider(provider);
         }
 
-        public bool CheckForUpdate(IFileInfo key)
+        public bool CheckForUpdate(IFileEntry key)
         {
             throw new NotImplementedException();
         }
-        
-        public IList<IFileInfo> GetFileInfos()
+
+        public IList<IFileEntry> GetFileEntries()
         {
-            throw new System.NotImplementedException();
+            return new List<IFileEntry>(this.fileEntryLookup);
         }
 
         public IList<IFileServiceProvider> GetProviders()
@@ -94,12 +121,47 @@
         // -------------------------------------------------------------------
         private void MixInProvider(IFileServiceProvider provider)
         {
-            throw new NotImplementedException();
+            this.providers.Add(provider);
+
+            IList<IFileEntry> files = provider.GetFiles();
+            foreach (IFileEntry entry in files)
+            {
+                int existingIndex = this.fileEntryLookup.IndexOf(entry);
+                if (existingIndex >= 0)
+                {
+                    IFileEntry existing = this.fileEntryLookup[existingIndex];
+                    if (existing.Version >= entry.Version)
+                    {
+                        System.Diagnostics.Trace.TraceWarning("Ignoring entry {0} in provider {1}, already present", entry, provider);
+                        continue;
+                    }
+
+                    System.Diagnostics.Trace.TraceWarning("Changing instance of {0} to newer version {1} -> {2}", entry, existing.Version, entry.Version);
+                    this.fileEntryLookup.RemoveAt(existingIndex);
+                    this.fileProviderLookup.Remove(existing);
+                }
+
+                this.fileEntryLookup.Add(entry);
+                this.fileProviderLookup.Add(entry, provider);
+            }
         }
 
         private void MixOutProvider(IFileServiceProvider provider)
         {
-            throw new NotImplementedException();
+            System.Diagnostics.Trace.Assert(this.providers.Contains(provider));
+
+            foreach (IFileEntry file in provider.GetFiles())
+            {
+                // Check if this provider's file / version is what we are using
+                if (this.fileProviderLookup.ContainsKey(file) && this.fileProviderLookup[file] == provider)
+                {
+                    // If so, Mix out that file
+                    this.fileEntryLookup.Remove(file);
+                    this.fileProviderLookup.Remove(file);
+                }
+            }
+
+            this.providers.Remove(provider);
         }
     }
 }

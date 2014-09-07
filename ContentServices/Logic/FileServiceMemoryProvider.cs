@@ -14,17 +14,17 @@
             throw new System.NotImplementedException();
         }
 
-        protected override bool DoLoad(IFileInfo key, out byte[] data)
+        protected override bool DoLoad(IFileEntry key, out byte[] data)
         {
             throw new System.NotImplementedException();
         }
 
-        protected override bool DoSave(IFileInfo key, byte[] data)
+        protected override bool DoSave(IFileEntry key, byte[] data)
         {
             throw new System.NotImplementedException();
         }
 
-        protected override IList<IFileInfo> DoGetFiles()
+        protected override IList<IFileEntry> DoGetFiles()
         {
             throw new System.NotImplementedException();
         }

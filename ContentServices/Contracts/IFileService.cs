@@ -7,18 +7,16 @@
     {
         int FileCount { get; }
 
-        T Load<T>(IFileInfo key) where T : IFileEntry;
-        bool Save(IFileInfo key, IFileEntry data);
-        bool Delete(IFileInfo key);
-        bool Reload(IFileInfo key, IFileEntry target);
-        void Release(IFileInfo key, ref IFileEntry data);
+        IFileEntryData Load(IFileEntry key);
+        bool Save(IFileEntry key, IFileEntryData data, IFileServiceProvider targetProvider = null);
+        bool Delete(IFileEntry key);
 
         void AddProvider(IFileServiceProvider provider);
         void RemoveProvider(IFileServiceProvider provider);
 
-        bool CheckForUpdate(IFileInfo key);
+        bool CheckForUpdate(IFileEntry key);
 
-        IList<IFileInfo> GetFileInfos();
+        IList<IFileEntry> GetFileEntries();
 
         IList<IFileServiceProvider> GetProviders();
     }

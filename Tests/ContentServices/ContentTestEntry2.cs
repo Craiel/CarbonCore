@@ -1,5 +1,7 @@
 ﻿namespace CarbonCore.Tests.ContentServices
 {
+    using System;
+
     using CarbonCore.ContentServices.Logic;
     using CarbonCore.ContentServices.Logic.Attributes;
 
@@ -21,5 +23,10 @@
 
         [DatabaseEntryElement]
         public long OtherTestLong { get; set; }
+
+        public override int GetHashCode()
+        {
+            return Tuple.Create(this.Id).GetHashCode();
+        }
     }
 }

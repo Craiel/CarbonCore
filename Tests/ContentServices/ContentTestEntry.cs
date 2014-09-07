@@ -1,5 +1,7 @@
 ﻿namespace CarbonCore.Tests.ContentServices
 {
+    using System;
+
     using CarbonCore.ContentServices.Logic;
     using CarbonCore.ContentServices.Logic.Attributes;
     using CarbonCore.Utils.Json;
@@ -42,6 +44,11 @@
         {
             JsonExtensions.SaveToStream(target, this);
             return true;
+        }
+
+        public override int GetHashCode()
+        {
+            return Tuple.Create(this.Id).GetHashCode();
         }
     }
 }

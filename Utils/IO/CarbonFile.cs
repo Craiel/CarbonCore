@@ -41,6 +41,14 @@
             }
         }
 
+        public DateTime CreateTime
+        {
+            get
+            {
+                return File.GetCreationTime(this.Path);
+            }
+        }
+
         public long Size
         {
             get
@@ -141,6 +149,24 @@
                 {
                     return reader.ReadToEnd();
                 }
+            }
+        }
+
+        public byte[] ReadAsByte()
+        {
+            using (FileStream stream = this.OpenRead())
+            {
+                System.Diagnostics.Trace.Assert(stream.Length <= int.MaxValue);
+
+                var length = (int)stream.Length;
+                var result = new byte[length];
+                int bytesRead = stream.Read(result, 0, length);
+                if (bytesRead != length)
+                {
+                    throw new InvalidDataException(string.Format("Expected to read {0} bytes but got {1}", length, bytesRead));
+                }
+
+                return result;
             }
         }
 

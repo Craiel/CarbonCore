@@ -5,5 +5,7 @@
     public interface IFileServiceDiskProvider : IFileServiceProvider
     {
         CarbonDirectory Root { get; set; }
+
+        IFileEntry CreateEntry(CarbonFile source);
     }
 }

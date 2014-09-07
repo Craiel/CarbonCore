@@ -47,7 +47,7 @@
     <Compile Include="Contracts\IDatabaseService.cs" />
     <Compile Include="Contracts\IDataConnector.cs" />
     <Compile Include="Contracts\IFileEntry.cs" />
-    <Compile Include="Contracts\IFileInfo.cs" />
+    <Compile Include="Contracts\IFileEntryData.cs" />
     <Compile Include="Contracts\IFileService.cs" />
     <Compile Include="Contracts\IFileServiceDiskProvider.cs" />
     <Compile Include="Contracts\IFileServiceMemoryProvider.cs" />
@@ -67,6 +67,8 @@
     <Compile Include="Logic\DatabaseQueryOrder.cs" />
     <Compile Include="Logic\DatabaseQuery.cs" />
     <Compile Include="Logic\DatabaseEntry.cs" />
+    <Compile Include="Logic\FileEntry.cs" />
+    <Compile Include="Logic\FileEntryData.cs" />
     <Compile Include="Logic\FileService.cs" />
     <Compile Include="Logic\FileServiceDiskProvider.cs" />
     <Compile Include="Logic\FileServiceMemoryProvider.cs" />
