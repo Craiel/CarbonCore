@@ -8,7 +8,7 @@
     using CarbonCore.Utils.Contracts.IoC;
     using CarbonCore.Utils.IO;
 
-    public class FileServiceDiskProvider : FileServiceProvider
+    public class FileServiceDiskProvider : FileServiceProvider, IFileServiceDiskProvider
     {
         private const string IndexFile = "index.db";
 

@@ -4,7 +4,7 @@
 
     using CarbonCore.ContentServices.Contracts;
 
-    public class FileServiceMemoryProvider : FileServiceProvider
+    public class FileServiceMemoryProvider : FileServiceProvider, IFileServiceMemoryProvider
     {
         // -------------------------------------------------------------------
         // Protected

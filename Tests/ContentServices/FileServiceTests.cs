@@ -6,7 +6,6 @@
 
     using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.IoC;
-    using CarbonCore.ContentServices.Logic;
     using CarbonCore.Utils;
     using CarbonCore.Utils.IO;
     using CarbonCore.Utils.IoC;
@@ -51,9 +50,9 @@
             {
                 Assert.NotNull(service, "Service must resolve properly");
 
-                service.AddProvider(new FileServiceMemoryProvider());
-                service.AddProvider(new FileServiceDiskProvider(this.dataDirectory));
-                service.AddProvider(new FileServicePackProvider());
+                service.AddProvider(this.container.Resolve<IFileServiceMemoryProvider>());
+                service.AddProvider(this.container.Resolve<IFileServiceDiskProvider>());
+                service.AddProvider(this.container.Resolve<IFileServicePackProvider>());
 
                 Assert.AreEqual(3, service.GetProviders().Count, "Must have all three providers registered");
             }
@@ -64,9 +63,17 @@
         {
             using (var service = this.container.Resolve<IFileService>())
             {
-                service.AddProvider(new FileServiceMemoryProvider());
+                using (var provider = this.container.Resolve<IFileServiceMemoryProvider>())
+                {
+                    provider.Initialize();
 
-                Assert.True(false, "Todo");
+                    service.AddProvider(provider);
+
+                    Assert.True(false, "Todo");
+
+                    service.RemoveProvider(provider);
+                    Assert.AreEqual(0, service.GetFileInfos().Count, "After removal service must have no files");
+                }
             }
         }
 
@@ -75,9 +82,18 @@
         {
             using (var service = this.container.Resolve<IFileService>())
             {
-                service.AddProvider(new FileServiceDiskProvider(this.dataDirectory));
+                using (var provider = this.container.Resolve<IFileServiceDiskProvider>())
+                {
+                    provider.Root = this.dataDirectory;
+                    provider.Initialize();
 
-                Assert.True(false, "Todo");
+                    service.AddProvider(provider);
+
+                    Assert.True(false, "Todo");
+
+                    service.RemoveProvider(provider);
+                    Assert.AreEqual(0, service.GetFileInfos().Count, "After removal service must have no files");
+                }
             }
         }
 
@@ -86,9 +102,16 @@
         {
             using (var service = this.container.Resolve<IFileService>())
             {
-                service.AddProvider(new FileServicePackProvider());
+                using (var provider = this.container.Resolve<IFileServicePackProvider>())
+                {
+                    provider.Initialize();
+                    service.AddProvider(provider);
 
-                Assert.True(false, "Todo");
+                    Assert.True(false, "Todo");
+
+                    service.RemoveProvider(provider);
+                    Assert.AreEqual(0, service.GetFileInfos().Count, "After removal service must have no files");
+                }
             }
         }
     }

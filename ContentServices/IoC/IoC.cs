@@ -13,6 +13,10 @@
 
             this.For<IDatabaseService>().Use<DatabaseService>();
             this.For<IFileService>().Use<FileService>();
+
+            this.For<IFileServiceMemoryProvider>().Use<FileServiceMemoryProvider>();
+            this.For<IFileServiceDiskProvider>().Use<FileServiceDiskProvider>();
+            this.For<IFileServicePackProvider>().Use<FileServicePackProvider>();
         }
     }
 }

@@ -49,6 +49,9 @@
     <Compile Include="Contracts\IFileEntry.cs" />
     <Compile Include="Contracts\IFileInfo.cs" />
     <Compile Include="Contracts\IFileService.cs" />
+    <Compile Include="Contracts\IFileServiceDiskProvider.cs" />
+    <Compile Include="Contracts\IFileServiceMemoryProvider.cs" />
+    <Compile Include="Contracts\IFileServicePackProvider.cs" />
     <Compile Include="Contracts\IFileServiceProvider.cs" />
     <Compile Include="Contracts\ISqlLiteConnector.cs" />
     <Compile Include="IoC\IoC.cs" />
