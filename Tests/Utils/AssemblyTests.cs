@@ -64,10 +64,10 @@
             Assert.AreEqual(0, resources.Count, "Giving wrong path must extract none");
 
             resources = this.GetType().Assembly.ExtractResources(testDirectory);
-            Assert.AreEqual(4, resources.Count, "Giving no path must extract all");
-
+            Assert.AreEqual(5, resources.Count, "Giving no path must extract all");
+            
             resources = this.GetType().Assembly.ExtractResources(testDirectory, "Resources.FileEntries");
-            Assert.AreEqual(3, resources.Count, "Giving path must extract partial resources");
+            Assert.AreEqual(4, resources.Count, "Giving path must extract partial resources");
 
             testDirectory.Delete(true);
         }

@@ -4,6 +4,7 @@
     using System.Collections.Generic;
 
     using CarbonCore.ContentServices.Contracts;
+    using CarbonCore.Utils;
 
     public class FileService : IFileService
     {
@@ -37,19 +38,41 @@
             throw new NotImplementedException();
         }
 
-        public bool Save(IFileEntry key, IFileEntryData data, IFileServiceProvider targetProvider = null)
+        public bool Save(IFileEntry key, IFileEntryData data, string internalFileName = null, IFileServiceProvider targetProvider = null)
         {
-            // Save to a specific provider or into the first available one...
+            if ((key.Hash == null && string.IsNullOrEmpty(internalFileName))
+                || (!string.IsNullOrEmpty(key.Hash) && !string.IsNullOrEmpty(internalFileName)))
+            {
+                throw new ArgumentException("Can not have key and internal file name specified at once (or omitted)");
+            }
 
+            if (string.IsNullOrEmpty(key.Hash))
+            {
+                System.Diagnostics.Trace.Assert(!string.IsNullOrEmpty(internalFileName));
+                key.Hash = HashUtils.GetSHA1FileName(internalFileName);
+            }
+
+            // Save to a specific provider or into the first available one...
             if (targetProvider == null)
             {
-                foreach (IFileServiceProvider provider in this.providers)
+                // Use the provider this is already in before trying to pick!
+                if (this.fileProviderLookup.ContainsKey(key))
                 {
-                    if (provider.Capacity > data.Data.Length)
+                    if (this.fileProviderLookup[key].Capacity > data.Data.Length)
                     {
-                        targetProvider = provider;
-                        break;
+                        targetProvider = this.fileProviderLookup[key];
                     }
+                }
+                else
+                {
+                    foreach (IFileServiceProvider provider in this.providers)
+                    {
+                        if (provider.Capacity > data.Data.Length)
+                        {
+                            targetProvider = provider;
+                            break;
+                        }
+                    }    
                 }
             }
             else
@@ -79,12 +102,8 @@
         
         public void Dispose()
         {
-            IList<IFileServiceProvider> providerList = new List<IFileServiceProvider>(this.providers);
-            foreach (IFileServiceProvider provider in providerList)
-            {
-                this.MixOutProvider(provider);
-                provider.Dispose();
-            }
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
         
         public void AddProvider(IFileServiceProvider provider)
@@ -114,6 +133,25 @@
         public IList<IFileServiceProvider> GetProviders()
         {
             return new List<IFileServiceProvider>(this.providers);
+        }
+
+        // -------------------------------------------------------------------
+        // Protected
+        // -------------------------------------------------------------------
+        protected void Dispose(bool disposing)
+        {
+            if (!disposing)
+            {
+                return;
+            }
+
+            IList<IFileServiceProvider> providerList = new List<IFileServiceProvider>(this.providers);
+            foreach (IFileServiceProvider provider in providerList)
+            {
+                this.MixOutProvider(provider);
+            }
+
+            this.providers.Clear();
         }
 
         // -------------------------------------------------------------------

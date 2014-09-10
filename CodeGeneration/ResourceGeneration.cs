@@ -8,20 +8,31 @@
 
     public static class ResourceGeneration
     {
-        private static readonly List<string> SharpResultList = new List<string>();
-        private static readonly List<string> XamlResultList = new List<string>(); 
+        private static readonly List<string> PlainResultList = new List<string>();
+        private static readonly List<string> UriResultList = new List<string>();
+        private static readonly List<string> XamlResultList = new List<string>();
 
-        private static Project currentProject;
-        private static string projectPath;
+        public static Project currentProject;
+        public static string projectPath;
         
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public static IReadOnlyCollection<string> SharpResult
+        public static bool IncludeEmbeddedResources { get; set; }
+
+        public static IReadOnlyCollection<string> PlainResult
         {
             get
             {
-                return SharpResultList.AsReadOnly();
+                return PlainResultList.AsReadOnly();
+            }
+        }
+
+        public static IReadOnlyCollection<string> UriResult
+        {
+            get
+            {
+                return UriResultList.AsReadOnly();
             }
         }
 
@@ -35,7 +46,8 @@
 
         public static void Initialize(object host, string templateFile)
         {
-            SharpResultList.Clear();
+            PlainResultList.Clear();
+            UriResultList.Clear();
             XamlResultList.Clear();
 
             var provider = (IServiceProvider)host;
@@ -83,7 +95,19 @@
             }
 
             string type = GetProperty(item, Consts.ItemPropertyType);
-            if (type == null || !type.Equals(Consts.ItemTypeResource))
+            if (type == null)
+            {
+                return;
+            }
+
+            if (type.Equals(Consts.ItemTypeEmbeddedResource))
+            {
+                if (!IncludeEmbeddedResources)
+                {
+                    return;
+                }
+            }
+            else if (!type.Equals(Consts.ItemTypeResource))
             {
                 return;
             }
@@ -91,11 +115,12 @@
             string file = item.FileNames[0].Replace(projectPath, string.Empty);
             ResourceGenerationType generationType = DetermineType(file);
 
+            PlainResultList.Add(file);
             switch (generationType)
             {
                 case ResourceGenerationType.Unhandled:
                     {
-                        SharpResultList.Add("// Unhandled Resource: " + file);
+                        UriResultList.Add("// Unhandled Resource: " + file);
                         return;
                     }
 
@@ -111,7 +136,7 @@
 
                         id = string.Concat("Icon", id[0].ToString(CultureInfo.InvariantCulture).ToUpper(), id.Substring(1, id.Length - 1));
 
-                        SharpResultList.Add(string.Format("public static readonly Uri {0}Uri = new Uri(\"pack://application:,,,/{1};component/{2}\", UriKind.Absolute);", id, currentProject.Name, file));
+                        UriResultList.Add(string.Format("public static readonly Uri {0}Uri = new Uri(\"pack://application:,,,/{1};component/{2}\", UriKind.Absolute);", id, currentProject.Name, file));
                         XamlResultList.Add(string.Concat(@"<Image x:Shared=""false"" x:Key=""", id, @""" Source=""{Binding Source={x:Static resources:Static.", id, @"Uri}}""/>"));
                         return;
                     }

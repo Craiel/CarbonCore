@@ -17,12 +17,8 @@
     [TestFixture]
     public class FileServiceTests
     {
-        private static readonly string[] TestFiles =
-            {
-                "4A6UZbySwCB5AUbcDjh8KVnc2gM=", 
-                "dioiZTphkzdDCloj8+lb0q3iYH4=",
-                "UAfwmhkZ5Cz0MgP4kf35CbHrVpQ="
-            };
+        private const string FileEntryResourcePath = "Resources.FileEntries";
+        private const string FileEntryFolder = "FileEntries";
 
         private IContainer container;
 
@@ -38,8 +34,8 @@
 
             this.dataDirectory = CarbonDirectory.GetTempDirectory();
 
-            IList<CarbonFile> files = this.GetType().Assembly.ExtractResources(this.dataDirectory, "Resources.FileEntries");
-            Assert.AreEqual(3, files.Count, "Must extract all resources properly");
+            IList<CarbonFile> files = this.GetType().Assembly.ExtractResources(this.dataDirectory, FileEntryResourcePath);
+            Assert.AreEqual(4, files.Count, "Must extract all resources properly");
         }
 
         [TearDown]
@@ -63,7 +59,7 @@
                 service.AddProvider(this.container.Resolve<IFileServiceDiskProvider>());
                 service.AddProvider(this.container.Resolve<IFileServicePackProvider>());
 
-                Assert.AreEqual(3, service.GetProviders().Count, "Must have all three providers registered");
+                Assert.AreEqual(4, service.GetProviders().Count, "Must have all three providers registered");
             }
         }
 
@@ -98,18 +94,30 @@
 
                     service.AddProvider(provider);
 
-                    foreach (string file in TestFiles)
+                    foreach (string file in Resources.Static.ResourceList)
                     {
-                        var testFile = this.dataDirectory.ToFile(file);
+                        if (!file.StartsWith(FileEntryFolder))
+                        {
+                            continue;
+                        }
+
+                        string localFile = file.Replace(FileEntryFolder + @"\", string.Empty);
+                        var testFile = this.dataDirectory.ToFile(localFile);
                         IFileEntry entry = provider.CreateEntry(testFile);
                         IFileEntryData entryData = new FileEntryData { Data = testFile.ReadAsByte() };
 
-                        // Have to set the hash explicit here since these files are already hashed names
-                        entry.Hash = file;
+                        Assert.Throws<ArgumentException>(() => service.Save(entry, entryData), "Saving hashed entry without filename should throw");
+                        service.Save(entry, entryData, localFile);
+
+                        Assert.NotNull(entry.Hash, "Hash needs to be set after call to save");
+
+                        // Now try to save it again this should work fine
                         service.Save(entry, entryData);
+
+                        Assert.Throws<ArgumentException>(() => service.Save(entry, entryData, "TestMe"), "Saving hashed entry with a filename should throw");
                     }
 
-                    Assert.AreEqual(3, service.GetFileEntries().Count, "Disk Service needs to have 3 files");
+                    Assert.AreEqual(4, service.GetFileEntries().Count, "Disk Service needs to have 3 files");
                     
                     service.RemoveProvider(provider);
                     Assert.AreEqual(0, service.GetFileEntries().Count, "After removal service must have no files");

@@ -8,7 +8,7 @@
         int FileCount { get; }
 
         IFileEntryData Load(IFileEntry key);
-        bool Save(IFileEntry key, IFileEntryData data, IFileServiceProvider targetProvider = null);
+        bool Save(IFileEntry key, IFileEntryData data, string internalFileName = null, IFileServiceProvider targetProvider = null);
         bool Delete(IFileEntry key);
 
         void AddProvider(IFileServiceProvider provider);

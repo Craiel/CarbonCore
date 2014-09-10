@@ -202,24 +202,26 @@
         // -------------------------------------------------------------------
         private IList<object[]> GetTableInfo(string tableName)
         {
-            DbCommand command = this.connector.CreateCommand();
-            command.CommandText = string.Format(StatementTableInfo, tableName);
-            IList<object[]> info = new List<object[]>();
-            using (DbDataReader reader = command.ExecuteReader(CommandBehavior.Default))
+            using (DbCommand command = this.connector.CreateCommand())
             {
-                while (reader.Read())
+                command.CommandText = string.Format(StatementTableInfo, tableName);
+                IList<object[]> info = new List<object[]>();
+                using (DbDataReader reader = command.ExecuteReader(CommandBehavior.Default))
                 {
-                    var data = new object[reader.FieldCount];
-                    if (reader.GetValues(data) != reader.FieldCount)
+                    while (reader.Read())
                     {
-                        throw new InvalidOperationException("GetValues returned unexpected field count");
+                        var data = new object[reader.FieldCount];
+                        if (reader.GetValues(data) != reader.FieldCount)
+                        {
+                            throw new InvalidOperationException("GetValues returned unexpected field count");
+                        }
+
+                        info.Add(data);
                     }
-
-                    info.Add(data);
                 }
-            }
 
-            return info;
+                return info;
+            }
         }
 
         private IList<string> DoGetTables()
@@ -231,12 +233,14 @@
             statement.What("name");
             statement.WhereConstraint("type", "table");
 
-            DbCommand command = this.connector.CreateCommand(statement);
-            using (DbDataReader reader = command.ExecuteReader())
+            using (DbCommand command = this.connector.CreateCommand(statement))
             {
-                while (reader.Read())
+                using (DbDataReader reader = command.ExecuteReader())
                 {
-                    results.Add(reader["name"].ToString());
+                    while (reader.Read())
+                    {
+                        results.Add(reader["name"].ToString());
+                    }
                 }
             }
 
@@ -248,16 +252,19 @@
             var statement = new SQLiteStatement(SqlStatementType.Drop);
             statement.Table(descriptor.TableName);
 
-            DbCommand command = this.connector.CreateCommand(statement);
-            try
+            using (DbCommand command = this.connector.CreateCommand(statement))
             {
-                int result = command.ExecuteNonQuery();
-                System.Diagnostics.Trace.TraceWarning("Dropped table {0}, lost {1} entries", descriptor.TableName, result);
-            }
-            catch (SQLiteException e)
-            {
-                System.Diagnostics.Trace.TraceWarning("Could not drop table {0}, {1}", descriptor.TableName, e);
-                return false;
+                try
+                {
+                    int result = command.ExecuteNonQuery();
+                    System.Diagnostics.Trace.TraceWarning(
+                        "Dropped table {0}, lost {1} entries", descriptor.TableName, result);
+                }
+                catch (SQLiteException e)
+                {
+                    System.Diagnostics.Trace.TraceWarning("Could not drop table {0}, {1}", descriptor.TableName, e);
+                    return false;
+                }
             }
 
             return true;
@@ -292,8 +299,10 @@
 
             statement.Table(descriptor.TableName);
 
-            DbCommand command = this.connector.CreateCommand(statement);
-            command.ExecuteNonQuery();
+            using (DbCommand command = this.connector.CreateCommand(statement))
+            {
+                command.ExecuteNonQuery();
+            }
         }
 
         private void CheckTable(DatabaseEntryDescriptor descriptor)
@@ -411,28 +420,34 @@
             // Update the primary key if it's an insert statement into auto increment table
             bool needPrimaryKeyUpdate = statement.Type == SqlStatementType.Insert
                                         && descriptor.PrimaryKey.Attribute.PrimaryKeyMode == PrimaryKeyMode.Autoincrement;
-            
-            DbCommand command = this.connector.CreateCommand(statement);
-            int affected = command.ExecuteNonQuery();
-            if (affected != 1)
+
+            using (DbCommand command = this.connector.CreateCommand(statement))
             {
-                System.Diagnostics.Trace.TraceError("Expected 1 row affected but got {0}", affected);
-                return false;
+                int affected = command.ExecuteNonQuery();
+                if (affected != 1)
+                {
+                    System.Diagnostics.Trace.TraceError("Expected 1 row affected but got {0}", affected);
+                    return false;
+                }
             }
 
             if (needPrimaryKeyUpdate)
             {
-                command = this.connector.CreateCommand();
-                command.CommandText = SqlLiteConnector.SqlLastId;
-                DbDataReader reader = command.ExecuteReader();
-                if (!reader.Read())
+                using (DbCommand command = this.connector.CreateCommand())
                 {
-                    System.Diagnostics.Trace.TraceError("Failed to retrieve the id for saved object");
-                    return false;
-                }
+                    command.CommandText = SqlLiteConnector.SqlLastId;
+                    using (DbDataReader reader = command.ExecuteReader())
+                    {
+                        if (!reader.Read())
+                        {
+                            System.Diagnostics.Trace.TraceError("Failed to retrieve the id for saved object");
+                            return false;
+                        }
 
-                object value = DatabaseUtils.GetInternalValue(descriptor.PrimaryKey.DatabaseType, reader[0]);
-                descriptor.PrimaryKey.Property.SetValue(entry, value);
+                        object value = DatabaseUtils.GetInternalValue(descriptor.PrimaryKey.DatabaseType, reader[0]);
+                        descriptor.PrimaryKey.Property.SetValue(entry, value);
+                    }
+                }
             }
 
             return true;
@@ -465,16 +480,18 @@
             this.BuildBaseWhereClause(statement, descriptor, keys);
             statement.What("count(*)");
 
-            DbCommand command = this.connector.CreateCommand(statement);
-            using (DbDataReader reader = command.ExecuteReader())
+            using (DbCommand command = this.connector.CreateCommand(statement))
             {
-                if (!reader.HasRows)
+                using (DbDataReader reader = command.ExecuteReader())
                 {
-                    return 0;
-                }
+                    if (!reader.HasRows)
+                    {
+                        return 0;
+                    }
 
-                reader.Read();
-                return Convert.ToInt32(reader[0]);
+                    reader.Read();
+                    return Convert.ToInt32(reader[0]);
+                }
             }
         }
 
@@ -489,21 +506,22 @@
                 statement.What(element.Name);
             }
 
-            DbCommand command = this.connector.CreateCommand(statement);
-
             IList<IDatabaseEntry> results = new List<IDatabaseEntry>();
-            using (DbDataReader reader = command.ExecuteReader())
+            using (DbCommand command = this.connector.CreateCommand(statement))
             {
-                while (reader.Read())
+                using (DbDataReader reader = command.ExecuteReader())
                 {
-                    var entry = (IDatabaseEntry)Activator.CreateInstance(descriptor.Type);
-                    foreach (DatabaseEntryElementDescriptor element in descriptor.Elements)
+                    while (reader.Read())
                     {
-                        object value = DatabaseUtils.GetInternalValue(element.DatabaseType, reader[element.Name]);
-                        element.Property.SetValue(entry, value);
-                    }
+                        var entry = (IDatabaseEntry)Activator.CreateInstance(descriptor.Type);
+                        foreach (DatabaseEntryElementDescriptor element in descriptor.Elements)
+                        {
+                            object value = DatabaseUtils.GetInternalValue(element.DatabaseType, reader[element.Name]);
+                            element.Property.SetValue(entry, value);
+                        }
 
-                    results.Add(entry);
+                        results.Add(entry);
+                    }
                 }
             }
 
@@ -516,12 +534,14 @@
             statement.Table(descriptor.TableName);
             this.BuildBaseWhereClause(statement, descriptor, keys);
 
-            DbCommand command = this.connector.CreateCommand(statement);
-            int affected = command.ExecuteNonQuery();
-            if (affected != keys.Count)
+            using (DbCommand command = this.connector.CreateCommand(statement))
             {
-                System.Diagnostics.Trace.TraceError("Expected {0} rows but got {1}", keys.Count, affected);
-                return false;
+                int affected = command.ExecuteNonQuery();
+                if (affected != keys.Count)
+                {
+                    System.Diagnostics.Trace.TraceError("Expected {0} rows but got {1}", keys.Count, affected);
+                    return false;
+                }
             }
 
             return true;

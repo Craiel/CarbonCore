@@ -3,23 +3,29 @@
 #><#@ assembly name="$(ProjectDir)..\CodeGeneration\bin\$(ConfigurationName)\CarbonCore.CodeGeneration.dll" 
 #><#@ import namespace="EnvDTE" 
 #><#@ import namespace="System.Collections.Generic" 
-#><#@ import namespace="CarbonCore.CodeGeneration"
-#>namespace CarbonCore.Resources
+#><#@ import namespace="CarbonCore.CodeGeneration" 
+#>namespace CarbonCore.Tests.Resources
 {
-    using System;
-    
     public static class Static
     {
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
 <#
+ResourceGeneration.IncludeEmbeddedResources = true;
 ResourceGeneration.Initialize(this.Host, Host.TemplateFile);
 ResourceGeneration.LocateResources();
-foreach(string line in ResourceGeneration.UriResult)
+
+if (ResourceGeneration.PlainResult.Count > 0)
 {
-    WriteLine("        " + line);
-}
-#>
+    WriteLine("        public static string[] ResourceList = new[] {");
+    foreach(string resource in ResourceGeneration.PlainResult)
+    {
+        string localName = resource.Replace(@"Resources\", string.Empty);
+        localName = localName.Replace(@"\_\", @"\");
+        WriteLine("                @\"{0}\",", localName);
     }
+    WriteLine("        };");
+}
+#>    }
 }

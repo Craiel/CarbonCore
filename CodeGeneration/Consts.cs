@@ -7,6 +7,7 @@
     {
         public static string ItemPropertyType = "ItemType";
 
+        public static string ItemTypeEmbeddedResource = "EmbeddedResource";
         public static string ItemTypeResource = "Resource";
     }
 }

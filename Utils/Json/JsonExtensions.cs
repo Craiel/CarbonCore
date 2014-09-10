@@ -91,7 +91,7 @@
             // Write to disk either compressed or bare
             using (var stream = file.OpenCreate())
             {
-                SaveToStream(stream, serialized, compress, formatting);
+                DoSaveToStream(stream, serialized, compress);
             }
         }
 
@@ -100,10 +100,10 @@
             // Serialize
             string serialized = SaveToData(data, formatting);
 
-            SaveToStream(target, serialized, compress);
+            DoSaveToStream(target, serialized, compress);
         }
 
-        private static void SaveToStream(Stream target, string serializedData, bool compress = true)
+        private static void DoSaveToStream(Stream target, string serializedData, bool compress = true)
         {
             if (compress)
             {

@@ -63,6 +63,12 @@
     <Compile Include="Contracts\IFrameworkTestMainViewModel.cs" />
     <Compile Include="Grammar\GrammarTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\ResourceNames.cs" />
+    <Compile Include="Resources\Static.cs">
+      <DependentUpon>Static.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Utils\CarbonPathTests.cs" />
     <Compile Include="Utils\TestMath.cs" />
     <Compile Include="Utils\TestVector2F.cs" />
@@ -105,12 +111,26 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\FileEntries\4A6UZbySwCB5AUbcDjh8KVnc2gM=" />
-    <EmbeddedResource Include="Resources\FileEntries\dioiZTphkzdDCloj8+lb0q3iYH4=" />
-    <EmbeddedResource Include="Resources\FileEntries\UAfwmhkZ5Cz0MgP4kf35CbHrVpQ=" />
+    <EmbeddedResource Include="Resources\Todo.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Todo.png" />
+    <None Include="Resources\Static.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Static.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\FileEntries\SmallHouse.dae" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\FileEntries\HouseScene.xcd" />
+    <EmbeddedResource Include="Resources\FileEntries\_\Main.init.lua" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\FileEntries\Textures\Placeholder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
