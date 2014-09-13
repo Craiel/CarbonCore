@@ -87,8 +87,16 @@
 
             if (targetProvider.Save(key, data.Data))
             {
-                this.fileEntryLookup.Add(key);
-                this.fileProviderLookup.Add(key, targetProvider);
+                if (this.fileProviderLookup.ContainsKey(key))
+                {
+                    this.fileProviderLookup[key] = targetProvider;
+                }
+                else
+                {
+                    this.fileEntryLookup.Add(key);
+                    this.fileProviderLookup.Add(key, targetProvider);
+                }
+                
                 return true;
             }
 
@@ -162,6 +170,11 @@
             this.providers.Add(provider);
 
             IList<IFileEntry> files = provider.GetFiles();
+            if (files == null)
+            {
+                return;
+            }
+
             foreach (IFileEntry entry in files)
             {
                 int existingIndex = this.fileEntryLookup.IndexOf(entry);
@@ -188,14 +201,18 @@
         {
             System.Diagnostics.Trace.Assert(this.providers.Contains(provider));
 
-            foreach (IFileEntry file in provider.GetFiles())
+            IList<IFileEntry> files = provider.GetFiles();
+            if (files != null)
             {
-                // Check if this provider's file / version is what we are using
-                if (this.fileProviderLookup.ContainsKey(file) && this.fileProviderLookup[file] == provider)
+                foreach (IFileEntry file in files)
                 {
-                    // If so, Mix out that file
-                    this.fileEntryLookup.Remove(file);
-                    this.fileProviderLookup.Remove(file);
+                    // Check if this provider's file / version is what we are using
+                    if (this.fileProviderLookup.ContainsKey(file) && this.fileProviderLookup[file] == provider)
+                    {
+                        // If so, Mix out that file
+                        this.fileEntryLookup.Remove(file);
+                        this.fileProviderLookup.Remove(file);
+                    }
                 }
             }
 

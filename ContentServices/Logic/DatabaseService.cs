@@ -6,6 +6,7 @@
     using System.Data.Common;
     using System.Data.SQLite;
     using System.Linq;
+    using System.Reflection;
 
     using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.Logic.Attributes;
@@ -108,14 +109,14 @@
             }
         }
 
-        public T Load<T>(object key) where T : IDatabaseEntry
+        public T Load<T>(object key, bool loadFull = false) where T : IDatabaseEntry
         {
             System.Diagnostics.Trace.Assert(key != null, "Single load must have key supplied");
 
             DatabaseEntryDescriptor descriptor = DatabaseEntryDescriptor.GetDescriptor<T>();
             this.CheckTable(descriptor);
 
-            IList<IDatabaseEntry> results = this.DoLoad(descriptor, new List<object> { key });
+            IList<IDatabaseEntry> results = this.DoLoad(descriptor, new List<object> { key }, loadFull);
 
             if (results == null || results.Count <= 0)
             {
@@ -125,13 +126,13 @@
 
             return (T)results[0];
         }
-        
-        public IList<T> Load<T>(IList<object> keys = null) where T : IDatabaseEntry
+
+        public IList<T> Load<T>(IList<object> keys = null, bool loadFull = false) where T : IDatabaseEntry
         {
             DatabaseEntryDescriptor descriptor = DatabaseEntryDescriptor.GetDescriptor<T>();
             this.CheckTable(descriptor);
 
-            IList<IDatabaseEntry> results = this.DoLoad(descriptor, keys);
+            IList<IDatabaseEntry> results = this.DoLoad(descriptor, keys, loadFull);
             return results.Cast<T>().ToList();
         }
         
@@ -431,6 +432,7 @@
                 }
             }
 
+            object primaryKeyValue;
             if (needPrimaryKeyUpdate)
             {
                 using (DbCommand command = this.connector.CreateCommand())
@@ -444,8 +446,55 @@
                             return false;
                         }
 
-                        object value = DatabaseUtils.GetInternalValue(descriptor.PrimaryKey.DatabaseType, reader[0]);
-                        descriptor.PrimaryKey.Property.SetValue(entry, value);
+                        primaryKeyValue = DatabaseUtils.GetInternalValue(descriptor.PrimaryKey.DatabaseType, reader[0]);
+                        descriptor.PrimaryKey.Property.SetValue(entry, primaryKeyValue);
+                    }
+                }
+            }
+            else
+            {
+                primaryKeyValue = descriptor.PrimaryKey.Property.GetValue(entry);
+            }
+
+            // Process the joined properties
+            foreach (DatabaseEntryJoinedElementDescriptor joinedElement in descriptor.JoinedElements)
+            {
+                DatabaseEntryDescriptor joinedDescriptor = DatabaseEntryDescriptor.GetDescriptor(joinedElement.InternalType);
+                System.Diagnostics.Trace.Assert(joinedDescriptor != null, "Joined entry must have a valid Database Descriptor");
+
+                // Make sure to check the joined table, it may not be created yet
+                this.CheckTable(joinedDescriptor);
+
+                // Note: this is not really fast, if the joined instance is not supplied a lookup is performed to delete it
+                var instance = (IDatabaseEntry)joinedElement.Property.GetValue(entry);
+                if (instance == null)
+                {
+                    var lookupKeyClause = new KeyValuePair<string, IList<object>>(joinedElement.ForeignKeyColumn, new List<object> { primaryKeyValue });
+
+                    IList<object[]> results = this.DoLoadFields(
+                        joinedDescriptor,
+                        new List<KeyValuePair<string, IList<object>>> { lookupKeyClause },
+                        joinedDescriptor.PrimaryKey.Name);
+
+                    System.Diagnostics.Trace.Assert(results.Count <= 1, "Expected 1 or 0 results but got " + results.Count);
+                    if (results.Count == 1)
+                    {
+                        System.Diagnostics.Trace.TraceWarning(
+                            "Found one entry but null was supplied, deleting the joined entry!");
+                        if (!this.DoDelete(joinedDescriptor, new List<object> { results[0][0] }))
+                        {
+                            System.Diagnostics.Trace.TraceError("Failed to delete joined entry {0}", results[0][0]);
+                            return false;
+                        }
+                    }
+                }
+                else
+                {
+                    joinedElement.ForeignKeyProperty.SetValue(instance, primaryKeyValue);
+                    if (!this.DoSave(joinedDescriptor, instance))
+                    {
+                        System.Diagnostics.Trace.TraceError("Failed to save joined entry");
+                        return false;
                     }
                 }
             }
@@ -495,7 +544,7 @@
             }
         }
 
-        private IList<IDatabaseEntry> DoLoad(DatabaseEntryDescriptor descriptor, IList<object> keys)
+        private IList<IDatabaseEntry> DoLoad(DatabaseEntryDescriptor descriptor, IList<object> keys, bool loadFull)
         {
             var statement = new SQLiteStatement(SqlStatementType.Select);
             statement.Table(descriptor.TableName);
@@ -525,6 +574,62 @@
                 }
             }
 
+            if (!loadFull)
+            {
+                return results;
+            }
+
+            // Make a list of the result set primary keys
+            IDictionary<object, IDatabaseEntry> primaryKeyMap = new Dictionary<object, IDatabaseEntry>();
+            foreach (IDatabaseEntry entry in results)
+            {
+                primaryKeyMap.Add(descriptor.PrimaryKey.Property.GetValue(entry), entry);
+            }
+
+            // Make sure we don't attempt this with more than a thousand for now
+            System.Diagnostics.Trace.Assert(primaryKeyMap.Count > 0, "Load full does not support more than a thousand entries right now, got " + results.Count);
+
+            // Process the joined properties
+            foreach (DatabaseEntryJoinedElementDescriptor joinedElement in descriptor.JoinedElements)
+            {
+                DatabaseEntryDescriptor joinedDescriptor = DatabaseEntryDescriptor.GetDescriptor(joinedElement.InternalType);
+                System.Diagnostics.Trace.Assert(joinedDescriptor != null, "Joined entry must have a valid Database Descriptor");
+
+                // Make sure to check the joined table, it may not be created yet
+                this.CheckTable(joinedDescriptor);
+
+                // Fetch the list of primary keys that match the results
+                var lookupKeyClause = new KeyValuePair<string, IList<object>>(joinedElement.ForeignKeyColumn, primaryKeyMap.Keys.ToList());
+                IList<object[]> joinedResults = this.DoLoadFields(
+                        joinedDescriptor,
+                        new List<KeyValuePair<string, IList<object>>> { lookupKeyClause },
+                        joinedDescriptor.PrimaryKey.Name);
+
+                IList<object> joinedPrimaryKeys = new List<object>();
+                foreach (object[] result in joinedResults)
+                {
+                    joinedPrimaryKeys.Add(result[0]);
+                }
+
+                if (joinedPrimaryKeys.Count <= 0)
+                {
+                    continue;
+                }
+
+                // Fetch the actual instances
+                IList<IDatabaseEntry> joinedEntries = this.DoLoad(joinedDescriptor, joinedPrimaryKeys, true);
+                System.Diagnostics.Trace.Assert(joinedEntries.Count == joinedPrimaryKeys.Count);
+
+                // Set the classes to the loaded instances
+                foreach (IDatabaseEntry joinedEntry in joinedEntries)
+                {
+                    object primaryKey = joinedElement.ForeignKeyProperty.GetValue(joinedEntry);
+                    System.Diagnostics.Trace.Assert(primaryKeyMap.ContainsKey(primaryKey));
+
+                    joinedElement.Property.SetValue(primaryKeyMap[primaryKey], joinedEntry);
+                }
+            }
+
             return results;
         }
 
@@ -545,6 +650,53 @@
             }
 
             return true;
+        }
+
+        private IList<object[]> DoLoadFields(DatabaseEntryDescriptor descriptor, IEnumerable<KeyValuePair<string, IList<object>>> whereConstraints, params string[] fieldNames)
+        {
+            System.Diagnostics.Trace.Assert(fieldNames != null && fieldNames.Length > 0);
+
+            var statement = new SQLiteStatement(SqlStatementType.Select);
+            statement.Table(descriptor.TableName);
+            if (whereConstraints != null)
+            {
+                foreach (KeyValuePair<string, IList<object>> pair in whereConstraints)
+                {
+                    if (pair.Value.Count > 1)
+                    {
+                        statement.InConstraint(pair.Key, pair.Value);
+                    }
+                    else
+                    {
+                        statement.WhereConstraint(pair.Key, pair.Value[0]);
+                    }
+                }
+            }
+
+            foreach (string name in fieldNames)
+            {
+                statement.What(name);
+            }
+
+            IList<object[]> results = new List<object[]>();
+            using (DbCommand command = this.connector.CreateCommand(statement))
+            {
+                using (DbDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var values = new object[fieldNames.Length];
+                        for (int i = 0; i < fieldNames.Length; i++)
+                        {
+                            values[i] = reader[i];
+                        }
+
+                        results.Add(values);
+                    }
+                }
+            }
+
+            return results;
         }
     }
 }

@@ -55,11 +55,24 @@
             {
                 Assert.NotNull(service, "Service must resolve properly");
 
-                service.AddProvider(this.container.Resolve<IFileServiceMemoryProvider>());
-                service.AddProvider(this.container.Resolve<IFileServiceDiskProvider>());
-                service.AddProvider(this.container.Resolve<IFileServicePackProvider>());
+                var memoryProvider = this.container.Resolve<IFileServiceMemoryProvider>();
+                memoryProvider.Initialize();
+                service.AddProvider(memoryProvider);
 
-                Assert.AreEqual(4, service.GetProviders().Count, "Must have all three providers registered");
+                var fileProvider = this.container.Resolve<IFileServiceDiskProvider>();
+                fileProvider.Root = this.dataDirectory;
+                fileProvider.Initialize();
+                service.AddProvider(fileProvider);
+
+                var packProvider = this.container.Resolve<IFileServicePackProvider>();
+                packProvider.Initialize();
+                service.AddProvider(packProvider);
+
+                Assert.AreEqual(3, service.GetProviders().Count, "Must have all providers registered");
+
+                memoryProvider.Dispose();
+                fileProvider.Dispose();
+                packProvider.Dispose();
             }
         }
 
@@ -112,12 +125,22 @@
                         Assert.NotNull(entry.Hash, "Hash needs to be set after call to save");
 
                         // Now try to save it again this should work fine
-                        service.Save(entry, entryData);
+                        Assert.IsTrue(service.Save(entry, entryData));
 
                         Assert.Throws<ArgumentException>(() => service.Save(entry, entryData, "TestMe"), "Saving hashed entry with a filename should throw");
                     }
 
-                    Assert.AreEqual(4, service.GetFileEntries().Count, "Disk Service needs to have 3 files");
+                    IList<IFileEntry> files = service.GetFileEntries();
+                    Assert.AreEqual(4, files.Count, "Disk Service needs to have 4 files");
+
+                    foreach (IFileEntry entry in files)
+                    {
+                        Assert.IsTrue(service.Delete(entry));
+                    }
+
+                    Assert.AreEqual(0, service.GetFileEntries().Count, "Must have none after deleting the entries");
+                    Assert.True(service.Save(files[0], new FileEntryData { Data = new byte[] { 10, 10, 10 } }));
+                    Assert.AreEqual(1, service.GetFileEntries().Count, "Must have one after adding the entry back");
                     
                     service.RemoveProvider(provider);
                     Assert.AreEqual(0, service.GetFileEntries().Count, "After removal service must have no files");

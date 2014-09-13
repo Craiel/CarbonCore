@@ -12,8 +12,8 @@
         bool Save<T>(ref T entry) where T : IDatabaseEntry;
         bool Save<T>(IList<T> entries) where T : IDatabaseEntry;
 
-        T Load<T>(object key) where T : IDatabaseEntry;
-        IList<T> Load<T>(IList<object> keys = null) where T : IDatabaseEntry;
+        T Load<T>(object key, bool loadFull = false) where T : IDatabaseEntry;
+        IList<T> Load<T>(IList<object> keys = null, bool loadFull = false) where T : IDatabaseEntry;
 
         bool Delete<T>(IList<object> keys) where T : IDatabaseEntry;
 

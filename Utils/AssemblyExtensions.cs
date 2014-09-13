@@ -12,6 +12,8 @@
     {
         private const char ResourceDelimiter = '.';
 
+        private const string ResourceLocalIndicator = @"__.";
+
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
@@ -111,19 +113,29 @@
                     continue;
                 }
 
+                // Check if we have a local indicator in the resource path
+                string localizedResourcePathSuffix = string.Empty;
+                int localIndicatorIndex = localizedResourcePath.IndexOf(ResourceLocalIndicator, StringComparison.Ordinal);
+                if (localizedResourcePath.Contains(ResourceLocalIndicator))
+                {
+                    localizedResourcePathSuffix = localizedResourcePath.Substring(localIndicatorIndex + ResourceLocalIndicator.Length, localizedResourcePath.Length - localIndicatorIndex - ResourceLocalIndicator.Length);
+                    localizedResourcePath = string.Empty;
+                }
+
                 // Files with *.*.*.ext are translated to *\*\*.ext
                 string[] segments = localizedResourcePath.Split(new[] { ResourceDelimiter }, StringSplitOptions.RemoveEmptyEntries);
-                string extension = segments[segments.Length - 1];
-                if (segments.Length == 1 || segments[segments.Length - 1].Length > 5)
+                string extension = string.Empty;
+                if (segments.Length < 2 || segments[segments.Length - 1].Length > 5)
                 {
                     extension = string.Empty;
                 }
-                else
+                else if (segments.Length > 0)
                 {
+                    extension = segments[segments.Length - 1];
                     segments = segments.Take(segments.Length - 1).ToArray();
                 }
 
-                string file = string.Join(System.IO.Path.DirectorySeparatorChar.ToString(CultureInfo.InvariantCulture), segments);
+                string file = string.Join(System.IO.Path.DirectorySeparatorChar.ToString(CultureInfo.InvariantCulture), segments) + localizedResourcePathSuffix;
                 if (!string.IsNullOrEmpty(extension))
                 {
                     file = string.Concat(file, ".", extension);

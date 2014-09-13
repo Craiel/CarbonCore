@@ -63,6 +63,20 @@
                 clone.TestFloat = 3.1f;
                 Assert.IsTrue(service.Save(ref clone));
 
+                // Joined save
+                clone.JoinedEntry = new ContentTestJoinedEntry { TestString = "I am joined with " + clone.Id };
+                Assert.IsTrue(service.Save(ref clone));
+                Assert.IsNotNull(clone.JoinedEntry.Id, "Joined entry must be saved together with the parent");
+                Assert.AreEqual(clone.Id, clone.JoinedEntry.TestEntryId, "Joined entry foreign key value must match the original");
+
+                Assert.AreEqual(service.Load<ContentTestJoinedEntry>().Count, 1, "After saving main instance we must have 1 joined entry");
+                clone.JoinedEntry = null;
+                Assert.IsTrue(service.Save(ref clone));
+                Assert.AreEqual(service.Load<ContentTestJoinedEntry>().Count, 0, "After saving main instance with null joined instance the instance must be deleted");
+
+                clone.JoinedEntry = new ContentTestJoinedEntry { TestString = "Yet another joined entry of " + clone.Id };
+                Assert.IsTrue(service.Save(ref clone));
+
                 // Batch save
                 IList<ContentTestEntry2> batchData = new List<ContentTestEntry2>();
                 for (var i = 0; i < 20; i++)
@@ -79,7 +93,13 @@
                 // Load
                 var savedEntry = service.Load<ContentTestEntry>((int)clone.Id);
                 Assert.AreEqual(clone, savedEntry, "Load must return the proper entry");
+                Assert.IsNull(savedEntry.JoinedEntry, "Joined entry must not be loaded with the original on default load");
 
+                // Load full
+                savedEntry = service.Load<ContentTestEntry>((int)clone.Id, true);
+                Assert.IsNotNull(savedEntry.JoinedEntry, "Joined entry must be loaded with the original when loading fully");
+
+                // Load batch
                 IList<ContentTestEntry2> batchResult = service.Load<ContentTestEntry2>();
                 Assert.AreEqual(20, batchResult.Count, "Load with no parameters must return all entries");
 
@@ -103,19 +123,19 @@
 
                 // GetTables
                 IList<string> tables = service.GetTables();
-                Assert.AreEqual(3, tables.Count, "GetTables must return the table list");
+                Assert.AreEqual(4, tables.Count, "GetTables must return the table list");
                 Assert.IsTrue(tables.Contains("TestTable"));
                 Assert.IsTrue(tables.Contains("TestTable2"));
 
                 // Drop
                 Assert.IsTrue(service.Drop<ContentTestEntry>());
                 tables = service.GetTables();
-                Assert.AreEqual(2, tables.Count, "Drop must remove the table");
+                Assert.AreEqual(3, tables.Count, "Drop must remove the table");
                 Assert.IsFalse(service.Drop<ContentTestEntry>(), "Explicit Drop must fail if table does not exist");
 
                 service.Drop<ContentTestEntry2>();
                 tables = service.GetTables();
-                Assert.AreEqual(1, tables.Count, "Drop must remove the table");
+                Assert.AreEqual(2, tables.Count, "Drop must remove the table");
             }
         }
     }

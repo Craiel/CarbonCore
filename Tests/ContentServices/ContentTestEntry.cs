@@ -16,21 +16,29 @@
         [DatabaseEntryElement(PrimaryKeyMode = PrimaryKeyMode.Autoincrement)]
         public int? Id { get; set; }
 
+        [ContentEntryElement]
         [DatabaseEntryElement]
         public string TestString { get; set; }
 
+        [ContentEntryElement]
         [DatabaseEntryElement]
         public bool TestBool { get; set; }
 
+        [ContentEntryElement]
         [DatabaseEntryElement]
         public float TestFloat { get; set; }
 
+        [ContentEntryElement]
         [DatabaseEntryElement]
         public long TestLong { get; set; }
 
         [ContentEntryElement(IgnoreEquality = true)]
         [DatabaseEntryElement]
         public byte[] TestByteArray { get; set; }
+
+        [ContentEntryElement(IgnoreEquality = true)]
+        [DatabaseEntryJoinedElement("TestEntryId")]
+        public ContentTestJoinedEntry JoinedEntry { get; set; }
 
         public override bool Load(System.IO.Stream source)
         {

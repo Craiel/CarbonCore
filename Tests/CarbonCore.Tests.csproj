@@ -57,6 +57,7 @@
     <Compile Include="ContentServices\ContentTestData.cs" />
     <Compile Include="ContentServices\ContentTestEntry.cs" />
     <Compile Include="ContentServices\ContentTestEntry2.cs" />
+    <Compile Include="ContentServices\ContentTestJoinedEntry.cs" />
     <Compile Include="ContentServices\DatabaseServiceTests.cs" />
     <Compile Include="ContentServices\FileServiceTests.cs" />
     <Compile Include="Contracts\IFrameworkTestMain.cs" />

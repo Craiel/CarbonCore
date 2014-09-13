@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
 
+    using CarbonCore.Tests.Resources;
     using CarbonCore.Utils;
     using CarbonCore.Utils.IO;
 
@@ -68,6 +69,19 @@
             
             resources = this.GetType().Assembly.ExtractResources(testDirectory, "Resources.FileEntries");
             Assert.AreEqual(4, resources.Count, "Giving path must extract partial resources");
+
+            const string FileEntryTestRoot = "FileEntries";
+            foreach (string resource in Static.ResourceList)
+            {
+                if (!resource.StartsWith(FileEntryTestRoot))
+                {
+                    continue;
+                }
+
+                string testFileName = resource.Replace(FileEntryTestRoot + @"\", string.Empty);
+                CarbonFile resourceFile = testDirectory.ToFile(testFileName);
+                Assert.IsTrue(resourceFile.Exists, "Resource must exist after extraction: " + resource);
+            }
 
             testDirectory.Delete(true);
         }

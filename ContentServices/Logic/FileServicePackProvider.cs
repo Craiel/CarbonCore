@@ -11,7 +11,7 @@
         // -------------------------------------------------------------------
         protected override bool DoInitialize()
         {
-            throw new System.NotImplementedException();
+            return true;
         }
 
         protected override bool DoLoad(IFileEntry key, out byte[] data)
@@ -26,7 +26,7 @@
 
         protected override IList<IFileEntry> DoGetFiles()
         {
-            throw new System.NotImplementedException();
+            return null;
         }
     }
 }

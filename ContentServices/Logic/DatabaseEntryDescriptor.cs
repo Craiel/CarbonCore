@@ -25,6 +25,7 @@
             this.Type = targetType;
 
             this.Elements = new List<DatabaseEntryElementDescriptor>();
+            this.JoinedElements = new List<DatabaseEntryJoinedElementDescriptor>();
 
             this.elementNameLookup = new Dictionary<string, DatabaseEntryElementDescriptor>();
 
@@ -43,6 +44,8 @@
         public DatabaseEntryElementDescriptor PrimaryKey { get; private set; }
 
         public IList<DatabaseEntryElementDescriptor> Elements { get; private set; }
+
+        public IList<DatabaseEntryJoinedElementDescriptor> JoinedElements { get; private set; }
 
         public static DatabaseEntryDescriptor GetDescriptor<T>()
         {
@@ -125,13 +128,11 @@
                 foreach (object attribute in attributes)
                 {
                     Type attributeType = attribute.GetType();
-                    DatabaseEntryElementDescriptor element = null;
-
+                    
                     if (attributeType == typeof(DatabaseEntryElementAttribute))
                     {
                         var typed = (DatabaseEntryElementAttribute)attribute;
-
-                        element = new DatabaseEntryElementDescriptor(this.Type, (DatabaseEntryElementAttribute)attribute, info);
+                        var element = new DatabaseEntryElementDescriptor(this.Type, typed, info);
                         this.elementNameLookup.Add(element.Name, element);
 
                         if (typed.PrimaryKeyMode != PrimaryKeyMode.None)
@@ -149,11 +150,13 @@
 
                             this.PrimaryKey = element;
                         }
-                    }
-                        
-                    if (element != null)
-                    {
+
                         this.Elements.Add(element);
+                    }
+                    else if (attributeType == typeof(DatabaseEntryJoinedElementAttribute))
+                    {
+                        var element = new DatabaseEntryJoinedElementDescriptor(this.Type, (DatabaseEntryJoinedElementAttribute)attribute, info);
+                        this.JoinedElements.Add(element);
                     }
                 }
             }
