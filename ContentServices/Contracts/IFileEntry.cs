@@ -4,6 +4,8 @@
 
     public interface IFileEntry : IDatabaseEntry
     {
+        int? Id { get; }
+
         string Hash { get; set; }
 
         int Version { get; set; }

@@ -24,6 +24,11 @@
             throw new System.NotImplementedException();
         }
 
+        protected override bool DoDelete(IFileEntry key)
+        {
+            throw new System.NotImplementedException();
+        }
+
         protected override IList<IFileEntry> DoGetFiles()
         {
             return null;

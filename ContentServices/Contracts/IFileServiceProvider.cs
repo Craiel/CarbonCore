@@ -13,8 +13,11 @@
         long BytesRead { get; }
         long BytesWritten { get; }
 
-        bool Load(IFileEntry key, out byte[] data);
-        bool Save(IFileEntry key, byte[] data);
+        bool Load(string hash, out byte[] data);
+        bool Save(string hash, byte[] data);
+        bool Delete(string hash);
+
+        int Cleanup();
 
         void Initialize();
 

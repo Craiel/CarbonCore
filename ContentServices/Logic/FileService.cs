@@ -105,7 +105,16 @@
         
         public bool Delete(IFileEntry key)
         {
-            throw new NotImplementedException();
+            System.Diagnostics.Trace.Assert(this.fileProviderLookup.ContainsKey(key));
+
+            if (this.fileProviderLookup[key].Delete(key))
+            {
+                this.fileEntryLookup.Remove(key);
+                this.fileProviderLookup.Remove(key);
+                return true;
+            }
+
+            return false;
         }
         
         public void Dispose()

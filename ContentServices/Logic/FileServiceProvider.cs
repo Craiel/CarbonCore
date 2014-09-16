@@ -20,11 +20,13 @@
 
         public long BytesWritten { get; private set; }
 
-        public bool Load(IFileEntry key, out byte[] data)
+        public long EntriesDeleted { get; private set; }
+
+        public bool Load(string hash, out byte[] data)
         {
             System.Diagnostics.Trace.Assert(this.IsInitialized);
 
-            if (this.DoLoad(key, out data))
+            if (this.DoLoad(hash, out data))
             {
                 this.BytesRead += data.Length;
                 return true;
@@ -33,17 +35,35 @@
             return false;
         }
 
-        public bool Save(IFileEntry key, byte[] data)
+        public bool Save(string hash, byte[] data)
         {
             System.Diagnostics.Trace.Assert(this.IsInitialized);
 
-            if (this.DoSave(key, data))
+            if (this.DoSave(hash, data))
             {
                 this.BytesWritten += data.Length;
                 return true;
             }
 
             return false;
+        }
+
+        public bool Delete(string hash)
+        {
+            System.Diagnostics.Trace.Assert(this.IsInitialized);
+
+            if (this.DoDelete(hash))
+            {
+                this.EntriesDeleted++;
+                return true;
+            }
+
+            return false;
+        }
+
+        public int Cleanup()
+        {
+            return this.DoCleanup();
         }
 
         public void Initialize()
@@ -75,9 +95,13 @@
 
         protected abstract bool DoInitialize();
 
-        protected abstract bool DoLoad(IFileEntry key, out byte[] data);
+        protected abstract bool DoLoad(string hash, out byte[] data);
 
-        protected abstract bool DoSave(IFileEntry key, byte[] data);
+        protected abstract bool DoSave(string hash, byte[] data);
+
+        protected abstract bool DoDelete(string hash);
+
+        protected abstract int DoCleanup();
 
         protected abstract IList<IFileEntry> DoGetFiles();
     }

@@ -13,7 +13,7 @@
 
         private readonly IDatabaseService databaseService;
 
-        private readonly IList<IFileEntry> files; 
+        private readonly IDictionary<string, IFileEntry> files;
 
         private CarbonDirectory root;
 
@@ -23,7 +23,7 @@
         public FileServiceDiskProvider(IFactory factory)
         {
             this.databaseService = factory.Resolve<IDatabaseService>();
-            this.files = new List<IFileEntry>();
+            this.files = new Dictionary<string, IFileEntry>();
         }
 
         // -------------------------------------------------------------------
@@ -105,20 +105,26 @@
             IList<FileEntry> entries = this.databaseService.Load<FileEntry>();
             foreach (FileEntry entry in entries)
             {
-                this.files.Add(entry);
+                System.Diagnostics.Trace.Assert(!string.IsNullOrEmpty(entry.Hash));
+
+                this.files.Add(entry.Hash, entry);
             }
 
             return true;
         }
 
-        protected override bool DoLoad(IFileEntry key, out byte[] data)
+        protected override bool DoLoad(string hash, out byte[] data)
         {
+            System.Diagnostics.Trace.Assert(!string.IsNullOrEmpty(hash));
+
             throw new System.NotImplementedException();
         }
 
-        protected override bool DoSave(IFileEntry key, byte[] data)
+        protected override bool DoSave(string hash, byte[] data)
         {
-            CarbonFile file = this.root.ToFile(key.Hash);
+            System.Diagnostics.Trace.Assert(!string.IsNullOrEmpty(hash));
+
+            CarbonFile file = this.root.ToFile(hash);
             using (var stream = file.OpenWrite())
             {
                 stream.Write(data, 0, data.Length);
@@ -131,9 +137,48 @@
             return true;
         }
 
+        protected override bool DoDelete(string hash)
+        {
+            System.Diagnostics.Trace.Assert(!string.IsNullOrEmpty(hash));
+            System.Diagnostics.Trace.Assert(this.files.ContainsKey(hash));
+
+            CarbonFile file = this.root.ToFile(hash);
+            System.Diagnostics.Trace.Assert(file.Exists, "Entry to delete is not in the provider!");
+
+            IFileEntry entry = this.files[hash];
+            entry.IsDeleted = true;
+            if (this.databaseService.Save(ref entry))
+            {
+                this.files.Remove(hash);
+                return true;
+            }
+
+            return false;
+        }
+
+        protected override int DoCleanup()
+        {
+            IList<object> deleteList = new List<object>();
+            IList<FileEntry> activeFiles = this.databaseService.Load<FileEntry>();
+            foreach (FileEntry file in activeFiles)
+            {
+                if (file.IsDeleted)
+                {
+                    deleteList.Add(file.GetDescriptor().PrimaryKey.Property.GetValue(file));
+                }
+            }
+
+            if (this.databaseService.Delete<FileEntry>(deleteList))
+            {
+                return deleteList.Count;
+            }
+
+            return -1;
+        }
+
         protected override IList<IFileEntry> DoGetFiles()
         {
-            return new List<IFileEntry>(this.files);
+            return new List<IFileEntry>(this.files.Values);
         }
     }
 }
