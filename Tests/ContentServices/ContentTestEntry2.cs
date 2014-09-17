@@ -8,6 +8,9 @@
     [DatabaseEntry("TestTable2")]
     public class ContentTestEntry2 : DatabaseEntry
     {
+        // -------------------------------------------------------------------
+        // Public
+        // -------------------------------------------------------------------
         [ContentEntryElement(IgnoreClone = true)]
         [DatabaseEntryElement(PrimaryKeyMode = PrimaryKeyMode.Assigned)]
         public string Id { get; set; }
@@ -24,7 +27,10 @@
         [DatabaseEntryElement]
         public long OtherTestLong { get; set; }
 
-        public override int GetHashCode()
+        // -------------------------------------------------------------------
+        // Protected
+        // -------------------------------------------------------------------
+        protected override int DoGetHashCode()
         {
             return Tuple.Create(this.Id).GetHashCode();
         }

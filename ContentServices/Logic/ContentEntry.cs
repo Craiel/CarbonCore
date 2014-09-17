@@ -59,7 +59,10 @@
             return false;
         }
 
-        public abstract int GetHashCode();
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
 
         public override bool Equals(object obj)
         {
@@ -95,5 +98,10 @@
 
             return true;
         }
+
+        // -------------------------------------------------------------------
+        // Protected
+        // -------------------------------------------------------------------
+        protected abstract int DoGetHashCode();
     }
 }

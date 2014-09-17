@@ -116,7 +116,7 @@
 
                         string localFile = file.Replace(FileEntryFolder + @"\", string.Empty);
                         var testFile = this.dataDirectory.ToFile(localFile);
-                        IFileEntry entry = provider.CreateEntry(testFile);
+                        FileEntry entry = provider.CreateEntry(testFile);
                         IFileEntryData entryData = new FileEntryData { Data = testFile.ReadAsByte() };
 
                         Assert.Throws<ArgumentException>(() => service.Save(entry, entryData), "Saving hashed entry without filename should throw");
@@ -130,10 +130,10 @@
                         Assert.Throws<ArgumentException>(() => service.Save(entry, entryData, "TestMe"), "Saving hashed entry with a filename should throw");
                     }
 
-                    IList<IFileEntry> files = service.GetFileEntries();
+                    IList<FileEntry> files = service.GetFileEntries();
                     Assert.AreEqual(4, files.Count, "Disk Service needs to have 4 files");
 
-                    foreach (IFileEntry entry in files)
+                    foreach (FileEntry entry in files)
                     {
                         Assert.IsTrue(service.Delete(entry));
                     }

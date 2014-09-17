@@ -14,22 +14,27 @@
             return true;
         }
 
-        protected override bool DoLoad(IFileEntry key, out byte[] data)
+        protected override bool DoLoad(string hash, out byte[] data)
         {
             throw new System.NotImplementedException();
         }
 
-        protected override bool DoSave(IFileEntry key, byte[] data)
+        protected override bool DoSave(string hash, byte[] data)
         {
             throw new System.NotImplementedException();
         }
 
-        protected override bool DoDelete(IFileEntry key)
+        protected override bool DoDelete(string hash)
         {
             throw new System.NotImplementedException();
         }
 
-        protected override IList<IFileEntry> DoGetFiles()
+        protected override int DoCleanup()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        protected override IList<FileEntry> DoGetFiles(bool includeDeleted)
         {
             return null;
         }

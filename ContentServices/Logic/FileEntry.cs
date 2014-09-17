@@ -2,11 +2,10 @@
 {
     using System;
     
-    using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.Logic.Attributes;
 
     [DatabaseEntry("FileTable")]
-    public class FileEntry : DatabaseEntry, IFileEntry
+    public class FileEntry : DatabaseEntry
     {
         // -------------------------------------------------------------------
         // Public
@@ -38,7 +37,10 @@
         [ContentEntryElement(IgnoreEquality = true)]
         public DateTime ModifyDate { get; set; }
 
-        public override int GetHashCode()
+        // -------------------------------------------------------------------
+        // Protected
+        // -------------------------------------------------------------------
+        protected override int DoGetHashCode()
         {
             return Tuple.Create(this.Hash).GetHashCode();
         }

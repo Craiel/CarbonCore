@@ -12,6 +12,9 @@
     [JsonObject(MemberSerialization.OptOut)]
     public class ContentTestEntry : DatabaseEntry
     {
+        // -------------------------------------------------------------------
+        // Public
+        // -------------------------------------------------------------------
         [ContentEntryElement(IgnoreClone = true)]
         [DatabaseEntryElement(PrimaryKeyMode = PrimaryKeyMode.Autoincrement)]
         public int? Id { get; set; }
@@ -54,7 +57,10 @@
             return true;
         }
 
-        public override int GetHashCode()
+        // -------------------------------------------------------------------
+        // Protected
+        // -------------------------------------------------------------------
+        protected override int DoGetHashCode()
         {
             return Tuple.Create(this.Id).GetHashCode();
         }

@@ -3,20 +3,22 @@
     using System;
     using System.Collections.Generic;
 
+    using CarbonCore.ContentServices.Logic;
+
     public interface IFileService : IDisposable
     {
         int FileCount { get; }
 
-        IFileEntryData Load(IFileEntry key);
-        bool Save(IFileEntry key, IFileEntryData data, string internalFileName = null, IFileServiceProvider targetProvider = null);
-        bool Delete(IFileEntry key);
+        IFileEntryData Load(FileEntry key);
+        bool Save(FileEntry key, IFileEntryData data, string internalFileName = null, IFileServiceProvider targetProvider = null);
+        bool Delete(FileEntry key);
 
         void AddProvider(IFileServiceProvider provider);
         void RemoveProvider(IFileServiceProvider provider);
 
-        bool CheckForUpdate(IFileEntry key);
+        bool CheckForUpdate(FileEntry key);
 
-        IList<IFileEntry> GetFileEntries();
+        IList<FileEntry> GetFileEntries();
 
         IList<IFileServiceProvider> GetProviders();
     }

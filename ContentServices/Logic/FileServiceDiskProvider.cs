@@ -13,7 +13,7 @@
 
         private readonly IDatabaseService databaseService;
 
-        private readonly IDictionary<string, IFileEntry> files;
+        private readonly IDictionary<string, FileEntry> files;
 
         private CarbonDirectory root;
 
@@ -23,7 +23,7 @@
         public FileServiceDiskProvider(IFactory factory)
         {
             this.databaseService = factory.Resolve<IDatabaseService>();
-            this.files = new Dictionary<string, IFileEntry>();
+            this.files = new Dictionary<string, FileEntry>();
         }
 
         // -------------------------------------------------------------------
@@ -50,7 +50,7 @@
             }
         }
 
-        public IFileEntry CreateEntry(CarbonFile source)
+        public FileEntry CreateEntry(CarbonFile source)
         {
             DateTime createTime = DateTime.Now;
             DateTime modifyTime = DateTime.Now;
@@ -117,7 +117,7 @@
         {
             System.Diagnostics.Trace.Assert(!string.IsNullOrEmpty(hash));
 
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         protected override bool DoSave(string hash, byte[] data)
@@ -130,9 +130,15 @@
                 stream.Write(data, 0, data.Length);
             }
 
-            var local = (FileEntry)key;
+            // If we don't have an entry for this hash create one
+            if (!this.files.ContainsKey(hash))
+            {
+                var entry = new FileEntry { Hash = hash };
+                this.files.Add(hash, entry);
+            }
+
+            var local = (FileEntry)this.files[hash];
             this.databaseService.Save(ref local);
-            this.files.Add(key);
 
             return true;
         }
@@ -145,7 +151,7 @@
             CarbonFile file = this.root.ToFile(hash);
             System.Diagnostics.Trace.Assert(file.Exists, "Entry to delete is not in the provider!");
 
-            IFileEntry entry = this.files[hash];
+            var entry = (FileEntry)this.files[hash];
             entry.IsDeleted = true;
             if (this.databaseService.Save(ref entry))
             {
@@ -176,9 +182,9 @@
             return -1;
         }
 
-        protected override IList<IFileEntry> DoGetFiles()
+        protected override IList<FileEntry> DoGetFiles(bool includeDeleted)
         {
-            return new List<IFileEntry>(this.files.Values);
+            return new List<FileEntry>(this.files.Values);
         }
     }
 }

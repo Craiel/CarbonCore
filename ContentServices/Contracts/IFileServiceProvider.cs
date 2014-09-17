@@ -3,6 +3,8 @@
     using System;
     using System.Collections.Generic;
 
+    using CarbonCore.ContentServices.Logic;
+
     public interface IFileServiceProvider : IDisposable
     {
         bool IsInitialized { get; }
@@ -21,6 +23,6 @@
 
         void Initialize();
 
-        IList<IFileEntry> GetFiles();
+        IList<FileEntry> GetFiles(bool includeDeleted = false);
     }
 }

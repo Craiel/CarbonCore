@@ -46,7 +46,6 @@
     <Compile Include="Contracts\IDatabaseEntry.cs" />
     <Compile Include="Contracts\IDatabaseService.cs" />
     <Compile Include="Contracts\IDataConnector.cs" />
-    <Compile Include="Contracts\IFileEntry.cs" />
     <Compile Include="Contracts\IFileEntryData.cs" />
     <Compile Include="Contracts\IFileService.cs" />
     <Compile Include="Contracts\IFileServiceDiskProvider.cs" />

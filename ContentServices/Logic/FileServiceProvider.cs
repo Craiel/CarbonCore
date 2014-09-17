@@ -73,11 +73,11 @@
             this.IsInitialized = this.DoInitialize();
         }
 
-        public IList<IFileEntry> GetFiles()
+        public IList<FileEntry> GetFiles(bool includeDeleted = false)
         {
             System.Diagnostics.Trace.Assert(this.IsInitialized);
 
-            return this.DoGetFiles();
+            return this.DoGetFiles(includeDeleted);
         }
 
         public void Dispose()
@@ -103,6 +103,6 @@
 
         protected abstract int DoCleanup();
 
-        protected abstract IList<IFileEntry> DoGetFiles();
+        protected abstract IList<FileEntry> DoGetFiles(bool includeDeleted);
     }
 }
