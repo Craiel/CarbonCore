@@ -2,15 +2,16 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     using CarbonCore.ContentServices.Contracts;
-    using CarbonCore.Utils;
 
     public class FileService : IFileService
     {
         private readonly IList<IFileServiceProvider> providers;
-        private readonly IList<FileEntry> fileEntryLookup; 
-        private readonly IDictionary<FileEntry, IFileServiceProvider> fileProviderLookup;
+        private readonly IDictionary<FileEntryKey, IFileServiceProvider> fileProviderLookup;
+
+        private IFileServiceProvider defaultProvider;
 
         // -------------------------------------------------------------------
         // Constructor
@@ -18,8 +19,7 @@
         public FileService()
         {
             this.providers = new List<IFileServiceProvider>();
-            this.fileEntryLookup = new List<FileEntry>();
-            this.fileProviderLookup = new Dictionary<FileEntry, IFileServiceProvider>();
+            this.fileProviderLookup = new Dictionary<FileEntryKey, IFileServiceProvider>();
         }
 
         // -------------------------------------------------------------------
@@ -33,76 +33,95 @@
             }
         }
 
-        public IFileEntryData Load(FileEntry key)
+        public IFileServiceProvider DefaultProvider
+        {
+            get
+            {
+                return this.defaultProvider;
+            }
+
+            set
+            {
+                if (value != null)
+                {
+                    if (!this.providers.Contains(value))
+                    {
+                        throw new InvalidOperationException("Default provider must be registered before setting!");
+                    }
+                }
+
+                this.defaultProvider = value;
+            }
+        }
+        
+        public FileEntryData Load(FileEntryKey key)
+        {
+            if (!this.fileProviderLookup.ContainsKey(key))
+            {
+                throw new KeyNotFoundException(string.Format("File does not exist: {0}", key));
+            }
+
+            byte[] data;
+            this.fileProviderLookup[key].Load(key, out data);
+            return new FileEntryData(data);
+        }
+
+        public void Save(FileEntryKey key, FileEntryData data, IFileServiceProvider targetProvider = null)
+        {
+            targetProvider = targetProvider ?? this.defaultProvider;
+            if (targetProvider == null && !this.fileProviderLookup.ContainsKey(key))
+            {
+                throw new InvalidOperationException("Target provider must be supplied or file must already exist");
+            }
+
+            if (this.fileProviderLookup.ContainsKey(key))
+            {
+                this.fileProviderLookup[key] = targetProvider;
+            }
+            else
+            {
+                if (targetProvider == null)
+                {
+                    throw new InvalidOperationException(string.Format("Target provider must be supplied for new file {0}", key));
+                }
+
+                targetProvider.Save(key, data.ByteData);
+                this.fileProviderLookup.Add(key, targetProvider);
+            }
+        }
+
+        public void Update(FileEntryKey key, FileEntryData data, bool autoIncrementVersion = true)
+        {
+            if (!this.fileProviderLookup.ContainsKey(key))
+            {
+                throw new InvalidOperationException(string.Format("Can not update entry {0}, not yet present in the service", key));
+            }
+
+            this.fileProviderLookup[key].Save(key, data.ByteData);
+
+            // Update modified
+            this.fileProviderLookup[key].SetModifiedDate(key, DateTime.Now);
+
+            // Update version if desired
+            if (autoIncrementVersion)
+            {
+                int currentVersion = this.fileProviderLookup[key].GetVersion(key);
+                this.SetVersion(key, currentVersion + 1);
+            }
+        }
+
+        public void Delete(FileEntryKey key)
+        {
+            System.Diagnostics.Trace.Assert(this.fileProviderLookup.ContainsKey(key));
+            this.fileProviderLookup[key].Delete(key);
+            this.fileProviderLookup.Remove(key);
+        }
+
+        public void Move(FileEntryKey key, IFileServiceProvider targetProvider)
         {
             throw new NotImplementedException();
         }
 
-        public bool Save(FileEntry key, IFileEntryData data, string internalFileName = null, IFileServiceProvider targetProvider = null)
-        {
-            if ((key.Hash == null && string.IsNullOrEmpty(internalFileName))
-                || (!string.IsNullOrEmpty(key.Hash) && !string.IsNullOrEmpty(internalFileName)))
-            {
-                throw new ArgumentException("Can not have key and internal file name specified at once (or omitted)");
-            }
-
-            if (string.IsNullOrEmpty(key.Hash))
-            {
-                System.Diagnostics.Trace.Assert(!string.IsNullOrEmpty(internalFileName));
-                key.Hash = HashUtils.GetSHA1FileName(internalFileName);
-            }
-
-            // Save to a specific provider or into the first available one...
-            // Use the provider this is already in before trying to pick!
-            if (this.fileProviderLookup.ContainsKey(key))
-            {
-                if (this.fileProviderLookup[key].Capacity > data.Data.Length)
-                {
-                    targetProvider = this.fileProviderLookup[key];
-                }
-            }
-            else if (targetProvider == null)
-            {
-                throw new InvalidOperationException("Target provider must be supplied or the file must already be present");
-            }
-
-            if (targetProvider == null)
-            {
-                throw new InvalidOperationException("Could not determine operator with enough capacity");
-            }
-
-            if (targetProvider.Save(key.Hash, data.Data))
-            {
-                if (this.fileProviderLookup.ContainsKey(key))
-                {
-                    this.fileProviderLookup[key] = targetProvider;
-                }
-                else
-                {
-                    this.fileEntryLookup.Add(key);
-                    this.fileProviderLookup.Add(key, targetProvider);
-                }
-                
-                return true;
-            }
-
-            return false;
-        }
-        
-        public bool Delete(FileEntry key)
-        {
-            System.Diagnostics.Trace.Assert(this.fileProviderLookup.ContainsKey(key));
-
-            if (this.fileProviderLookup[key].Delete(key.Hash))
-            {
-                this.fileEntryLookup.Remove(key);
-                this.fileProviderLookup.Remove(key);
-                return true;
-            }
-
-            return false;
-        }
-        
         public void Dispose()
         {
             this.Dispose(true);
@@ -121,21 +140,112 @@
             System.Diagnostics.Trace.Assert(this.providers.Contains(provider));
 
             this.MixOutProvider(provider);
+
+            // Make sure to remove this provider as the default if it was set to be
+            if (this.defaultProvider == provider)
+            {
+                this.defaultProvider = null;
+            }
+        }
+        
+        public IList<FileEntryKey> GetFileEntries()
+        {
+            return new List<FileEntryKey>(this.fileProviderLookup.Keys);
         }
 
-        public bool CheckForUpdate(FileEntry key)
+        public IFileServiceProvider GetProvider(FileEntryKey key)
         {
-            throw new NotImplementedException();
-        }
+            if (!this.fileProviderLookup.ContainsKey(key))
+            {
+                throw new KeyNotFoundException(string.Format("File does not exist: {0}", key));
+            }
 
-        public IList<FileEntry> GetFileEntries()
-        {
-            return new List<FileEntry>(this.fileEntryLookup);
+            return this.fileProviderLookup[key];
         }
 
         public IList<IFileServiceProvider> GetProviders()
         {
             return new List<IFileServiceProvider>(this.providers);
+        }
+
+        public void SetVersion(FileEntryKey key, int version)
+        {
+            if (!this.fileProviderLookup.ContainsKey(key))
+            {
+                throw new InvalidDataException(string.Format("Entry {0} does not exist", key));
+            }
+
+            System.Diagnostics.Trace.TraceWarning("Warning! Changing version of {0} to {1}", key, version);
+            this.fileProviderLookup[key].SetVersion(key, version);
+        }
+
+        public int GetVersion(FileEntryKey key)
+        {
+            if (!this.fileProviderLookup.ContainsKey(key))
+            {
+                throw new InvalidDataException(string.Format("Entry {0} does not exist", key));
+            }
+
+            return this.fileProviderLookup[key].GetVersion(key);
+        }
+
+        public void SetCreateDate(FileEntryKey key, DateTime date)
+        {
+            if (!this.fileProviderLookup.ContainsKey(key))
+            {
+                throw new KeyNotFoundException(string.Format("File does not exist: {0}", key));
+            }
+
+            System.Diagnostics.Trace.TraceWarning("Warning! Changing create date of {0} to {1}", key, date);
+            this.fileProviderLookup[key].SetCreateDate(key, date);
+        }
+
+        public DateTime GetCreateDate(FileEntryKey key)
+        {
+            if (!this.fileProviderLookup.ContainsKey(key))
+            {
+                throw new KeyNotFoundException(string.Format("File does not exist: {0}", key));
+            }
+
+            return this.fileProviderLookup[key].GetCreateDate(key);
+        }
+
+        public void SetModifiedDate(FileEntryKey key, DateTime date)
+        {
+            if (!this.fileProviderLookup.ContainsKey(key))
+            {
+                throw new KeyNotFoundException(string.Format("File does not exist: {0}", key));
+            }
+
+            DateTime createDate = this.fileProviderLookup[key].GetCreateDate(key);
+            if (date < createDate)
+            {
+                throw new ArgumentException("Modified date has to be equal or newer than Create date");
+            }
+
+            System.Diagnostics.Trace.TraceWarning("Warning! Changing modified date of {0} to {1}", key, date);
+            this.fileProviderLookup[key].SetModifiedDate(key, date);
+        }
+
+        public DateTime GetModifiedDate(FileEntryKey key)
+        {
+            if (!this.fileProviderLookup.ContainsKey(key))
+            {
+                throw new KeyNotFoundException(string.Format("File does not exist: {0}", key));
+            }
+
+            return this.fileProviderLookup[key].GetModifiedDate(key);
+        }
+
+        public int Cleanup()
+        {
+            int results = 0;
+            foreach (IFileServiceProvider provider in this.providers)
+            {
+                results += provider.Cleanup();
+            }
+
+            return results;
         }
 
         // -------------------------------------------------------------------
@@ -164,31 +274,33 @@
         {
             this.providers.Add(provider);
 
-            IList<FileEntry> files = provider.GetFiles();
+            IList<FileEntryKey> files = provider.GetFiles();
             if (files == null)
             {
                 return;
             }
 
-            foreach (FileEntry entry in files)
+            foreach (FileEntryKey key in files)
             {
-                int existingIndex = this.fileEntryLookup.IndexOf(entry);
-                if (existingIndex >= 0)
+                // If we don't have this file yet just add it
+                if (!this.fileProviderLookup.ContainsKey(key))
                 {
-                    FileEntry existing = this.fileEntryLookup[existingIndex];
-                    if (existing.Version >= entry.Version)
-                    {
-                        System.Diagnostics.Trace.TraceWarning("Ignoring entry {0} in provider {1}, already present", entry, provider);
-                        continue;
-                    }
-
-                    System.Diagnostics.Trace.TraceWarning("Changing instance of {0} to newer version {1} -> {2}", entry, existing.Version, entry.Version);
-                    this.fileEntryLookup.RemoveAt(existingIndex);
-                    this.fileProviderLookup.Remove(existing);
+                    this.fileProviderLookup.Add(key, provider);
+                    continue;
                 }
 
-                this.fileEntryLookup.Add(entry);
-                this.fileProviderLookup.Add(entry, provider);
+                // we already have this file so we need to compare versions to know which one to keep
+                int currentVersion = this.fileProviderLookup[key].GetVersion(key);
+                int providerVersion = provider.GetVersion(key);
+                if (currentVersion <= providerVersion)
+                {
+                    System.Diagnostics.Trace.TraceWarning("Ignoring entry {0} in {1}, version {2} < {3} from {4}", key, provider, providerVersion, currentVersion, this.fileProviderLookup[key]);
+                    continue;
+                }
+
+                // The provider version is more recent than the one we have so replace
+                System.Diagnostics.Trace.TraceWarning("Replacing version {0} of {1} ({2}) with version {3} from {4}", currentVersion, key, this.fileProviderLookup[key], providerVersion, provider);
+                this.fileProviderLookup[key] = provider;
             }
         }
 
@@ -196,17 +308,16 @@
         {
             System.Diagnostics.Trace.Assert(this.providers.Contains(provider));
 
-            IList<FileEntry> files = provider.GetFiles();
+            IList<FileEntryKey> files = provider.GetFiles();
             if (files != null)
             {
-                foreach (FileEntry file in files)
+                foreach (FileEntryKey key in files)
                 {
                     // Check if this provider's file / version is what we are using
-                    if (this.fileProviderLookup.ContainsKey(file) && this.fileProviderLookup[file] == provider)
+                    if (this.fileProviderLookup.ContainsKey(key) && this.fileProviderLookup[key] == provider)
                     {
                         // If so, Mix out that file
-                        this.fileEntryLookup.Remove(file);
-                        this.fileProviderLookup.Remove(file);
+                        this.fileProviderLookup.Remove(key);
                     }
                 }
             }

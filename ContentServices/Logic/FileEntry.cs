@@ -8,6 +8,17 @@
     public class FileEntry : DatabaseEntry
     {
         // -------------------------------------------------------------------
+        // Constructor
+        // -------------------------------------------------------------------
+        public FileEntry()
+        {
+            // Initialize some sensible defaults
+            this.CreateDate = DateTime.Now;
+            this.ModifyDate = DateTime.Now;
+            this.Version = 1;
+        }
+
+        // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
         [DatabaseEntryElement(PrimaryKeyMode = PrimaryKeyMode.Autoincrement)]

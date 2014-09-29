@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Autofac;
 
@@ -20,9 +21,19 @@
         private const string FileEntryResourcePath = "Resources.FileEntries";
         private const string FileEntryFolder = "FileEntries";
 
+        private readonly IDictionary<FileEntryKey, CarbonFile> testFiles;
+
         private IContainer container;
 
         private CarbonDirectory dataDirectory;
+
+        // -------------------------------------------------------------------
+        // Constructor
+        // -------------------------------------------------------------------
+        public FileServiceTests()
+        {
+            this.testFiles = new Dictionary<FileEntryKey, CarbonFile>();
+        }
 
         // -------------------------------------------------------------------
         // Public
@@ -36,6 +47,22 @@
 
             IList<CarbonFile> files = this.GetType().Assembly.ExtractResources(this.dataDirectory, FileEntryResourcePath);
             Assert.AreEqual(4, files.Count, "Must extract all resources properly");
+
+            // Build the dictionary of eligible test files
+            this.testFiles.Clear();
+            foreach (string file in Resources.Static.ResourceList)
+            {
+                if (!file.StartsWith(FileEntryFolder))
+                {
+                    continue;
+                }
+
+                string relativeFileName = file.Replace(FileEntryFolder + System.IO.Path.DirectorySeparatorChar, string.Empty);
+                CarbonFile localFile = this.dataDirectory.ToFile(relativeFileName);
+                Assert.IsTrue(localFile.Exists, "Test file must exist in the data directory!");
+
+                this.testFiles.Add(new FileEntryKey(relativeFileName), localFile);
+            }
         }
 
         [TearDown]
@@ -69,6 +96,11 @@
                 service.AddProvider(packProvider);
 
                 Assert.AreEqual(3, service.GetProviders().Count, "Must have all providers registered");
+                service.RemoveProvider(memoryProvider);
+                service.RemoveProvider(fileProvider);
+                service.RemoveProvider(packProvider);
+
+                Assert.AreEqual(0, service.GetProviders().Count, "Must remove all providers");
 
                 memoryProvider.Dispose();
                 fileProvider.Dispose();
@@ -87,7 +119,7 @@
 
                     service.AddProvider(provider);
 
-                    Assert.True(false, "Todo");
+                    this.PerformProviderTests(service, provider);
 
                     service.RemoveProvider(provider);
                     Assert.AreEqual(0, service.GetFileEntries().Count, "After removal service must have no files");
@@ -107,40 +139,7 @@
 
                     service.AddProvider(provider);
 
-                    foreach (string file in Resources.Static.ResourceList)
-                    {
-                        if (!file.StartsWith(FileEntryFolder))
-                        {
-                            continue;
-                        }
-
-                        string localFile = file.Replace(FileEntryFolder + @"\", string.Empty);
-                        var testFile = this.dataDirectory.ToFile(localFile);
-                        FileEntry entry = provider.CreateEntry(testFile);
-                        IFileEntryData entryData = new FileEntryData { Data = testFile.ReadAsByte() };
-
-                        Assert.Throws<ArgumentException>(() => service.Save(entry, entryData), "Saving hashed entry without filename should throw");
-                        service.Save(entry, entryData, localFile);
-
-                        Assert.NotNull(entry.Hash, "Hash needs to be set after call to save");
-
-                        // Now try to save it again this should work fine
-                        Assert.IsTrue(service.Save(entry, entryData));
-
-                        Assert.Throws<ArgumentException>(() => service.Save(entry, entryData, "TestMe"), "Saving hashed entry with a filename should throw");
-                    }
-
-                    IList<FileEntry> files = service.GetFileEntries();
-                    Assert.AreEqual(4, files.Count, "Disk Service needs to have 4 files");
-
-                    foreach (FileEntry entry in files)
-                    {
-                        Assert.IsTrue(service.Delete(entry));
-                    }
-
-                    Assert.AreEqual(0, service.GetFileEntries().Count, "Must have none after deleting the entries");
-                    Assert.True(service.Save(files[0], new FileEntryData { Data = new byte[] { 10, 10, 10 } }));
-                    Assert.AreEqual(1, service.GetFileEntries().Count, "Must have one after adding the entry back");
+                    this.PerformProviderTests(service, provider);
                     
                     service.RemoveProvider(provider);
                     Assert.AreEqual(0, service.GetFileEntries().Count, "After removal service must have no files");
@@ -158,12 +157,62 @@
                     provider.Initialize();
                     service.AddProvider(provider);
 
-                    Assert.True(false, "Todo");
+                    this.PerformProviderTests(service, provider);
 
                     service.RemoveProvider(provider);
                     Assert.AreEqual(0, service.GetFileEntries().Count, "After removal service must have no files");
                 }
             }
+        }
+        
+        private void PerformProviderTests(IFileService service, IFileServiceProvider provider)
+        {
+            // Test add
+            foreach (FileEntryKey key in this.testFiles.Keys)
+            {
+                var data = new FileEntryData(this.testFiles[key].ReadAsByte());
+                service.Save(key, data, provider);
+            }
+
+            Assert.AreEqual(13284, provider.BytesWritten, "Must have written exact number of bytes");
+            Assert.AreEqual(0, provider.BytesRead, "Must have no bytes read yet");
+
+            // Test load
+            foreach (FileEntryKey key in this.testFiles.Keys)
+            {
+                var originalData = new FileEntryData(this.testFiles[key].ReadAsByte());
+                FileEntryData loadedData = service.Load(key);
+                Assert.AreEqual(originalData.ByteData, loadedData.ByteData, "Loaded data must match original");
+            }
+
+            Assert.AreEqual(13284, provider.BytesRead, "Must have read exact number of bytes");
+
+            // Meta info get
+            DateTime currentDate = DateTime.Now;
+            FileEntryKey metaTestKey = this.testFiles.Keys.First();
+            Assert.AreEqual(1, service.GetVersion(metaTestKey), "New files must have version 1 by default");
+            Assert.AreEqual(currentDate.Date, service.GetCreateDate(metaTestKey).Date, "New added files must have current date as create date");
+            Assert.AreEqual(currentDate.Date, service.GetModifiedDate(metaTestKey).Date, "New files must have current date as modified date");
+            
+            // Meta info set
+            Assert.Throws<ArgumentException>(() => service.SetModifiedDate(metaTestKey, currentDate - TimeSpan.FromDays(1)), "Setting the modified date before the create date should throw");
+            service.SetVersion(metaTestKey, 2);
+            service.SetModifiedDate(metaTestKey, currentDate + TimeSpan.FromDays(1));
+            service.SetCreateDate(metaTestKey, currentDate - TimeSpan.FromDays(1));
+            Assert.AreNotEqual(service.GetModifiedDate(metaTestKey).Date, service.GetCreateDate(metaTestKey).Date, "Manually changing the modified date should make it un-equal");
+
+            service.Update(metaTestKey, new FileEntryData(new byte[] { 20, 20, 30 }));
+            Assert.AreEqual(3, service.GetVersion(metaTestKey), "Saving data must auto-increment the version");
+            
+            // Test remove
+            foreach (FileEntryKey key in this.testFiles.Keys)
+            {
+                service.Delete(key);
+            }
+
+            Assert.AreEqual(this.testFiles.Count, provider.EntriesDeleted, "Must have deleted count of test files");
+
+            Assert.AreEqual(this.testFiles.Count, service.Cleanup(), "Cleanup must purge the deleted entries");
         }
     }
 }

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     using CarbonCore.ContentServices.Contracts;
     using CarbonCore.Utils.Contracts.IoC;
@@ -13,7 +14,7 @@
 
         private readonly IDatabaseService databaseService;
 
-        private readonly IDictionary<string, FileEntry> files;
+        private readonly IDictionary<FileEntryKey, FileEntry> files;
 
         private CarbonDirectory root;
 
@@ -23,7 +24,7 @@
         public FileServiceDiskProvider(IFactory factory)
         {
             this.databaseService = factory.Resolve<IDatabaseService>();
-            this.files = new Dictionary<string, FileEntry>();
+            this.files = new Dictionary<FileEntryKey, FileEntry>();
         }
 
         // -------------------------------------------------------------------
@@ -43,34 +44,8 @@
                     throw new NotSupportedException("Can not change root after initialization");
                 }
 
-                if (this.root != value)
-                {
-                    this.root = value;
-                }
+                this.root = value;
             }
-        }
-
-        public FileEntry CreateEntry(CarbonFile source)
-        {
-            DateTime createTime = DateTime.Now;
-            DateTime modifyTime = DateTime.Now;
-            long size = 0;
-            if (source.Exists)
-            {
-                createTime = source.CreateTime;
-                modifyTime = source.LastWriteTime;
-                size = source.Size;
-            }
-
-            var entry = new FileEntry
-                            {
-                                CreateDate = createTime,
-                                ModifyDate = modifyTime,
-                                Size = size,
-                                Version = 1
-                            };
-
-            return entry;
         }
 
         // -------------------------------------------------------------------
@@ -87,7 +62,7 @@
             base.Dispose(true);
         }
 
-        protected override bool DoInitialize()
+        protected override void DoInitialize()
         {
             if (!this.root.Exists)
             {
@@ -107,59 +82,62 @@
             {
                 System.Diagnostics.Trace.Assert(!string.IsNullOrEmpty(entry.Hash));
 
-                this.files.Add(entry.Hash, entry);
+                this.files.Add(new FileEntryKey(entry.Hash), entry);
+            }
+        }
+
+        protected override void DoLoad(FileEntryKey key, out byte[] data)
+        {
+            CarbonFile file = this.root.ToFile(key.Hash);
+            if (!file.Exists)
+            {
+                throw new FileNotFoundException("Could not load file data", file.GetPath());
             }
 
-            return true;
+            using (var stream = file.OpenRead())
+            {
+                data = new byte[stream.Length];
+                stream.Read(data, 0, data.Length);
+            }
         }
 
-        protected override bool DoLoad(string hash, out byte[] data)
+        protected override void DoSave(FileEntryKey key, byte[] data)
         {
-            System.Diagnostics.Trace.Assert(!string.IsNullOrEmpty(hash));
-
-            throw new NotImplementedException();
-        }
-
-        protected override bool DoSave(string hash, byte[] data)
-        {
-            System.Diagnostics.Trace.Assert(!string.IsNullOrEmpty(hash));
-
-            CarbonFile file = this.root.ToFile(hash);
+            CarbonFile file = this.root.ToFile(key.Hash);
             using (var stream = file.OpenWrite())
             {
                 stream.Write(data, 0, data.Length);
             }
 
-            // If we don't have an entry for this hash create one
-            if (!this.files.ContainsKey(hash))
+            // If we don't have an entry for this hash create one and save it
+            if (!this.files.ContainsKey(key))
             {
-                var entry = new FileEntry { Hash = hash };
-                this.files.Add(hash, entry);
+                var entry = new FileEntry { Hash = key.Hash.Value, Size = data.Length };
+                this.databaseService.Save(ref entry);
+                lock (this.files)
+                {
+                    this.files.Add(key, entry);
+                }
             }
-
-            var local = (FileEntry)this.files[hash];
-            this.databaseService.Save(ref local);
-
-            return true;
         }
 
-        protected override bool DoDelete(string hash)
+        protected override void DoDelete(FileEntryKey key)
         {
-            System.Diagnostics.Trace.Assert(!string.IsNullOrEmpty(hash));
-            System.Diagnostics.Trace.Assert(this.files.ContainsKey(hash));
-
-            CarbonFile file = this.root.ToFile(hash);
-            System.Diagnostics.Trace.Assert(file.Exists, "Entry to delete is not in the provider!");
-
-            var entry = (FileEntry)this.files[hash];
-            entry.IsDeleted = true;
-            if (this.databaseService.Save(ref entry))
+            if (!this.files.ContainsKey(key))
             {
-                this.files.Remove(hash);
-                return true;
+                throw new InvalidOperationException(string.Format("Can not delete {0}, was not in the provider", key));
             }
 
-            return false;
+            CarbonFile file = this.root.ToFile(key.Hash);
+            System.Diagnostics.Trace.Assert(file.Exists, "Entry to delete is not in the provider!");
+
+            // First mark the file as deleted in the table
+            var entry = this.files[key];
+            entry.IsDeleted = true;
+            this.databaseService.Save(ref entry);
+
+            // Now delete the file itself if all went well
+            file.Delete();
         }
 
         protected override int DoCleanup()
@@ -174,17 +152,45 @@
                 }
             }
 
-            if (this.databaseService.Delete<FileEntry>(deleteList))
-            {
-                return deleteList.Count;
-            }
-
-            return -1;
+            this.databaseService.Delete<FileEntry>(deleteList);
+            return deleteList.Count;
         }
 
-        protected override IList<FileEntry> DoGetFiles(bool includeDeleted)
+        protected override FileEntry LoadEntry(FileEntryKey key)
         {
-            return new List<FileEntry>(this.files.Values);
+            System.Diagnostics.Trace.Assert(this.files.ContainsKey(key));
+
+            return this.files[key];
+        }
+
+        protected override void SaveEntry(FileEntryKey key, FileEntry entry)
+        {
+            System.Diagnostics.Trace.Assert(this.files.ContainsKey(key));
+
+            if (this.files.ContainsKey(key))
+            {
+                this.files[key] = entry;
+            }
+            else
+            {
+                this.files.Add(key, entry);
+            }
+        }
+        
+        protected override IList<FileEntryKey> DoGetFiles(bool includeDeleted)
+        {
+            IList<FileEntryKey> results = new List<FileEntryKey>();
+            foreach (FileEntryKey key in this.files.Keys)
+            {
+                if (this.files[key].IsDeleted && !includeDeleted)
+                {
+                    continue;
+                }
+
+                results.Add(key);
+            }
+
+            return results;
         }
     }
 }

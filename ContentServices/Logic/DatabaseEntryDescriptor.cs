@@ -54,9 +54,12 @@
 
         public static DatabaseEntryDescriptor GetDescriptor(Type type)
         {
-            if (!Descriptors.ContainsKey(type))
+            lock (Descriptors)
             {
-                Descriptors.Add(type, new DatabaseEntryDescriptor(type));
+                if (!Descriptors.ContainsKey(type))
+                {
+                    Descriptors.Add(type, new DatabaseEntryDescriptor(type));
+                }
             }
 
             return Descriptors[type];

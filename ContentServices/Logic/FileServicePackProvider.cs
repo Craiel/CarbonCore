@@ -6,25 +6,35 @@
 
     public class FileServicePackProvider : FileServiceProvider, IFileServicePackProvider
     {
+        private readonly IDictionary<FileEntryKey, long> files;
+
+        // -------------------------------------------------------------------
+        // Constructor
+        // -------------------------------------------------------------------
+        public FileServicePackProvider()
+        {
+            this.files = new Dictionary<FileEntryKey, long>();
+        }
+        
         // -------------------------------------------------------------------
         // Protected
         // -------------------------------------------------------------------
-        protected override bool DoInitialize()
+        protected override void DoInitialize()
         {
-            return true;
+            // Todo
         }
 
-        protected override bool DoLoad(string hash, out byte[] data)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        protected override bool DoSave(string hash, byte[] data)
+        protected override void DoLoad(FileEntryKey key, out byte[] data)
         {
             throw new System.NotImplementedException();
         }
 
-        protected override bool DoDelete(string hash)
+        protected override void DoSave(FileEntryKey key, byte[] data)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        protected override void DoDelete(FileEntryKey key)
         {
             throw new System.NotImplementedException();
         }
@@ -34,9 +44,19 @@
             throw new System.NotImplementedException();
         }
 
-        protected override IList<FileEntry> DoGetFiles(bool includeDeleted)
+        protected override FileEntry LoadEntry(FileEntryKey key)
         {
-            return null;
+            throw new System.NotImplementedException();
+        }
+
+        protected override void SaveEntry(FileEntryKey key, FileEntry entry)
+        {
+            throw new System.NotImplementedException();
+        }
+        
+        protected override IList<FileEntryKey> DoGetFiles(bool includeDeleted)
+        {
+            return new List<FileEntryKey>(this.files.Keys);
         }
     }
 }

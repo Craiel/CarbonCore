@@ -1,7 +1,7 @@
 ﻿namespace CarbonCore.ContentServices.Logic
 {
     using System;
-    using System.Data.Common;
+    using System.Data;
     using System.Data.SQLite;
 
     using CarbonCore.Utils.Database;
@@ -19,7 +19,7 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public override void IntoCommand(DbCommand target)
+        public override void IntoCommand(IDbCommand target)
         {
             string commandText = this.ToString();
 

@@ -61,7 +61,7 @@
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return this.DoGetHashCode();
         }
 
         public override bool Equals(object obj)

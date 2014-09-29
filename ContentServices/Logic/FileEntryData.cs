@@ -1,12 +1,15 @@
 ﻿namespace CarbonCore.ContentServices.Logic
 {
-    using CarbonCore.ContentServices.Contracts;
-
-    public class FileEntryData : IFileEntryData
+    public class FileEntryData
     {
+        public FileEntryData(byte[] data)
+        {
+            this.ByteData = data;
+        }
+
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public byte[] Data { get; set; }
+        public byte[] ByteData { get; private set; }
     }
 }

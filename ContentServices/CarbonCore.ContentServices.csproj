@@ -42,11 +42,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants.cs" />
     <Compile Include="Contracts\IContentEntry.cs" />
     <Compile Include="Contracts\IDatabaseEntry.cs" />
     <Compile Include="Contracts\IDatabaseService.cs" />
     <Compile Include="Contracts\IDataConnector.cs" />
-    <Compile Include="Contracts\IFileEntryData.cs" />
     <Compile Include="Contracts\IFileService.cs" />
     <Compile Include="Contracts\IFileServiceDiskProvider.cs" />
     <Compile Include="Contracts\IFileServiceMemoryProvider.cs" />
@@ -70,11 +70,15 @@
     <Compile Include="Logic\DatabaseEntry.cs" />
     <Compile Include="Logic\FileEntry.cs" />
     <Compile Include="Logic\FileEntryData.cs" />
+    <Compile Include="Logic\FileEntryKey.cs" />
     <Compile Include="Logic\FileService.cs" />
     <Compile Include="Logic\FileServiceDiskProvider.cs" />
     <Compile Include="Logic\FileServiceMemoryProvider.cs" />
     <Compile Include="Logic\FileServicePackProvider.cs" />
     <Compile Include="Logic\FileServiceProvider.cs" />
+    <Compile Include="Logic\SqlConnectorCommand.cs" />
+    <Compile Include="Logic\SqlConnectorConnection.cs" />
+    <Compile Include="Logic\SqlConnectorTransaction.cs" />
     <Compile Include="Logic\SQLiteStatement.cs" />
     <Compile Include="Logic\SqlLiteConnector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

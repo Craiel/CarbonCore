@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Data.Common;
+    using System.Data;
     using System.Text;
     
     public interface ISqlStatement
@@ -144,7 +144,7 @@
             }
         }
 
-        public virtual void IntoCommand(DbCommand target)
+        public virtual void IntoCommand(IDbCommand target)
         {
             throw new NotImplementedException();
         }
@@ -282,6 +282,7 @@
             {
                 segments.Add(string.Format("{0} = {1}", key, WhereParameterPrefix + key));
             }
+
             foreach (string key in this.whereIn.Keys)
             {
                 segments.Add(string.Format("{0} IN ({1})", key, WhereInParameterPrefix + key));

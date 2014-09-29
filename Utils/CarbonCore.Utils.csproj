@@ -73,6 +73,7 @@
     <Compile Include="Diagnostics\ContextualLog.cs" />
     <Compile Include="Diagnostics\ProgressRegion.cs" />
     <Compile Include="Formatting\FormatHandler.cs" />
+    <Compile Include="HashFileName.cs" />
     <Compile Include="IoC\CarbonContainer.cs" />
     <Compile Include="IoC\CarbonContainerBuilder.cs" />
     <Compile Include="IoC\CarbonModule.cs" />

@@ -6,7 +6,6 @@
     using System.Data.Common;
     using System.Data.SQLite;
     using System.Linq;
-    using System.Reflection;
 
     using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.Logic.Attributes;
@@ -17,13 +16,11 @@
 
     public class DatabaseService : IDatabaseService
     {
-        private const string StatementTableInfo = "PRAGMA table_info({0})";
-        private const string StatementPrimaryKey = "PRIMARY KEY";
-        private const string StatementAutoIncrement = "AUTOINCREMENT";
-
         private readonly ISqlLiteConnector connector;
 
-        private readonly IDictionary<string, DatabaseEntryDescriptor> checkedTables; 
+        private readonly IDictionary<string, DatabaseEntryDescriptor> checkedTables;
+
+        private readonly object singleThreadLock = new object();
 
         private CarbonFile activeFile;
 
@@ -53,59 +50,27 @@
             this.connector.Connect();
         }
 
-        bool IDatabaseService.Save<T>(ref T entry)
+        public void Save<T>(ref T entry) where T : IDatabaseEntry
         {
             DatabaseEntryDescriptor descriptor = DatabaseEntryDescriptor.GetDescriptor<T>();
             this.CheckTable(descriptor);
 
-            using (var transaction = this.connector.BeginTransaction())
+            lock (this.singleThreadLock)
             {
-                try
-                {
-                    if (this.DoSave(descriptor, entry))
-                    {
-                        transaction.Commit();
-                        return true;
-                    }
-                }
-                catch (Exception e)
-                {
-                    System.Diagnostics.Trace.TraceError("Save failed of {0}, {1}", entry, e);
-                }
-
-                transaction.Rollback();
-            }
-
-            return false;
-        }
-
-        public bool Save<T>(IList<T> entries) where T : IDatabaseEntry
-        {
-            DatabaseEntryDescriptor descriptor = DatabaseEntryDescriptor.GetDescriptor<T>();
-            this.CheckTable(descriptor);
-
-            using (var transaction = this.connector.BeginTransaction())
-            {
-                foreach (T entry in entries)
+                using (var transaction = this.connector.BeginTransaction())
                 {
                     try
                     {
-                        if (this.DoSave(descriptor, entry))
-                        {
-                            continue;
-                        }
+                        this.DoSave(descriptor, entry);
+                        transaction.Commit();
                     }
                     catch (Exception e)
                     {
-                        System.Diagnostics.Trace.TraceError("Save failed of {0}/{1}, {2}", entry, entries.Count, e);
+                        System.Diagnostics.Trace.TraceError("Save failed of {0}, {1}", entry, e);
                     }
 
                     transaction.Rollback();
-                    return false;
                 }
-
-                transaction.Commit();
-                return true;
             }
         }
 
@@ -136,9 +101,9 @@
             return results.Cast<T>().ToList();
         }
         
-        public bool Delete<T>(IList<object> keys) where T : IDatabaseEntry
+        public void Delete<T>(object key) where T : IDatabaseEntry
         {
-            System.Diagnostics.Trace.Assert(keys != null && keys.Count > 0, "Delete needs values, Drop table if you want to clear!");
+            System.Diagnostics.Trace.Assert(key != null, "Delete needs values, Drop table if you want to clear!");
 
             DatabaseEntryDescriptor descriptor = DatabaseEntryDescriptor.GetDescriptor<T>();
             this.CheckTable(descriptor);
@@ -147,19 +112,14 @@
             {
                 try
                 {
-                    if (this.DoDelete(descriptor, keys))
-                    {
-                        transaction.Commit();
-                        return true;
-                    }
+                    this.DoDelete(descriptor, new List<object> { key });
+                    transaction.Commit();
                 }
                 catch (Exception e)
                 {
-                    System.Diagnostics.Trace.TraceError("Delete failed: {0}", e);
+                    transaction.Rollback();
+                    throw new Exception("Delete failed", e);
                 }
-
-                transaction.Rollback();
-                return false;
             }
         }
         
@@ -171,10 +131,25 @@
             return this.DoCount(descriptor, keys);
         }
 
-        public bool Drop<T>()
+        public void Drop<T>()
         {
             DatabaseEntryDescriptor descriptor = DatabaseEntryDescriptor.GetDescriptor<T>();
-            return this.DropTable(descriptor);
+            this.DropTable(descriptor);
+        }
+
+        public void SaveAsync<T>(IList<T> entries) where T : IDatabaseEntry
+        {
+            throw new NotImplementedException();
+        }
+
+        public void LoadAsync<T>(Action<IList<T>> callback, IList<object> keys = null, bool loadFull = false) where T : IDatabaseEntry
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteAsync<T>(IList<object> keys) where T : IDatabaseEntry
+        {
+            throw new NotImplementedException();
         }
 
         public IList<string> GetTables()
@@ -203,25 +178,28 @@
         // -------------------------------------------------------------------
         private IList<object[]> GetTableInfo(string tableName)
         {
-            using (DbCommand command = this.connector.CreateCommand())
+            lock (this.singleThreadLock)
             {
-                command.CommandText = string.Format(StatementTableInfo, tableName);
-                IList<object[]> info = new List<object[]>();
-                using (DbDataReader reader = command.ExecuteReader(CommandBehavior.Default))
+                using (DbCommand command = this.connector.CreateCommand())
                 {
-                    while (reader.Read())
+                    command.CommandText = string.Format(ContentServices.Constants.StatementTableInfo, tableName);
+                    IList<object[]> info = new List<object[]>();
+                    using (DbDataReader reader = command.ExecuteReader(CommandBehavior.Default))
                     {
-                        var data = new object[reader.FieldCount];
-                        if (reader.GetValues(data) != reader.FieldCount)
+                        while (reader.Read())
                         {
-                            throw new InvalidOperationException("GetValues returned unexpected field count");
+                            var data = new object[reader.FieldCount];
+                            if (reader.GetValues(data) != reader.FieldCount)
+                            {
+                                throw new InvalidOperationException("GetValues returned unexpected field count");
+                            }
+
+                            info.Add(data);
                         }
-
-                        info.Add(data);
                     }
-                }
 
-                return info;
+                    return info;
+                }
             }
         }
 
@@ -234,13 +212,16 @@
             statement.What("name");
             statement.WhereConstraint("type", "table");
 
-            using (DbCommand command = this.connector.CreateCommand(statement))
+            lock (this.singleThreadLock)
             {
-                using (DbDataReader reader = command.ExecuteReader())
+                using (DbCommand command = this.connector.CreateCommand(statement))
                 {
-                    while (reader.Read())
+                    using (DbDataReader reader = command.ExecuteReader())
                     {
-                        results.Add(reader["name"].ToString());
+                        while (reader.Read())
+                        {
+                            results.Add(reader["name"].ToString());
+                        }
                     }
                 }
             }
@@ -248,27 +229,27 @@
             return results;
         }
 
-        private bool DropTable(DatabaseEntryDescriptor descriptor)
+        private void DropTable(DatabaseEntryDescriptor descriptor)
         {
             var statement = new SQLiteStatement(SqlStatementType.Drop);
             statement.Table(descriptor.TableName);
 
-            using (DbCommand command = this.connector.CreateCommand(statement))
+            lock (this.singleThreadLock)
             {
-                try
+                using (DbCommand command = this.connector.CreateCommand(statement))
                 {
-                    int result = command.ExecuteNonQuery();
-                    System.Diagnostics.Trace.TraceWarning(
-                        "Dropped table {0}, lost {1} entries", descriptor.TableName, result);
-                }
-                catch (SQLiteException e)
-                {
-                    System.Diagnostics.Trace.TraceWarning("Could not drop table {0}, {1}", descriptor.TableName, e);
-                    return false;
+                    try
+                    {
+                        int result = command.ExecuteNonQuery();
+                        System.Diagnostics.Trace.TraceWarning(
+                            "Dropped table {0}, lost {1} entries", descriptor.TableName, result);
+                    }
+                    catch (SQLiteException e)
+                    {
+                        System.Diagnostics.Trace.TraceWarning("Could not drop table {0}, {1}", descriptor.TableName, e);
+                    }
                 }
             }
-
-            return true;
         }
 
         private void CreateTable(DatabaseEntryDescriptor descriptor)
@@ -283,13 +264,13 @@
                     {
                         case PrimaryKeyMode.Autoincrement:
                             {
-                                properties = string.Format("{0} {1} {2}", properties, StatementPrimaryKey, StatementAutoIncrement);
+                                properties = string.Format("{0} {1} {2}", properties, ContentServices.Constants.StatementPrimaryKey, ContentServices.Constants.StatementAutoIncrement);
                                 break;
                             }
 
                         default:
                             {
-                                properties = string.Format("{0} {1}", properties, StatementPrimaryKey);
+                                properties = string.Format("{0} {1}", properties, ContentServices.Constants.StatementPrimaryKey);
                                 break;
                             }
                     }
@@ -300,9 +281,12 @@
 
             statement.Table(descriptor.TableName);
 
-            using (DbCommand command = this.connector.CreateCommand(statement))
+            lock (this.singleThreadLock)
             {
-                command.ExecuteNonQuery();
+                using (DbCommand command = this.connector.CreateCommand(statement))
+                {
+                    command.ExecuteNonQuery();
+                }
             }
         }
 
@@ -333,12 +317,12 @@
                         tableType = string.Concat(tableType, this.connector.NotNullStatement);
                     }
 
-                    tableTypeOptions = StatementPrimaryKey;
+                    tableTypeOptions = ContentServices.Constants.StatementPrimaryKey;
                     switch (descriptor.PrimaryKey.Attribute.PrimaryKeyMode)
                     {
                         case PrimaryKeyMode.Autoincrement:
                             {
-                                tableTypeOptions = string.Format("{0} {1}", tableTypeOptions, StatementAutoIncrement);
+                                tableTypeOptions = string.Format("{0} {1}", tableTypeOptions, ContentServices.Constants.StatementAutoIncrement);
                                 break;
                             }
                     }
@@ -414,7 +398,7 @@
             return statement;
         }
 
-        private bool DoSave(DatabaseEntryDescriptor descriptor, IDatabaseEntry entry)
+        private void DoSave(DatabaseEntryDescriptor descriptor, IDatabaseEntry entry)
         {
             SQLiteStatement statement = this.BuildInsertUpdateStatement(descriptor, entry);
 
@@ -427,8 +411,7 @@
                 int affected = command.ExecuteNonQuery();
                 if (affected != 1)
                 {
-                    System.Diagnostics.Trace.TraceError("Expected 1 row affected but got {0}", affected);
-                    return false;
+                    throw new InvalidOperationException(string.Format("Expected 1 row affected but got {0}", affected));
                 }
             }
 
@@ -442,11 +425,11 @@
                     {
                         if (!reader.Read())
                         {
-                            System.Diagnostics.Trace.TraceError("Failed to retrieve the id for saved object");
-                            return false;
+                            throw new InvalidOperationException("Failed to retrieve the id for saved object");
                         }
 
-                        primaryKeyValue = DatabaseUtils.GetInternalValue(descriptor.PrimaryKey.DatabaseType, reader[0]);
+                        primaryKeyValue = DatabaseUtils.GetInternalValue(
+                            descriptor.PrimaryKey.DatabaseType, reader[0]);
                         descriptor.PrimaryKey.Property.SetValue(entry, primaryKeyValue);
                     }
                 }
@@ -479,27 +462,16 @@
                     System.Diagnostics.Trace.Assert(results.Count <= 1, "Expected 1 or 0 results but got " + results.Count);
                     if (results.Count == 1)
                     {
-                        System.Diagnostics.Trace.TraceWarning(
-                            "Found one entry but null was supplied, deleting the joined entry!");
-                        if (!this.DoDelete(joinedDescriptor, new List<object> { results[0][0] }))
-                        {
-                            System.Diagnostics.Trace.TraceError("Failed to delete joined entry {0}", results[0][0]);
-                            return false;
-                        }
+                        System.Diagnostics.Trace.TraceWarning("Found one entry but null was supplied, deleting the joined entry!");
+                        this.DoDelete(joinedDescriptor, new List<object> { results[0][0] });
                     }
                 }
                 else
                 {
                     joinedElement.ForeignKeyProperty.SetValue(instance, primaryKeyValue);
-                    if (!this.DoSave(joinedDescriptor, instance))
-                    {
-                        System.Diagnostics.Trace.TraceError("Failed to save joined entry");
-                        return false;
-                    }
+                    this.DoSave(joinedDescriptor, instance);
                 }
             }
-
-            return true;
         }
 
         private void BuildBaseWhereClause(SQLiteStatement target, DatabaseEntryDescriptor descriptor, IList<object> keys)
@@ -529,17 +501,20 @@
             this.BuildBaseWhereClause(statement, descriptor, keys);
             statement.What("count(*)");
 
-            using (DbCommand command = this.connector.CreateCommand(statement))
+            lock (this.singleThreadLock)
             {
-                using (DbDataReader reader = command.ExecuteReader())
+                using (DbCommand command = this.connector.CreateCommand(statement))
                 {
-                    if (!reader.HasRows)
+                    using (DbDataReader reader = command.ExecuteReader())
                     {
-                        return 0;
-                    }
+                        if (!reader.HasRows)
+                        {
+                            return 0;
+                        }
 
-                    reader.Read();
-                    return Convert.ToInt32(reader[0]);
+                        reader.Read();
+                        return Convert.ToInt32(reader[0]);
+                    }
                 }
             }
         }
@@ -556,20 +531,25 @@
             }
 
             IList<IDatabaseEntry> results = new List<IDatabaseEntry>();
-            using (DbCommand command = this.connector.CreateCommand(statement))
-            {
-                using (DbDataReader reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        var entry = (IDatabaseEntry)Activator.CreateInstance(descriptor.Type);
-                        foreach (DatabaseEntryElementDescriptor element in descriptor.Elements)
-                        {
-                            object value = DatabaseUtils.GetInternalValue(element.DatabaseType, reader[element.Name]);
-                            element.Property.SetValue(entry, value);
-                        }
 
-                        results.Add(entry);
+            lock (this.singleThreadLock)
+            {
+                using (DbCommand command = this.connector.CreateCommand(statement))
+                {
+                    using (DbDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var entry = (IDatabaseEntry)Activator.CreateInstance(descriptor.Type);
+                            foreach (DatabaseEntryElementDescriptor element in descriptor.Elements)
+                            {
+                                object value = DatabaseUtils.GetInternalValue(
+                                    element.DatabaseType, reader[element.Name]);
+                                element.Property.SetValue(entry, value);
+                            }
+
+                            results.Add(entry);
+                        }
                     }
                 }
             }
@@ -633,23 +613,23 @@
             return results;
         }
 
-        private bool DoDelete(DatabaseEntryDescriptor descriptor, IList<object> keys)
+        private void DoDelete(DatabaseEntryDescriptor descriptor, IList<object> keys)
         {
             var statement = new SQLiteStatement(SqlStatementType.Delete);
             statement.Table(descriptor.TableName);
             this.BuildBaseWhereClause(statement, descriptor, keys);
 
-            using (DbCommand command = this.connector.CreateCommand(statement))
+            lock (this.singleThreadLock)
             {
-                int affected = command.ExecuteNonQuery();
-                if (affected != keys.Count)
+                using (DbCommand command = this.connector.CreateCommand(statement))
                 {
-                    System.Diagnostics.Trace.TraceError("Expected {0} rows but got {1}", keys.Count, affected);
-                    return false;
+                    int affected = command.ExecuteNonQuery();
+                    if (affected != keys.Count)
+                    {
+                        throw new InvalidOperationException(string.Format("Expected {0} rows but got {1}", keys.Count, affected));
+                    }
                 }
             }
-
-            return true;
         }
 
         private IList<object[]> DoLoadFields(DatabaseEntryDescriptor descriptor, IEnumerable<KeyValuePair<string, IList<object>>> whereConstraints, params string[] fieldNames)
@@ -679,19 +659,23 @@
             }
 
             IList<object[]> results = new List<object[]>();
-            using (DbCommand command = this.connector.CreateCommand(statement))
-            {
-                using (DbDataReader reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        var values = new object[fieldNames.Length];
-                        for (int i = 0; i < fieldNames.Length; i++)
-                        {
-                            values[i] = reader[i];
-                        }
 
-                        results.Add(values);
+            lock (this.singleThreadLock)
+            {
+                using (DbCommand command = this.connector.CreateCommand(statement))
+                {
+                    using (DbDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var values = new object[fieldNames.Length];
+                            for (int i = 0; i < fieldNames.Length; i++)
+                            {
+                                values[i] = reader[i];
+                            }
+
+                            results.Add(values);
+                        }
                     }
                 }
             }

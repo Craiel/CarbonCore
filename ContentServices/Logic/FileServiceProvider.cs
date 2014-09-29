@@ -22,43 +22,25 @@
 
         public long EntriesDeleted { get; private set; }
 
-        public bool Load(string hash, out byte[] data)
+        public void Load(FileEntryKey key, out byte[] data)
         {
             System.Diagnostics.Trace.Assert(this.IsInitialized);
-
-            if (this.DoLoad(hash, out data))
-            {
-                this.BytesRead += data.Length;
-                return true;
-            }
-
-            return false;
+            this.DoLoad(key, out data);
+            this.BytesRead += data.Length;
         }
 
-        public bool Save(string hash, byte[] data)
+        public void Save(FileEntryKey key, byte[] data)
         {
             System.Diagnostics.Trace.Assert(this.IsInitialized);
-
-            if (this.DoSave(hash, data))
-            {
-                this.BytesWritten += data.Length;
-                return true;
-            }
-
-            return false;
+            this.DoSave(key, data);
+            this.BytesWritten += data.Length;
         }
 
-        public bool Delete(string hash)
+        public void Delete(FileEntryKey key)
         {
             System.Diagnostics.Trace.Assert(this.IsInitialized);
-
-            if (this.DoDelete(hash))
-            {
-                this.EntriesDeleted++;
-                return true;
-            }
-
-            return false;
+            this.DoDelete(key);
+            this.EntriesDeleted++;
         }
 
         public int Cleanup()
@@ -69,15 +51,64 @@
         public void Initialize()
         {
             System.Diagnostics.Trace.Assert(!this.IsInitialized);
-
-            this.IsInitialized = this.DoInitialize();
+            this.DoInitialize();
+            this.IsInitialized = true;
         }
 
-        public IList<FileEntry> GetFiles(bool includeDeleted = false)
+        public IList<FileEntryKey> GetFiles(bool includeDeleted = false)
         {
             System.Diagnostics.Trace.Assert(this.IsInitialized);
 
             return this.DoGetFiles(includeDeleted);
+        }
+
+        public void SetVersion(FileEntryKey key, int version)
+        {
+            FileEntry entry = this.LoadEntry(key);
+            entry.Version = version;
+            this.SaveEntry(key, entry);
+        }
+
+        public int GetVersion(FileEntryKey key)
+        {
+            FileEntry entry = this.LoadEntry(key);
+            return entry.Version;
+        }
+
+        public void SetCreateDate(FileEntryKey key, DateTime date)
+        {
+            FileEntry entry = this.LoadEntry(key);
+            entry.CreateDate = date;
+            this.SaveEntry(key, entry);
+        }
+
+        public DateTime GetCreateDate(FileEntryKey key)
+        {
+            FileEntry entry = this.LoadEntry(key);
+            return entry.CreateDate;
+        }
+
+        public void SetModifiedDate(FileEntryKey key, DateTime date)
+        {
+            FileEntry entry = this.LoadEntry(key);
+            entry.ModifyDate = date;
+            this.SaveEntry(key, entry);
+        }
+
+        public DateTime GetModifiedDate(FileEntryKey key)
+        {
+            FileEntry entry = this.LoadEntry(key);
+            return entry.ModifyDate;
+        }
+
+        public void GetMetadata(FileEntryKey key, int metadataKey, out int? value, out string stringValue)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetMetadata(FileEntryKey key, int metadataKey, int? value = null, string stringValue = null)
+        {
+            throw new NotImplementedException();
         }
 
         public void Dispose()
@@ -93,16 +124,19 @@
         {
         }
 
-        protected abstract bool DoInitialize();
+        protected abstract void DoInitialize();
 
-        protected abstract bool DoLoad(string hash, out byte[] data);
+        protected abstract void DoLoad(FileEntryKey key, out byte[] data);
 
-        protected abstract bool DoSave(string hash, byte[] data);
+        protected abstract void DoSave(FileEntryKey key, byte[] data);
 
-        protected abstract bool DoDelete(string hash);
+        protected abstract void DoDelete(FileEntryKey key);
 
         protected abstract int DoCleanup();
 
-        protected abstract IList<FileEntry> DoGetFiles(bool includeDeleted);
+        protected abstract FileEntry LoadEntry(FileEntryKey key);
+        protected abstract void SaveEntry(FileEntryKey key, FileEntry entry);
+
+        protected abstract IList<FileEntryKey> DoGetFiles(bool includeDeleted);
     }
 }

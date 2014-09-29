@@ -37,6 +37,19 @@
             return builder.ToString();
         }
 
+        public static byte[] SaveToByte<T>(T source, bool compress = true, Formatting formatting = Formatting.None)
+        {
+            using (var stream = new MemoryStream())
+            {
+                SaveToStream(stream, source, compress, formatting);
+
+                stream.Seek(0, SeekOrigin.Begin);
+                var result = new byte[stream.Length];
+                stream.Read(result, 0, (int)stream.Length);
+                return result;
+            }
+        }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = "Checked")]
         public static T LoadFromFile<T>(CarbonFile file, bool compressed = true)
         {

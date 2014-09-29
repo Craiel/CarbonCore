@@ -3,7 +3,6 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Security.Cryptography;
@@ -74,20 +73,6 @@
         public static string Md5ToString(byte[] data)
         {
             return Convert.ToBase64String(data);
-        }
-
-        public static string GetSHA1FileName(string data)
-        {
-            var sha = SHA1.Create();
-            byte[] hash = sha.ComputeHash(Encoding.UTF8.GetBytes(data));
-            return Convert.ToBase64String(hash).Replace('/', '-');
-        }
-
-        public static string GetFNVFileName(int value)
-        {
-            var fnv = FNV.Create();
-            int hash = fnv.Compute(BitConverter.GetBytes(value));
-            return hash.ToString(CultureInfo.InvariantCulture).Replace('-', 'N');
         }
     }
 }
