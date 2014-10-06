@@ -1,6 +1,7 @@
 ﻿namespace CarbonCore.ContentServices.Contracts
 {
     using System;
+    using System.Collections.Generic;
     using System.Data.Common;
 
     using CarbonCore.Utils.Database;
@@ -12,6 +13,7 @@
         bool Connect();
 
         DbCommand CreateCommand(SqlStatement statement = null);
+        DbCommand CreateCommand(IList<SqlStatement> statements);
 
         DbTransaction BeginTransaction();
 

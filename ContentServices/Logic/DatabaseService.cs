@@ -5,13 +5,16 @@
     using System.Data;
     using System.Data.Common;
     using System.Data.SQLite;
+    using System.IO;
     using System.Linq;
+    using System.Threading;
 
     using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.Logic.Attributes;
     using CarbonCore.Utils;
     using CarbonCore.Utils.Contracts.IoC;
     using CarbonCore.Utils.Database;
+    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.IO;
 
     public class DatabaseService : IDatabaseService
@@ -20,9 +23,17 @@
 
         private readonly IDictionary<string, DatabaseEntryDescriptor> checkedTables;
 
-        private readonly object singleThreadLock = new object();
+        private readonly object threadLock = new object();
+
+        private readonly Queue<DatabaseServiceAction> pendingActions;
+
+        private readonly IDictionary<string, int> nextPrimaryKeyLookup;
 
         private CarbonFile activeFile;
+
+        private Thread writerThread;
+
+        private bool writerThreadActive;
 
         // -------------------------------------------------------------------
         // Constructor
@@ -32,6 +43,10 @@
             this.connector = factory.Resolve<ISqlLiteConnector>();
 
             this.checkedTables = new Dictionary<string, DatabaseEntryDescriptor>();
+
+            this.pendingActions = new Queue<DatabaseServiceAction>();
+
+            this.nextPrimaryKeyLookup = new Dictionary<string, int>();
         }
 
         // -------------------------------------------------------------------
@@ -48,30 +63,49 @@
             this.activeFile = file;
             this.connector.SetFile(this.activeFile);
             this.connector.Connect();
+
+            // Create the async writing thread
+            this.writerThreadActive = true;
+            this.writerThread = new Thread(this.WriterThreadMain) { Name = "DatabaseServiceWriter", IsBackground = true };
+            this.writerThread.Start();
         }
 
-        public void Save<T>(ref T entry) where T : IDatabaseEntry
+        public void Save<T>(ref T entry, bool async = false) where T : IDatabaseEntry
         {
             DatabaseEntryDescriptor descriptor = DatabaseEntryDescriptor.GetDescriptor<T>();
             this.CheckTable(descriptor);
 
-            lock (this.singleThreadLock)
+            IList<DatabaseServiceAction> actions = this.DoSave(descriptor, entry);
+            this.pendingActions.EnqueueRange(actions);
+            if (async)
             {
-                using (var transaction = this.connector.BeginTransaction())
-                {
-                    try
-                    {
-                        this.DoSave(descriptor, entry);
-                        transaction.Commit();
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Trace.TraceError("Save failed of {0}, {1}", entry, e);
-                    }
-
-                    transaction.Rollback();
-                }
+                return;
             }
+
+            // Wait until all actions are written
+            this.ProcessPendingWrites(actions.Last());
+        }
+
+        public void Save<T>(IList<T> entries, bool async = false) where T : IDatabaseEntry
+        {
+            DatabaseEntryDescriptor descriptor = DatabaseEntryDescriptor.GetDescriptor<T>();
+            this.CheckTable(descriptor);
+
+            IList<DatabaseServiceAction> actions = new List<DatabaseServiceAction>();
+            foreach (T entry in entries)
+            {
+                IList<DatabaseServiceAction> entryActions = this.DoSave(descriptor, entry);
+                actions.AddRange(entryActions);
+            }
+
+            this.pendingActions.EnqueueRange(actions);
+
+            if (async)
+            {
+                return;
+            }
+
+            this.ProcessPendingWrites(actions.Last());
         }
 
         public T Load<T>(object key, bool loadFull = false) where T : IDatabaseEntry
@@ -101,26 +135,34 @@
             return results.Cast<T>().ToList();
         }
         
-        public void Delete<T>(object key) where T : IDatabaseEntry
+        public void Delete<T>(object key, bool async = false) where T : IDatabaseEntry
         {
             System.Diagnostics.Trace.Assert(key != null, "Delete needs values, Drop table if you want to clear!");
 
             DatabaseEntryDescriptor descriptor = DatabaseEntryDescriptor.GetDescriptor<T>();
             this.CheckTable(descriptor);
 
-            using (var transaction = this.connector.BeginTransaction())
+            DatabaseServiceAction action = this.DoDelete(descriptor, new List<object> { key });
+            if (async)
             {
-                try
-                {
-                    this.DoDelete(descriptor, new List<object> { key });
-                    transaction.Commit();
-                }
-                catch (Exception e)
-                {
-                    transaction.Rollback();
-                    throw new Exception("Delete failed", e);
-                }
+                return;
             }
+
+            this.ProcessPendingWrites(action);
+        }
+
+        public void Delete<T>(IList<object> keys, bool async = false) where T : IDatabaseEntry
+        {
+            DatabaseEntryDescriptor descriptor = DatabaseEntryDescriptor.GetDescriptor<T>();
+            this.CheckTable(descriptor);
+
+            DatabaseServiceAction action = this.DoDelete(descriptor, keys);
+            if (async)
+            {
+                return;
+            }
+
+            this.ProcessPendingWrites(action);
         }
         
         public int Count<T>(IList<object> keys = null) where T : IDatabaseEntry
@@ -134,27 +176,28 @@
         public void Drop<T>()
         {
             DatabaseEntryDescriptor descriptor = DatabaseEntryDescriptor.GetDescriptor<T>();
-            this.DropTable(descriptor);
-        }
 
-        public void SaveAsync<T>(IList<T> entries) where T : IDatabaseEntry
-        {
-            throw new NotImplementedException();
-        }
+            var statement = new SQLiteStatement(SqlStatementType.Drop);
+            statement.Table(descriptor.TableName);
 
-        public void LoadAsync<T>(Action<IList<T>> callback, IList<object> keys = null, bool loadFull = false) where T : IDatabaseEntry
-        {
-            throw new NotImplementedException();
-        }
+            var action = new DatabaseServiceAction(statement) { IgnoreFailure = true };
+            this.pendingActions.Enqueue(action);
+            this.ProcessPendingWrites(action);
 
-        public void DeleteAsync<T>(IList<object> keys) where T : IDatabaseEntry
-        {
-            throw new NotImplementedException();
+            if (!action.Success)
+            {
+                throw new InvalidOperationException("Drop failed", action.Exception);
+            }
         }
 
         public IList<string> GetTables()
         {
             return this.DoGetTables();
+        }
+
+        public void WaitForAsyncActions()
+        {
+            this.ProcessPendingWrites();
         }
 
         // -------------------------------------------------------------------
@@ -165,6 +208,13 @@
             if (!disposing)
             {
                 return;
+            }
+
+            if (this.writerThread != null)
+            {
+                this.writerThreadActive = false;
+                this.ProcessPendingWrites();
+                this.writerThread = null;
             }
 
             if (this.connector != null)
@@ -178,28 +228,25 @@
         // -------------------------------------------------------------------
         private IList<object[]> GetTableInfo(string tableName)
         {
-            lock (this.singleThreadLock)
+            using (DbCommand command = this.connector.CreateCommand())
             {
-                using (DbCommand command = this.connector.CreateCommand())
+                command.CommandText = string.Format(ContentServices.Constants.StatementTableInfo, tableName);
+                IList<object[]> info = new List<object[]>();
+                using (DbDataReader reader = command.ExecuteReader(CommandBehavior.Default))
                 {
-                    command.CommandText = string.Format(ContentServices.Constants.StatementTableInfo, tableName);
-                    IList<object[]> info = new List<object[]>();
-                    using (DbDataReader reader = command.ExecuteReader(CommandBehavior.Default))
+                    while (reader.Read())
                     {
-                        while (reader.Read())
+                        var data = new object[reader.FieldCount];
+                        if (reader.GetValues(data) != reader.FieldCount)
                         {
-                            var data = new object[reader.FieldCount];
-                            if (reader.GetValues(data) != reader.FieldCount)
-                            {
-                                throw new InvalidOperationException("GetValues returned unexpected field count");
-                            }
-
-                            info.Add(data);
+                            throw new InvalidOperationException("GetValues returned unexpected field count");
                         }
-                    }
 
-                    return info;
+                        info.Add(data);
+                    }
                 }
+
+                return info;
             }
         }
 
@@ -212,16 +259,13 @@
             statement.What("name");
             statement.WhereConstraint("type", "table");
 
-            lock (this.singleThreadLock)
+            using (DbCommand command = this.connector.CreateCommand(statement))
             {
-                using (DbCommand command = this.connector.CreateCommand(statement))
+                using (DbDataReader reader = command.ExecuteReader())
                 {
-                    using (DbDataReader reader = command.ExecuteReader())
+                    while (reader.Read())
                     {
-                        while (reader.Read())
-                        {
-                            results.Add(reader["name"].ToString());
-                        }
+                        results.Add(reader["name"].ToString());
                     }
                 }
             }
@@ -229,51 +273,16 @@
             return results;
         }
 
-        private void DropTable(DatabaseEntryDescriptor descriptor)
+        private DatabaseServiceAction CreateTable(DatabaseEntryDescriptor descriptor)
         {
-            var statement = new SQLiteStatement(SqlStatementType.Drop);
-            statement.Table(descriptor.TableName);
+            var statement = new SQLiteStatement(SqlStatementType.Create) { DisableRowId = true };
 
-            lock (this.singleThreadLock)
-            {
-                using (DbCommand command = this.connector.CreateCommand(statement))
-                {
-                    try
-                    {
-                        int result = command.ExecuteNonQuery();
-                        System.Diagnostics.Trace.TraceWarning(
-                            "Dropped table {0}, lost {1} entries", descriptor.TableName, result);
-                    }
-                    catch (SQLiteException e)
-                    {
-                        System.Diagnostics.Trace.TraceWarning("Could not drop table {0}, {1}", descriptor.TableName, e);
-                    }
-                }
-            }
-        }
-
-        private void CreateTable(DatabaseEntryDescriptor descriptor)
-        {
-            var statement = new SQLiteStatement(SqlStatementType.Create);
             foreach (DatabaseEntryElementDescriptor element in descriptor.Elements)
             {
                 string properties = DatabaseUtils.GetDatabaseTypeString(element.DatabaseType);
                 if (element == descriptor.PrimaryKey)
                 {
-                    switch (descriptor.PrimaryKey.Attribute.PrimaryKeyMode)
-                    {
-                        case PrimaryKeyMode.Autoincrement:
-                            {
-                                properties = string.Format("{0} {1} {2}", properties, ContentServices.Constants.StatementPrimaryKey, ContentServices.Constants.StatementAutoIncrement);
-                                break;
-                            }
-
-                        default:
-                            {
-                                properties = string.Format("{0} {1}", properties, ContentServices.Constants.StatementPrimaryKey);
-                                break;
-                            }
-                    }
+                    properties = string.Format("{0} {1} {2}", properties, ContentServices.Constants.StatementPrimaryKey, ContentServices.Constants.StatementNotNull);
                 }
 
                 statement.What(element.Name, properties);
@@ -281,13 +290,9 @@
 
             statement.Table(descriptor.TableName);
 
-            lock (this.singleThreadLock)
-            {
-                using (DbCommand command = this.connector.CreateCommand(statement))
-                {
-                    command.ExecuteNonQuery();
-                }
-            }
+            var action = new DatabaseServiceAction(statement);
+            this.pendingActions.Enqueue(action);
+            return action;
         }
 
         private void CheckTable(DatabaseEntryDescriptor descriptor)
@@ -318,14 +323,6 @@
                     }
 
                     tableTypeOptions = ContentServices.Constants.StatementPrimaryKey;
-                    switch (descriptor.PrimaryKey.Attribute.PrimaryKeyMode)
-                    {
-                        case PrimaryKeyMode.Autoincrement:
-                            {
-                                tableTypeOptions = string.Format("{0} {1}", tableTypeOptions, ContentServices.Constants.StatementAutoIncrement);
-                                break;
-                            }
-                    }
                 }
 
                 // If we still assume to be consistent check more details
@@ -354,40 +351,45 @@
             {
                 System.Diagnostics.Trace.TraceWarning("Table {0} needs to be re-created", tableName);
 
-                this.CreateTable(descriptor);
+                DatabaseServiceAction action = this.CreateTable(descriptor);
+                this.ProcessPendingWrites(action);
             }
 
             this.checkedTables.Add(descriptor.TableName, descriptor);
         }
 
-        private SQLiteStatement BuildInsertUpdateStatement(DatabaseEntryDescriptor descriptor, IDatabaseEntry entry)
+        private SQLiteStatement BuildInsertStatement(DatabaseEntryDescriptor descriptor, IDatabaseEntry entry)
+        {
+            System.Diagnostics.Trace.Assert(descriptor.PrimaryKey.Attribute.PrimaryKeyMode == PrimaryKeyMode.Autoincrement, "Primary key needs to be supplied unless AutoIncrement");
+
+            // Insert if we have no primary key and auto increment
+            var statement = new SQLiteStatement(SqlStatementType.Insert);
+            foreach (DatabaseEntryElementDescriptor element in descriptor.Elements)
+            {
+                statement.With(element.Name, element.Property.GetValue(entry));
+            }
+
+            statement.Table(descriptor.TableName);
+            return statement;
+        }
+
+        private SQLiteStatement BuildUpdateStatement(DatabaseEntryDescriptor descriptor, IDatabaseEntry entry)
         {
             SQLiteStatement statement;
-            if (descriptor.PrimaryKey.Property.GetValue(entry) == null)
+            object primaryKeyValue = descriptor.PrimaryKey.Property.GetValue(entry);
+            if (descriptor.PrimaryKey.Attribute.PrimaryKeyMode != PrimaryKeyMode.Autoincrement)
             {
-                System.Diagnostics.Trace.Assert(descriptor.PrimaryKey.Attribute.PrimaryKeyMode == PrimaryKeyMode.Autoincrement, "Primary key needs to be supplied unless AutoIncrement");
-
-                // Insert if we have no primary key and auto increment
-                statement = new SQLiteStatement(SqlStatementType.Insert);
+                // Assigning so we have to check if the entry exists, this is not optimal!
+                System.Diagnostics.Trace.TraceWarning("Performing looking for exist check on {0}", descriptor.Type);
+                bool needUpdate = this.DoCount(descriptor, new List<object> { primaryKeyValue }) == 1;
+                statement = needUpdate ? new SQLiteStatement(SqlStatementType.Update) : new SQLiteStatement(SqlStatementType.Insert);
             }
             else
             {
-                // We have a primary key, now check if we are auto incrementing or assigning
-                object primaryKeyValue = descriptor.PrimaryKey.Property.GetValue(entry);
-                if (descriptor.PrimaryKey.Attribute.PrimaryKeyMode != PrimaryKeyMode.Autoincrement)
-                {
-                    // Assigning so we have to check if the entry exists, this is not optimal!
-                    System.Diagnostics.Trace.TraceWarning("Performing looking for exist check on {0}", descriptor.Type);
-                    bool needUpdate = this.DoCount(descriptor, new List<object> { primaryKeyValue }) == 1;
-                    statement = needUpdate ? new SQLiteStatement(SqlStatementType.Update) : new SQLiteStatement(SqlStatementType.Insert);
-                }
-                else
-                {
-                    statement = new SQLiteStatement(SqlStatementType.Update);
-                }
-
-                statement.WhereConstraint(descriptor.PrimaryKey.Name, primaryKeyValue);
+                statement = new SQLiteStatement(SqlStatementType.Update);
             }
+
+            statement.WhereConstraint(descriptor.PrimaryKey.Name, primaryKeyValue);
 
             foreach (DatabaseEntryElementDescriptor element in descriptor.Elements)
             {
@@ -398,46 +400,33 @@
             return statement;
         }
 
-        private void DoSave(DatabaseEntryDescriptor descriptor, IDatabaseEntry entry)
+        private IList<DatabaseServiceAction> DoSave(DatabaseEntryDescriptor descriptor, IDatabaseEntry entry)
         {
-            SQLiteStatement statement = this.BuildInsertUpdateStatement(descriptor, entry);
+            IList<DatabaseServiceAction> results = new List<DatabaseServiceAction>();
+            object primaryKeyValue = descriptor.PrimaryKey.Property.GetValue(entry);
+            bool hasPrimaryKey = primaryKeyValue != null;
 
             // Update the primary key if it's an insert statement into auto increment table
-            bool needPrimaryKeyUpdate = statement.Type == SqlStatementType.Insert
-                                        && descriptor.PrimaryKey.Attribute.PrimaryKeyMode == PrimaryKeyMode.Autoincrement;
-
-            using (DbCommand command = this.connector.CreateCommand(statement))
+            if (descriptor.PrimaryKey.Attribute.PrimaryKeyMode != PrimaryKeyMode.Autoincrement && !hasPrimaryKey)
             {
-                int affected = command.ExecuteNonQuery();
-                if (affected != 1)
-                {
-                    throw new InvalidOperationException(string.Format("Expected 1 row affected but got {0}", affected));
-                }
+                throw new InvalidDataException("Entry needs to have primary key assigned");
             }
 
-            object primaryKeyValue;
-            if (needPrimaryKeyUpdate)
+            SQLiteStatement statement;
+            if (!hasPrimaryKey)
             {
-                using (DbCommand command = this.connector.CreateCommand())
-                {
-                    command.CommandText = SqlLiteConnector.SqlLastId;
-                    using (DbDataReader reader = command.ExecuteReader())
-                    {
-                        if (!reader.Read())
-                        {
-                            throw new InvalidOperationException("Failed to retrieve the id for saved object");
-                        }
+                primaryKeyValue = this.GetNextPrimaryKey(descriptor);
 
-                        primaryKeyValue = DatabaseUtils.GetInternalValue(
-                            descriptor.PrimaryKey.DatabaseType, reader[0]);
-                        descriptor.PrimaryKey.Property.SetValue(entry, primaryKeyValue);
-                    }
-                }
+                // Assign the primary key and rebuild the statement with the new info
+                descriptor.PrimaryKey.Property.SetValue(entry, primaryKeyValue);
+                statement = this.BuildInsertStatement(descriptor, entry);
             }
             else
             {
-                primaryKeyValue = descriptor.PrimaryKey.Property.GetValue(entry);
+                statement = this.BuildUpdateStatement(descriptor, entry);
             }
+
+            results.Add(new DatabaseServiceAction(statement));
 
             // Process the joined properties
             foreach (DatabaseEntryJoinedElementDescriptor joinedElement in descriptor.JoinedElements)
@@ -452,26 +441,20 @@
                 var instance = (IDatabaseEntry)joinedElement.Property.GetValue(entry);
                 if (instance == null)
                 {
-                    var lookupKeyClause = new KeyValuePair<string, IList<object>>(joinedElement.ForeignKeyColumn, new List<object> { primaryKeyValue });
-
-                    IList<object[]> results = this.DoLoadFields(
-                        joinedDescriptor,
-                        new List<KeyValuePair<string, IList<object>>> { lookupKeyClause },
-                        joinedDescriptor.PrimaryKey.Name);
-
-                    System.Diagnostics.Trace.Assert(results.Count <= 1, "Expected 1 or 0 results but got " + results.Count);
-                    if (results.Count == 1)
-                    {
-                        System.Diagnostics.Trace.TraceWarning("Found one entry but null was supplied, deleting the joined entry!");
-                        this.DoDelete(joinedDescriptor, new List<object> { results[0][0] });
-                    }
+                    var joinedDeleteStatement = new SQLiteStatement(SqlStatementType.Delete);
+                    joinedDeleteStatement.Table(joinedDescriptor.TableName);
+                    joinedDeleteStatement.WhereConstraint(joinedElement.ForeignKeyColumn, primaryKeyValue);
+                    this.pendingActions.Enqueue(new DatabaseServiceAction(joinedDeleteStatement) { IgnoreFailure = true });
                 }
                 else
                 {
                     joinedElement.ForeignKeyProperty.SetValue(instance, primaryKeyValue);
-                    this.DoSave(joinedDescriptor, instance);
+                    IList<DatabaseServiceAction> subResults = this.DoSave(joinedDescriptor, instance);
+                    results.AddRange(subResults);
                 }
             }
+
+            return results;
         }
 
         private void BuildBaseWhereClause(SQLiteStatement target, DatabaseEntryDescriptor descriptor, IList<object> keys)
@@ -501,20 +484,17 @@
             this.BuildBaseWhereClause(statement, descriptor, keys);
             statement.What("count(*)");
 
-            lock (this.singleThreadLock)
+            using (DbCommand command = this.connector.CreateCommand(statement))
             {
-                using (DbCommand command = this.connector.CreateCommand(statement))
+                using (DbDataReader reader = command.ExecuteReader())
                 {
-                    using (DbDataReader reader = command.ExecuteReader())
+                    if (!reader.HasRows)
                     {
-                        if (!reader.HasRows)
-                        {
-                            return 0;
-                        }
-
-                        reader.Read();
-                        return Convert.ToInt32(reader[0]);
+                        return 0;
                     }
+
+                    reader.Read();
+                    return Convert.ToInt32(reader[0]);
                 }
             }
         }
@@ -532,24 +512,21 @@
 
             IList<IDatabaseEntry> results = new List<IDatabaseEntry>();
 
-            lock (this.singleThreadLock)
+            using (DbCommand command = this.connector.CreateCommand(statement))
             {
-                using (DbCommand command = this.connector.CreateCommand(statement))
+                using (DbDataReader reader = command.ExecuteReader())
                 {
-                    using (DbDataReader reader = command.ExecuteReader())
+                    while (reader.Read())
                     {
-                        while (reader.Read())
+                        var entry = (IDatabaseEntry)Activator.CreateInstance(descriptor.Type);
+                        foreach (DatabaseEntryElementDescriptor element in descriptor.Elements)
                         {
-                            var entry = (IDatabaseEntry)Activator.CreateInstance(descriptor.Type);
-                            foreach (DatabaseEntryElementDescriptor element in descriptor.Elements)
-                            {
-                                object value = DatabaseUtils.GetInternalValue(
-                                    element.DatabaseType, reader[element.Name]);
-                                element.Property.SetValue(entry, value);
-                            }
-
-                            results.Add(entry);
+                            object value = DatabaseUtils.GetInternalValue(
+                                element.DatabaseType, reader[element.Name]);
+                            element.Property.SetValue(entry, value);
                         }
+
+                        results.Add(entry);
                     }
                 }
             }
@@ -580,7 +557,7 @@
 
                 // Fetch the list of primary keys that match the results
                 var lookupKeyClause = new KeyValuePair<string, IList<object>>(joinedElement.ForeignKeyColumn, primaryKeyMap.Keys.ToList());
-                IList<object[]> joinedResults = this.DoLoadFields(
+                IEnumerable<object[]> joinedResults = this.DoLoadFields(
                         joinedDescriptor,
                         new List<KeyValuePair<string, IList<object>>> { lookupKeyClause },
                         joinedDescriptor.PrimaryKey.Name);
@@ -613,26 +590,19 @@
             return results;
         }
 
-        private void DoDelete(DatabaseEntryDescriptor descriptor, IList<object> keys)
+        private DatabaseServiceAction DoDelete(DatabaseEntryDescriptor descriptor, IList<object> keys)
         {
             var statement = new SQLiteStatement(SqlStatementType.Delete);
             statement.Table(descriptor.TableName);
             this.BuildBaseWhereClause(statement, descriptor, keys);
 
-            lock (this.singleThreadLock)
-            {
-                using (DbCommand command = this.connector.CreateCommand(statement))
-                {
-                    int affected = command.ExecuteNonQuery();
-                    if (affected != keys.Count)
-                    {
-                        throw new InvalidOperationException(string.Format("Expected {0} rows but got {1}", keys.Count, affected));
-                    }
-                }
-            }
+            var action = new DatabaseServiceAction(statement);
+            this.pendingActions.Enqueue(action);
+
+            return action;
         }
 
-        private IList<object[]> DoLoadFields(DatabaseEntryDescriptor descriptor, IEnumerable<KeyValuePair<string, IList<object>>> whereConstraints, params string[] fieldNames)
+        private IEnumerable<object[]> DoLoadFields(DatabaseEntryDescriptor descriptor, IEnumerable<KeyValuePair<string, IList<object>>> whereConstraints, params string[] fieldNames)
         {
             System.Diagnostics.Trace.Assert(fieldNames != null && fieldNames.Length > 0);
 
@@ -660,27 +630,217 @@
 
             IList<object[]> results = new List<object[]>();
 
-            lock (this.singleThreadLock)
+            using (DbCommand command = this.connector.CreateCommand(statement))
             {
-                using (DbCommand command = this.connector.CreateCommand(statement))
+                using (DbDataReader reader = command.ExecuteReader())
                 {
-                    using (DbDataReader reader = command.ExecuteReader())
+                    while (reader.Read())
                     {
-                        while (reader.Read())
+                        var values = new object[fieldNames.Length];
+                        for (int i = 0; i < fieldNames.Length; i++)
                         {
-                            var values = new object[fieldNames.Length];
-                            for (int i = 0; i < fieldNames.Length; i++)
-                            {
-                                values[i] = reader[i];
-                            }
-
-                            results.Add(values);
+                            values[i] = reader[i];
                         }
+
+                        results.Add(values);
                     }
                 }
             }
 
             return results;
+        }
+
+        private int GetNextPrimaryKey(DatabaseEntryDescriptor descriptor)
+        {
+            lock (this.threadLock)
+            {
+                if (!this.nextPrimaryKeyLookup.ContainsKey(descriptor.TableName))
+                {
+                    var statement = new SQLiteStatement(SqlStatementType.Select);
+                    statement.Table(descriptor.TableName);
+                    statement.What(string.Format("MAX({0})", descriptor.PrimaryKey.Name));
+                    try
+                    {
+                        using (DbCommand command = this.connector.CreateCommand(statement))
+                        {
+                            using (DbDataReader reader = command.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    if (reader[0] == DBNull.Value)
+                                    {
+                                        this.nextPrimaryKeyLookup[descriptor.TableName] = -1;
+                                    }
+                                    else
+                                    {
+                                        this.nextPrimaryKeyLookup[descriptor.TableName] = Convert.ToInt32(reader[0]);
+                                    }
+
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    catch (SQLiteException)
+                    {
+                        // We assume the table does not exist in this case
+                        this.nextPrimaryKeyLookup[descriptor.TableName] = -1;
+                    }
+                }
+
+                this.nextPrimaryKeyLookup[descriptor.TableName]++;
+                System.Diagnostics.Trace.TraceInformation(
+                    "Handing out primary key {0} for {1}",
+                    this.nextPrimaryKeyLookup[descriptor.TableName],
+                    descriptor.TableName);
+
+                return this.nextPrimaryKeyLookup[descriptor.TableName];
+            }
+        }
+
+        private void ProcessPendingWrites(DatabaseServiceAction targetAction = null)
+        {
+            if (targetAction == null)
+            {
+                while (this.pendingActions.Count > 0)
+                {
+                    Thread.Sleep(10);
+                }
+            }
+            else
+            {
+                while (this.pendingActions.Contains(targetAction))
+                {
+                    Thread.Sleep(10);
+                }
+            }
+        }
+
+        private void WriterThreadMain()
+        {
+            while (this.writerThreadActive || this.pendingActions.Count > 0)
+            {
+                if (this.pendingActions.Count <= 0)
+                {
+                    Thread.Sleep(2);
+                    continue;
+                }
+
+                IList<DatabaseServiceAction> actionBulk = new List<DatabaseServiceAction>();
+                var currentPending = new Queue<DatabaseServiceAction>(this.pendingActions);
+                while (currentPending.Count > 0)
+                {
+                    DatabaseServiceAction action = currentPending.Dequeue();
+                    if (!action.CanBatch || 
+                        (action.Statement.Type != SqlStatementType.Insert
+                        && action.Statement.Type != SqlStatementType.Update
+                        && action.Statement.Type != SqlStatementType.Delete))
+                    {
+                        if (actionBulk.Count <= 0)
+                        {
+                            actionBulk.Add(action);
+                        }
+
+                        break;
+                    }
+
+                    actionBulk.Add(action);
+                }
+
+                if (actionBulk.Count == 1)
+                {
+                    this.CommitAction(actionBulk[0]);
+                }
+                else
+                {
+                    // Commit the bulk
+                    this.CommitActionBatch(actionBulk);
+                }
+
+                // Dequeue the actions now
+                for (int i = 0; i < actionBulk.Count; i++)
+                {
+                    actionBulk[i].WasExecuted = true;
+                    this.pendingActions.Dequeue();
+                }
+            }
+        }
+
+        private void CommitAction(DatabaseServiceAction action)
+        {
+            try
+            {
+                System.Diagnostics.Trace.TraceInformation("Executing: {0}", action.Statement);
+                using (var profileRegion = new ProfileRegion("DBWrite") { Discard = true })
+                {
+                    using (DbCommand command = this.connector.CreateCommand(action.Statement))
+                    {
+                        action.Result = command.ExecuteNonQuery();
+                    }
+
+                    action.ExecutionTime = profileRegion.ElapsedMilliseconds;
+                    action.Success = true;
+                }
+            }
+            catch (SQLiteException e)
+            {
+                action.Exception = e;
+                action.Success = false;
+                if (!action.IgnoreFailure)
+                {
+                    throw;
+                }
+            }
+        }
+
+        private void CommitActionBatch(IList<DatabaseServiceAction> actions)
+        {
+            try
+            {
+                System.Diagnostics.Debug.WriteLine("Executing batch: {0}", actions.Count);
+                using (var profileRegion = new ProfileRegion("DBWrite") { Discard = true })
+                {
+                    IList<SqlStatement> statements = new List<SqlStatement>();
+                    foreach (DatabaseServiceAction action in actions)
+                    {
+                        statements.Add(action.Statement);
+                    }
+
+                    using (DbCommand command = this.connector.CreateCommand(statements))
+                    {
+                        System.Diagnostics.Debug.WriteLine("  - {0}", args: command.CommandText);
+                        int result = command.ExecuteNonQuery();
+                        System.Diagnostics.Debug.WriteLine("  = {0}", result);
+                    }
+
+                    foreach (DatabaseServiceAction action in actions)
+                    {
+                        // We divide the execution time accross the bulk, not 100% accurate but good enough for batching
+                        action.ExecutionTime = profileRegion.ElapsedMilliseconds / actions.Count;
+                        action.Success = true;
+                    }
+                }
+            }
+            catch (SQLiteException e)
+            {
+                using (DbCommand command = this.connector.CreateCommand())
+                {
+                    command.CommandText = ContentServices.Constants.StatementRollback;
+                    command.ExecuteNonQuery();
+                }
+
+                foreach (DatabaseServiceAction action in actions)
+                {
+                    action.Exception = e;
+                    action.Success = false;
+                    if (!action.IgnoreFailure)
+                    {
+                        throw;
+                    }
+
+                    break;
+                }
+            }
         }
     }
 }

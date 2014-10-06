@@ -105,46 +105,10 @@
         
         public override string ToString()
         {
-            switch (this.Type)
-            {
-                case SqlStatementType.Drop:
-                    {
-                        return this.BuildDrop();
-                    }
-
-                case SqlStatementType.Create:
-                    {
-                        return this.BuildCreate();
-                    }
-
-                case SqlStatementType.Delete:
-                    {
-                        return this.BuildDelete();
-                    }
-
-                case SqlStatementType.Insert:
-                    {
-                        return this.BuildInsert();
-                    }
-
-                case SqlStatementType.Select:
-                    {
-                        return this.BuildSelect();
-                    }
-
-                case SqlStatementType.Update:
-                    {
-                        return this.BuildUpdate();
-                    }
-
-                default:
-                    {
-                        throw new NotImplementedException(this.Type.ToString());
-                    }
-            }
+            return this.ToString(string.Empty);
         }
 
-        public virtual void IntoCommand(IDbCommand target)
+        public virtual void IntoCommand(IDbCommand target, string statementSuffix = "")
         {
             throw new NotImplementedException();
         }
@@ -173,6 +137,47 @@
             get
             {
                 return this.whereIn;
+            }
+        }
+
+        protected string ToString(string suffix)
+        {
+            switch (this.Type)
+            {
+                case SqlStatementType.Drop:
+                    {
+                        return this.BuildDrop();
+                    }
+
+                case SqlStatementType.Create:
+                    {
+                        return this.BuildCreate();
+                    }
+
+                case SqlStatementType.Delete:
+                    {
+                        return this.BuildDelete(suffix);
+                    }
+
+                case SqlStatementType.Insert:
+                    {
+                        return this.BuildInsert(suffix);
+                    }
+
+                case SqlStatementType.Select:
+                    {
+                        return this.BuildSelect();
+                    }
+
+                case SqlStatementType.Update:
+                    {
+                        return this.BuildUpdate(suffix);
+                    }
+
+                default:
+                    {
+                        throw new NotImplementedException(this.Type.ToString());
+                    }
             }
         }
 
@@ -205,14 +210,14 @@
             return builder.ToString();
         }
 
-        private string BuildDelete()
+        private string BuildDelete(string suffix)
         {
             System.Diagnostics.Trace.Assert(!string.IsNullOrEmpty(this.table));
 
             var builder = new StringBuilder();
             builder.AppendFormat("DELETE FROM {0}", this.table);
 
-            builder.Append(this.BuildWhereSegment());
+            builder.Append(this.BuildWhereSegment(suffix));
 
             return builder.ToString();
         }
@@ -227,13 +232,13 @@
 
             builder.AppendFormat(" FROM {0}", this.table);
 
-            builder.Append(this.BuildWhereSegment());
+            builder.Append(this.BuildWhereSegment(string.Empty));
             builder.Append(this.BuildOrderSegment());
 
             return builder.ToString();
         }
 
-        private string BuildInsert()
+        private string BuildInsert(string suffix)
         {
             System.Diagnostics.Trace.Assert(!string.IsNullOrEmpty(this.table));
 
@@ -242,12 +247,18 @@
 
             builder.AppendFormat("({0})", string.Join(",", this.values.Keys));
 
-            builder.AppendFormat(" VALUES (@{0})", string.Join(",@", this.values.Keys));
+            IList<string> valueKeys = new List<string>();
+            foreach (string key in this.values.Keys)
+            {
+                valueKeys.Add(key + suffix);
+            }
+
+            builder.AppendFormat(" VALUES (@{0})", string.Join(",@", valueKeys));
 
             return builder.ToString();
         }
 
-        private string BuildUpdate()
+        private string BuildUpdate(string suffix)
         {
             System.Diagnostics.Trace.Assert(!string.IsNullOrEmpty(this.table));
             System.Diagnostics.Trace.Assert(this.where.Count > 0);
@@ -259,16 +270,16 @@
             IList<string> segments = new List<string>();
             foreach (string key in this.values.Keys)
             {
-                segments.Add(string.Format("{0} = @{0}", key));
+                segments.Add(string.Format("{0} = @{0}{1}", key, suffix));
             }
 
             builder.Append(string.Join(",", segments));
-            builder.Append(this.BuildWhereSegment());
+            builder.Append(this.BuildWhereSegment(suffix));
 
             return builder.ToString();
         }
 
-        private string BuildWhereSegment()
+        private string BuildWhereSegment(string suffix)
         {
             if (this.where.Count <= 0 && this.whereIn.Count <= 0)
             {
@@ -280,12 +291,12 @@
             IList<string> segments = new List<string>();
             foreach (string key in this.where.Keys)
             {
-                segments.Add(string.Format("{0} = {1}", key, WhereParameterPrefix + key));
+                segments.Add(string.Format("{0} = {1}", key, WhereParameterPrefix + key + suffix));
             }
 
             foreach (string key in this.whereIn.Keys)
             {
-                segments.Add(string.Format("{0} IN ({1})", key, WhereInParameterPrefix + key));
+                segments.Add(string.Format("{0} IN ({1})", key, WhereInParameterPrefix + key + suffix));
             }
 
             builder.Append(string.Join(" AND ", segments));

@@ -4,6 +4,9 @@
     {
         public const string StatementTableInfo = "PRAGMA table_info({0})";
         public const string StatementPrimaryKey = "PRIMARY KEY";
-        public const string StatementAutoIncrement = "AUTOINCREMENT";
+        public const string StatementNotNull = "NOT NULL";
+        public const string StatementBegin = "BEGIN";
+        public const string StatementCommit = "COMMIT";
+        public const string StatementRollback = "ROLLBACK";
     }
 }

@@ -1,6 +1,7 @@
 ﻿namespace CarbonCore.ContentServices.Logic
 {
     using System;
+    using System.Collections.Generic;
     using System.Data;
     using System.Data.Common;
     using System.Data.SQLite;
@@ -91,6 +92,23 @@
                 System.Diagnostics.Trace.TraceInformation("SQLite: {0}", statement.ToString());
                 statement.IntoCommand(command);
             }
+
+            return command;
+        }
+
+        public DbCommand CreateCommand(IList<SqlStatement> statements)
+        {
+            System.Diagnostics.Trace.Assert(this.connection != null && statements != null && statements.Count > 0);
+
+            DbCommand command = this.connection.CreateCommand();
+            command.CommandText = string.Format("{0};", Constants.StatementBegin);
+            for (int i = 0; i < statements.Count; i++)
+            {
+                SqlStatement statement = statements[i];
+                statement.IntoCommand(command, string.Format("_{0}", i));
+            }
+
+            command.CommandText = string.Format("{0}\n{1};", command.CommandText, Constants.StatementCommit);
 
             return command;
         }

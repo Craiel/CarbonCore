@@ -154,6 +154,7 @@
             {
                 using (var provider = this.container.Resolve<IFileServicePackProvider>())
                 {
+                    provider.Root = this.dataDirectory;
                     provider.Initialize();
                     service.AddProvider(provider);
 

@@ -113,7 +113,7 @@
             if (!this.files.ContainsKey(key))
             {
                 var entry = new FileEntry { Hash = key.Hash.Value, Size = data.Length };
-                this.databaseService.Save(ref entry);
+                this.databaseService.Save(ref entry, true);
                 lock (this.files)
                 {
                     this.files.Add(key, entry);
@@ -134,7 +134,7 @@
             // First mark the file as deleted in the table
             var entry = this.files[key];
             entry.IsDeleted = true;
-            this.databaseService.Save(ref entry);
+            this.databaseService.Save(ref entry, true);
 
             // Now delete the file itself if all went well
             file.Delete();
@@ -142,22 +142,29 @@
 
         protected override int DoCleanup()
         {
+            // Wait to have pending writes flushed before cleanup
+            this.databaseService.WaitForAsyncActions();
+
             IList<object> deleteList = new List<object>();
             IList<FileEntry> activeFiles = this.databaseService.Load<FileEntry>();
             foreach (FileEntry file in activeFiles)
             {
                 if (file.IsDeleted)
                 {
-                    deleteList.Add(file.GetDescriptor().PrimaryKey.Property.GetValue(file));
+                    object key = file.GetDescriptor().PrimaryKey.Property.GetValue(file);
+                    deleteList.Add(key);
+                    this.databaseService.Delete<FileEntry>(key, true);
                 }
             }
 
-            this.databaseService.Delete<FileEntry>(deleteList);
             return deleteList.Count;
         }
 
         protected override FileEntry LoadEntry(FileEntryKey key)
         {
+            // Wait to have pending writes flushed before loading
+            this.databaseService.WaitForAsyncActions();
+
             System.Diagnostics.Trace.Assert(this.files.ContainsKey(key));
 
             return this.files[key];

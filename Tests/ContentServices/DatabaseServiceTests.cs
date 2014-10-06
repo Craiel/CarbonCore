@@ -55,6 +55,10 @@
         {
             using (var service = this.container.Resolve<IDatabaseService>())
             {
+                CarbonFile database = CarbonFile.GetTempFile();
+                database.DeleteIfExists();
+                service.Initialize(database);
+
                 // Batch save
                 IList<ContentTestEntry2> batchData = new List<ContentTestEntry2>();
                 for (var i = 0; i < 20; i++)
@@ -66,7 +70,23 @@
                     batchData.Add(clone2);
                 }
 
-                service.SaveAsync(batchData);
+                service.Save(batchData, async: true);
+                service.Delete<ContentTestEntry2>(new List<object> { "BE5", "BE7", "BE12" }, async: true);
+
+                batchData.Clear();
+                for (var i = 0; i < 20; i++)
+                {
+                    var clone2 = (ContentTestEntry2)ContentTestData.TestEntry2.Clone();
+                    clone2.Id = "CE" + i;
+                    clone2.OtherTestFloat += i;
+                    clone2.OtherTestString = "Batch entry " + i.ToString(CultureInfo.InvariantCulture);
+                    batchData.Add(clone2);
+                }
+
+                service.Save(batchData, async: true);
+                service.Delete<ContentTestEntry2>(new List<object> { "CE5", "CE7", "CE12" }, async: true);
+
+                service.WaitForAsyncActions();
             }
         }
 
@@ -96,6 +116,7 @@
             // Save 5 more test entries
             for (int i = 0; i < 5; i++)
             {
+                clone.Id = null;
                 clone.TestFloat++;
                 service.Save(ref clone);
             }
@@ -125,28 +146,23 @@
 
             // Load batch
             IList<ContentTestEntry> batchResult = service.Load<ContentTestEntry>();
-            Assert.AreEqual(1, batchResult.Count, "Load with no parameters must return all entries");
+            Assert.AreEqual(6, batchResult.Count, "Load with no parameters must return all entries");
             
             // Delete
-            service.Delete<ContentTestEntry>(new List<object> { 1 });
+            service.Delete<ContentTestEntry>(1);
             savedEntry = service.Load<ContentTestEntry>(1);
             Assert.IsNull(savedEntry, "Load after delete should return no entry");
 
             // GetTables
             IList<string> tables = service.GetTables();
-            Assert.AreEqual(4, tables.Count, "GetTables must return the table list");
+            Assert.AreEqual(2, tables.Count, "GetTables must return the table list");
             Assert.IsTrue(tables.Contains("TestTable"));
-            Assert.IsTrue(tables.Contains("TestTable2"));
 
             // Drop
             service.Drop<ContentTestEntry>();
             tables = service.GetTables();
-            Assert.AreEqual(3, tables.Count, "Drop must remove the table");
+            Assert.AreEqual(1, tables.Count, "Drop must remove the table");
             Assert.Throws<InvalidOperationException>(service.Drop<ContentTestEntry>, "Explicit Drop must fail if table does not exist");
-
-            service.Drop<ContentTestEntry2>();
-            tables = service.GetTables();
-            Assert.AreEqual(2, tables.Count, "Drop must remove the table");
         }
     }
 }
