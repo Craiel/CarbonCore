@@ -2,11 +2,14 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO.Compression;
 
     using CarbonCore.ContentServices.Logic;
 
     public interface IFileServiceProvider : IDisposable
     {
+        CompressionLevel CompressionLevel { get; set; }
+
         bool IsInitialized { get; }
 
         long Capacity { get; }
@@ -15,8 +18,13 @@
         long BytesRead { get; }
         long BytesWritten { get; }
 
+        long BytesReadActual { get; }
+        long BytesWrittenActual { get; }
+
         long EntriesDeleted { get; }
 
+        IReadOnlyCollection<CompressionLevel> SupportedCompressionLevels { get; } 
+        
         void Load(FileEntryKey key, out byte[] data);
         void Save(FileEntryKey key, byte[] data);
         void Delete(FileEntryKey key);

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO.Compression;
     using System.Linq;
 
     using Autofac;
@@ -92,6 +93,7 @@
                 service.AddProvider(fileProvider);
 
                 var packProvider = this.container.Resolve<IFileServicePackProvider>();
+                packProvider.Root = this.dataDirectory;
                 packProvider.Initialize();
                 service.AddProvider(packProvider);
 
@@ -115,6 +117,7 @@
             {
                 using (var provider = this.container.Resolve<IFileServiceMemoryProvider>())
                 {
+                    provider.CompressionLevel = CompressionLevel.Optimal;
                     provider.Initialize();
 
                     service.AddProvider(provider);
@@ -134,6 +137,7 @@
             {
                 using (var provider = this.container.Resolve<IFileServiceDiskProvider>())
                 {
+                    provider.CompressionLevel = CompressionLevel.Optimal;
                     provider.Root = this.dataDirectory;
                     provider.Initialize();
 
@@ -154,6 +158,7 @@
             {
                 using (var provider = this.container.Resolve<IFileServicePackProvider>())
                 {
+                    provider.CompressionLevel = CompressionLevel.Optimal;
                     provider.Root = this.dataDirectory;
                     provider.Initialize();
                     service.AddProvider(provider);
@@ -175,7 +180,8 @@
                 service.Save(key, data, provider);
             }
 
-            Assert.AreEqual(13284, provider.BytesWritten, "Must have written exact number of bytes");
+            Assert.AreEqual(13494, provider.BytesWritten, "Must have written exact number of bytes");
+            Assert.AreEqual(5139, provider.BytesWrittenActual, "Must have exact number of actual bytes");
             Assert.AreEqual(0, provider.BytesRead, "Must have no bytes read yet");
 
             // Test load
@@ -186,7 +192,8 @@
                 Assert.AreEqual(originalData.ByteData, loadedData.ByteData, "Loaded data must match original");
             }
 
-            Assert.AreEqual(13284, provider.BytesRead, "Must have read exact number of bytes");
+            Assert.AreEqual(13494, provider.BytesRead, "Must have read exact number of bytes"); 
+            Assert.AreEqual(5139, provider.BytesReadActual, "Must have exact number of actual bytes");
 
             // Meta info get
             DateTime currentDate = DateTime.Now;
