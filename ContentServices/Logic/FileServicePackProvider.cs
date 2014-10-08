@@ -10,7 +10,11 @@
 
     public class FileServicePackProvider : FileServiceProvider, IFileServicePackProvider
     {
-        private const string PackFile = "data.df";
+        private const int PaddingValueMultiplier = 512;
+        private const int PaddingValueMin = 512;
+
+        private const string DefaultPackPrefix = "data";
+        private const string PackFilePattern = "{0}.df";
         private const string IndexFile = "index.db";
 
         private readonly IDatabaseService databaseService;
@@ -18,6 +22,10 @@
         private readonly IDictionary<FileEntryKey, FileEntry> files;
 
         private readonly IDictionary<FileEntryKey, FileEntryPackInfo> packInfo;
+        
+        private string packPrefix = DefaultPackPrefix;
+
+        private long endOfFile;
 
         private CarbonDirectory root;
 
@@ -36,6 +44,24 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
+        public string PackPrefix
+        {
+            get
+            {
+                return this.packPrefix;
+            }
+
+            set
+            {
+                if (this.IsInitialized)
+                {
+                    throw new InvalidOperationException("Can not change the pack prefix after initialization");
+                }
+
+                this.packPrefix = value;
+            }
+        }
+
         public CarbonDirectory Root
         {
             get
@@ -85,7 +111,7 @@
             this.Capacity = this.root.GetFreeSpace();
 
             // Initialize the pack file
-            CarbonFile pack = this.root.ToFile(PackFile);
+            CarbonFile pack = this.root.ToFile(string.Format(PackFilePattern, this.packPrefix));
             this.packStream = pack.OpenWrite(FileMode.Create);
             System.Diagnostics.Trace.Assert(this.packStream != null);
 
@@ -103,10 +129,14 @@
             }
 
             // Read all the pack info
-            IList<FileEntryPackInfo> packInfos = this.databaseService.Load<FileEntryPackInfo>();
-            foreach (FileEntryPackInfo info in packInfos)
+            IList<FileEntryPackInfo> packInfoList = this.databaseService.Load<FileEntryPackInfo>();
+            foreach (FileEntryPackInfo info in packInfoList)
             {
                 System.Diagnostics.Trace.Assert(!string.IsNullOrEmpty(info.Hash));
+                if (info.Offset > this.endOfFile)
+                {
+                    this.endOfFile = info.Offset + info.Size + info.Padding;
+                }
 
                 this.packInfo.Add(new FileEntryKey(info.Hash), info);
             }
@@ -114,39 +144,64 @@
 
         protected override void DoLoad(FileEntryKey key, out byte[] data)
         {
-            throw new NotImplementedException();
-            /*CarbonFile file = this.root.ToFile(key.Hash);
-            if (!file.Exists)
+            if (!this.packInfo.ContainsKey(key))
             {
-                throw new FileNotFoundException("Could not load file data", file.GetPath());
+                throw new FileNotFoundException("Could not load file data: " + key);
             }
 
-            using (var stream = file.OpenRead())
+            FileEntryPackInfo info = this.packInfo[key];
+            data = new byte[info.Size];
+            lock (this.packStream)
             {
-                data = new byte[stream.Length];
-                stream.Read(data, 0, data.Length);
-            }*/
+                this.packStream.Seek(info.Offset, SeekOrigin.Begin);
+                this.packStream.Read(data, 0, (int)info.Size);
+            }
         }
 
         protected override void DoSave(FileEntryKey key, byte[] data)
         {
-            throw new NotImplementedException();
-            /*CarbonFile file = this.root.ToFile(key.Hash);
-            using (var stream = file.OpenWrite())
+            FileEntryPackInfo info;
+            if (this.packInfo.ContainsKey(key))
             {
-                stream.Write(data, 0, data.Length);
-            }*/
+                info = this.packInfo[key];
 
-            // If we don't have an entry for this hash create one and save it
-            if (!this.files.ContainsKey(key))
-            {
-                var entry = new FileEntry { Hash = key.Hash.Value, Size = data.Length };
-                this.databaseService.Save(ref entry, true);
-                lock (this.files)
+                // Check if the new data still fits into the region
+                if (info.Size + info.Padding < data.Length)
                 {
-                    this.files.Add(key, entry);
+                    // The data won't fit, move the data to the end of the file, the old chunk becomes orphaned
+                    info.Offset = this.endOfFile;
+                    info.Padding = this.GetPaddingValue(data.Length);
+                }
+                else
+                {
+                    // It fits so set the data to write and adjust the padding
+                    long oldSize = info.Size + info.Padding;
+                    info.Size = data.Length;
+                    info.Padding = oldSize - info.Size;
                 }
             }
+            else
+            {
+                info = new FileEntryPackInfo
+                           {
+                               Hash = key.Hash.Value,
+                               Padding = this.GetPaddingValue(data.Length),
+                               Offset = this.endOfFile,
+                               Size = data.Length
+                           };
+            }
+
+            var paddingBuffer = new byte[info.Padding];
+            lock (this.packStream)
+            {
+                this.packStream.Seek(info.Offset, SeekOrigin.Begin);
+                this.packStream.Write(data, 0, data.Length);
+                this.packStream.Write(paddingBuffer, 0, paddingBuffer.Length);
+            }
+
+            // Save the info into the db and into our storage 
+            this.databaseService.Save(ref info);
+            this.packInfo[key] = info;
         }
 
         protected override void DoDelete(FileEntryKey key)
@@ -227,6 +282,18 @@
             }
 
             return results;
+        }
+
+        private int GetPaddingValue(long size)
+        {
+            var partialSize = (long)(size * 0.01);
+            if (partialSize < PaddingValueMin)
+            {
+                return PaddingValueMin;
+            }
+
+            var multiplier = (int)(partialSize % PaddingValueMultiplier);
+            return multiplier * PaddingValueMultiplier;
         }
     }
 }

@@ -16,7 +16,7 @@
 
         [DatabaseEntryElement]
         public string Hash { get; set; }
-
+        
         [DatabaseEntryElement]
         [ContentEntryElement(IgnoreEquality = true)]
         public long Offset { get; set; }
@@ -24,6 +24,10 @@
         [DatabaseEntryElement]
         [ContentEntryElement(IgnoreEquality = true)]
         public long Size { get; set; }
+
+        [DatabaseEntryElement]
+        [ContentEntryElement(IgnoreEquality = true)]
+        public long Padding { get; set; }
 
         // -------------------------------------------------------------------
         // Protected
