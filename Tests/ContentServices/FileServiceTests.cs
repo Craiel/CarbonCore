@@ -173,6 +173,12 @@
         
         private void PerformProviderTests(IFileService service, IFileServiceProvider provider)
         {
+            long testFileSize = 0;
+            foreach (CarbonFile file in this.testFiles.Values)
+            {
+                testFileSize += file.Size;
+            }
+
             // Test add
             foreach (FileEntryKey key in this.testFiles.Keys)
             {
@@ -180,8 +186,8 @@
                 service.Save(key, data, provider);
             }
 
-            Assert.AreEqual(13494, provider.BytesWritten, "Must have written exact number of bytes");
-            Assert.AreEqual(5139, provider.BytesWrittenActual, "Must have exact number of actual bytes");
+            Assert.AreEqual(testFileSize, provider.BytesWritten, "Must have written exact number of bytes");
+            Assert.Greater(testFileSize, provider.BytesWrittenActual, "Must have exact number of actual bytes");
             Assert.AreEqual(0, provider.BytesRead, "Must have no bytes read yet");
 
             // Test load
@@ -192,8 +198,8 @@
                 Assert.AreEqual(originalData.ByteData, loadedData.ByteData, "Loaded data must match original");
             }
 
-            Assert.AreEqual(13494, provider.BytesRead, "Must have read exact number of bytes"); 
-            Assert.AreEqual(5139, provider.BytesReadActual, "Must have exact number of actual bytes");
+            Assert.AreEqual(testFileSize, provider.BytesRead, "Must have read exact number of bytes");
+            Assert.Greater(testFileSize, provider.BytesReadActual, "Must have exact number of actual bytes");
 
             // Meta info get
             DateTime currentDate = DateTime.Now;

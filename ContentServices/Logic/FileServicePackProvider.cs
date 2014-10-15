@@ -160,7 +160,7 @@
 
         protected override void DoSave(FileEntryKey key, byte[] data)
         {
-            FileEntryPackInfo info;
+            FileEntryPackInfo info = null;
             if (this.packInfo.ContainsKey(key))
             {
                 info = this.packInfo[key];
@@ -180,28 +180,44 @@
                     info.Padding = oldSize - info.Size;
                 }
             }
-            else
-            {
-                info = new FileEntryPackInfo
-                           {
-                               Hash = key.Hash.Value,
-                               Padding = this.GetPaddingValue(data.Length),
-                               Offset = this.endOfFile,
-                               Size = data.Length
-                           };
-            }
 
-            var paddingBuffer = new byte[info.Padding];
+            // We have to lock the info creation as well to make sure end of file is incremented linear
             lock (this.packStream)
             {
+                if (info == null)
+                {
+                    info = new FileEntryPackInfo
+                    {
+                        Hash = key.Hash.Value,
+                        Padding = this.GetPaddingValue(data.Length),
+                        Offset = this.endOfFile,
+                        Size = data.Length
+                    };
+
+                    this.endOfFile += data.Length;
+                }
+
+                var paddingBuffer = new byte[info.Padding];
                 this.packStream.Seek(info.Offset, SeekOrigin.Begin);
                 this.packStream.Write(data, 0, data.Length);
                 this.packStream.Write(paddingBuffer, 0, paddingBuffer.Length);
+                this.packStream.Flush(true);
             }
 
             // Save the info into the db and into our storage 
             this.databaseService.Save(ref info);
             this.packInfo[key] = info;
+
+            // If we don't have an entry for this hash create one and save it
+            if (!this.files.ContainsKey(key))
+            {
+                var entry = new FileEntry { Hash = key.Hash.Value, Size = data.Length };
+                this.databaseService.Save(ref entry, true);
+                lock (this.files)
+                {
+                    this.files.Add(key, entry);
+                }
+            }
         }
 
         protected override void DoDelete(FileEntryKey key)
@@ -286,14 +302,16 @@
 
         private int GetPaddingValue(long size)
         {
+            var filePadding = (int)((((int)(size / PaddingValueMultiplier) + 1) * PaddingValueMultiplier) - size);
             var partialSize = (long)(size * 0.01);
             if (partialSize < PaddingValueMin)
             {
-                return PaddingValueMin;
+                return filePadding + PaddingValueMin;
             }
 
-            var multiplier = (int)(partialSize % PaddingValueMultiplier);
-            return multiplier * PaddingValueMultiplier;
+            var multiplier = (int)(partialSize / PaddingValueMultiplier);
+            int extraPadding = multiplier * PaddingValueMultiplier;
+            return filePadding + extraPadding;
         }
     }
 }

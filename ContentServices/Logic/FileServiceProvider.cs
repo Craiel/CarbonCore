@@ -229,23 +229,16 @@
                         using (var zipStream = new GZipStream(targetStream, level, true))
                         {
                             stream.WriteTo(zipStream);
+
+                            // To ensure the data is written properly
+                            zipStream.Close();
                         }
                     }
                     else
                     {
-                        using (var zipStream = new GZipStream(stream, mode, true))
+                        using (var zipStream = new GZipStream(stream, CompressionMode.Decompress, true))
                         {
-                            int count;
-                            var buffer = new byte[2048];
-                            do
-                            {
-                                count = zipStream.Read(buffer, 0, 2048);
-                                if (count > 0)
-                                {
-                                    targetStream.Write(buffer, 0, count);
-                                }
-                            }
-                            while (count > 0);
+                            zipStream.CopyTo(targetStream);
                         }
                     }
 
