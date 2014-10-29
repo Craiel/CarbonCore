@@ -46,7 +46,7 @@
       <HintPath>..\External\Autofac\3.1.1\Autofac.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\External\Json.NET\Net40\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\External\Json.NET\Json60r6\Net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -74,6 +74,9 @@
     <Compile Include="Diagnostics\ProgressRegion.cs" />
     <Compile Include="Formatting\FormatHandler.cs" />
     <Compile Include="HashFileName.cs" />
+    <Compile Include="I18N\LocaleConstants.cs" />
+    <Compile Include="I18N\Localization.cs" />
+    <Compile Include="I18N\LocalizationStringDictionary.cs" />
     <Compile Include="IoC\CarbonContainer.cs" />
     <Compile Include="IoC\CarbonContainerBuilder.cs" />
     <Compile Include="IoC\CarbonModule.cs" />

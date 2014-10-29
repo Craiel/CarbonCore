@@ -51,5 +51,13 @@
                 target.Push(entry);
             }
         }
+
+        public static void AddRange<T, TN>(this Dictionary<T, TN> target, IDictionary<T, TN> source)
+        {
+            foreach (KeyValuePair<T, TN> entry in source)
+            {
+                target.Add(entry.Key, entry.Value);
+            }
+        }
     }
 }

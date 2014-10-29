@@ -38,9 +38,8 @@
     <Reference Include="MahApps.Metro">
       <HintPath>..\External\MahApps.Metro\2014-05-08\MahApps.Metro.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\External\Json.NET\Net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\External\Json.NET\Json60r6\Net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -76,6 +75,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Utils\CarbonPathTests.cs" />
+    <Compile Include="Utils\LocalizationTests.cs" />
     <Compile Include="Utils\TestMath.cs" />
     <Compile Include="Utils\TestVector2F.cs" />
     <Compile Include="ToolFramework\FrameworkTestMain.cs" />
@@ -98,7 +98,7 @@
       <Name>CarbonCore.GrammarParser</Name>
     </ProjectReference>
     <ProjectReference Include="..\ToolFramework\CarbonCore.ToolFramework.csproj">
-      <Project>{E4643DF2-D2DB-4E99-AB4B-D8CE4FD94D81}</Project>
+      <Project>{e4643df2-d2db-4e99-ab4b-d8ce4fd94d81}</Project>
       <Name>CarbonCore.ToolFramework</Name>
     </ProjectReference>
     <ProjectReference Include="..\UtilsWPF\CarbonCore.UtilsWPF.csproj">

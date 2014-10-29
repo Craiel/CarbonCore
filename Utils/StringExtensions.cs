@@ -23,6 +23,13 @@
             return formatted;
         }
 
+        public static string ToReverse(this string source)
+        {
+            char[] charArray = source.ToCharArray();
+            Array.Reverse(charArray);
+            return new string(charArray);
+        }
+
         public static StringBuilder AppendLine(this StringBuilder target, string format, params object[] args)
         {
             return target.AppendLine(string.Format(format, args));

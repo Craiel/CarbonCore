@@ -263,8 +263,8 @@
 
             foreach (ICommandLineSwitchDefinition definition in this.definitions)
             {
-                ICommandLineSwitch activeLong = this.GetSwitch(definition.Short);
-                ICommandLineSwitch activeShort = this.GetSwitch(definition.Long);
+                ICommandLineSwitch activeLong = this.GetSwitch(definition.Long);
+                ICommandLineSwitch activeShort = this.GetSwitch(definition.Short);
                 if (activeLong == null && activeShort == null)
                 {
                     if (definition.Required)
