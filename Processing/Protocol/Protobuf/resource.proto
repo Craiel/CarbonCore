@@ -1,0 +1,248 @@
+package resource;
+ 
+import "google/protobuf/csharp_options.proto";
+
+option (google.protobuf.csharp_file_options).namespace = "CarbonCore.Protocol.Resource";
+option (google.protobuf.csharp_file_options).umbrella_classname = "ResourceProtocol";
+option (google.protobuf.csharp_file_options).file_extension = ".pb.cs";
+
+option optimize_for = SPEED;
+
+message StoredMatrix {
+	repeated float Data = 1;
+}
+
+message Raw {
+	required bytes Data = 1;
+}
+
+message CompiledShader {
+	required int32 Version = 1 [default = 1];
+	required bytes MD5 = 2;
+	required bytes Data = 3;
+}
+
+message ModelElement {
+	repeated float Position = 1 [packed=true];
+	repeated float Normal = 2 [packed=true];
+	repeated float Texture = 3 [packed=true];
+	repeated float Tangent = 4 [packed=true];
+}
+
+message ModelMaterial {
+	enum ModelMaterialType
+	{
+		Blinn = 0;
+	}
+	
+	required ModelMaterialType Type = 1;
+	required string Name = 2;
+	optional string DiffuseTexture = 3;
+	optional string NormalTexture = 4;
+	optional string AlphaTexture = 5;
+	optional string SpecularTexture = 6;
+	
+	required float Shinyness = 10;
+	required float Refraction = 11;
+	optional float Transparancy = 12;
+	
+	repeated float ColorDiffuse = 20 [packed=true];
+	repeated float ColorSpecular = 21 [packed=true];
+	repeated float ColorEmission = 22 [packed=true];
+	repeated float ColorAmbient = 23 [packed=true];
+}
+
+message Model {
+	required int32 Version = 1 [default = 1];
+	required string Name = 2;
+	required bool TangentsCalculated = 3 [default = false];
+		
+	repeated ModelElement Elements = 20;
+	repeated ModelMaterial Materials = 21;
+	repeated uint32 Indices = 22;
+}
+
+message ModelGroup {
+	required int32 Version = 1 [default = 1];
+	required string Name = 2;
+	
+	repeated float Offset = 10 [packed=true];
+	repeated float Rotation = 11 [packed=true];
+	repeated float Scale = 12 [packed=true];
+	
+	repeated Model Models = 20;
+	repeated ModelGroup Groups = 21;
+	repeated StoredMatrix Transformations = 22;
+}
+
+message StageProperty {
+	enum StagePropertyType
+	{
+		Unknown = 0;
+		String = 1;
+		Float = 2;
+		Int = 3;
+	}
+	
+	required string Id = 1;
+	
+	required StagePropertyType Type = 2;
+
+	required bytes Data = 3;
+}
+
+message StageCamera {
+	required string Id = 1;
+	
+	required float FieldOfView = 2;
+
+	optional int32 LayerFlags = 10;
+	repeated StageProperty Properties = 11;
+	
+	repeated float Position = 20 [packed=true];
+	repeated float Rotation = 21 [packed=true];
+}
+
+message StageLight {
+	enum StageLightType
+	{
+		Unknown = 0;
+        Spot = 1;
+        Directional = 2;
+        Point = 3;
+	}
+	
+	required string Id = 1;
+	
+	required StageLightType Type = 2;
+	
+	optional float Radius = 3;
+	optional float Intensity = 4;
+	optional float AmbientIntensity = 5;
+	optional float SpotSize = 6;
+	optional float Angle = 7;
+
+	optional int32 LayerFlags = 10;
+	repeated StageProperty Properties = 11;
+	
+	repeated float Location = 20 [packed=true];
+	repeated float Direction = 21 [packed=true];
+	repeated float Color = 22 [packed=true];
+}
+
+message StageModel {
+	required string Id = 1;
+	optional int32 ReferenceId = 2;
+	
+	optional int32 LayerFlags = 10;
+	repeated StageProperty Properties = 11;
+	
+	repeated float Translation = 20 [packed=true];
+	repeated float Rotation = 21 [packed=true];
+	repeated float Scale = 22 [packed=true];
+	
+	repeated StageModel Children = 30;
+}
+
+message Stage {
+	required int32 Version = 1 [default = 1];
+	
+	repeated string References = 9;
+	
+	repeated StageCamera Cameras = 10;
+	repeated StageLight Lights = 11;
+	repeated StageModel Models = 12;
+}
+
+message Script {	
+	required int32 Version = 1 [default = 1];
+	
+	required bytes ScriptData = 2;
+}
+
+message CsamlAttribute {
+	enum CsamlAttributeType
+	{
+		Unknown = 0;
+		ControlName = 1;
+		Width = 2;
+		Height = 3;
+		LayoutMode = 4;
+		Mode = 5;
+		Text = 6;
+		Source = 7;
+		TypeAttribute = 8;
+		Left = 9;
+		Top = 10;
+		Right = 11;
+		Bottom = 12;
+		HorizontalAlignment = 13;
+		VerticalAlignment = 14;
+	}
+	
+	enum CsamlAttributeValueType
+	{
+		String = 0;
+		Int = 1;
+		Float = 2;
+	}
+	
+	enum CsamlLayoutMode
+	{
+		LayoutAbsolute = 0;
+		LayoutRelative = 1;
+	}
+	
+	enum CsamlControlSizingMode
+	{
+		SizeNormal = 0;
+		SizeStretch = 1;
+	}
+	
+	enum CsamlHorizontalAlignmentEnum
+	{
+		AlignLeft = 0;
+		AlignCenterH = 1;
+		AlignRight = 2;
+	}
+	
+	enum CsamlVerticalAlignmentEnum
+	{
+		AlignTop = 0;
+		AlignCenterV = 1;
+		AlignBottom = 2;
+	}
+	
+	required CsamlAttributeType Type = 1;
+	required CsamlAttributeValueType ValueType = 2 [default = String];
+	optional string ValueString = 3;
+	optional int32 ValueInt = 4;
+	optional float ValueFloat = 5;
+}
+
+message CsamlNode {
+	enum CsamlNodeType
+	{
+		Unknown = 0;
+		Frame = 1;
+		Image = 2;
+		SolidText = 3;
+		DynamicText = 4;
+		Console = 5;
+		Page = 6;
+	}
+	
+	required CsamlNodeType Type = 1;
+	repeated CsamlAttribute Attributes = 2;
+	repeated CsamlNode Children = 3;
+}
+
+message Csaml {
+	repeated CsamlNode Nodes = 1;
+}
+
+message UserInterface {
+	required int32 Version = 1 [default = 1];
+	required Csaml Csaml = 2;
+	required Script Script = 3;
+}

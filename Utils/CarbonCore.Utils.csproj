@@ -71,6 +71,7 @@
     <Compile Include="Database\SqlStatement.cs" />
     <Compile Include="Database\SqlStatementType.cs" />
     <Compile Include="Diagnostics\ContextualLog.cs" />
+    <Compile Include="Diagnostics\Internal.cs" />
     <Compile Include="Diagnostics\ProgressRegion.cs" />
     <Compile Include="Formatting\FormatHandler.cs" />
     <Compile Include="HashFileName.cs" />

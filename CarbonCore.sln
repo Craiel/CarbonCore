@@ -13,8 +13,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.UtilsCommandLine
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.UtilsDX", "UtilsDX\CarbonCore.UtilsDX.csproj", "{C3E6C35A-FE50-481B-9B6A-559DFDFFB52E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.UtilsSDL", "UtilsSDL\CarbonCore.UtilsSDL.csproj", "{DAE16936-862E-4E1E-8BFC-3C917FAC5FDD}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.UtilsWPF", "UtilsWPF\CarbonCore.UtilsWPF.csproj", "{75FF83F3-C123-4982-91F7-09D0F8A66536}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.Tests", "Tests\CarbonCore.Tests.csproj", "{322F5DB2-87ED-41EC-9A8B-AA14E1F9ACD3}"
@@ -22,6 +20,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.Resources", "Resources\CarbonCore.Resources.csproj", "{AAB4906E-DE39-4678-A155-14579CC7F4EC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.CodeGeneration", "CodeGeneration\CarbonCore.CodeGeneration.csproj", "{9CB52544-9944-4AFD-8335-8397062CBF2F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.Processing", "Processing\CarbonCore.Processing.csproj", "{819FF5D0-4498-48F2-9F7D-81A322B9B082}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.ContentServices", "ContentServices\CarbonCore.ContentServices.csproj", "{5D3507BD-D8DD-4255-A262-8E360E936F10}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,10 +55,6 @@ Global
 		{C3E6C35A-FE50-481B-9B6A-559DFDFFB52E}.Debug|x64.Build.0 = Debug|x64
 		{C3E6C35A-FE50-481B-9B6A-559DFDFFB52E}.Release|x64.ActiveCfg = Release|x64
 		{C3E6C35A-FE50-481B-9B6A-559DFDFFB52E}.Release|x64.Build.0 = Release|x64
-		{DAE16936-862E-4E1E-8BFC-3C917FAC5FDD}.Debug|x64.ActiveCfg = Debug|x64
-		{DAE16936-862E-4E1E-8BFC-3C917FAC5FDD}.Debug|x64.Build.0 = Debug|x64
-		{DAE16936-862E-4E1E-8BFC-3C917FAC5FDD}.Release|x64.ActiveCfg = Release|x64
-		{DAE16936-862E-4E1E-8BFC-3C917FAC5FDD}.Release|x64.Build.0 = Release|x64
 		{75FF83F3-C123-4982-91F7-09D0F8A66536}.Debug|x64.ActiveCfg = Debug|x64
 		{75FF83F3-C123-4982-91F7-09D0F8A66536}.Debug|x64.Build.0 = Debug|x64
 		{75FF83F3-C123-4982-91F7-09D0F8A66536}.Release|x64.ActiveCfg = Release|x64
@@ -72,6 +70,14 @@ Global
 		{9CB52544-9944-4AFD-8335-8397062CBF2F}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{9CB52544-9944-4AFD-8335-8397062CBF2F}.Debug|x64.Build.0 = Debug|Any CPU
 		{9CB52544-9944-4AFD-8335-8397062CBF2F}.Release|x64.ActiveCfg = Release|Any CPU
+		{819FF5D0-4498-48F2-9F7D-81A322B9B082}.Debug|x64.ActiveCfg = Debug|x64
+		{819FF5D0-4498-48F2-9F7D-81A322B9B082}.Debug|x64.Build.0 = Debug|x64
+		{819FF5D0-4498-48F2-9F7D-81A322B9B082}.Release|x64.ActiveCfg = Release|x64
+		{819FF5D0-4498-48F2-9F7D-81A322B9B082}.Release|x64.Build.0 = Release|x64
+		{5D3507BD-D8DD-4255-A262-8E360E936F10}.Debug|x64.ActiveCfg = Debug|x64
+		{5D3507BD-D8DD-4255-A262-8E360E936F10}.Debug|x64.Build.0 = Debug|x64
+		{5D3507BD-D8DD-4255-A262-8E360E936F10}.Release|x64.ActiveCfg = Release|x64
+		{5D3507BD-D8DD-4255-A262-8E360E936F10}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
