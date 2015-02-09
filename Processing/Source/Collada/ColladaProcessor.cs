@@ -114,7 +114,7 @@
                 }
 
                 IList<ModelResource> parts = new List<ModelResource>();
-                if (colladaGeometry.Mesh.Polygons != null)
+                if (colladaGeometry.Mesh.Polygons != null && colladaGeometry.Mesh.Polygons.Polygons != null)
                 {
                     // Polygons
                     polygonData = new IDictionary<uint, uint[]>[colladaGeometry.Mesh.Sources.Length];
@@ -205,7 +205,7 @@
             }
 
             currentSources = geometry.Mesh.Sources;
-            if (geometry.Mesh.Polygons != null)
+            if (geometry.Mesh.Polygons != null && geometry.Mesh.Polygons.Polygons != null)
             {
                 System.Diagnostics.Trace.Assert(geometry.Mesh.Polygons != null, "Must have polygons if we are not working with Poly Lists!");
 

@@ -62,10 +62,14 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Contracts\IExtendedDictionary.cs" />
     <Compile Include="Contracts\IJsonConfig.cs" />
+    <Compile Include="Contracts\Network\IJsonNetClient.cs" />
     <Compile Include="Contracts\IoC\ICarbonContainer.cs" />
     <Compile Include="Contracts\IoC\ICarbonModule.cs" />
     <Compile Include="Contracts\IoC\ICarbonQuickBinding.cs" />
     <Compile Include="Contracts\IoC\IFactory.cs" />
+    <Compile Include="Contracts\Network\IJsonNetServer.cs" />
+    <Compile Include="Contracts\Network\ITcpClient.cs" />
+    <Compile Include="Contracts\Network\ITcpServer.cs" />
     <Compile Include="Contracts\IThreadQueueComponent.cs" />
     <Compile Include="Database\DatabaseUtils.cs" />
     <Compile Include="Database\SqlStatement.cs" />
@@ -109,6 +113,12 @@
     <Compile Include="MathUtils\Vector2F.cs" />
     <Compile Include="MathUtils\Vector2L.cs" />
     <Compile Include="MathUtils\Vector2S.cs" />
+    <Compile Include="Network\JsonNetClient.cs" />
+    <Compile Include="Network\JsonNetPackage.cs" />
+    <Compile Include="Network\JsonNetServer.cs" />
+    <Compile Include="Network\TcpClient.cs" />
+    <Compile Include="Network\TcpConnection.cs" />
+    <Compile Include="Network\TcpServer.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="Threading\ThreadQueuedComponent.cs" />
     <Compile Include="Threading\ThreadQueueOperation.cs" />
