@@ -4,19 +4,19 @@
 
     public class Gson
     {
-        public object FromJson(JsonObject getAsJsonObject, Type field110500B)
+        public object FromJson(JsonObject getAsJsonObject, Type type)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<object>();
         }
 
         public string ToJson(object chatMessageComponent)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<string>();
         }
 
-        public object FromJson(string getAsJsonObject, Type field110500B)
+        public object FromJson(string getAsJsonObject, Type type)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<object>();
         }
     }
 }

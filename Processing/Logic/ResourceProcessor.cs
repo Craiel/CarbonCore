@@ -32,7 +32,7 @@
 
         public RawResource ProcessRaw(CarbonDirectory path)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<RawResource>();
         }
 
         public RawResource ProcessRaw(CarbonFile file)

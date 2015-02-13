@@ -27,9 +27,9 @@
             testSelect.Table("TestTable");
             testSelect.What("Id");
             testSelect.What("TestString");
-            testSelect.WhereConstraint("Id", 50);
-            testSelect.WhereConstraint("TestString", "Super");
-            testSelect.OrderBy("TestString");
+            testSelect.WhereConstraint(new SqlStatementConstraint("Id", 50));
+            testSelect.WhereConstraint(new SqlStatementConstraint("TestString", "Super"));
+            testSelect.OrderBy(new SqlStatementOrderByRule("TestString"));
 
             const string ControlSelect = @"SELECT Id,TestString FROM TestTable WHERE Id = @WHR_Id AND TestString = @WHR_TestString ORDER BY TestString";
 

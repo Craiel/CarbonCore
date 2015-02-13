@@ -23,17 +23,17 @@
 
         public bool Before(Date date)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<bool>();
         }
 
         public long GetTime()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<long>();
         }
 
         public string Format(Date par1Date)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<string>();
         }
     }
 }

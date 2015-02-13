@@ -1,6 +1,5 @@
 ﻿namespace CarbonCore.Processing.Resource.Stage
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -38,7 +37,8 @@
 
                     default:
                         {
-                            throw new NotImplementedException("Unsupported property type: " + property.Type);
+                            Utils.Diagnostics.Internal.NotImplemented("Unsupported property type: " + property.Type);
+                            break;
                         }
                 }
             }

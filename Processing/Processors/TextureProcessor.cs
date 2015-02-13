@@ -139,9 +139,11 @@
                         builder.Append(isNormal ? "-bc3n " : "-bc3 ");
                         break;
                     }
+
                 default:
                     {
-                        throw new NotImplementedException("Compression format has no setting: " + options.Format);
+                        Utils.Diagnostics.Internal.NotImplemented("Compression format has no setting: " + options.Format);
+                        break;
                     }
             }
 

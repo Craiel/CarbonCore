@@ -1,75 +1,73 @@
 ﻿namespace CarbonCore.JSharpBridge.Collections
 {
-    using System;
-
     public class JavaHashMap
     {
-        public JavaHashMap(JavaHashMap field77455B = null)
+        public JavaHashMap(JavaHashMap map = null)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public JavaHashSet Keys
         {
             get
             {
-                throw new NotImplementedException();
+                return Utils.Diagnostics.Internal.NotImplemented<JavaHashSet>();
             }
         }
 
         public bool ContainsKey(object key)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<bool>();
         }
 
         public object Put(object key, object value)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<object>();
         }
 
         public void Clear()
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public JavaCollection Values()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<JavaCollection>();
         }
 
         public object Get(object key)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<object>();
         }
 
         public object Remove(object key)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<object>();
         }
 
         public bool IsEmpty()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<bool>();
         }
 
         public JavaHashSet EntrySet()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<JavaHashSet>();
         }
 
         public int Size()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<int>();
         }
 
         public void PutAll(JavaHashMap par0Map)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public JavaHashSet KeySet()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<JavaHashSet>();
         }
     }
 }

@@ -1,87 +1,85 @@
 ﻿namespace CarbonCore.JSharpBridge.Collections
 {
-    using System;
-    
     public class JavaCollection : Iterable
     {
         public JavaCollection()
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public JavaCollection(object entry)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public int Size()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<int>();
         }
 
         public object Get(int index)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<object>();
         }
 
         public object Remove(object entry)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<object>();
         }
 
         public bool IsEmpty()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<bool>();
         }
         
         public bool Add(object entry)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<bool>();
         }
 
         public void Clear()
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public object[] ToArray(object[] unknown = null)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<object[]>();
         }
 
         public void AddAll(JavaCollection other)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public bool Contains(object entry)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<bool>();
         }
 
         public void Set(int index, object entry)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public int IndexOf(object var4)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<int>();
         }
 
         public void RemoveAll(JavaCollection var1)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public JavaCollection SubList(int i, int min)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<JavaCollection>();
         }
 
         public void Add(int entry, object profilerResult)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
     }
 }

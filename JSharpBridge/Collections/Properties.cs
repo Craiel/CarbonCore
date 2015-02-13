@@ -1,34 +1,32 @@
 ﻿namespace CarbonCore.JSharpBridge.Collections
 {
-    using System;
-
     using CarbonCore.JSharpBridge.IO;
 
     public class Properties : JavaHashMap
     {
         public void Load(object var3)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public void Store(FileOutputStream var1, string minecraftServerProperties)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public bool ContainsKey(string par1Str)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<bool>();
         }
 
         public void SetProperty(string par1Str, string par2Str)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public string GetProperty(string par1Str, string par2Str)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<string>();
         }
     }
 }

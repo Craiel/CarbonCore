@@ -6,12 +6,12 @@
     {
         public void Dispose()
         {
-            throw new System.NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public void DrawImage(BufferedImage par1BufferedImage, int i, int i1, ImageObserver imageObserver)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
     }
 }

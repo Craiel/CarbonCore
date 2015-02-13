@@ -1,6 +1,5 @@
 ﻿namespace CarbonCore.UtilsDX
 {
-    using System;
     using System.IO;
 
     using SharpDX.Direct3D11;
@@ -9,7 +8,7 @@
     {
         public static void ResourceToStream(DeviceContext context, Texture2D texture2D, ImageFileFormat format, Stream target)
         {
-            throw new NotImplementedException("This changed from 11 to 11.1 need to use something else");
+            Utils.Diagnostics.Internal.NotImplemented("This changed from 11 to 11.1 need to use something else");
 
             // http://stackoverflow.com/questions/9602102/loading-textures-with-sharpdx-in-metro
             /*Good news! Alexandre Mutel, the author of SharpDX, let me know that Microsoft removed the "helper methods" from Direct3D11.
@@ -22,7 +21,7 @@
 
         public static T ResourceFromMemory<T>(Device graphics, byte[] data, ImageLoadInformation? loadInformation = null)
         {
-            throw new NotImplementedException("same thing as ResourceToStream");
+            return Utils.Diagnostics.Internal.NotImplemented<T>("same thing as ResourceToStream");
         }
     }
 }

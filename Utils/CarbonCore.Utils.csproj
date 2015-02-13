@@ -45,7 +45,8 @@
     <Reference Include="Autofac">
       <HintPath>..\External\Autofac\3.1.1\Autofac.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\External\Json.NET\Json60r6\Net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -62,17 +63,24 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Contracts\IExtendedDictionary.cs" />
     <Compile Include="Contracts\IJsonConfig.cs" />
+    <Compile Include="Contracts\Network\ICoreTcpClient.cs" />
+    <Compile Include="Contracts\Network\ICoreTcpServer.cs" />
     <Compile Include="Contracts\Network\IJsonNetClient.cs" />
     <Compile Include="Contracts\IoC\ICarbonContainer.cs" />
     <Compile Include="Contracts\IoC\ICarbonModule.cs" />
     <Compile Include="Contracts\IoC\ICarbonQuickBinding.cs" />
     <Compile Include="Contracts\IoC\IFactory.cs" />
+    <Compile Include="Contracts\Network\IJsonNetPackage.cs" />
+    <Compile Include="Contracts\Network\IJsonNetPeer.cs" />
     <Compile Include="Contracts\Network\IJsonNetServer.cs" />
-    <Compile Include="Contracts\Network\ITcpClient.cs" />
-    <Compile Include="Contracts\Network\ITcpServer.cs" />
     <Compile Include="Contracts\IThreadQueueComponent.cs" />
     <Compile Include="Database\DatabaseUtils.cs" />
     <Compile Include="Database\SqlStatement.cs" />
+    <Compile Include="Database\SqlStatementConstraint.cs" />
+    <Compile Include="Database\SqlStatementConstraintFollowUpConstraintType.cs" />
+    <Compile Include="Database\SqlStatementConstraintType.cs" />
+    <Compile Include="Database\SqlStatementOrderByRule.cs" />
+    <Compile Include="Database\SqlStatementOutput.cs" />
     <Compile Include="Database\SqlStatementType.cs" />
     <Compile Include="Diagnostics\ContextualLog.cs" />
     <Compile Include="Diagnostics\Internal.cs" />
@@ -113,12 +121,18 @@
     <Compile Include="MathUtils\Vector2F.cs" />
     <Compile Include="MathUtils\Vector2L.cs" />
     <Compile Include="MathUtils\Vector2S.cs" />
+    <Compile Include="Network\CoreTcpClient.cs" />
+    <Compile Include="Network\CoreTcpData.cs" />
+    <Compile Include="Network\CoreTcpServer.cs" />
+    <Compile Include="Network\CoreTcpUtils.cs" />
     <Compile Include="Network\JsonNetClient.cs" />
     <Compile Include="Network\JsonNetPackage.cs" />
+    <Compile Include="Network\JsonNetPeer.cs" />
     <Compile Include="Network\JsonNetServer.cs" />
-    <Compile Include="Network\TcpClient.cs" />
-    <Compile Include="Network\TcpConnection.cs" />
-    <Compile Include="Network\TcpServer.cs" />
+    <Compile Include="Network\JsonNetUtils.cs" />
+    <Compile Include="Network\NetworkUtils.cs" />
+    <Compile Include="Network\Packages\JsonNetPackagePayload.cs" />
+    <Compile Include="Network\Packages\JsonNetPackagePing.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="Threading\ThreadQueuedComponent.cs" />
     <Compile Include="Threading\ThreadQueueOperation.cs" />
@@ -176,7 +190,9 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Tests\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -42,7 +42,7 @@
 
         public JavaArray()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<FFF>();
         }
 
         public int Length
@@ -83,7 +83,7 @@
 
         public IEnumerator<T> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<FFF>();
         }
 
         IEnumerator IEnumerable.GetEnumerator()

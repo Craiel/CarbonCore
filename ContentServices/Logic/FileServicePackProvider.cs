@@ -227,8 +227,8 @@
                 throw new InvalidOperationException(string.Format("Can not delete {0}, was not in the provider", key));
             }
 
-            throw new NotImplementedException();
-            //CarbonFile file = this.root.ToFile(key.Hash);
+            Utils.Diagnostics.Internal.NotImplemented();
+            /*//CarbonFile file = this.root.ToFile(key.Hash);
             //System.Diagnostics.Trace.Assert(file.Exists, "Entry to delete is not in the provider!");
 
             // First mark the file as deleted in the table
@@ -237,7 +237,7 @@
             this.databaseService.Save(ref entry, true);
 
             // Now delete the file itself if all went well
-            //file.Delete();
+            //file.Delete();*/
         }
 
         protected override int DoCleanup()

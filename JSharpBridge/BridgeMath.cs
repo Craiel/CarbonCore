@@ -50,127 +50,127 @@
 
         public static bool IsFinite(double value)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<bool>();
         }
 
         public static int Round(float value)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<int>();
         }
 
         public static int Round(double value)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<int>();
         }
 
         public static double Signum(double var1)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<double>();
         }
 
         public static double Cos(double var12)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<double>();
         }
 
         public static double Sin(double var12)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<double>();
         }
 
         public static double Atan2(double var11, double var22)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<double>();
         }
 
         public static double Sqrt(double p0)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<double>();
         }
 
         public static double Abs(double dotProduct)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<double>();
         }
 
         public static int Abs(int dotProduct)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<int>();
         }
 
         public static float Atan(double d)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<float>();
         }
 
         public static T Max<T>(T f, T f1)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<T>();
         }
 
         public static double Ceiling(double getHealth)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<double>();
         }
 
         public static T Min<T>(T var26, T i)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<T>();
         }
 
         public static float Pow(double d, double d1)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<float>();
         }
 
         public static bool IsInfinite(double posX)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<bool>();
         }
 
         public static int FloatToRawIntBits(float textureV)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<int>();
         }
 
         public static short ReverseBytes(short par1)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<short>();
         }
 
         public static long DoubleToLongBits(double data)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<long>();
         }
 
         public static int FloatToIntBits(float data)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<int>();
         }
 
         public static string IntToString(int var18)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<string>();
         }
 
         public static string LongToString(long nextLong, int i)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<string>();
         }
 
         public static string ToHexString(int rarityColor)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<string>();
         }
 
         public static int ReverseBytes(int par1)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<int>();
         }
 
         public static bool boolValueOf(bool p0)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<bool>();
         }
     }
 }

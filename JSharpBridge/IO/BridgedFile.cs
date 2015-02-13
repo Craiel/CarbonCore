@@ -1,89 +1,89 @@
 ﻿namespace CarbonCore.JSharpBridge.IO
 {
-    using System;
-
     using CarbonCore.JSharpBridge.Net;
 
     public class BridgedFile
     {
         public BridgedFile(BridgedFile directory, string fileName)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public BridgedFile(string directory)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public BridgedFile GetParentFile()
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
+            return null;
         }
 
         public void Mkdirs()
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public string GetAbsolutePath()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<string>();
         }
 
         public bool IsDirectory()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<bool>();
         }
 
         public void Delete()
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public BridgedFile[] ListFiles(FileFilter resourcePackFilter = null)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
+            return null;
         }
 
         public void Mkdir()
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public string GetName()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<string>();
         }
 
         public bool Exists()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<bool>();
         }
 
         public long LastModified()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<long>();
         }
 
         public URI ToURI()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<URI>();
         }
 
         public bool IsFile()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<bool>();
         }
 
         public void RenameTo(BridgedFile var8)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public string[] List()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<string[]>();
         }
     }
 }

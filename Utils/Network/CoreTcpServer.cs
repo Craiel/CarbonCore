@@ -5,12 +5,17 @@
     using System.Net.Sockets;
     using System.Threading;
 
+    using CarbonCore.Utils.Contracts.IoC;
     using CarbonCore.Utils.Contracts.Network;
 
-    public class TcpServer : ITcpServer
+    public class CoreTcpServer : ICoreTcpServer
     {
-        private int port;
+        private static readonly long DefaultClientTimeout = TimeSpan.FromSeconds(2).Ticks;
 
+        private readonly IFactory factory;
+        
+        private int? port;
+        
         private bool isRunning;
         private bool canAccept;
 
@@ -21,8 +26,11 @@
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
-        public TcpServer()
+        public CoreTcpServer(IFactory factory)
         {
+            this.factory = factory;
+
+            this.ClientTimeout = DefaultClientTimeout;
         }
 
         // -------------------------------------------------------------------
@@ -36,7 +44,7 @@
 
         public event TcpServerEventHandler OnClientDisconnected;
 
-        public int Port
+        public int? Port
         {
             get
             {
@@ -54,6 +62,8 @@
             }
         }
 
+        public long? ClientTimeout { get; set; }
+
         public bool IsRunning
         {
             get
@@ -62,15 +72,33 @@
             }
         }
 
+        public IPEndPoint GetEndpoint()
+        {
+            if (this.port == null)
+            {
+                throw new InvalidOperationException("Port must be set before calling GetEndpoint()");
+            }
+
+            return new IPEndPoint(NetworkUtils.GetLocalIPAddress(), (int)this.port);
+        }
+
         public void Start()
         {
-            this.listener = new TcpListener(IPAddress.Any, 3000);
-            
+            if (this.port == null)
+            {
+                throw new InvalidOperationException("Port needs to be set before Start()");
+            }
+
+            this.listener = new TcpListener(IPAddress.Any, (int)this.port);
+
             this.canAccept = true;
-            this.acceptThread = new Thread(this.ClientAcceptMain);
+            this.acceptThread = new Thread(this.ClientAcceptMain) { IsBackground = true };
             this.acceptThread.Start();
 
             this.isRunning = true;
+
+            System.Diagnostics.Debug.WriteLine("BaseTcpServer started on {0}", this.GetEndpoint());
+
             if (this.OnServerStarted != null)
             {
                 this.OnServerStarted();
@@ -80,7 +108,7 @@
         public void Stop()
         {
             System.Diagnostics.Trace.Assert(this.acceptThread != null && this.acceptThread.IsAlive, "Can not stop server, was not started");
-
+            
             this.canAccept = false;
             Thread.Sleep(10);
             this.acceptThread.Abort();
@@ -91,17 +119,49 @@
 
             this.isRunning = false;
 
+            System.Diagnostics.Debug.WriteLine("BaseTcpServer stopped");
+
             if (this.OnServerStopped != null)
             {
                 this.OnServerStopped();
             }
         }
 
+        public void Disconnect(TcpClient client)
+        {
+            Diagnostics.Internal.NotImplemented();
+        }
+        
         public void Dispose()
         {
             this.Dispose(true);
         }
 
+        // -------------------------------------------------------------------
+        // Protected
+        // -------------------------------------------------------------------
+        protected virtual ICoreTcpClient CreateClient()
+        {
+            return this.factory.Resolve<ICoreTcpClient>();
+        }
+
+        protected virtual void ProcessData(CoreTcpData data)
+        {
+            switch (data.State)
+            {
+                case TcpDataState.Disconnected:
+                case TcpDataState.TimedOut:
+                    {
+                        if (this.OnClientDisconnected != null)
+                        {
+                            this.OnClientDisconnected(data.Client);
+                        }
+
+                        break;
+                    }
+            }
+        }
+        
         // -------------------------------------------------------------------
         // Private
         // -------------------------------------------------------------------
@@ -112,72 +172,29 @@
                 this.Stop();
             }
         }
-
+        
         private void ClientAcceptMain()
         {
             this.listener.Start();
 
             while (this.canAccept)
             {
-                //blocks until a client has connected to the server
+                // blocks until a client has connected to the server
                 TcpClient client = this.listener.AcceptTcpClient();
 
-                //create a thread to handle communication 
-                //with connected client
-                Thread clientThread = new Thread(this.ClientMain);
-                clientThread.Start(client);
+                // Create our own client and sync some properties
+                var baseTcpClient = this.CreateClient();
+                baseTcpClient.SetClient(client);
+
+                System.Diagnostics.Trace.TraceInformation("Client connected: {0}", client.Client.RemoteEndPoint);
+
+                if (this.OnClientConnected != null)
+                {
+                    this.OnClientConnected(baseTcpClient);
+                }
+
+                CoreTcpUtils.InitiateClientRead(baseTcpClient, this.ProcessData, timeOut: this.ClientTimeout);
             }
-        }
-
-        private void ClientMain(object arguments)
-        {
-            var client = (TcpClient)arguments;
-
-            if (this.OnClientConnected != null)
-            {
-                this.OnClientConnected(client);
-            }
-
-            NetworkStream clientStream = client.GetStream();
-
-            // TODO: http://tech.pro/tutorial/704/csharp-tutorial-simple-threaded-tcp-server
-            // bytesRead = clientStream.Read(message, 0, 4096);
-            // clientStream.Write();
-
-
-            /*TcpClient tcpClient = (TcpClient)client;
-  NetworkStream clientStream = tcpClient.GetStream();
-
-  byte[] message = new byte[4096];
-  int bytesRead;
-
-  while (true)
-  {
-    bytesRead = 0;
-
-    try
-    {
-      //blocks until a client sends a message
-      bytesRead = clientStream.Read(message, 0, 4096);
-    }
-    catch
-    {
-      //a socket error has occured
-      break;
-    }
-
-    if (bytesRead == 0)
-    {
-      //the client has disconnected from the server
-      break;
-    }
-
-    //message has successfully been received
-    ASCIIEncoding encoder = new ASCIIEncoding();
-    System.Diagnostics.Debug.WriteLine(encoder.GetString(message, 0, bytesRead));
-  }
-
-  tcpClient.Close();*/
         }
     }
 }

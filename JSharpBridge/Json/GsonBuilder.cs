@@ -6,12 +6,12 @@
     {
         public void RegisterTypeAdapter(Type type, object serializerAndDeserializer)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
         
         public Gson Create()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<Gson>();
         }
     }
 }

@@ -1,17 +1,15 @@
 ﻿namespace CarbonCore.JSharpBridge.Crypto
 {
-    using System;
-
     public class SecretKeySpec : SecretKey
     {
         public SecretKeySpec(byte[] unknown, string unknown2)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public SecretKeySpec(Key unknown, string unknown2)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
     }
 }

@@ -139,7 +139,7 @@
                 return Enum.Parse(targetType, name);
             }
 
-            throw new NotImplementedException(string.Format("Can not get Typed value of {0} for target type {1}", source.GetType(), targetType));
+            return Diagnostics.Internal.NotImplemented<object>(string.Format("Can not get Typed value of {0} for target type {1}", source.GetType(), targetType));
         }
     }
 }

@@ -1,72 +1,70 @@
 ﻿namespace CarbonCore.JSharpBridge
 {
-    using System;
-
     public static class BridgeMouse
     {
         public static bool Next()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<bool>();
         }
 
         public static int GetEventButton()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<int>();
         }
 
         public static bool GetEventButtonState()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<bool>();
         }
 
         public static int GetEventDWheel()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<int>();
         }
 
         public static int GetX()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<int>();
         }
 
         public static int GetY()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<int>();
         }
 
         public static bool IsButtonDown(int i)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<bool>();
         }
 
         public static int GetEventX()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<int>();
         }
 
         public static int GetEventY()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<int>();
         }
 
         public static int GetDX()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<int>();
         }
 
         public static int GetDY()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<int>();
         }
 
         public static void SetGrabbed(bool b)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void SetCursorPosition(int i, int i1)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
     }
 }

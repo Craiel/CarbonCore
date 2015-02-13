@@ -114,7 +114,8 @@
 
                 default:
                     {
-                        throw new NotImplementedException(term.Type.ToString());
+                        Utils.Diagnostics.Internal.NotImplemented(term.Type.ToString());
+                        break;
                     }
             }
         }

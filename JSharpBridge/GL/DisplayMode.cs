@@ -1,32 +1,30 @@
 ﻿namespace CarbonCore.JSharpBridge.GL
 {
-    using System;
-
     public class DisplayMode
     {
         public DisplayMode(int width, int height)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public int GetWidth()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<int>();
         }
 
         public int GetHeight()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<int>();
         }
 
         public int GetBitsPerPixel()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<int>();
         }
 
         public int GetFrequency()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<int>();
         }
     }
 }

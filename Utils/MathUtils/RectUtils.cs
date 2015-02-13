@@ -82,7 +82,7 @@
 
                     default:
                         {
-                            throw new NotImplementedException();
+                            return Utils.Diagnostics.Internal.NotImplemented<int>();
                         }
                 }
 
@@ -133,7 +133,7 @@
 
                         default:
                             {
-                                throw new NotImplementedException();
+                                return Diagnostics.Internal.NotImplemented<int>();
                             }
                     }
 

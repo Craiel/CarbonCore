@@ -16,7 +16,7 @@
 
         public Exception GetThrown()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<Exception>();
         }
     }
 }

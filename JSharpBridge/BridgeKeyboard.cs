@@ -1,42 +1,40 @@
 ﻿namespace CarbonCore.JSharpBridge
 {
-    using System;
-
     public static class BridgeKeyboard
     {
         public static bool IsKeyDown(int keyCode)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<bool>();
         }
 
         public static bool Next()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<bool>();
         }
 
         public static int GetEventKey()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<int>();
         }
 
         public static bool GetEventKeyState()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<bool>();
         }
 
         public static void EnableRepeatEvents(bool b)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static char GetEventCharacter()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<char>();
         }
 
         public static string GetKeyName(int par0)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<string>();
         }
     }
 }

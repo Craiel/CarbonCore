@@ -91,7 +91,7 @@
 
         public virtual bool CopyTo(CarbonPath target, bool overwrite = false)
         {
-            throw new NotImplementedException();
+            return Diagnostics.Internal.NotImplemented<bool>();
         }
 
         public T ToRelative<T>(CarbonPath other) where T : CarbonPath

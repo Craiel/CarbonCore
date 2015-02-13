@@ -1,7 +1,5 @@
 ﻿namespace CarbonCore.JSharpBridge.GL
 {
-    using System;
-
     using CarbonCore.JSharpBridge.IO;
 
     public static class ARBVertexBufferObject
@@ -12,17 +10,17 @@
 
         public static void GlGenBuffersARB(IntBuffer vertexBuffers)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlBindBufferARB(int glArrayBufferArb, int get)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlBufferDataARB(int glArrayBufferArb, ByteBuffer byteBuffer, int glStreamDrawArb)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
     }
 }

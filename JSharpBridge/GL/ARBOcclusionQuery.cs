@@ -1,7 +1,5 @@
 ﻿namespace CarbonCore.JSharpBridge.GL
 {
-    using System;
-
     using CarbonCore.JSharpBridge.IO;
 
     public static class ARBOcclusionQuery
@@ -14,22 +12,22 @@
 
         public static void GlGenQueriesARB(IntBuffer glOcclusionQueryBase)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlGetQueryObjectuARB(int glOcclusionQuery, int glQueryResultAvailableArb, IntBuffer occlusionResult)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlBeginQueryARB(int glSamplesPassedArb, int glOcclusionQuery)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlEndQueryARB(int glSamplesPassedArb)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
     }
 }

@@ -1,7 +1,5 @@
 ﻿namespace CarbonCore.JSharpBridge.Core
 {
-    using System;
-
     public class DateFormat
     {
         private readonly string formatString;
@@ -13,7 +11,7 @@
 
         public string Format(long date)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<string>();
         }
 
         public string Format(Date target)
@@ -23,12 +21,12 @@
 
         public static Date GetDateTimeInstance(int i, int i1)
         {
-            throw new System.NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<Date>();
         }
 
         public static Date GetDateTimeInstance()
         {
-            throw new System.NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<Date>();
         }
     }
 }

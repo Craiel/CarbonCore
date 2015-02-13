@@ -257,7 +257,7 @@
             var statement = new SQLiteStatement(SqlStatementType.Select);
             statement.Table("sqlite_master");
             statement.What("name");
-            statement.WhereConstraint("type", "table");
+            statement.WhereConstraint(new SqlStatementConstraint("type", "table"));
 
             using (DbCommand command = this.connector.CreateCommand(statement))
             {
@@ -389,7 +389,7 @@
                 statement = new SQLiteStatement(SqlStatementType.Update);
             }
 
-            statement.WhereConstraint(descriptor.PrimaryKey.Name, primaryKeyValue);
+            statement.WhereConstraint(new SqlStatementConstraint(descriptor.PrimaryKey.Name, primaryKeyValue));
 
             foreach (DatabaseEntryElementDescriptor element in descriptor.Elements)
             {
@@ -443,7 +443,7 @@
                 {
                     var joinedDeleteStatement = new SQLiteStatement(SqlStatementType.Delete);
                     joinedDeleteStatement.Table(joinedDescriptor.TableName);
-                    joinedDeleteStatement.WhereConstraint(joinedElement.ForeignKeyColumn, primaryKeyValue);
+                    joinedDeleteStatement.WhereConstraint(new SqlStatementConstraint(joinedElement.ForeignKeyColumn, primaryKeyValue));
                     this.pendingActions.Enqueue(new DatabaseServiceAction(joinedDeleteStatement) { IgnoreFailure = true });
                 }
                 else
@@ -465,14 +465,14 @@
                 {
                     if (keys[0] != descriptor.PrimaryKey.InternalType.GetDefault())
                     {
-                        target.WhereConstraint(descriptor.PrimaryKey.Name, keys[0]);
+                        target.WhereConstraint(new SqlStatementConstraint(descriptor.PrimaryKey.Name, keys[0]));
                     }
                 }
                 else
                 {
                     System.Diagnostics.Trace.Assert(keys.Count < 1000, "More than a thousand entries might not be giving the proper result!");
 
-                    target.InConstraint(descriptor.PrimaryKey.Name, keys);
+                    target.WhereConstraint(new SqlStatementConstraint(descriptor.PrimaryKey.Name, keys));
                 }
             }
         }
@@ -614,11 +614,11 @@
                 {
                     if (pair.Value.Count > 1)
                     {
-                        statement.InConstraint(pair.Key, pair.Value);
+                        statement.WhereConstraint(new SqlStatementConstraint(pair.Key, pair.Value));
                     }
                     else
                     {
-                        statement.WhereConstraint(pair.Key, pair.Value[0]);
+                        statement.WhereConstraint(new SqlStatementConstraint(pair.Key, pair.Value[0]));
                     }
                 }
             }

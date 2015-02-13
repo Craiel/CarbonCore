@@ -41,7 +41,7 @@
         {
             if (Application.Current != null)
             {
-                throw new NotImplementedException("Running in an existing Application context is not supported yet!");
+                Utils.Diagnostics.Internal.NotImplemented("Running in an existing Application context is not supported yet!");
             }
 
             var application = new Application

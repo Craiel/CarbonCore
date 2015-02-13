@@ -6,27 +6,27 @@
     {
         public ArgumentAcceptingOptionSpec WithRequiredArg()
         {
-            throw new System.NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<ArgumentAcceptingOptionSpec>();
         }
 
         public ArgumentAcceptingOptionSpec OfType(Type type)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<ArgumentAcceptingOptionSpec>();
         }
 
         public ArgumentAcceptingOptionSpec DefaultsTo<T>(T i, T[] ints)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<ArgumentAcceptingOptionSpec>();
         }
 
         public ArgumentAcceptingOptionSpec Required()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<ArgumentAcceptingOptionSpec>();
         }
 
         public string Value(OptionSet var17)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<string>();
         }
     }
 }

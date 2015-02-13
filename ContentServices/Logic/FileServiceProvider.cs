@@ -177,12 +177,14 @@
 
         public void GetMetadata(FileEntryKey key, int metadataKey, out int? value, out string stringValue)
         {
-            throw new NotImplementedException();
+            value = null;
+            stringValue = null;
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public void SetMetadata(FileEntryKey key, int metadataKey, int? value = null, string stringValue = null)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public void Dispose()

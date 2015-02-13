@@ -1,6 +1,5 @@
 ﻿namespace CarbonCore.JSharpBridge
 {
-    using System;
     using System.IO;
 
     public static class BridgeFile
@@ -18,7 +17,7 @@
         
         public static string GetAbsolutePath(this FileInfo info)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<string>();
         }
     }
 }

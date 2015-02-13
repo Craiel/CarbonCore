@@ -260,7 +260,7 @@
 
                 default:
                     {
-                        throw new NotImplementedException("Unknown rotation mode: " + type);
+                        return Utils.Diagnostics.Internal.NotImplemented<Quaternion>("Unknown rotation mode: " + type);
                     }
             }
         }
@@ -330,7 +330,7 @@
 
                     default:
                         {
-                            throw new NotImplementedException();
+                            return Utils.Diagnostics.Internal.NotImplemented<StagePropertyElement[]>();
                         }
                 }
             }

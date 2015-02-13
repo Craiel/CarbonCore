@@ -29,7 +29,7 @@
         {
             get
             {
-                throw new NotImplementedException();
+                return Utils.Diagnostics.Internal.NotImplemented<int>();
             }
         }
 
@@ -119,7 +119,7 @@
 
         public void Move(FileEntryKey key, IFileServiceProvider targetProvider)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public void Dispose()

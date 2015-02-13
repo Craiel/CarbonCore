@@ -86,7 +86,7 @@
 
                 default:
                     {
-                        throw new NotImplementedException();
+                        return Utils.Diagnostics.Internal.NotImplemented<HashFileName>();
                     }
             }
         }

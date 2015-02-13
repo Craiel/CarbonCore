@@ -76,6 +76,7 @@
     </Compile>
     <Compile Include="Utils\CarbonPathTests.cs" />
     <Compile Include="Utils\LocalizationTests.cs" />
+    <Compile Include="Utils\NetworkTests.cs" />
     <Compile Include="Utils\TestMath.cs" />
     <Compile Include="Utils\TestVector2F.cs" />
     <Compile Include="ToolFramework\FrameworkTestMain.cs" />

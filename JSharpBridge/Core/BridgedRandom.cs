@@ -1,62 +1,60 @@
 ﻿namespace CarbonCore.JSharpBridge.Core
 {
-    using System;
-
     public class BridgedRandom
     {
         public BridgedRandom()
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public BridgedRandom(long seed)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public void SetSeed(long seed)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public int NextInt()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<int>();
         }
 
         public int NextInt(int maxValue)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<int>();
         }
 
         public long NextLong()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<long>();
         }
 
         public double NextDouble()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<double>();
         }
 
         public bool NextBoolean()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<bool>();
         }
 
         public float NextFloat()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<float>();
         }
 
         public double NextGaussian()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<double>();
         }
 
         public void NextBytes(byte[] verifyToken)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿namespace CarbonCore.JSharpBridge.IO
 {
-    using System;
     using System.IO;
     using System.Text;
 
@@ -10,7 +9,7 @@
 
         public FileWriter(BridgedFile file, bool something = false)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public override Encoding Encoding

@@ -6,12 +6,12 @@
     {
         public static void AddLibrary(Type type)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void SetCodec(string ogg, Type p1)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
     }
 }

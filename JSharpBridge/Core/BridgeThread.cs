@@ -9,22 +9,22 @@
         // -------------------------------------------------------------------
         public BridgeThread(string name = null)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public BridgeThread(Runnable source)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public BridgeThread(object source, string fileIoThread)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         // -------------------------------------------------------------------
@@ -32,32 +32,32 @@
         // -------------------------------------------------------------------
         public void SetDaemon(bool unknown)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public void Start()
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public void Stop()
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void Sleep(long time)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public void Interrupt()
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public bool IsInterrupted()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<bool>();
         }
 
         // -------------------------------------------------------------------
@@ -65,37 +65,37 @@
         // -------------------------------------------------------------------
         public static void Yield()
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void DumpStack()
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public bool IsAlive()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<bool>();
         }
 
         public static BridgeThread CurrentThread()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<BridgeThread>();
         }
 
         public StackTraceElement[] GetStackTrace()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<StackTraceElement[]>();
         }
 
         public void SetPriority(int i)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public void SetName(string minecraftMainThread)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
     }
 }

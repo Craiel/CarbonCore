@@ -193,382 +193,382 @@
 
         public static void GlEnable(int glTexture_2D)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlShadeModel(int glSmooth)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlClearDepth(double depth)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlDepthFunc(int glLequal)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlAlphaFunc(int glGreater, float f)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlCullFace(int glBack)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlMatrixMode(int glProjection)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlLoadIdentity()
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlViewport(int x, int y, int displayWidth, int displayHeight)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlClear(int flags)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlOrtho(double d, double getScaledWidthDouble, double getScaledHeightDouble, double d1, double d2, double d3)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlTranslatef(float f, float f1, float f2)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlClearColor(float f, float f1, float f2, float f3)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlDisable(object glLighting)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlColor4f(float f, float f1, float f2, float f3)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static int GlGetError()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<int>();
         }
 
         public static void GlFlush()
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlLineWidth(float f)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static object GlGetString(int glVersion)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<object>();
         }
 
         public static int GlGetInteger(int glMaxVertexUniformComponents, IntBuffer bla = null)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<int>();
         }
 
         public static void GlTexImage2D(int glProxyTexture_2D, int i, int glRgba, int var0, int var1, int i1, int o, int glUnsignedByte, ByteBuffer byteBuffer)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static int GlGetTexLevelParameteri(int glProxyTexture_2D, int i, int glTextureWidth)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<int>();
         }
 
         public static int GlGenLists(int par0)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<int>();
         }
 
         public static void GlDeleteLists(int par0, int i)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlDeleteTextures(int i)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlRotatef(float p0, float p1, float p2, float p3)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlScaled(double cameraZoom, double d, double d1)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlScalef(float p0, float var4, float p2)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlPushMatrix()
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlPopMatrix()
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlTexParameteri(int glTexture_2D, int glTextureMinFilter, int glLinear)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlColorMask(bool p0, bool p1, bool p2, bool p3)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlBlendFunc(int glSrcAlpha, int glOneMinusSrcAlpha)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlDepthMask(bool p0)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlNormal3f(float f, float f1, float f2)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlFog(int glFogColor, FloatBuffer setFogColorBuffer)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlFogi(int glFogMode, int glLinear)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlFogf(int glFogStart, float p1)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlColorMaterial(int glFront, int glAmbient)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlBindTexture(int glTexture_2D, int par0)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static int GlGenTextures()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<int>();
         }
 
         public static void GlTexSubImage2D(int glTexture_2D, int i, int par3, int i1, int par1, int var10, int glBgra, int glUnsignedInt8888Rev, IntBuffer dataBuffer)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlPixelStorei(int glPackAlignment, int p1)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlReadPixels(int i, int i1, int par2, int par3, int glBgra, int glUnsignedInt8888Rev, IntBuffer field74293B)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlTexCoordPointer(int p0, int glFloat, int p2, long p3)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlEnableClientState(int glTextureCoordArray)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlColorPointer(int p0, int glUnsignedByte, int p2, long p3)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlNormalPointer(int glUnsignedByte, int p1, long l)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlVertexPointer(int p0, int glFloat, int p2, long l)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlDrawArrays(int glTriangles, int p1, int vertexCount)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlDisableClientState(int glVertexArray)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlLight(int glLight0, int glPosition, FloatBuffer setColorBuffer)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlLightModel(int glLightModelAmbient, FloatBuffer setColorBuffer)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlTexGeni(int glS, int glTextureGenMode, int glObjectLinear)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlTexGen(int glS, int glObjectPlane, FloatBuffer func76907A)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlColor3f(float var3, float var4, float var5)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlCallList(int glSkyList)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlNewList(int starGlCallList, int glCompile)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlEndList()
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlPolygonOffset(float p0, float p1)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlLogicOp(int glOrReverse)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlGetFloat(int glProjectionMatrix, FloatBuffer projectionMatrixBuffer)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlBegin(int glTriangleStrip)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlTexCoord2f(float p0, float p1)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlVertex3f(float p0, float posY, float p2)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlEnd()
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlTexParameterf(int glTexture_2D, int glTextureWrapS, float p2)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlCopyTexSubImage2D(int glTexture_2D, int i, int i1, int i2, int i3, int i4, int i5, int i6)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlCallLists(IntBuffer field78424G)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlTexCoordPointer(int p0, int glFloat, ShortBuffer shortBuffer)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlTexCoordPointer(int p0, int glFloat, FloatBuffer floatBuffer)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlColorPointer(int p0, bool glUnsignedByte, int p2, ByteBuffer byteBuffer)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlNormalPointer(int glUnsignedByte, ByteBuffer byteBuffer)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
         
         public static void GlVertexPointer(int p0, int glFloat, FloatBuffer floatBuffer)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlRotatef(double p0, float p1, float p2, float p3)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public static void GlTranslatef(float f, double f1, float f2)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
     }
 }

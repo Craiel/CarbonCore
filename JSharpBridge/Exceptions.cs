@@ -8,7 +8,7 @@
     {
         public static string GetLocalizedMessage(this Exception exception)
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<string>();
         }
     }
 
@@ -28,12 +28,12 @@
     {
         public RuntimeException(string message = null, Exception par2Exception = null)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
 
         public RuntimeException(Exception inner)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
     }
 
@@ -42,7 +42,7 @@
     {
         public IllegalStateException(string message = null)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
     }
 
@@ -86,7 +86,7 @@
     {
         public JsonParseException(string message = null, Exception inner = null)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
     }
 
@@ -163,9 +163,9 @@
     [Serializable]
     public class UnsupportedOperationException : Exception
     {
-        public UnsupportedOperationException(string canTDyeNonLeather = null)
+        public UnsupportedOperationException(string message = null)
         {
-            throw new NotImplementedException();
+            Utils.Diagnostics.Internal.NotImplemented();
         }
     }
 }

@@ -38,7 +38,7 @@
 
         public ImageRaster GetRaster()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<ImageRaster>();
         }
     }
 
@@ -46,7 +46,7 @@
     {
         public DataBufferInt GetDataBuffer()
         {
-            throw new NotImplementedException();
+            return Utils.Diagnostics.Internal.NotImplemented<DataBufferInt>();
         }
     }
 }

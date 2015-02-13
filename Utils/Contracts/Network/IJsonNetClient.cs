@@ -1,12 +1,7 @@
 ﻿namespace CarbonCore.Utils.Contracts.Network
 {
-    using CarbonCore.Utils.Network;
-
-    public interface IJsonNetClient : ITcpClient
+    public interface IJsonNetClient : ICoreTcpClient, IJsonNetPeer
     {
-        event JsonPackageHandler OnPackageReceived;
-        event JsonPackageHandler OnPackageSent;
-
-        void Send<T>(T package) where T : JsonNetPackage;
+        void SendPackage<T>(T package) where T : class, IJsonNetPackage;
     }
 }
