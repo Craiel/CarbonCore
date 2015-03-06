@@ -30,7 +30,7 @@
             return new string(charArray);
         }
 
-        public static StringBuilder AppendLine(this StringBuilder target, string format, params object[] args)
+        public static StringBuilder AppendFormatLine(this StringBuilder target, string format, params object[] args)
         {
             return target.AppendLine(string.Format(format, args));
         }
