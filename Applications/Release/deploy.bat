@@ -1,0 +1,17 @@
+@echo off
+echo
+
+SET STARTUP=%cd%
+SET APPLICATION=%1
+SET TARGET=%2
+
+echo Deploying %APPLICATION% to %TARGET%
+
+IF EXIST %TARGET% GOTO INSTALL
+mkdir %TARGET%
+
+:INSTALL
+CD %~dp0\%APPLICATION%
+xcopy /Y *.dll %TARGET%
+xcopy /Y %APPLICATION%.exe* %TARGET%
+cd %STARTUP%
