@@ -114,6 +114,11 @@
             while (rowEnum.MoveNext())
             {
                 var row = (XSSFRow)rowEnum.Current;
+                if (row.Cells.Count <= 0)
+                {
+                    continue;
+                }
+
                 entries.Add(row.Cells[0].StringCellValue);
             }
 

@@ -30,6 +30,7 @@
                 {
                     { "DATETIME", new FormatHandler { DefaultParameter = "g", HandlerFunction = this.HandleFormatDateTime } },
                     { "CORETIME", new FormatHandler { HandlerFunction = this.HandleFormatCoreTime } },
+                    { "CORETIMESTRING", new FormatHandler { HandlerFunction = this.HandleFormatCoreTimeToTimeString } },
                     { "THREADID", new FormatHandler { HandlerFunction = this.HandleFormatThreadId } },
                     { "PROCESSID", new FormatHandler { HandlerFunction = this.HandleFormatProcessId } },
                     { "PROCESSNAME", new FormatHandler { HandlerFunction = this.HandleFormatProcessName } },
@@ -146,6 +147,11 @@
         private string HandleFormatCoreTime(string parameter)
         {
             return Utils.Timer.CoreTimer.ElapsedTime.ToString(parameter);
+        }
+
+        private string HandleFormatCoreTimeToTimeString(string parameter)
+        {
+            return TimeSpan.FromTicks(Utils.Timer.CoreTimer.ElapsedTime).ToString();
         }
 
         private string HandleFormatThreadId(string parameter)

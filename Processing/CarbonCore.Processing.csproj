@@ -178,14 +178,6 @@
       <Project>{e05836d9-0bb3-4bfa-89e6-f5ed40a9d93c}</Project>
       <Name>CarbonCore.Utils</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Carbon\Core\Engine\Core.Engine.csproj">
-      <Project>{a724db75-b032-4ae5-b901-063a165f7e71}</Project>
-      <Name>Core.Engine</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Carbon\Core\Protocol\Core.Protocol.Sharp.csproj">
-      <Project>{9fde20aa-a982-4ca0-9ffc-fd57faf82088}</Project>
-      <Name>Core.Protocol.Sharp</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
