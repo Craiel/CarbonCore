@@ -224,10 +224,18 @@
                 return source;
             }
 
+            string invariantSource = source.ToLowerInvariant();
+
             bool boolResult;
-            if (bool.TryParse(source.ToLowerInvariant(), out boolResult))
+            if (bool.TryParse(invariantSource, out boolResult))
             {
-                return source.ToLowerInvariant();
+                return boolResult ? "true" : "false";
+            }
+
+            // Libre office does this case:
+            if (invariantSource == "true()")
+            {
+                return "true";
             }
 
             float floatResult;
