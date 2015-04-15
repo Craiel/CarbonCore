@@ -22,10 +22,18 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public abstract void Process(CarbonFile file);
+        public ProcessingContext Context { get; private set; }
+
+        public void Process(CarbonFile source)
+        {
+            System.Diagnostics.Trace.Assert(this.Context != null, "Context must be set!");
+            this.DoProcess(source);
+        }
 
         public string GetData()
         {
+            System.Diagnostics.Trace.Assert(this.Context != null, "Context must be set!");
+
             this.PreprocessData();
             return this.PostProcessData(this.builder.ToString());
         }
@@ -33,6 +41,8 @@
         // -------------------------------------------------------------------
         // Protected
         // -------------------------------------------------------------------
+        protected abstract void DoProcess(CarbonFile source);
+
         protected void Append(string content = "")
         {
             this.builder.Append(content);
@@ -60,6 +70,11 @@
         protected virtual string PostProcessData(string data)
         {
             return data;
+        }
+
+        public void SetContext(ProcessingContext context)
+        {
+            this.Context = context;
         }
     }
 }

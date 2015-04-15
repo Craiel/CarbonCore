@@ -12,6 +12,15 @@
     {
         private const string IncludeKey = "include";
 
+        private static readonly IList<string> ImageExtensions = new List<string>
+                                                                    {
+                                                                        ".png",
+                                                                        ".jpg",
+                                                                        ".jpeg",
+                                                                        ".gif",
+                                                                        ".bmp"
+                                                                    };
+
         private static readonly Regex CommentRegex = new Regex(@"/\*(.*?)\*/");
         private static readonly Regex StyleRegex = new Regex(@"([\.\#])([a-z]+)(.*?)\{([^\}]*)\}", RegexOptions.IgnoreCase);
 
@@ -26,11 +35,11 @@
         }
 
         // -------------------------------------------------------------------
-        // Public
+        // Protected
         // -------------------------------------------------------------------
-        public override void Process(CarbonFile file)
+        protected override void DoProcess(CarbonFile source)
         {
-            string content = file.ReadAsString();
+            string content = source.ReadAsString();
             this.AppendLine(content);
         }
 
@@ -43,7 +52,7 @@
                 string key = style.Name.ToLowerInvariant();
                 if (this.styleDictionary.ContainsKey(key))
                 {
-                    System.Diagnostics.Trace.TraceError("Duplicate style: " + style.Name);
+                    this.Context.AddError("Duplicate style: {0}", style.Name);
                     continue;
                 }
 
@@ -121,7 +130,7 @@
                     string[] segmentParts = segment.Split(':');
                     if (segmentParts.Length != 2)
                     {
-                        System.Diagnostics.Trace.TraceError("Invalid segment count: " + segment);
+                        this.Context.AddError("Invalid segment count: {0}", segment);
                         continue;
                     }
                     
@@ -149,7 +158,7 @@
                     CssStyle includedStyle = this.LocateStyle(value);
                     if (includedStyle == null)
                     {
-                        System.Diagnostics.Trace.TraceError("Included style not found, {0} in {1}", value, style.Name);
+                        this.Context.AddError("Included style not found, {0} in {1}", value, style.Name);
                         continue;
                     }
 
@@ -170,9 +179,12 @@
                 IList<string> values = style.Content[key];
                 foreach (string value in values)
                 {
-                    if (value.ToLowerInvariant().Contains(".png"))
+                    foreach (string extension in ImageExtensions)
                     {
-                        System.Diagnostics.Trace.TraceWarning("Style contains image reference: " + style.Name);
+                        if (value.ToLowerInvariant().Contains(extension))
+                        {
+                            this.Context.AddWarning("Style contains image reference: {0}", style.Name);
+                        }   
                     }
                 }
             }

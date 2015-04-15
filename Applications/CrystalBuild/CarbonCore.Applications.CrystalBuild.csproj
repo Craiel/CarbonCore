@@ -87,6 +87,7 @@
     <Compile Include="IoC\IoC.cs" />
     <Compile Include="Logic\BuildLogic.cs" />
     <Compile Include="Logic\BuildUtils.cs" />
+    <Compile Include="Logic\ProcessingContext.cs" />
     <Compile Include="Logic\Processors\ContentProcessor.cs" />
     <Compile Include="Logic\Processors\CssProcessor.cs" />
     <Compile Include="Logic\Processors\ExcelProcessor.cs" />

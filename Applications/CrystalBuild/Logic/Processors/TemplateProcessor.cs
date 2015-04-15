@@ -3,10 +3,8 @@
     using System;
     using System.Collections.Generic;
 
-    using CarbonCore.Utils.Contracts.IoC;
     using CarbonCore.Utils.IO;
 
-    using CrystalBuild.Contracts;
     using CrystalBuild.Contracts.Processors;
 
     public class TemplateProcessor : ContentProcessor, ITemplateProcessor
@@ -15,32 +13,28 @@
         private const string DataSuffix = "}; });";
         
         private static readonly char[] StripFromTemplates = { '\n', '\r', '\t' };
-
-        private readonly IBuildUtils buildUtils;
-
+        
         private readonly IList<string> templateSegments;
 
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
-        public TemplateProcessor(IFactory factory)
+        public TemplateProcessor()
         {
-            this.buildUtils = factory.Resolve<IBuildUtils>();
-
             this.templateSegments = new List<string>();
 
             this.AppendLine(DataPrefix);
         }
 
         // -------------------------------------------------------------------
-        // Public
+        // Protected
         // -------------------------------------------------------------------
-        public override void Process(CarbonFile file)
+        protected override void DoProcess(CarbonFile source)
         {
-            string content = file.ReadAsString();
+            string content = source.ReadAsString();
             string[] segments = content.Split(StripFromTemplates, StringSplitOptions.RemoveEmptyEntries);
             content = string.Join(" ", segments);
-            this.templateSegments.Add(string.Format("{0}: '{1}'", file.FileNameWithoutExtension, content));
+            this.templateSegments.Add(string.Format("{0}: '{1}'", source.FileNameWithoutExtension, content));
         }
 
         protected override void PreprocessData()

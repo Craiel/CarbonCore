@@ -18,6 +18,8 @@
 
     public class JavaScriptProcessor : ContentProcessor, IJavaScriptProcessor
     {
+        private const string IncludeTestRegex = @"\W{0}\W";
+
         public static readonly Regex IncludeRegex = new Regex(@"\s+(include\((['""]\w+['""])\);)", RegexOptions.IgnoreCase);
         public static readonly Regex ProcessingRegex = new Regex(@"// #If([\w]+)");
         public static readonly Regex StringHashRegex = new Regex(@"\s(StrSha\(['""](.*?)['""]\))");
@@ -38,16 +40,20 @@
         // -------------------------------------------------------------------
         public bool IsDebug { get; set; }
 
-        public override void Process(CarbonFile file)
+        // -------------------------------------------------------------------
+        // Protected
+        // -------------------------------------------------------------------
+        protected override void DoProcess(CarbonFile source)
         {
-            string content = file.ReadAsString();
+            var localContext = new JavaScriptProcessingContext(source);
+            string content = source.ReadAsString();
 
-            this.ProcessSource(file.FileNameWithoutExtension, ref content);
+            this.ProcessSource(localContext, ref content);
             
             // In debug mode append the file name of the source
             if (this.IsDebug)
             {
-                this.AppendFormatLine("// {0}", file.FileNameWithoutExtension);
+                this.AppendFormatLine("// {0}", source.FileNameWithoutExtension);
             }
 
             this.AppendLine(content);
@@ -56,99 +62,178 @@
         // -------------------------------------------------------------------
         // Private
         // -------------------------------------------------------------------
-        private void ProcessSource(string sourceName, ref string source)
+        private void ProcessSource(JavaScriptProcessingContext context, ref string source)
         {
-            var processingDirectiveStack = new Stack<ProcessingInstructions>();
-
             string[] lines = source.Split('\n');
             var trimmedContent = new StringBuilder(lines.Length);
             for (int i = 0; i < lines.Length; i++)
             {
-                string line = lines[i];
-                string trimmed = line.TrimStart();
-                if (trimmed.StartsWith(@"//"))
-                {
-                    if (trimmed.StartsWith("// #EndIf", StringComparison.OrdinalIgnoreCase))
-                    {
-                        processingDirectiveStack.Pop();
-                    }
-                    else if (ProcessingRegex.IsMatch(trimmed))
-                    {
-                        string instructionString = ProcessingRegex.Match(trimmed).Groups[1].ToString();
-                        ProcessingInstructions instruction;
-                        if (Enum.TryParse(instructionString, out instruction))
-                        {
-                            processingDirectiveStack.Push(instruction);
-                        }
-                        else
-                        {
-                            System.Diagnostics.Trace.TraceWarning("Unknown processing instruction: {0} on line {1}", instructionString, i);
-                        }
-                    }
-
-                    continue;
-                }
-
-                if (processingDirectiveStack.Contains(ProcessingInstructions.Debug) && !this.IsDebug)
+                context.SetLine(i, lines[i]);
+                
+                if (context.DirectiveStack.Contains(ProcessingInstructions.Debug) && !this.IsDebug)
                 {
                     continue;
                 }
 
-                // Replace some things we don't care about
-                line = line.Replace("\r", string.Empty);
-                line = line.Replace("\t", " ");
-
-                // Fix includes to the proper format
-                Match match = IncludeRegex.Match(line);
-                if (match.Success)
+                if (this.ProcessComment(context))
                 {
-                    string entry = match.Groups[1].ToString();
-                    string name = match.Groups[2].ToString();
-                    string varName = string.Concat(char.ToLower(name[1]), name.Substring(2, name.Length - 3));
-                    line = line.Replace(entry, string.Format("var {0} = {1}", varName, entry));
-                    line = line.Replace(name, string.Format("{0},'{1}'", name, sourceName));
+                    continue;
                 }
 
-                // Replace StrLoc() with plain localized string
-                match = StringLocRegex.Match(line);
-                if (match.Success)
-                {
-                    string localized = match.Groups[2].ToString().Localized();
-                    line = line.Replace(match.Groups[1].ToString(), string.Format("\"{0}\"", localized));
-                }
+                this.ProcessIncludes(context);
+                this.ProcessLocalization(context);
+                this.ProcessHash(context);
 
-                // Replace StrSha() with hash value of the string
-                match = StringHashRegex.Match(line);
-                if (match.Success)
+                trimmedContent.AppendLine(context.OutputLine);
+            }
+
+            this.ProcessIncludeUsage(source, context);
+
+            source = trimmedContent.ToString();
+        }
+
+        private bool ProcessComment(JavaScriptProcessingContext context)
+        {
+            if (context.CurrentTrimmedLine.StartsWith(@"//"))
+            {
+                if (context.CurrentTrimmedLine.StartsWith("// #EndIf", StringComparison.OrdinalIgnoreCase))
                 {
-                    string expression = match.Groups[1].ToString();
-                    string content = match.Groups[2].ToString();
-                    string hash = HashFileName.GetHashFileName(content).Value;
-                    if (this.hashCollisionTest.ContainsKey(hash))
+                    context.DirectiveStack.Pop();
+                }
+                else if (ProcessingRegex.IsMatch(context.CurrentTrimmedLine))
+                {
+                    string instructionString = ProcessingRegex.Match(context.CurrentTrimmedLine).Groups[1].ToString();
+                    ProcessingInstructions instruction;
+                    if (Enum.TryParse(instructionString, out instruction))
                     {
-                        // If the contents do not match we have a hash collision
-                        if (!string.Equals(this.hashCollisionTest[hash], content))
-                        {
-                            System.Diagnostics.Trace.TraceWarning(
-                                "Hash Collision for {0}, \"{1}\" <-> \"{2}\"",
-                                hash,
-                                this.hashCollisionTest[hash],
-                                content);
-                        }
+                        context.DirectiveStack.Push(instruction);
                     }
                     else
                     {
-                        this.hashCollisionTest.Add(hash, content);
+                        this.Context.AddWarning("Unknown processing instruction: {0} on line {1}", instructionString, context.CurrentLineIndex);
                     }
-
-                    // Todo: need to actually hash the string with something like .Obfuscate(Constants.ObfuscationValue))
-                    line = line.Replace(expression, string.Format("\"{0}\"", hash));
                 }
 
-                trimmedContent.AppendLine(line);
+                return true;
             }
 
-            source = trimmedContent.ToString();
+            return false;
+        }
+
+        private void ProcessIncludes(JavaScriptProcessingContext context)
+        {
+            // Fix includes to the proper format
+            Match match = IncludeRegex.Match(context.OutputLine);
+            if (match.Success)
+            {
+                string entry = match.Groups[1].ToString();
+                string name = match.Groups[2].ToString();
+                string varName = string.Concat(char.ToLower(name[1]), name.Substring(2, name.Length - 3));
+                context.OutputLine = context.OutputLine.Replace(entry, string.Format("var {0} = {1}", varName, entry));
+                context.OutputLine = context.OutputLine.Replace(name, string.Format("{0},'{1}'", name, context.SourceName));
+                if (context.UsingVars.Contains(varName))
+                {
+                    this.Context.AddError("Duplicate using: {0} in {1}", varName, context.SourceName);
+                }
+                else
+                {
+                    context.UsingVars.Add(varName);
+                }
+            }
+        }
+
+        private void ProcessLocalization(JavaScriptProcessingContext context)
+        {
+            // Replace StrLoc() with plain localized string
+            Match match = StringLocRegex.Match(context.OutputLine);
+            if (match.Success)
+            {
+                string localized = match.Groups[2].ToString().Localized();
+                context.OutputLine = context.OutputLine.Replace(match.Groups[1].ToString(), string.Format("\"{0}\"", localized));
+            }
+        }
+
+        private void ProcessHash(JavaScriptProcessingContext context)
+        {
+            // Replace StrSha() with hash value of the string
+            Match match = StringHashRegex.Match(context.OutputLine);
+            if (match.Success)
+            {
+                string expression = match.Groups[1].ToString();
+                string content = match.Groups[2].ToString();
+                string hash = HashFileName.GetHashFileName(content).Value;
+                if (this.hashCollisionTest.ContainsKey(hash))
+                {
+                    // If the contents do not match we have a hash collision
+                    if (!string.Equals(this.hashCollisionTest[hash], content))
+                    {
+                        this.Context.AddWarning(
+                            "Hash Collision for {0}, \"{1}\" <-> \"{2}\"",
+                            hash,
+                            this.hashCollisionTest[hash],
+                            content);
+                    }
+                }
+                else
+                {
+                    this.hashCollisionTest.Add(hash, content);
+                }
+
+                // Todo: need to actually hash the string with something like .Obfuscate(Constants.ObfuscationValue))
+                context.OutputLine = context.OutputLine.Replace(expression, string.Format("\"{0}\"", hash));
+            }
+        }
+
+        private void ProcessIncludeUsage(string source, JavaScriptProcessingContext context)
+        {
+            foreach (string @var in context.UsingVars)
+            {
+                Regex regex = new Regex(string.Format(IncludeTestRegex, @var));
+                if (!regex.IsMatch(source))
+                {
+                    this.Context.AddWarning("Include potentially not used: {0} in {1}", @var, context.SourceName);
+                }
+            }
+        }
+
+        internal class JavaScriptProcessingContext
+        {
+            // -------------------------------------------------------------------
+            // Constructor
+            // -------------------------------------------------------------------
+            public JavaScriptProcessingContext(CarbonFile source)
+            {
+                this.DirectiveStack = new Stack<ProcessingInstructions>();
+                this.UsingVars = new List<string>();
+
+                this.SourceName = source.FileNameWithoutExtension;
+            }
+
+            // -------------------------------------------------------------------
+            // Public
+            // -------------------------------------------------------------------
+            public int CurrentLineIndex { get; private set; }
+
+            public string SourceName { get; private set; }
+            public string OutputLine { get; set; }
+            public string CurrentLine { get; private set; }
+            public string CurrentTrimmedLine { get; private set; }
+
+            public Stack<ProcessingInstructions> DirectiveStack { get; private set; }
+
+            public IList<string> UsingVars { get; private set; }
+
+            public void SetLine(int index, string line)
+            {
+                this.CurrentLineIndex = index;
+                this.CurrentLine = line;
+                this.OutputLine = line;
+                this.CurrentTrimmedLine = line.TrimStart();
+
+                // Replace some things we don't care about
+                this.CurrentLine = this.CurrentLine.Replace("\r", string.Empty);
+                this.CurrentLine = this.CurrentLine.Replace("\t", " ");
+            }
         }
     }
 }

@@ -14,7 +14,7 @@
 
     public class ExcelProcessor : ContentProcessor, IExcelProcessor
     {
-        private const string DataPrefix = @"declare(""Data"", function() { return {";
+        private const string DataPrefix = @"declare(""GameData"", function() { return {";
         private const string DataSuffix = @"}; });";
 
         private readonly IList<string> sectionDuplicateCheck;
@@ -27,13 +27,13 @@
             this.sectionDuplicateCheck = new List<string>();
             this.AppendLine(DataPrefix);
         }
-
+        
         // -------------------------------------------------------------------
-        // Public
+        // Protected
         // -------------------------------------------------------------------
-        public override void Process(CarbonFile file)
+        protected override void DoProcess(CarbonFile source)
         {
-            using (FileStream stream = file.OpenRead())
+            using (FileStream stream = source.OpenRead())
             {
                 var workBook = new XSSFWorkbook(stream);
                 System.Diagnostics.Trace.TraceInformation("  - {0} Sheet(s)", workBook.NumberOfSheets);
@@ -42,13 +42,13 @@
                     ISheet sheet = workBook.GetSheetAt(i);
                     if (sheet.PhysicalNumberOfRows <= 1)
                     {
-                        System.Diagnostics.Trace.TraceWarning("Sheet has insufficient rows!");
+                        this.Context.AddWarning("Sheet has insufficient rows!");
                         continue;
                     }
 
                     if (this.sectionDuplicateCheck.Contains(sheet.SheetName))
                     {
-                        System.Diagnostics.Trace.TraceWarning("Skipping Duplicate sheet name: {0} in {1}", sheet.SheetName, file.FileName);
+                        this.Context.AddWarning("Skipping Duplicate sheet name: {0} in {1}", sheet.SheetName, source.FileName);
                         continue;
                     }
 
@@ -71,9 +71,6 @@
             }
         }
 
-        // -------------------------------------------------------------------
-        // Protected
-        // -------------------------------------------------------------------
         protected override string PostProcessData(string data)
         {
             string formattedData = data;
@@ -164,14 +161,14 @@
                 string value;
                 if (!this.GetNextCell(cellEnum, headers, out header, out value))
                 {
-                    System.Diagnostics.Trace.TraceWarning("Sheet has no columns, skipping!");
+                    this.Context.AddWarning("Sheet has no columns, skipping!");
                     return;
                 }
 
                 value = value.Trim('"');
                 if (primaryKeyCheck.Contains(value) || value.Contains(" "))
                 {
-                    System.Diagnostics.Trace.TraceWarning("Duplicate or invalid primary key data in sheet {0}: {1}", sheet.SheetName, value);
+                    this.Context.AddWarning("Duplicate or invalid primary key data in sheet {0}: {1}", sheet.SheetName, value);
                     continue;
                 }
 
