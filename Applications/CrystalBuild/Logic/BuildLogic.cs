@@ -1,7 +1,6 @@
 ﻿namespace CarbonCore.Applications.CrystalBuild.Logic
 {
     using System.Collections.Generic;
-    using System.Configuration;
     using System.IO;
     using System.Text;
 
@@ -26,59 +25,53 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public void Build(IList<CarbonFileResult> sources, CarbonFile target, bool isDebug = false)
+        public void Build(IList<CarbonFileResult> sources, CarbonFile target, ProcessingContext context)
         {
-            System.Diagnostics.Trace.TraceInformation("Building {0} Sources into {1}", sources.Count, target);
+            this.DoBuildMultipleToOne<IJavaScriptProcessor>("Sources", sources, target, context);
+        }
 
-            var processor = this.factory.Resolve<IJavaScriptProcessor>();
-            processor.IsDebug = isDebug;
-            processor.SetContext(new ProcessingContext());
+        public void BuildTemplates(IList<CarbonFileResult> sources, CarbonFile target, ProcessingContext context)
+        {
+            this.DoBuildMultipleToOne<ITemplateProcessor>("Templates", sources, target, context);
+        }
+
+        public void BuildData(IList<CarbonFileResult> sources, CarbonFile target, ProcessingContext context)
+        {
+            this.DoBuildMultipleToOne<IExcelProcessor>("Data", sources, target, context);
+        }
+
+        public void BuildStyleSheets(IList<CarbonFileResult> sources, CarbonFile target, ProcessingContext context)
+        {
+            this.DoBuildMultipleToOne<ICssProcessor>("Style-sheets", sources, target, context);
+        }
+
+        public void BuildImages(IList<CarbonFileResult> sources, CarbonFile target, ProcessingContext context)
+        {
+            this.DoBuildMultipleToOne<IImageProcessor>("Images", sources, target, context);
+        }
+
+        public void CopyContents(IList<CarbonFileResult> sources, CarbonDirectory target)
+        {
+            System.Diagnostics.Trace.TraceInformation("Copying {0} Content into {1}", sources.Count, target);
+
             foreach (CarbonFileResult source in sources)
             {
-                processor.Process(source.Absolute);
+                source.Absolute.CopyTo(target.ToFile(source.Relative), true);
             }
-
-            target.GetDirectory().Create();
-            using (FileStream stream = target.OpenCreate())
-            {
-                using (var writer = new StreamWriter(stream, Encoding.UTF8, 4096, true))
-                {
-                    writer.Write(processor.GetData());
-                }
-            }
-
-            this.TraceProcessorResult(processor, "Building Sources");
         }
 
-        public void BuildTemplates(IList<CarbonFileResult> sources, CarbonFile target)
+        // -------------------------------------------------------------------
+        // Private
+        // -------------------------------------------------------------------
+        private void DoBuildMultipleToOne<T>(string buildName, IList<CarbonFileResult> sources, CarbonFile target, ProcessingContext context)
+            where T : IContentProcessor
         {
-            System.Diagnostics.Trace.TraceInformation("Building {0} Templates into {1}", sources.Count, target);
+            System.Diagnostics.Trace.TraceInformation("Building {0} {1} into {2}", sources.Count, buildName, target);
 
-            var processor = this.factory.Resolve<ITemplateProcessor>();
-            processor.SetContext(new ProcessingContext());
-            for (int i = 0; i < sources.Count; i++)
-            {
-                processor.Process(sources[i].Absolute);
-            }
-            
-            target.GetDirectory().Create();
-            using (FileStream stream = target.OpenCreate())
-            {
-                using (var writer = new StreamWriter(stream, Encoding.UTF8, 4096, true))
-                {
-                    writer.Write(processor.GetData());
-                }
-            }
+            var processor = this.factory.Resolve(typeof(T)) as IContentProcessor;
+            System.Diagnostics.Trace.Assert(processor != null);
 
-            this.TraceProcessorResult(processor, "Building Templates");
-        }
-
-        public void BuildData(IList<CarbonFileResult> sources, CarbonFile target)
-        {
-            System.Diagnostics.Trace.TraceInformation("Building {0} Data into {1}", sources.Count, target);
-
-            var processor = this.factory.Resolve<IExcelProcessor>();
-            processor.SetContext(new ProcessingContext());
+            processor.SetContext(context);
             foreach (CarbonFileResult file in sources)
             {
                 System.Diagnostics.Trace.TraceInformation("  {0}", file.Absolute.FileName);
@@ -93,40 +86,7 @@
                 }
             }
 
-            this.TraceProcessorResult(processor, "Building Data");
-        }
-
-        public void BuildStyleSheets(IList<CarbonFileResult> sources, CarbonFile target)
-        {
-            System.Diagnostics.Trace.TraceInformation("Building {0} Stylesheets into {1}", sources.Count, target);
-
-            var processor = this.factory.Resolve<ICssProcessor>();
-            processor.SetContext(new ProcessingContext());
-            foreach (CarbonFileResult file in sources)
-            {
-                processor.Process(file.Absolute);
-            }
-
-            target.GetDirectory().Create();
-            using (FileStream stream = target.OpenCreate())
-            {
-                using (var writer = new StreamWriter(stream, Encoding.UTF8, 4096, true))
-                {
-                    writer.Write(processor.GetData());
-                }
-            }
-
-            this.TraceProcessorResult(processor, "Building Stylesheets");
-        }
-
-        public void CopyContents(IList<CarbonFileResult> sources, CarbonDirectory target)
-        {
-            System.Diagnostics.Trace.TraceInformation("Copying {0} Content into {1}", sources.Count, target);
-
-            foreach (CarbonFileResult source in sources)
-            {
-                source.Absolute.CopyTo(target.ToFile(source.Relative), true);
-            }
+            this.TraceProcessorResult(processor, string.Format("Building {0}", buildName));
         }
 
         private void TraceProcessorResult(IContentProcessor processor, string name)

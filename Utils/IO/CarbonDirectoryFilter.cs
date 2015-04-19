@@ -10,6 +10,7 @@
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
+        [JsonConstructor]
         public CarbonDirectoryFilter(CarbonDirectory directory, params string[] filterStrings)
         {
             this.Directory = directory;

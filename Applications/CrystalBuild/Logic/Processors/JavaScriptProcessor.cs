@@ -34,24 +34,25 @@
         {
             this.hashCollisionTest = new Dictionary<string, string>();
         }
-
-        // -------------------------------------------------------------------
-        // Public
-        // -------------------------------------------------------------------
-        public bool IsDebug { get; set; }
-
+        
         // -------------------------------------------------------------------
         // Protected
         // -------------------------------------------------------------------
         protected override void DoProcess(CarbonFile source)
         {
+            // Skip template scripts
+            if (source.FileNameWithoutExtension.EndsWith("template", StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
+
             var localContext = new JavaScriptProcessingContext(source);
             string content = source.ReadAsString();
 
             this.ProcessSource(localContext, ref content);
             
             // In debug mode append the file name of the source
-            if (this.IsDebug)
+            if (this.Context.IsDebug)
             {
                 this.AppendFormatLine("// {0}", source.FileNameWithoutExtension);
             }
@@ -64,18 +65,18 @@
         // -------------------------------------------------------------------
         private void ProcessSource(JavaScriptProcessingContext context, ref string source)
         {
-            string[] lines = source.Split('\n');
+            string[] lines = source.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             var trimmedContent = new StringBuilder(lines.Length);
             for (int i = 0; i < lines.Length; i++)
             {
                 context.SetLine(i, lines[i]);
-                
-                if (context.DirectiveStack.Contains(ProcessingInstructions.Debug) && !this.IsDebug)
+
+                if (this.ProcessComment(context))
                 {
                     continue;
                 }
 
-                if (this.ProcessComment(context))
+                if (context.DirectiveStack.Contains(ProcessingInstructions.Debug) && !this.Context.IsDebug)
                 {
                     continue;
                 }

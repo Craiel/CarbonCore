@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Diagnostics;
 
+    using CarbonCore.Applications.CrystalBuild.Logic;
     using CarbonCore.Utils;
     using CarbonCore.Utils.Contracts.IoC;
     using CarbonCore.Utils.I18N;
@@ -76,11 +77,31 @@
                 IList<CarbonFileResult> files = CarbonDirectory.GetFiles(filters);
                 if (files != null && files.Count > 0)
                 {
-                    this.logic.BuildData(files, this.config.Current.ProjectRoot.ToFile(this.config.Current.DataTarget));
+                    this.logic.BuildData(files, this.config.Current.ProjectRoot.ToFile(this.config.Current.DataTarget), new ProcessingContext());
                 }
                 else
                 {
                     Trace.TraceWarning("No data found to build!");
+                }
+            }
+
+            if (this.config.Current.Images != null)
+            {
+                IList<CarbonDirectoryFilter> filters = this.config.Current.Images;
+                IList<CarbonFileResult> files = CarbonDirectory.GetFiles(filters);
+                if (files.Count > 0)
+                {
+                    var context = new ProcessingContext
+                    {
+                        Template = this.config.Current.ImageTemplate,
+                        Root = this.config.Current.ImageRoot
+                    };
+
+                    this.logic.BuildImages(files, this.config.Current.ProjectRoot.ToFile(this.config.Current.ImageTarget), context);
+                }
+                else
+                {
+                    Trace.TraceWarning("No resources to register!");
                 }
             }
 
@@ -90,7 +111,7 @@
                 IList<CarbonFileResult> files = CarbonDirectory.GetFiles(filters);
                 if (files != null && files.Count > 0)
                 {
-                    this.logic.BuildTemplates(files, this.config.Current.ProjectRoot.ToFile(this.config.Current.TemplateTarget));
+                    this.logic.BuildTemplates(files, this.config.Current.ProjectRoot.ToFile(this.config.Current.TemplateTarget), new ProcessingContext());
                 }
                 else
                 {
@@ -133,7 +154,7 @@
                         targetFile = targetFile.GetDirectory().ToFile(targetFile.FileNameWithoutExtension + "_raw.js");
                     }
 
-                    this.logic.Build(files, targetFile, this.useDebug);
+                    this.logic.Build(files, targetFile, new ProcessingContext { IsDebug = this.useDebug });
 
                     if (this.useClosure)
                     {
@@ -158,7 +179,7 @@
                 IList<CarbonFileResult> files = CarbonDirectory.GetFiles(filters);
                 if (files != null && files.Count > 0)
                 {
-                    this.logic.BuildStyleSheets(files, this.config.Current.ProjectRoot.ToFile(this.config.Current.StyleSheetTarget));
+                    this.logic.BuildStyleSheets(files, this.config.Current.ProjectRoot.ToFile(this.config.Current.StyleSheetTarget), new ProcessingContext());
                 }
                 else
                 {

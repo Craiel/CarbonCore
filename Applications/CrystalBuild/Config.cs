@@ -38,10 +38,14 @@
                            Data = new[] { new CarbonDirectoryFilter(Constants.DataDirectory, Constants.FilterData) },
                            StyleSheets = new[] {new CarbonDirectoryFilter(Constants.DataCssDirectory, Constants.FilterStyleSheet) },
                            Contents = new[] { new CarbonDirectoryFilter(Constants.ContentDirectory, Constants.FilterContent) },
+                           Images = new[] { new CarbonDirectoryFilter(Constants.DataImagesDirectory, Constants.FilterImages) },
                            SourceTarget = Constants.OutputDirectory.ToFile(Constants.DefaultProjectTarget),
                            TemplateTarget = Constants.SourceDataGeneratedDirectory.ToFile(Constants.DefaultTemplateTarget),
                            DataTarget = Constants.SourceDataGeneratedDirectory.ToFile(Constants.DefaultDataTarget),
                            StyleSheetTarget = Constants.OutputDirectory.ToFile(Constants.DefaultStyleSheetTarget),
+                           ImageRoot = Constants.ContentDirectory.ToDirectory(Constants.DefaultImageRoot),
+                           ImageTemplate = Constants.SourceDataGeneratedDirectory.ToFile(Constants.DefaultImageTemplate),
+                           ImageTarget = Constants.SourceDataGeneratedDirectory.ToFile(Constants.DefaultImageTarget),
                            ContentTarget = Constants.OutputDirectory
                        };
         }

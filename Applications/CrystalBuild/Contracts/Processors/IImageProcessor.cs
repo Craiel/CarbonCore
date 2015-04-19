@@ -1,6 +1,6 @@
 ﻿namespace CarbonCore.Applications.CrystalBuild.Contracts.Processors
 {
-    public interface IJavaScriptProcessor : IContentProcessor
+    public interface IImageProcessor : IContentProcessor
     {
     }
 }

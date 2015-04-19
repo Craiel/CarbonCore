@@ -1,7 +1,9 @@
 ﻿namespace CarbonCore.Applications.CrystalBuild.Logic
 {
     using System.Collections.Generic;
-    
+
+    using CarbonCore.Utils.IO;
+
     public class ProcessingContext
     {
         private readonly List<string> warnings;
@@ -20,6 +22,12 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
+        public bool IsDebug { get; set; }
+
+        public CarbonFile Template { get; set; }
+
+        public CarbonDirectory Root { get; set; }
+
         public IReadOnlyCollection<string> Warnings
         {
             get

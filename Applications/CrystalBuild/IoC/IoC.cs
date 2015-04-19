@@ -27,6 +27,7 @@
             this.For<ITemplateProcessor>().Use<TemplateProcessor>();
             this.For<IJavaScriptProcessor>().Use<JavaScriptProcessor>();
             this.For<ICssProcessor>().Use<CssProcessor>();
+            this.For<IImageProcessor>().Use<ImageProcessor>();
         }
     }
 }

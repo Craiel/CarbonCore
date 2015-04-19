@@ -1,6 +1,0 @@
-0	N/A(10)	N/A	N/A	CrystalBuild.vshost.exe Information: 0 : 
-14551	N/A(10)	N/A	N/A	Argument use: 
-24393	CrystalBuild.vshost.exe(10)	Information	0	 p / projectFile - The project file to compile (required)
-26917	CrystalBuild.vshost.exe(10)	Information	0	 d / debug - Build with debug info enabled 
-27309	CrystalBuild.vshost.exe(10)	Information	0	 c / closure - Run closure on the target script file 
-27606	CrystalBuild.vshost.exe(10)	Information	0	 l / language - Set the language to build (en, fr, de ...) (required)

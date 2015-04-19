@@ -17,12 +17,16 @@
         public CarbonDirectoryFilter[] Sources { get; set; }
         public CarbonDirectoryFilter[] StyleSheets { get; set; }
         public CarbonDirectoryFilter[] Contents { get; set; }
+        public CarbonDirectoryFilter[] Images { get; set; }
 
         public CarbonFile SourceTarget { get; set; }
         public CarbonFile SourceMain { get; set; }
         public CarbonFile TemplateTarget { get; set; }
         public CarbonFile DataTarget { get; set; }
         public CarbonFile StyleSheetTarget { get; set; }
+        public CarbonDirectory ImageRoot { get; set; }
+        public CarbonFile ImageTemplate { get; set; }
+        public CarbonFile ImageTarget { get; set; }
         public CarbonDirectory ContentTarget { get; set; }
     }
 }

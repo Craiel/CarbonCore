@@ -82,6 +82,7 @@
     <Compile Include="Contracts\Processors\IExcelProcessor.cs" />
     <Compile Include="Contracts\Processors\IJavaScriptProcessor.cs" />
     <Compile Include="Contracts\IMain.cs" />
+    <Compile Include="Contracts\Processors\IImageProcessor.cs" />
     <Compile Include="Contracts\Processors\ITemplateProcessor.cs" />
     <Compile Include="Entry.cs" />
     <Compile Include="IoC\IoC.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="Logic\Processors\CssProcessor.cs" />
     <Compile Include="Logic\Processors\ExcelProcessor.cs" />
     <Compile Include="Logic\Processors\JavaScriptProcessor.cs" />
+    <Compile Include="Logic\Processors\ImageProcessor.cs" />
     <Compile Include="Logic\Processors\TemplateProcessor.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
