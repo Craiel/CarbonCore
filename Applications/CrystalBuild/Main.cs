@@ -71,19 +71,7 @@
         // -------------------------------------------------------------------
         private void DoBuildProject()
         {
-            if (this.config.Current.Data != null)
-            {
-                IList<CarbonDirectoryFilter> filters = this.config.Current.Data;
-                IList<CarbonFileResult> files = CarbonDirectory.GetFiles(filters);
-                if (files != null && files.Count > 0)
-                {
-                    this.logic.BuildData(files, this.config.Current.ProjectRoot.ToFile(this.config.Current.DataTarget), new ProcessingContext());
-                }
-                else
-                {
-                    Trace.TraceWarning("No data found to build!");
-                }
-            }
+            var cache = new ProcessingCache();
 
             if (this.config.Current.Images != null)
             {
@@ -91,17 +79,27 @@
                 IList<CarbonFileResult> files = CarbonDirectory.GetFiles(filters);
                 if (files.Count > 0)
                 {
-                    var context = new ProcessingContext
-                    {
-                        Template = this.config.Current.ImageTemplate,
-                        Root = this.config.Current.ImageRoot
-                    };
+                    var context = new ProcessingContext(cache) { Root = this.config.Current.ImageRoot };
 
-                    this.logic.BuildImages(files, this.config.Current.ProjectRoot.ToFile(this.config.Current.ImageTarget), context);
+                    this.logic.BuildImages(files, context);
                 }
                 else
                 {
                     Trace.TraceWarning("No resources to register!");
+                }
+            }
+
+            if (this.config.Current.Data != null)
+            {
+                IList<CarbonDirectoryFilter> filters = this.config.Current.Data;
+                IList<CarbonFileResult> files = CarbonDirectory.GetFiles(filters);
+                if (files != null && files.Count > 0)
+                {
+                    this.logic.BuildData(files, this.config.Current.ProjectRoot.ToFile(this.config.Current.DataTarget), new ProcessingContext(cache));
+                }
+                else
+                {
+                    Trace.TraceWarning("No data found to build!");
                 }
             }
 
@@ -111,7 +109,7 @@
                 IList<CarbonFileResult> files = CarbonDirectory.GetFiles(filters);
                 if (files != null && files.Count > 0)
                 {
-                    this.logic.BuildTemplates(files, this.config.Current.ProjectRoot.ToFile(this.config.Current.TemplateTarget), new ProcessingContext());
+                    this.logic.BuildTemplates(files, this.config.Current.ProjectRoot.ToFile(this.config.Current.TemplateTarget), new ProcessingContext(cache));
                 }
                 else
                 {
@@ -154,7 +152,7 @@
                         targetFile = targetFile.GetDirectory().ToFile(targetFile.FileNameWithoutExtension + "_raw.js");
                     }
 
-                    this.logic.Build(files, targetFile, new ProcessingContext { IsDebug = this.useDebug });
+                    this.logic.Build(files, targetFile, new ProcessingContext(cache) { IsDebug = this.useDebug });
 
                     if (this.useClosure)
                     {
@@ -179,7 +177,7 @@
                 IList<CarbonFileResult> files = CarbonDirectory.GetFiles(filters);
                 if (files != null && files.Count > 0)
                 {
-                    this.logic.BuildStyleSheets(files, this.config.Current.ProjectRoot.ToFile(this.config.Current.StyleSheetTarget), new ProcessingContext());
+                    this.logic.BuildStyleSheets(files, this.config.Current.ProjectRoot.ToFile(this.config.Current.StyleSheetTarget), new ProcessingContext(cache));
                 }
                 else
                 {
@@ -198,6 +196,14 @@
                 else
                 {
                     Trace.TraceWarning("No content files found to copy!");
+                }
+            }
+
+            foreach (string key in cache.ImageUseCount.Keys)
+            {
+                if (cache.ImageUseCount[key] <= 0)
+                {
+                    Trace.TraceWarning("Unused image: {0}", key);
                 }
             }
         }

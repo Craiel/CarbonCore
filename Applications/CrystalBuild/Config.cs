@@ -44,8 +44,6 @@
                            DataTarget = Constants.SourceDataGeneratedDirectory.ToFile(Constants.DefaultDataTarget),
                            StyleSheetTarget = Constants.OutputDirectory.ToFile(Constants.DefaultStyleSheetTarget),
                            ImageRoot = Constants.ContentDirectory.ToDirectory(Constants.DefaultImageRoot),
-                           ImageTemplate = Constants.SourceDataGeneratedDirectory.ToFile(Constants.DefaultImageTemplate),
-                           ImageTarget = Constants.SourceDataGeneratedDirectory.ToFile(Constants.DefaultImageTarget),
                            ContentTarget = Constants.OutputDirectory
                        };
         }

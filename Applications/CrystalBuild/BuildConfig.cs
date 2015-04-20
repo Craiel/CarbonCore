@@ -25,8 +25,6 @@
         public CarbonFile DataTarget { get; set; }
         public CarbonFile StyleSheetTarget { get; set; }
         public CarbonDirectory ImageRoot { get; set; }
-        public CarbonFile ImageTemplate { get; set; }
-        public CarbonFile ImageTarget { get; set; }
         public CarbonDirectory ContentTarget { get; set; }
     }
 }

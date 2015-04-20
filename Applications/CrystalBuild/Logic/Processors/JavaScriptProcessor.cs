@@ -24,6 +24,7 @@
         public static readonly Regex ProcessingRegex = new Regex(@"// #If([\w]+)");
         public static readonly Regex StringHashRegex = new Regex(@"\s(StrSha\(['""](.*?)['""]\))");
         public static readonly Regex StringLocRegex = new Regex(@"\s(StrLoc\(['""](.*?)['""]\))");
+        public static readonly Regex ResourceImageRegex = new Regex(@"[\W](ResImg\((\w+)\))", RegexOptions.IgnoreCase);
 
         private readonly IDictionary<string, string> hashCollisionTest;
         
@@ -84,6 +85,7 @@
                 this.ProcessIncludes(context);
                 this.ProcessLocalization(context);
                 this.ProcessHash(context);
+                this.ProcessResources(context);
 
                 trimmedContent.AppendLine(context.OutputLine);
             }
@@ -182,6 +184,25 @@
 
                 // Todo: need to actually hash the string with something like .Obfuscate(Constants.ObfuscationValue))
                 context.OutputLine = context.OutputLine.Replace(expression, string.Format("\"{0}\"", hash));
+            }
+        }
+
+        private void ProcessResources(JavaScriptProcessingContext context)
+        {
+            MatchCollection matches = ResourceImageRegex.Matches(context.OutputLine);
+            foreach (Match match in matches)
+            {
+                string expression = match.Groups[1].ToString();
+                string key = match.Groups[2].Value;
+                if (!this.Context.Cache.Images.ContainsKey(key))
+                {
+                    this.Context.AddError("Missing Image for Key: {0} in file {1} on line {2}", key, context.CurrentLineIndex, context.SourceName);
+                    context.OutputLine = context.OutputLine.Replace(expression, "#IMGNOTFOUND:" + key);
+                    continue;
+                }
+
+                this.Context.Cache.RegisterImageUse(key);
+                context.OutputLine = context.OutputLine.Replace(expression, this.Context.Cache.Images[key]);
             }
         }
 

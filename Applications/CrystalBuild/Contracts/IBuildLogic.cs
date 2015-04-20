@@ -11,7 +11,7 @@
         void BuildTemplates(IList<CarbonFileResult> sources, CarbonFile target, ProcessingContext context);
         void BuildData(IList<CarbonFileResult> sources, CarbonFile target, ProcessingContext context);
         void BuildStyleSheets(IList<CarbonFileResult> sources, CarbonFile target, ProcessingContext context);
-        void BuildImages(IList<CarbonFileResult> sources, CarbonFile target,ProcessingContext context);
+        void BuildImages(IList<CarbonFileResult> sources, ProcessingContext context);
         void CopyContents(IList<CarbonFileResult> sources, CarbonDirectory target);
     }
 }

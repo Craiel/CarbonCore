@@ -13,10 +13,11 @@
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
-        public ProcessingContext()
+        public ProcessingContext(ProcessingCache cache)
         {
             this.warnings = new List<string>();
             this.errors = new List<string>();
+            this.Cache = cache;
         }
 
         // -------------------------------------------------------------------
@@ -24,8 +25,8 @@
         // -------------------------------------------------------------------
         public bool IsDebug { get; set; }
 
-        public CarbonFile Template { get; set; }
-
+        public ProcessingCache Cache { get; private set; }
+        
         public CarbonDirectory Root { get; set; }
 
         public IReadOnlyCollection<string> Warnings

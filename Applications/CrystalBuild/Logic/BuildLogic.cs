@@ -45,9 +45,9 @@
             this.DoBuildMultipleToOne<ICssProcessor>("Style-sheets", sources, target, context);
         }
 
-        public void BuildImages(IList<CarbonFileResult> sources, CarbonFile target, ProcessingContext context)
+        public void BuildImages(IList<CarbonFileResult> sources, ProcessingContext context)
         {
-            this.DoBuildMultipleToOne<IImageProcessor>("Images", sources, target, context);
+            this.DoBuildMultiple<IImageProcessor>("Images", sources, context);
         }
 
         public void CopyContents(IList<CarbonFileResult> sources, CarbonDirectory target)
@@ -86,6 +86,24 @@
                 }
             }
 
+            this.TraceProcessorResult(processor, string.Format("Building {0}", buildName));
+        }
+
+        private void DoBuildMultiple<T>(string buildName, IList<CarbonFileResult> sources, ProcessingContext context)
+            where T : IContentProcessor
+        {
+            System.Diagnostics.Trace.TraceInformation("Building {0} files for {1}", sources.Count, buildName);
+
+            var processor = this.factory.Resolve(typeof(T)) as IContentProcessor;
+            System.Diagnostics.Trace.Assert(processor != null);
+
+            processor.SetContext(context);
+            foreach (CarbonFileResult file in sources)
+            {
+                System.Diagnostics.Trace.TraceInformation("  {0}", file.Absolute.FileName);
+                processor.Process(file.Absolute);
+            }
+            
             this.TraceProcessorResult(processor, string.Format("Building {0}", buildName));
         }
 

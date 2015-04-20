@@ -1,7 +1,6 @@
 ﻿namespace CarbonCore.Applications.CrystalBuild.Logic.Processors
 {
     using System;
-    using System.Collections.Generic;
     using System.Text;
 
     using CarbonCore.Applications.CrystalBuild.Contracts.Processors;
@@ -10,17 +9,7 @@
     public class ImageProcessor : ContentProcessor, IImageProcessor
     {
         private static readonly  char[] SegmentSplitChars = @"\".ToCharArray();
-
-        private readonly IList<string> entries;
-
-        // -------------------------------------------------------------------
-        // Constructor
-        // -------------------------------------------------------------------
-        public ImageProcessor()
-        {
-            this.entries = new List<string>();
-        }
-
+        
         // -------------------------------------------------------------------
         // Protected
         // -------------------------------------------------------------------
@@ -31,13 +20,7 @@
             string fileNameId = this.BuildPathId(relativeRootPath + source.FileNameWithoutExtension);
             string rootPathId = this.BuildPathId(relativeRootPath, true);
 
-            this.entries.Add(string.Format(@"        this.{0} = staticData.imageRoot{1} + ""{2}"";", fileNameId, rootPathId, fileName));
-        }
-        
-        protected override string PostProcessData(string data)
-        {
-            string templateData = this.Context.Template.ReadAsString();
-            return templateData.Replace(@"{CONTENT}", string.Join(Environment.NewLine, this.entries));
+            this.Context.Cache.RegisterImage(fileNameId, string.Format(@"staticData.imageRoot{0} + ""{1}""", rootPathId, fileName));
         }
 
         // -------------------------------------------------------------------
