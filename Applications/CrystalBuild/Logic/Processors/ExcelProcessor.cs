@@ -165,27 +165,57 @@
                     return;
                 }
 
-                value = value.Trim('"');
-                if (primaryKeyCheck.Contains(value) || value.Contains(" "))
+                string key = value.Trim('"');
+                string idString = string.Format(@"""{0}""", key);
+                if (key.Contains(" "))
                 {
-                    this.Context.AddWarning("Duplicate or invalid primary key data in sheet {0}: {1}", sheet.SheetName, value);
+                    // Quote the key if it contains whitespace
+                    key = idString;
+                }
+
+                if (primaryKeyCheck.Contains(key))
+                {
+                    this.Context.AddWarning("Duplicate or invalid primary key data in sheet {0}: {1}", sheet.SheetName, key);
                     continue;
                 }
 
-                primaryKeyCheck.Add(value);
+                primaryKeyCheck.Add(key);
 
-                // We use the first column as key for the data
-                this.AppendFormatLine("{0}{1}: {{", delimiter, value);
-                this.AppendFormat("{0}    id: '{1}'", delimiter, value);
-
-                while (this.GetNextCell(cellEnum, headers, out header, out value))
+                IList<string> rowHeaders = new List<string>();
+                IList<string> rowValues = new List<string>();
+                while(this.GetNextCell(cellEnum, headers, out header, out value))
                 {
-                    this.AppendLine(",");
-                    this.AppendFormat("{0}    {1}: {2}", delimiter, header, value);
+                    rowHeaders.Add(header);
+                    rowValues.Add(value);
                 }
 
-                this.AppendLine();
-                this.AppendFormat("{0}}}", delimiter);
+                if (rowValues.Count > 0)
+                {
+                    // We use the first column as key for the data
+                    this.AppendFormatLine("{0}{1}: {{", delimiter, key);
+                    this.AppendFormatLine("{0}    id: {1},", delimiter, idString);
+
+                    for (var i = 0; i < rowHeaders.Count; i++)
+                    {
+                        this.AppendFormat("{0}    {1}: {2}", delimiter, rowHeaders[i], rowValues[i]);
+                        if (i < rowHeaders.Count - 1)
+                        {
+                            this.AppendLine(",");
+                        }
+                        else
+                        {
+                            this.AppendLine();
+                        }
+                    }
+
+                    this.AppendFormat("{0}}}", delimiter);
+                }
+                else
+                {
+                    this.AppendFormat("{0}{1}: {{id: {1}}}", delimiter, idString);
+                }
+
+                
                 concatSection = true;
             }
 
