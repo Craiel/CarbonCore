@@ -82,15 +82,17 @@
                     continue;
                 }
 
+                // Order is somewhat important, resources change what gets included
+                this.ProcessResources(context);
                 this.ProcessIncludes(context);
                 this.ProcessLocalization(context);
                 this.ProcessHash(context);
-                this.ProcessResources(context);
+                this.ProcessIncludeUsage(context);
 
                 trimmedContent.AppendLine(context.OutputLine);
             }
 
-            this.ProcessIncludeUsage(source, context);
+            this.TraceIncludeUsage(context);
 
             source = trimmedContent.ToString();
         }
@@ -134,13 +136,13 @@
                 string varName = string.Concat(char.ToLower(name[1]), name.Substring(2, name.Length - 3));
                 context.OutputLine = context.OutputLine.Replace(entry, string.Format("var {0} = {1}", varName, entry));
                 context.OutputLine = context.OutputLine.Replace(name, string.Format("{0},'{1}'", name, context.SourceName));
-                if (context.UsingVars.Contains(varName))
+                if (context.UsingVars.ContainsKey(varName))
                 {
                     this.Context.AddError("Duplicate using: {0} in {1}", varName, context.SourceName);
                 }
                 else
                 {
-                    context.UsingVars.Add(varName);
+                    context.UsingVars.Add(varName, 0);
                 }
             }
         }
@@ -206,12 +208,24 @@
             }
         }
 
-        private void ProcessIncludeUsage(string source, JavaScriptProcessingContext context)
+        private void ProcessIncludeUsage(JavaScriptProcessingContext context)
         {
-            foreach (string @var in context.UsingVars)
+            IList<string> vars = new List<string>(context.UsingVars.Keys);
+            foreach (string @var in vars)
             {
                 Regex regex = new Regex(string.Format(IncludeTestRegex, @var));
-                if (!regex.IsMatch(source))
+                if (regex.IsMatch(context.OutputLine))
+                {
+                    context.UsingVars[@var]++;
+                }
+            }
+        }
+
+        private void TraceIncludeUsage(JavaScriptProcessingContext context)
+        {
+            foreach (string @var in context.UsingVars.Keys)
+            {
+                if (context.UsingVars[@var] <= 0)
                 {
                     this.Context.AddWarning("Include potentially not used: {0} in {1}", @var, context.SourceName);
                 }
@@ -226,7 +240,7 @@
             public JavaScriptProcessingContext(CarbonFile source)
             {
                 this.DirectiveStack = new Stack<ProcessingInstructions>();
-                this.UsingVars = new List<string>();
+                this.UsingVars = new Dictionary<string, int>();
 
                 this.SourceName = source.FileNameWithoutExtension;
             }
@@ -243,7 +257,7 @@
 
             public Stack<ProcessingInstructions> DirectiveStack { get; private set; }
 
-            public IList<string> UsingVars { get; private set; }
+            public IDictionary<string, int> UsingVars { get; private set; }
 
             public void SetLine(int index, string line)
             {
