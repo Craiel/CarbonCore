@@ -78,6 +78,12 @@
                 processor.Process(file.Absolute);
             }
 
+            CarbonDirectory targetDirectory = target.GetDirectory();
+            if (!targetDirectory.IsNull && !targetDirectory.Exists)
+            {
+                targetDirectory.Create();
+            }
+
             using (var stream = target.OpenCreate())
             {
                 using (var writer = new StreamWriter(stream, Encoding.UTF8, 4096, true))
