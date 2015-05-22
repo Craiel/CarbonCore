@@ -9,7 +9,9 @@
 
     using CrystalBuild.Contracts;
     using CrystalBuild.Contracts.Processors;
-    
+
+    using NPOI.SS.Formula.Functions;
+
     public class BuildLogic : IBuildLogic
     {
         private readonly IFactory factory;
@@ -27,7 +29,48 @@
         // -------------------------------------------------------------------
         public void Build(IList<CarbonFileResult> sources, CarbonFile target, ProcessingContext context)
         {
-            this.DoBuildMultipleToOne<IJavaScriptProcessor>("Sources", sources, target, context);
+            if (context.ExportSourceAsModule)
+            {
+                // Todo
+            }
+
+            System.Diagnostics.Trace.TraceInformation("Building {0} {1} into {2}", sources.Count, "Sources", target);
+
+            var processor = this.factory.Resolve<IJavaScriptProcessor>();
+            System.Diagnostics.Trace.Assert(processor != null);
+
+            processor.SetContext(context);
+            foreach (CarbonFileResult file in sources)
+            {
+                System.Diagnostics.Trace.TraceInformation("  {0}", file.Absolute.FileName);
+                processor.Process(file.Absolute);
+            }
+
+            CarbonDirectory targetDirectory = target.GetDirectory();
+            if (!targetDirectory.IsNull && !targetDirectory.Exists)
+            {
+                targetDirectory.Create();
+            }
+
+            using (var stream = target.OpenCreate())
+            {
+                using (var writer = new StreamWriter(stream, Encoding.UTF8, 4096, true))
+                {
+                    if (context.ExportSourceAsModule)
+                    {
+                        writer.Write("declare('{0}', function() {{\n", context.Name);
+                    }
+
+                    writer.Write(processor.GetData());
+
+                    if (context.ExportSourceAsModule)
+                    {
+                        writer.Write("});");
+                    }
+                }
+            }
+
+            this.TraceProcessorResult(processor, string.Format("Building {0}", "Sources"));
         }
 
         public void BuildTemplates(IList<CarbonFileResult> sources, CarbonFile target, ProcessingContext context)

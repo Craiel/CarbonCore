@@ -22,7 +22,7 @@
                                                                     };
 
         private static readonly Regex CommentRegex = new Regex(@"/\*(.*?)\*/");
-        private static readonly Regex StyleRegex = new Regex(@"([\.\#])([a-z]+)(.*?)\{([^\}]*)\}", RegexOptions.IgnoreCase);
+        private static readonly Regex StyleRegex = new Regex(@"(.*?){([^\}]*)\}", RegexOptions.IgnoreCase);
 
         private readonly IDictionary<string, CssStyle> styleDictionary;
 
@@ -76,13 +76,7 @@
             var builder = new StringBuilder();
             foreach (CssStyle style in styles)
             {
-                builder.Append(style.IsStyle ? "." : "#");
-                builder.Append(style.Name);
-                if (!string.IsNullOrEmpty(style.StyleTarget))
-                {
-                    builder.Append(style.StyleTarget);
-                }
-
+                builder.Append(style.StyleTarget);
                 builder.Append("{");
                 foreach (string contentKey in style.Content.Keys)
                 {
@@ -114,11 +108,11 @@
                 var style = new CssStyle
                 {
                     IsStyle = match.Groups[1].Value.Trim() == ".",
-                    Name = match.Groups[2].Value.Trim(),
-                    StyleTarget = match.Groups[3].Value.Trim()
+                    Name = match.Groups[1].Value.Trim(),
+                    StyleTarget = match.Groups[1].Value.Trim()
                 };
 
-                string content = match.Groups[4].Value.Trim();
+                string content = match.Groups[2].Value.Trim();
                 string[] contentSegments = content.Split(';');
                 foreach (string segment in contentSegments)
                 {

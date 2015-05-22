@@ -123,25 +123,33 @@
                 IList<CarbonFileResult> files = CarbonDirectory.GetFiles(filters);
                 CarbonFileResult mainFile = null;
 
-                // Now we try to find the entry point file
-                foreach (var file in files)
+                // Check if we have a specific main file
+                if (this.config.Current.SourceMain != null)
                 {
-                    if (file.Absolute.GetPath().EndsWith(this.config.Current.SourceMain.ToString(), StringComparison.OrdinalIgnoreCase))
+                    // Now we try to find the entry point file
+                    foreach (var file in files)
                     {
-                        mainFile = file;
-                        break;
+                        if (file.Absolute.GetPath()
+                            .EndsWith(this.config.Current.SourceMain.ToString(), StringComparison.OrdinalIgnoreCase))
+                        {
+                            mainFile = file;
+                            break;
+                        }
                     }
-                }
 
-                if (mainFile == null)
-                {
-                    Trace.TraceError("Could not find entry point: {0} ({1} files)", this.config.Current.SourceMain, files.Count);
-                    return;
-                }
+                    if (mainFile == null)
+                    {
+                        Trace.TraceError(
+                            "Could not find entry point: {0} ({1} files)",
+                            this.config.Current.SourceMain,
+                            files.Count);
+                        return;
+                    }
 
-                // re-add the main file so it ends up as last in the block
-                files.Remove(mainFile);
-                files.Add(mainFile);
+                    // re-add the main file so it ends up as last in the block
+                    files.Remove(mainFile);
+                    files.Add(mainFile);
+                }
 
                 if (files.Count > 0)
                 {
@@ -152,7 +160,15 @@
                         targetFile = targetFile.GetDirectory().ToFile(targetFile.FileNameWithoutExtension + "_raw.js");
                     }
 
-                    this.logic.Build(files, targetFile, new ProcessingContext(cache) { IsDebug = this.useDebug });
+                    this.logic.Build(
+                        files,
+                        targetFile,
+                        new ProcessingContext(cache)
+                        {
+                            Name = this.config.Current.Name,
+                            IsDebug = this.useDebug,
+                            ExportSourceAsModule = this.config.Current.ExportSourceAsModule
+                        });
 
                     if (this.useClosure)
                     {

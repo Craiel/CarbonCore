@@ -23,7 +23,11 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
+        public string Name { get; set; }
+
         public bool IsDebug { get; set; }
+
+        public bool ExportSourceAsModule { get; set; }
 
         public ProcessingCache Cache { get; private set; }
         

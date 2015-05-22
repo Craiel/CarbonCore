@@ -12,6 +12,8 @@
 
         public string Name { get; set; }
 
+        public bool ExportSourceAsModule { get; set; }
+
         public CarbonDirectoryFilter[] Data { get; set; }
         public CarbonDirectoryFilter[] Templates { get; set; }
         public CarbonDirectoryFilter[] Sources { get; set; }

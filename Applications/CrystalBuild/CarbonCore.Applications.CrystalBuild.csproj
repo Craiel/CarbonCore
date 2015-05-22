@@ -37,14 +37,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac">
-      <HintPath>..\..\..\CarbonCore\External\Autofac\3.1.1\Autofac.dll</HintPath>
+      <HintPath>..\..\External\Autofac\3.1.1\Autofac.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\External\NPOI\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\CarbonCore\External\Json.NET\Json60r6\Net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\External\Json.NET\Json60r6\Net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NPOI">
       <HintPath>..\..\External\NPOI\NPOI.dll</HintPath>
@@ -59,7 +59,7 @@
       <HintPath>..\..\External\NPOI\NPOI.OpenXmlFormats.dll</HintPath>
     </Reference>
     <Reference Include="SharpLZW">
-      <HintPath>..\..\..\CarbonCore\External\SharpLZW\SharpLZW.dll</HintPath>
+      <HintPath>..\..\External\SharpLZW\SharpLZW.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -103,11 +103,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\CarbonCore\UtilsCommandLine\CarbonCore.UtilsCommandLine.csproj">
+    <ProjectReference Include="..\..\UtilsCommandLine\CarbonCore.UtilsCommandLine.csproj">
       <Project>{E99C6721-99A5-4DC3-BD9D-DC88F65D217A}</Project>
       <Name>CarbonCore.UtilsCommandLine</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\CarbonCore\Utils\CarbonCore.Utils.csproj">
+    <ProjectReference Include="..\..\Utils\CarbonCore.Utils.csproj">
       <Project>{E05836D9-0BB3-4BFA-89E6-F5ED40A9D93C}</Project>
       <Name>CarbonCore.Utils</Name>
     </ProjectReference>
