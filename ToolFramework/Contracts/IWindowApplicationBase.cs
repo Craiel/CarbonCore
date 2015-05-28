@@ -2,12 +2,10 @@
 {
     using System;
 
-    public interface IToolBase : IDisposable
+    public interface IWindowApplicationBase : IDisposable
     {
-        string Title { get; }
-
         string Name { get; }
-
+        
         Version Version { get; }
 
         void Start();

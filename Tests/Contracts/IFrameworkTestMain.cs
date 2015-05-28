@@ -2,7 +2,7 @@
 {
     using CarbonCore.ToolFramework.Contracts;
 
-    public interface IFrameworkTestMain : IToolBase
+    public interface IFrameworkTestMain : IWindowApplicationBase
     {
     }
 }

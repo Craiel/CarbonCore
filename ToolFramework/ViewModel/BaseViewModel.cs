@@ -15,32 +15,13 @@
 
     public abstract class BaseViewModel : IBaseViewModel
     {
-        private ICommand commandUndo;
-        private ICommand commandRedo;
-
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
         public event PropertyChangingCancellableEventHandler PropertyChanging;
         public event PropertyChangedDetailedEventHandler PropertyChangedDetailed;
         public event PropertyChangedEventHandler PropertyChanged;
-
-        public ICommand CommandUndo
-        {
-            get
-            {
-                return this.commandUndo ?? (this.commandUndo = new RelayCommand(this.OnUndo));
-            }
-        }
-
-        public ICommand CommandRedo
-        {
-            get
-            {
-                return this.commandRedo ?? (this.commandRedo = new RelayCommand(this.OnRedo));
-            }
-        }
-
+        
         // -------------------------------------------------------------------
         // Protected
         // -------------------------------------------------------------------
@@ -148,11 +129,18 @@
             this.NotifyPropertyChangedExplicit(propertyName);
         }
 
-        protected void InvokeMainThread(Action action)
+        protected void DispatchIfNeeded(Action action, bool beginInvoke = false)
         {
             if (Dispatcher.CurrentDispatcher != Application.Current.Dispatcher)
             {
-                Application.Current.Dispatcher.Invoke(action);
+                if (beginInvoke)
+                {
+                    Application.Current.Dispatcher.BeginInvoke(action);
+                }
+                else
+                {
+                    Application.Current.Dispatcher.Invoke(action);
+                }
             }
             else
             {
@@ -171,16 +159,6 @@
         // -------------------------------------------------------------------
         // Private
         // -------------------------------------------------------------------
-        private void OnUndo()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        private void OnRedo()
-        {
-            throw new System.NotImplementedException();
-        }
-
         private void CheckPropertyChange(string propertyName)
         {
             PropertyInfo info = this.GetType().GetProperty(propertyName);

@@ -12,14 +12,14 @@
     using CarbonCore.Utils;
     using CarbonCore.Utils.Contracts.IoC;
 
-    public abstract class ToolBase : IToolBase
+    public abstract class WindowApplicationBase : IWindowApplicationBase
     {
         private readonly IFactory factory;
         
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
-        protected ToolBase(IFactory factory)
+        protected WindowApplicationBase(IFactory factory)
         {
             this.factory = factory;
 
@@ -29,8 +29,6 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public abstract string Title { get; }
-
         public abstract string Name { get; }
 
         public Window MainWindow { get; private set; }
@@ -39,16 +37,16 @@
 
         public virtual void Start()
         {
-            if (Application.Current != null)
+            Application application = Application.Current;
+            bool applicationDispatcherRunning = true;
+            if (application == null)
             {
-                Utils.Diagnostics.Internal.NotImplemented("Running in an existing Application context is not supported yet!");
-            }
+                application = new Application();
+                applicationDispatcherRunning = false;
 
-            var application = new Application
-            {
-                ShutdownMode = ShutdownMode.OnExplicitShutdown
-            };
-            
+            }
+            application.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+
             IList<IToolAction> startupActions = new List<IToolAction>();
 
             startupActions.Add(RelayToolAction.Create(this.StartupInitializeLogic));
@@ -68,8 +66,15 @@
             {
                 application.MainWindow = ToolActionDialog.CreateNew(this.factory, startupActions, ToolActionDisplayMode.Splash);
                 application.MainWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-                application.MainWindow.Title = string.Format("Preparing {0}...", this.Title);
-                application.Run(application.MainWindow);
+                application.MainWindow.Title = string.Format("Preparing {0}...", this.Name);
+                if (applicationDispatcherRunning)
+                {
+                    application.MainWindow.Show();
+                }
+                else
+                {
+                    application.Run(application.MainWindow);  
+                }
             }
             catch (Exception e)
             {

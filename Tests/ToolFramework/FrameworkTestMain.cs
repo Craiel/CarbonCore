@@ -13,11 +13,11 @@
 
     using NUnit.Framework;
 
-    public class FrameworkTestMain : ToolBase, IFrameworkTestMain
+    public class FrameworkTestMain : WindowApplicationBase, IFrameworkTestMain
     {
         private const int TestCycles = 100;
 
-        private const string ToolName = "D3TheoryViewer";
+        private const string ToolName = "FrameworkTest";
 
         private readonly IFactory factory;
         private readonly Random random = new Random((int)DateTime.Now.Ticks);
@@ -42,14 +42,6 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public override string Title
-        {
-            get
-            {
-                return "FrameworkTest";
-            }
-        }
-
         public override string Name
         {
             get

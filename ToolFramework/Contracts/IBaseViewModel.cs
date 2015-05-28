@@ -1,7 +1,6 @@
 ﻿namespace CarbonCore.ToolFramework.Contracts
 {
     using System.ComponentModel;
-    using System.Windows.Input;
 
     public delegate bool PropertyChangingCancellableEventHandler(object sender, PropertyChangingEventArgs args);
 
@@ -11,8 +10,5 @@
     {
         event PropertyChangingCancellableEventHandler PropertyChanging;
         event PropertyChangedDetailedEventHandler PropertyChangedDetailed;
-
-        ICommand CommandUndo { get; }
-        ICommand CommandRedo { get; }
     }
 }
