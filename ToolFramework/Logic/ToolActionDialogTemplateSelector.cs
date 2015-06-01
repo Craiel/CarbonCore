@@ -4,7 +4,7 @@
     using System.Windows;
     using System.Windows.Controls;
 
-    using CarbonCore.ToolFramework.Contracts;
+    using CarbonCore.ToolFramework.Contracts.ViewModels;
 
     public class ToolActionDialogTemplateSelector : DataTemplateSelector
     {

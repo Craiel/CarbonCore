@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.ToolFramework.Contracts
+﻿namespace CarbonCore.ToolFramework.Contracts.ViewModels
 {
     using System.ComponentModel;
 

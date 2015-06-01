@@ -11,6 +11,7 @@
 
     using CarbonCore.Resources;
     using CarbonCore.ToolFramework.Contracts;
+    using CarbonCore.ToolFramework.Contracts.ViewModels;
     using CarbonCore.Utils.Contracts.IoC;
     using CarbonCore.UtilsWPF;
     using CarbonCore.UtilsWPF.Collections;

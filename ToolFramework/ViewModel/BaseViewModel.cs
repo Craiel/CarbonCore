@@ -6,11 +6,10 @@
     using System.Reflection;
     using System.Runtime.CompilerServices;
     using System.Windows;
-    using System.Windows.Input;
     using System.Windows.Threading;
 
     using CarbonCore.ToolFramework.Annotations;
-    using CarbonCore.ToolFramework.Contracts;
+    using CarbonCore.ToolFramework.Contracts.ViewModels;
     using CarbonCore.UtilsWPF;
 
     public abstract class BaseViewModel : IBaseViewModel

@@ -3,6 +3,7 @@
     using System;
 
     using CarbonCore.ToolFramework.Contracts;
+    using CarbonCore.ToolFramework.Contracts.ViewModels;
 
     public class ToolActionViewModel : BaseViewModel, IToolActionViewModel
     {

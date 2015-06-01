@@ -3,13 +3,14 @@
     using System.Collections.Generic;
 
     using CarbonCore.ToolFramework.Contracts;
+    using CarbonCore.ToolFramework.Contracts.ViewModels;
     using CarbonCore.Utils.Contracts.IoC;
 
     public partial class ToolActionDialog
     {
         public ToolActionDialog()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         // Static helper method to create an action dialog

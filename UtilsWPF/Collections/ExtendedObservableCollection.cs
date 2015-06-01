@@ -124,6 +124,11 @@
             }
         }
 
+        public ExtendedObservableCollectionSuspendRegion<T> BeginSuspendNotification()
+        {
+            return new ExtendedObservableCollectionSuspendRegion<T>(this);
+        }
+
         public void SuspendNotification()
         {
             this.suspendNotify = true;

@@ -7,6 +7,7 @@
     using System.Windows;
 
     using CarbonCore.ToolFramework.Contracts;
+    using CarbonCore.ToolFramework.Contracts.ViewModels;
     using CarbonCore.ToolFramework.Logic.Actions;
     using CarbonCore.ToolFramework.View;
     using CarbonCore.Utils;

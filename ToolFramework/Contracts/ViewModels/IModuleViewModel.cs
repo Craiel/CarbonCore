@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.ToolFramework.Contracts
+﻿namespace CarbonCore.ToolFramework.Contracts.ViewModels
 {
     public interface IModuleViewModel : IBaseViewModel
     {

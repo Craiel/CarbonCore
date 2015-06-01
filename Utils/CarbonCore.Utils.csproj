@@ -45,6 +45,9 @@
     <Reference Include="Autofac">
       <HintPath>..\External\Autofac\3.1.1\Autofac.dll</HintPath>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\External\log4net\1.2.13\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\External\Json.NET\Json60r6\Net45\Newtonsoft.Json.dll</HintPath>
@@ -84,6 +87,9 @@
     <Compile Include="Database\SqlStatementType.cs" />
     <Compile Include="Diagnostics\ContextualLog.cs" />
     <Compile Include="Diagnostics\Internal.cs" />
+    <Compile Include="Diagnostics\TraceEventData.cs" />
+    <Compile Include="Diagnostics\TraceListeners\EventTraceListener.cs" />
+    <Compile Include="Diagnostics\TraceListeners\Log4NetTraceListener.cs" />
     <Compile Include="Diagnostics\ProgressRegion.cs" />
     <Compile Include="Formatting\FormatHandler.cs" />
     <Compile Include="HashFileName.cs" />
@@ -145,8 +151,8 @@
     <Compile Include="Contracts\ILogEvent.cs" />
     <Compile Include="Contracts\ITextFile.cs" />
     <Compile Include="Contracts\ITimer.cs" />
-    <Compile Include="Diagnostics\ConsoleTraceListener.cs" />
-    <Compile Include="Diagnostics\FileTraceListener.cs" />
+    <Compile Include="Diagnostics\TraceListeners\ConsoleTraceListener.cs" />
+    <Compile Include="Diagnostics\TraceListeners\FileTraceListener.cs" />
     <Compile Include="Diagnostics\LogBase.cs" />
     <Compile Include="Diagnostics\LogEvent.cs" />
     <Compile Include="Diagnostics\ProfileStatistics.cs" />

@@ -51,12 +51,6 @@
     <Resource Include="Icons\placeholder.png" />
   </ItemGroup>
   <ItemGroup>
-    <CodeAnalysisDictionary Include="Icons.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </CodeAnalysisDictionary>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Static.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Static.cs</LastGenOutput>

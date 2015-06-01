@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-
-using CarbonCore.Utils.Contracts;
-
-namespace CarbonCore.Utils.Diagnostics
+﻿namespace CarbonCore.Utils.Diagnostics.TraceListeners
 {
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Globalization;
+
+    using CarbonCore.Utils.Contracts;
     using CarbonCore.Utils.Formatting;
     using CarbonCore.Utils.IO;
 

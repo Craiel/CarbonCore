@@ -1,10 +1,9 @@
-﻿using System.Diagnostics;
-using System.Globalization;
-
-using CarbonCore.Utils.Contracts;
-
-namespace CarbonCore.Utils.Diagnostics
+﻿namespace CarbonCore.Utils.Diagnostics.TraceListeners
 {
+    using System.Diagnostics;
+    using System.Globalization;
+
+    using CarbonCore.Utils.Contracts;
     using CarbonCore.Utils.Formatting;
 
     // Taken in large parts from Essential Diagnostics Project
@@ -18,11 +17,17 @@ namespace CarbonCore.Utils.Diagnostics
 
         private bool attributesProcessed;
 
+        // -------------------------------------------------------------------
+        // Constructor
+        // -------------------------------------------------------------------
         public ConsoleTraceListener()
         {
             this.formatter = new Formatter();
         }
-        
+
+        // -------------------------------------------------------------------
+        // Public
+        // -------------------------------------------------------------------
         public override void TraceEvent(TraceEventCache eventCache, string source, TraceEventType eventType, int id, string format, params object[] args)
         {
             this.ProcessAttributes();
@@ -48,11 +53,17 @@ namespace CarbonCore.Utils.Diagnostics
             System.Console.WriteLine(this.formatter.Format(this.template));
         }
 
+        // -------------------------------------------------------------------
+        // Protected
+        // -------------------------------------------------------------------
         protected override string[] GetSupportedAttributes()
         {
             return new[] { "template", "Template" };
         }
 
+        // -------------------------------------------------------------------
+        // Private
+        // -------------------------------------------------------------------
         private void ProcessAttributes()
         {
             if (this.attributesProcessed)
