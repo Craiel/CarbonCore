@@ -8,11 +8,11 @@
 
     public interface ICoreTcpServer
     {
-        event Action OnServerStarted;
-        event Action OnServerStopped;
+        event Action ServerStarted;
+        event Action ServerStopped;
 
-        event TcpServerEventHandler OnClientConnected;
-        event TcpServerEventHandler OnClientDisconnected;
+        event TcpServerEventHandler ClientConnected;
+        event TcpServerEventHandler ClientDisconnected;
 
         int? Port { get; set; }
 

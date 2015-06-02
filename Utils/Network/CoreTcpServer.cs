@@ -36,13 +36,13 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public event Action OnServerStarted;
+        public event Action ServerStarted;
 
-        public event Action OnServerStopped;
+        public event Action ServerStopped;
 
-        public event TcpServerEventHandler OnClientConnected;
+        public event TcpServerEventHandler ClientConnected;
 
-        public event TcpServerEventHandler OnClientDisconnected;
+        public event TcpServerEventHandler ClientDisconnected;
 
         public int? Port
         {
@@ -99,9 +99,9 @@
 
             System.Diagnostics.Debug.WriteLine("BaseTcpServer started on {0}", this.GetEndpoint());
 
-            if (this.OnServerStarted != null)
+            if (this.ServerStarted != null)
             {
-                this.OnServerStarted();
+                this.ServerStarted();
             }
         }
 
@@ -121,9 +121,9 @@
 
             System.Diagnostics.Debug.WriteLine("BaseTcpServer stopped");
 
-            if (this.OnServerStopped != null)
+            if (this.ServerStopped != null)
             {
-                this.OnServerStopped();
+                this.ServerStopped();
             }
         }
 
@@ -152,9 +152,9 @@
                 case TcpDataState.Disconnected:
                 case TcpDataState.TimedOut:
                     {
-                        if (this.OnClientDisconnected != null)
+                        if (this.ClientDisconnected != null)
                         {
-                            this.OnClientDisconnected(data.Client);
+                            this.ClientDisconnected(data.Client);
                         }
 
                         break;
@@ -188,9 +188,9 @@
 
                 System.Diagnostics.Trace.TraceInformation("Client connected: {0}", client.Client.RemoteEndPoint);
 
-                if (this.OnClientConnected != null)
+                if (this.ClientConnected != null)
                 {
-                    this.OnClientConnected(baseTcpClient);
+                    this.ClientConnected(baseTcpClient);
                 }
 
                 CoreTcpUtils.InitiateClientRead(baseTcpClient, this.ProcessData, timeOut: this.ClientTimeout);

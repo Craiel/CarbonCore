@@ -46,10 +46,10 @@
         {
             var server = this.container.Resolve<ICoreTcpServer>();
             server.Port = TestPort;
-            server.OnServerStarted += this.OnServerStarted;
-            server.OnServerStopped += this.OnServerStopped;
-            server.OnClientConnected += this.OnClientConnected;
-            server.OnClientDisconnected += this.OnClientDisconnected;
+            server.ServerStarted += this.OnServerStarted;
+            server.ServerStopped += this.OnServerStopped;
+            server.ClientConnected += this.OnClientConnected;
+            server.ClientDisconnected += this.OnClientDisconnected;
             server.Start();
 
             Assert.IsTrue(server.IsRunning, "Server must be running after Start()");
