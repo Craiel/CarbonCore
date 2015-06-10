@@ -24,6 +24,9 @@
         {
             this.factory = factory;
 
+            // Configure log4net
+            log4net.Config.XmlConfigurator.Configure();
+
             this.Version = AssemblyExtensions.GetVersion(this.GetType());
         }
 
