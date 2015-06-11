@@ -8,7 +8,7 @@
 
     using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.IoC;
-    using CarbonCore.Utils.IO;
+    using CarbonCore.Utils.Compat.IO;
     using CarbonCore.Utils.IoC;
 
     using NUnit.Framework;

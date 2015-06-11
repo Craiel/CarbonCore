@@ -2,8 +2,8 @@
 {
     using System;
 
+    using CarbonCore.Utils.Compat.IO;
     using CarbonCore.Utils.Contracts;
-    using CarbonCore.Utils.IO;
 
     using Newtonsoft.Json;
     

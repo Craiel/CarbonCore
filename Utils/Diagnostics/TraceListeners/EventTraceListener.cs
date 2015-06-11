@@ -4,7 +4,9 @@
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Diagnostics;
-    
+
+    using CarbonCore.Utils.Compat.Diagnostics;
+
     public class EventTraceListener : TraceListener
     {
         private static readonly ConcurrentQueue<TraceEventData> EventData;

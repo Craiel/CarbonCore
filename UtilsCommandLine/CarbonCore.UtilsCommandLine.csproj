@@ -52,6 +52,10 @@
       <Project>{50C22F18-89F6-48F3-A29F-CA25FDADDB90}</Project>
       <Name>CarbonCore.GrammarParser</Name>
     </ProjectReference>
+    <ProjectReference Include="..\UtilsCompat\CarbonCore.Utils.Compat.csproj">
+      <Project>{B823CDCE-5ED4-4030-AB35-44DAF233D4C0}</Project>
+      <Name>CarbonCore.Utils.Compat</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utils\CarbonCore.Utils.csproj">
       <Project>{E05836D9-0BB3-4BFA-89E6-F5ED40A9D93C}</Project>
       <Name>CarbonCore.Utils</Name>

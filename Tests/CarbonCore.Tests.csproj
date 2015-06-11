@@ -102,6 +102,10 @@
       <Project>{e4643df2-d2db-4e99-ab4b-d8ce4fd94d81}</Project>
       <Name>CarbonCore.ToolFramework</Name>
     </ProjectReference>
+    <ProjectReference Include="..\UtilsCompat\CarbonCore.Utils.Compat.csproj">
+      <Project>{B823CDCE-5ED4-4030-AB35-44DAF233D4C0}</Project>
+      <Name>CarbonCore.Utils.Compat</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UtilsWPF\CarbonCore.UtilsWPF.csproj">
       <Project>{75FF83F3-C123-4982-91F7-09D0F8A66536}</Project>
       <Name>CarbonCore.UtilsWPF</Name>

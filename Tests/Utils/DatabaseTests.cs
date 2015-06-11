@@ -1,5 +1,6 @@
 ﻿namespace CarbonCore.Tests.Utils
 {
+    using CarbonCore.Utils.Compat.Database;
     using CarbonCore.Utils.Database;
 
     using NUnit.Framework;
@@ -31,7 +32,7 @@
             testSelect.WhereConstraint(new SqlStatementConstraint("TestString", "Super"));
             testSelect.OrderBy(new SqlStatementOrderByRule("TestString"));
 
-            const string ControlSelect = @"SELECT Id,TestString FROM TestTable WHERE Id = @WHR_Id AND TestString = @WHR_TestString ORDER BY TestString";
+            const string ControlSelect = @"SELECT Id,TestString FROM TestTable WHERE Id = @WHR_Id AND TestString = @WHR_TestString ORDER BY TestString DESC";
 
             string testSelectStatement = testSelect.ToString();
             Assert.AreEqual(ControlSelect, testSelectStatement);

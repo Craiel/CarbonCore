@@ -1,6 +1,6 @@
 ﻿namespace CarbonCore.Utils.Contracts
 {
-    using CarbonCore.Utils.IO;
+    using CarbonCore.Utils.Compat.IO;
 
     public interface IJsonConfig<T>
     {

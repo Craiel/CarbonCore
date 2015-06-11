@@ -5,6 +5,8 @@
     using System.Security.Cryptography;
     using System.Text;
 
+    using CarbonCore.Utils.Compat;
+
     public enum HashFileNameMethod
     {
         SHA1,
@@ -86,7 +88,7 @@
 
                 default:
                     {
-                        return Utils.Diagnostics.Internal.NotImplemented<HashFileName>();
+                        return Diagnostics.Internal.NotImplemented<HashFileName>();
                     }
             }
         }

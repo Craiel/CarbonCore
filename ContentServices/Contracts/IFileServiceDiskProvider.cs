@@ -1,7 +1,6 @@
 ﻿namespace CarbonCore.ContentServices.Contracts
 {
-    using CarbonCore.ContentServices.Logic;
-    using CarbonCore.Utils.IO;
+    using CarbonCore.Utils.Compat.IO;
 
     public interface IFileServiceDiskProvider : IFileServiceProvider
     {

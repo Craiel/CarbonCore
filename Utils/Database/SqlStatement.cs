@@ -5,7 +5,9 @@
     using System.Collections.ObjectModel;
     using System.Data;
     using System.Text;
-    
+
+    using CarbonCore.Utils.Compat.Database;
+
     public interface ISqlStatement
     {
         SqlStatementType Type { get; }

@@ -4,9 +4,12 @@
 
     using CarbonCore.Tests.Resources;
     using CarbonCore.Utils;
-    using CarbonCore.Utils.IO;
+    using CarbonCore.Utils.Compat;
+    using CarbonCore.Utils.Compat.IO;
 
     using NUnit.Framework;
+
+    using AssemblyExtensions = CarbonCore.Utils.AssemblyExtensions;
 
     [TestFixture]
     public class AssemblyTests
@@ -32,7 +35,7 @@
             Assert.NotNull(RuntimeInfo.ProcessId);
             Assert.NotNull(RuntimeInfo.ProcessName);
 
-            Assert.AreEqual("CarbonCore.Utils.dll", RuntimeInfo.AssemblyName, "In test environment we should be at utils runtime info");
+            Assert.AreEqual("CarbonCore.Utils.Compat.dll", RuntimeInfo.AssemblyName, "In test environment we should be at utils runtime info");
         }
 
         [Test]
@@ -47,11 +50,11 @@
             Assert.NotNull(directory);
             Assert.IsTrue(directory.Exists);
 
-            CarbonFile file = RuntimeInfo.Assembly.GetAssemblyFile();
+            CarbonFile file = RuntimeInfo.Assembly.GetAssemblyFileCompat();
             Assert.NotNull(file);
             Assert.IsTrue(file.Exists);
-
-            IList<CarbonFile> assemblies = AssemblyExtensions.GetLoadedAssemblyFiles();
+            
+            IList<CarbonFile> assemblies = CarbonCore.Utils.Compat.AssemblyExtensions.GetLoadedAssemblyFiles();
             Assert.NotNull(assemblies);
             Assert.GreaterOrEqual(assemblies.Count, 1);
         }
@@ -62,7 +65,7 @@
             CarbonDirectory testDirectory = CarbonDirectory.GetTempDirectory();
 
             IList<CarbonFile> resources = this.GetType().Assembly.ExtractResources(testDirectory, "TESTBLA");
-            Assert.AreEqual(0, resources.Count, "Giving wrong path must extract none");
+            Assert.IsNull(resources, "Giving wrong path must extract none");
 
             resources = this.GetType().Assembly.ExtractResources(testDirectory);
             Assert.AreEqual(5, resources.Count, "Giving no path must extract all");

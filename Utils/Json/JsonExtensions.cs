@@ -4,7 +4,7 @@
     using System.IO.Compression;
     using System.Text;
 
-    using CarbonCore.Utils.IO;
+    using CarbonCore.Utils.Compat.IO;
 
     using Newtonsoft.Json;
 

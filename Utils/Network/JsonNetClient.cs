@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
 
+    using CarbonCore.Utils.Compat.Network;
     using CarbonCore.Utils.Contracts.IoC;
     using CarbonCore.Utils.Contracts.Network;
 

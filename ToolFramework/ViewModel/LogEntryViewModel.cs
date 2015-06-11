@@ -4,7 +4,7 @@
     using System.Diagnostics;
 
     using CarbonCore.ToolFramework.Contracts.ViewModels;
-    using CarbonCore.Utils.Diagnostics;
+    using CarbonCore.Utils.Compat.Diagnostics;
 
     public class LogEntryViewModel : BaseViewModel, ILogEntryViewModel
     {

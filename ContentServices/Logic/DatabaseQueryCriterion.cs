@@ -3,7 +3,7 @@
     using System;
     using System.Data;
 
-    using CarbonCore.Utils;
+    using CarbonCore.Utils.Compat;
 
     public enum DatabaseQueryCriterionType
     {

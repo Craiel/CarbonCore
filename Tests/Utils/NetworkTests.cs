@@ -3,6 +3,7 @@
     using System.Net;
     using System.Threading;
 
+    using CarbonCore.Utils.Compat.Contracts.Network;
     using CarbonCore.Utils.Contracts.IoC;
     using CarbonCore.Utils.Contracts.Network;
     using CarbonCore.Utils.IoC;
@@ -15,7 +16,7 @@
     {
         private const int TestPort = 11201;
 
-        private static readonly byte[] TestData = new byte[] { 10, 20, 55, 0, 1 };
+        private static readonly byte[] TestData = { 10, 20, 55, 0, 1 };
 
         private ICarbonContainer container;
 

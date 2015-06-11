@@ -5,6 +5,8 @@
     using System.Collections.Generic;
     using System.IO;
 
+    using CarbonCore.Utils.Compat;
+
     using Newtonsoft.Json;
 
     public class DictionaryConverter<T, TN> : JsonConverter

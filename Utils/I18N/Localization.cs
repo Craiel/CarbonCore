@@ -4,7 +4,8 @@
     using System.Globalization;
     using System.Threading;
 
-    using CarbonCore.Utils.IO;
+    using CarbonCore.Utils.Compat;
+    using CarbonCore.Utils.Compat.IO;
     using CarbonCore.Utils.Json;
 
     using Newtonsoft.Json;

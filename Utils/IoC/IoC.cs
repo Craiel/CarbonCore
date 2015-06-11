@@ -1,9 +1,12 @@
 ﻿namespace CarbonCore.Utils.IoC
 {
-    using CarbonCore.Utils.Contracts;
+    using CarbonCore.Utils.Compat;
+    using CarbonCore.Utils.Compat.Contracts;
+    using CarbonCore.Utils.Compat.Contracts.Network;
+    using CarbonCore.Utils.Compat.Formatting;
+    using CarbonCore.Utils.Compat.Network;
     using CarbonCore.Utils.Contracts.IoC;
     using CarbonCore.Utils.Contracts.Network;
-    using CarbonCore.Utils.Formatting;
     using CarbonCore.Utils.Network;
 
     public class UtilsModule : CarbonModule

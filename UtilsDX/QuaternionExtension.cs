@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
 
-    using CarbonCore.Utils;
+    using CarbonCore.Utils.Compat;
 
     using SharpDX;
 

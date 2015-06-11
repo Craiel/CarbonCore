@@ -5,8 +5,8 @@
     using System.Reflection;
 
     using CarbonCore.ContentServices.Logic.Attributes;
-    using CarbonCore.Utils;
-    using CarbonCore.Utils.Database;
+    using CarbonCore.Utils.Compat;
+    using CarbonCore.Utils.Compat.Database;
 
     public class DatabaseEntryJoinedElementDescriptor : AttributedPropertyInfo<DatabaseEntryJoinedElementAttribute>
     {

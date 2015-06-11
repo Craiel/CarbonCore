@@ -6,7 +6,7 @@
 
     using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.Logic.Attributes;
-    using CarbonCore.Utils;
+    using CarbonCore.Utils.Compat;
 
     public class ContentEntryDescriptor
     {

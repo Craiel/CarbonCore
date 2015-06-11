@@ -1,6 +1,6 @@
 ﻿namespace CarbonCore.ContentServices.Contracts
 {
-    using CarbonCore.Utils.IO;
+    using CarbonCore.Utils.Compat.IO;
 
     public interface ISqlLiteConnector : IDataConnector
     {

@@ -5,8 +5,9 @@
     using System.Net.Sockets;
     using System.Threading;
 
+    using CarbonCore.Utils.Compat.Contracts.Network;
+    using CarbonCore.Utils.Compat.Network;
     using CarbonCore.Utils.Contracts.IoC;
-    using CarbonCore.Utils.Contracts.Network;
 
     public class CoreTcpServer : ICoreTcpServer
     {
@@ -97,7 +98,7 @@
 
             this.isRunning = true;
 
-            System.Diagnostics.Debug.WriteLine("BaseTcpServer started on {0}", this.GetEndpoint());
+            System.Diagnostics.Debug.WriteLine("BaseTcpServer started on {0}", this.GetEndpoint().ToString());
 
             if (this.ServerStarted != null)
             {
@@ -129,7 +130,7 @@
 
         public void Disconnect(TcpClient client)
         {
-            Diagnostics.Internal.NotImplemented();
+            throw new NotImplementedException();
         }
         
         public void Dispose()

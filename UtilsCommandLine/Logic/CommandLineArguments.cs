@@ -6,7 +6,7 @@
     using CarbonCore.GrammarParser.Contracts.Grammars;
     using CarbonCore.GrammarParser.Grammars;
     using CarbonCore.GrammarParser.Tokenize;
-    using CarbonCore.Utils;
+    using CarbonCore.Utils.Compat;
     using CarbonCore.UtilsCommandLine.Contracts;
 
     public class CommandLineArguments : ICommandLineArguments

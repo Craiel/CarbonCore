@@ -2,7 +2,7 @@
 {
     using System;
 
-    using CarbonCore.Utils.IO;
+    using CarbonCore.Utils.Compat.IO;
 
     using Newtonsoft.Json;
 

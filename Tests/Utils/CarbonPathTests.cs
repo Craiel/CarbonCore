@@ -1,7 +1,7 @@
 ﻿namespace CarbonCore.Tests.Utils
 {
-    using CarbonCore.Utils;
-    using CarbonCore.Utils.IO;
+    using CarbonCore.Utils.Compat;
+    using CarbonCore.Utils.Compat.IO;
 
     using NUnit.Framework;
 

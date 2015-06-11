@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
 
-    using CarbonCore.Utils.IO;
+    using CarbonCore.Utils.Compat.IO;
 
     public interface IDatabaseService : IDisposable
     {

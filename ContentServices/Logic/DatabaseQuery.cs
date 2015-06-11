@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
 
-    using CarbonCore.Utils;
+    using CarbonCore.Utils.Compat;
 
     public class DatabaseQuery
     {
