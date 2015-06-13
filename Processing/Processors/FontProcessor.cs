@@ -9,7 +9,7 @@
     using System.IO;
 
     using CarbonCore.Processing.Resource;
-    using CarbonCore.Utils.IO;
+    using CarbonCore.Utils.Compat.IO;
 
     public struct FontProcessingOptions
     {

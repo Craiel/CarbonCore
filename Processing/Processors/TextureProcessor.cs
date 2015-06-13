@@ -5,7 +5,7 @@
     using System.Text;
 
     using CarbonCore.Processing.Resource;
-    using CarbonCore.Utils.IO;
+    using CarbonCore.Utils.Compat.IO;
 
     public enum TextureTargetFormat
     {

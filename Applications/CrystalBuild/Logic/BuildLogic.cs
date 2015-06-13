@@ -4,14 +4,12 @@
     using System.IO;
     using System.Text;
 
+    using CarbonCore.Utils.Compat.IO;
     using CarbonCore.Utils.Contracts.IoC;
-    using CarbonCore.Utils.IO;
 
     using CrystalBuild.Contracts;
     using CrystalBuild.Contracts.Processors;
-
-    using NPOI.SS.Formula.Functions;
-
+    
     public class BuildLogic : IBuildLogic
     {
         private readonly IFactory factory;

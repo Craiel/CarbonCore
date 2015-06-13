@@ -5,10 +5,11 @@
     using System.Diagnostics;
 
     using CarbonCore.Applications.CrystalBuild.Logic;
-    using CarbonCore.Utils;
+    using CarbonCore.Utils.Compat;
+    using CarbonCore.Utils.Compat.I18N;
+    using CarbonCore.Utils.Compat.IO;
     using CarbonCore.Utils.Contracts.IoC;
     using CarbonCore.Utils.I18N;
-    using CarbonCore.Utils.IO;
     using CarbonCore.UtilsCommandLine.Contracts;
 
     using CrystalBuild.Contracts;

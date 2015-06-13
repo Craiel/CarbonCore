@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
 
-    using CarbonCore.Utils.IO;
+    using CarbonCore.Utils.Compat.IO;
 
     using CrystalBuild.Contracts.Processors;
 

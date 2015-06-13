@@ -170,6 +170,10 @@
     <Compile Include="Source\Xcd\XcdScene.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\UtilsCompat\CarbonCore.Utils.Compat.csproj">
+      <Project>{B823CDCE-5ED4-4030-AB35-44DAF233D4C0}</Project>
+      <Name>CarbonCore.Utils.Compat</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UtilsDX\CarbonCore.UtilsDX.csproj">
       <Project>{C3E6C35A-FE50-481B-9B6A-559DFDFFB52E}</Project>
       <Name>CarbonCore.UtilsDX</Name>

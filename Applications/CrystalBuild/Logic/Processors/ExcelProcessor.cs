@@ -5,7 +5,7 @@
     using System.Collections.Generic;
     using System.IO;
 
-    using CarbonCore.Utils.IO;
+    using CarbonCore.Utils.Compat.IO;
 
     using CrystalBuild.Contracts.Processors;
 

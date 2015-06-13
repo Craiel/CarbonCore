@@ -7,7 +7,7 @@
     using CarbonCore.Processing.Resource.Stage;
     using CarbonCore.Processing.Source.Generic.Data;
     using CarbonCore.Processing.Source.Xcd.Scene;
-    using CarbonCore.Utils.IO;
+    using CarbonCore.Utils.Compat.IO;
     using CarbonCore.UtilsDX;
     using SharpDX;
 

@@ -1,6 +1,6 @@
 ﻿namespace CarbonCore.Applications.CrystalBuild
 {
-    using CarbonCore.Utils.IO;
+    using CarbonCore.Utils.Compat.IO;
 
     using Newtonsoft.Json;
 

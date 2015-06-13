@@ -6,7 +6,7 @@
     using CarbonCore.Processing.Resource.Stage;
     using CarbonCore.Processing.Source.Collada;
     using CarbonCore.Processing.Source.Xcd;
-    using CarbonCore.Utils.IO;
+    using CarbonCore.Utils.Compat.IO;
 
     public interface IResourceProcessor
     {

@@ -5,8 +5,8 @@
     using System.Text.RegularExpressions;
 
     using CarbonCore.Processing.Resource;
-    using CarbonCore.Utils;
-    using CarbonCore.Utils.IO;
+    using CarbonCore.Utils.Compat;
+    using CarbonCore.Utils.Compat.IO;
 
     public delegate string ResolveIncludeDelegate(string include);
     public struct ScriptProcessingOptions

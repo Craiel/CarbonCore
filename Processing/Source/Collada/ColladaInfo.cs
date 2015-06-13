@@ -9,7 +9,7 @@
     using CarbonCore.Processing.Source.Collada.General;
     using CarbonCore.Processing.Source.Collada.Geometry;
     using CarbonCore.Protocol.Resource;
-    using CarbonCore.Utils.IO;
+    using CarbonCore.Utils.Compat.IO;
 
     public struct ColladaMeshInfo
     {

@@ -4,7 +4,7 @@
     using System.Text;
     using System.Text.RegularExpressions;
 
-    using CarbonCore.Utils.IO;
+    using CarbonCore.Utils.Compat.IO;
 
     using CrystalBuild.Contracts.Processors;
 

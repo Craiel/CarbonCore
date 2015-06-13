@@ -8,8 +8,8 @@
 
     using CarbonCore.Processing.Resource;
     using CarbonCore.Protocol.Resource;
-    using CarbonCore.Utils;
-    using CarbonCore.Utils.IO;
+    using CarbonCore.Utils.Compat;
+    using CarbonCore.Utils.Compat.IO;
     
     public struct UserInterfaceProcessingOptions
     {

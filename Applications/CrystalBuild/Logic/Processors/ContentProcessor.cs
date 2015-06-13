@@ -2,8 +2,8 @@
 {
     using System.Text;
 
-    using CarbonCore.Utils;
-    using CarbonCore.Utils.IO;
+    using CarbonCore.Utils.Compat;
+    using CarbonCore.Utils.Compat.IO;
 
     using CrystalBuild.Contracts.Processors;
 

@@ -1,6 +1,6 @@
 ﻿namespace CarbonCore.Applications.CrystalBuild
 {
-    using CarbonCore.Utils.IO;
+    using CarbonCore.Utils.Compat.IO;
 
     public static class Constants
     {
@@ -11,18 +11,18 @@
 
         public const string DefaultProjectName = "Crystal";
 
-        public const string DefaultProjectTarget = DefaultProjectName + Utils.Constants.ExtensionJavaScript;
-        public const string DefaultTemplateTarget = "templates" + Utils.Constants.ExtensionJavaScript;
-        public const string DefaultDataTarget = "data" + Utils.Constants.ExtensionJavaScript;
-        public const string DefaultStyleSheetTarget = DefaultProjectTarget + Utils.Constants.ExtensionCss;
-        public const string DefaultImageTemplate = "imagesTemplate" + Utils.Constants.ExtensionJavaScript;
-        public const string DefaultImageTarget = "images" + Utils.Constants.ExtensionJavaScript;
+        public const string DefaultProjectTarget = DefaultProjectName + Utils.Compat.Constants.ExtensionJavaScript;
+        public const string DefaultTemplateTarget = "templates" + Utils.Compat.Constants.ExtensionJavaScript;
+        public const string DefaultDataTarget = "data" + Utils.Compat.Constants.ExtensionJavaScript;
+        public const string DefaultStyleSheetTarget = DefaultProjectTarget + Utils.Compat.Constants.ExtensionCss;
+        public const string DefaultImageTemplate = "imagesTemplate" + Utils.Compat.Constants.ExtensionJavaScript;
+        public const string DefaultImageTarget = "images" + Utils.Compat.Constants.ExtensionJavaScript;
         public const string DefaultImageRoot = @"data\www\images";
 
-        public const string FilterSource = "*" + Utils.Constants.ExtensionJavaScript;
-        public const string FilterTemplates = "*" + Utils.Constants.ExtensionHtml;
-        public const string FilterData = "*" + Utils.Constants.ExtensionCsv;
-        public const string FilterStyleSheet = "*" + Utils.Constants.ExtensionCss;
+        public const string FilterSource = "*" + Utils.Compat.Constants.ExtensionJavaScript;
+        public const string FilterTemplates = "*" + Utils.Compat.Constants.ExtensionHtml;
+        public const string FilterData = "*" + Utils.Compat.Constants.ExtensionCsv;
+        public const string FilterStyleSheet = "*" + Utils.Compat.Constants.ExtensionCss;
         public const string FilterContent = "*";
         public const string FilterImages = "*";
         

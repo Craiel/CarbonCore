@@ -3,7 +3,7 @@
     using System.Collections.Generic;
 
     using CarbonCore.Applications.CrystalBuild.Logic;
-    using CarbonCore.Utils.IO;
+    using CarbonCore.Utils.Compat.IO;
 
     public interface IBuildLogic
     {

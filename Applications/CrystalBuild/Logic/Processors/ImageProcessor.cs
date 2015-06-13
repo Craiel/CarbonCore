@@ -4,7 +4,7 @@
     using System.Text;
 
     using CarbonCore.Applications.CrystalBuild.Contracts.Processors;
-    using CarbonCore.Utils.IO;
+    using CarbonCore.Utils.Compat.IO;
 
     public class ImageProcessor : ContentProcessor, IImageProcessor
     {
