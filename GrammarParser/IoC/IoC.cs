@@ -6,7 +6,7 @@
     using CarbonCore.Utils.IoC;
 
     [DependsOnModule(typeof(UtilsModule))]
-    public class GrammarParserModule : CarbonModuleAutofac
+    public class GrammarParserModule : CarbonQuickModule
     {
         public GrammarParserModule()
         {

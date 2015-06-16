@@ -7,7 +7,7 @@
     using CarbonCore.Utils.Compat.Formatting;
     using CarbonCore.Utils.Compat.Network;
 
-    public class UtilsCompatModule : CarbonModuleQuick
+    public class UtilsCompatModule : CarbonQuickModule
     {
         public UtilsCompatModule()
         {

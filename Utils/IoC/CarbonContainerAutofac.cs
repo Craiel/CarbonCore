@@ -87,13 +87,17 @@
             return this.innerContainer.BeginLifetimeScope(tag, configurationAction);
         }
 
-        public T Resolve<T>()
+        public T Resolve<T>(IDictionary<string, object> customParameters = null)
         {
+            System.Diagnostics.Trace.Assert(customParameters == null, "Custom Parameters are not supported in AutoFac (us Resolve Paramter[]...)");
+
             return this.innerContainer.Resolve<T>();
         }
 
-        public object Resolve(Type type)
+        public object Resolve(Type type, IDictionary<string, object> customParameters = null)
         {
+            System.Diagnostics.Trace.Assert(customParameters == null, "Custom Parameters are not supported in AutoFac (us Resolve Paramter[]...)");
+
             return this.innerContainer.Resolve(type);
         }
 

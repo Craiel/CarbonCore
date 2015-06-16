@@ -10,7 +10,7 @@
     using CarbonCore.Utils.Contracts.Network;
     using CarbonCore.Utils.Network;
 
-    public class UtilsModule : CarbonModuleAutofac
+    public class UtilsModule : CarbonQuickModule
     {
         public UtilsModule()
         {

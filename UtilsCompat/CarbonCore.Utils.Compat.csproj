@@ -55,7 +55,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Contracts\IExtendedDictionary.cs" />
     <Compile Include="Contracts\IoC\ICarbonContainer.cs" />
-    <Compile Include="Contracts\IoC\ICarbonModule.cs" />
+    <Compile Include="Contracts\IoC\ICarbonQuickModule.cs" />
     <Compile Include="Contracts\IoC\ICarbonQuickBinding.cs" />
     <Compile Include="Contracts\IoC\IFactory.cs" />
     <Compile Include="Contracts\Network\ICoreTcpClient.cs" />
@@ -74,7 +74,8 @@
     <Compile Include="Formatting\FormatHandler.cs" />
     <Compile Include="I18N\LocaleConstants.cs" />
     <Compile Include="IoC\CarbonContainerBuilder.cs" />
-    <Compile Include="IoC\CarbonModuleQuick.cs" />
+    <Compile Include="IoC\CarbonQuickContainer.cs" />
+    <Compile Include="IoC\CarbonQuickModule.cs" />
     <Compile Include="IoC\CarbonQuickBinding.cs" />
     <Compile Include="IoC\DependsOnModuleAttribute.cs" />
     <Compile Include="IoC\Factory.cs" />

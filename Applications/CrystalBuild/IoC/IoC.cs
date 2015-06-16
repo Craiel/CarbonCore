@@ -11,7 +11,7 @@
 
     [DependsOnModule(typeof(UtilsModule))]
     [DependsOnModule(typeof(UtilsCommandLineModule))]
-    public class CrystalBuildModule : CarbonModuleAutofac
+    public class CrystalBuildModule : CarbonQuickModule
     {
         // -------------------------------------------------------------------
         // Public

@@ -10,7 +10,7 @@
 
     [DependsOnModule(typeof(UtilsModule))]
     [DependsOnModule(typeof(UtilsWPFModule))]
-    public class ToolFrameworkModule : CarbonModuleAutofac
+    public class ToolFrameworkModule : CarbonQuickModule
     {
         public ToolFrameworkModule()
         {

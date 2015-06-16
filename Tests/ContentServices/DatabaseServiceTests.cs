@@ -3,12 +3,10 @@
     using System;
     using System.Collections.Generic;
     using System.Globalization;
-
-    using Autofac;
-
+    
     using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.IoC;
-    using CarbonCore.Utils.Compat.IoC;
+    using CarbonCore.Utils.Compat.Contracts.IoC;
     using CarbonCore.Utils.Compat.IO;
     using CarbonCore.Utils.IoC;
 
@@ -17,7 +15,7 @@
     [TestFixture]
     public class DatabaseServiceTests
     {
-        private IContainer container;
+        private ICarbonContainer container;
         
         // -------------------------------------------------------------------
         // Public
@@ -25,7 +23,7 @@
         [SetUp]
         public void Setup()
         {
-            this.container = new CarbonContainerAutofacBuilder().Build<ContentServicesModule>() as IContainer;
+            this.container = CarbonContainerAutofacBuilder.Build<ContentServicesModule>();
         }
 
         [TearDown]

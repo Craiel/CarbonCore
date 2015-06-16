@@ -1,10 +1,8 @@
 ﻿namespace CarbonCore.Tests.ToolFramework
 {
-    using Autofac;
-
     using CarbonCore.Tests.Contracts;
     using CarbonCore.Tests.IoC;
-    using CarbonCore.Utils.Compat.IoC;
+    using CarbonCore.Utils.Compat.Contracts.IoC;
     using CarbonCore.Utils.IoC;
 
     using NUnit.Framework;
@@ -12,7 +10,7 @@
     [TestFixture, RequiresSTA]
     public class FrameworkActionTests
     {
-        private IContainer container;
+        private ICarbonContainer container;
 
         // -------------------------------------------------------------------
         // Public
@@ -20,7 +18,7 @@
         [SetUp]
         public void Setup()
         {
-            this.container = new CarbonContainerAutofacBuilder().Build<ToolFrameworkTestModule>() as IContainer;
+            this.container = CarbonContainerAutofacBuilder.Build<ToolFrameworkTestModule>();
         }
 
         [TearDown]

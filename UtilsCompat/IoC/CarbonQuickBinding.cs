@@ -12,7 +12,11 @@
         // -------------------------------------------------------------------
         public Type Interface { get; set; }
         public Type Implementation { get; private set; }
+
+        public object Instance { get; private set; }
+
         public bool IsSingleton { get; private set; }
+        public bool IsAlwaysUnique { get; private set; }
 
         public ICarbonQuickBinding For<T>()
         {
@@ -26,9 +30,21 @@
             return this;
         }
 
+        public ICarbonQuickBinding Use<T>(T instance)
+        {
+            this.Instance = instance;
+            return this;
+        }
+
         public ICarbonQuickBinding Singleton()
         {
             this.IsSingleton = true;
+            return this;
+        }
+
+        public ICarbonQuickBinding AlwaysUnique()
+        {
+            this.IsAlwaysUnique = true;
             return this;
         }
     }

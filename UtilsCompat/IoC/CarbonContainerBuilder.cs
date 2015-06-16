@@ -4,12 +4,30 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    public abstract class CarbonContainerBuilder
+    using CarbonCore.Utils.Compat.Contracts.IoC;
+
+    public static class CarbonContainerBuilder
     {
         // -------------------------------------------------------------------
-        // Protected
+        // Public
         // -------------------------------------------------------------------
-        protected IEnumerable<Type> ScanModules(Type moduleType, params Type[] baseDependencies)
+        public static ICarbonContainer BuildQuick<T>()
+            where T : ICarbonQuickModule
+        {
+            // Create a new Quick Container
+            var container = new CarbonQuickContainer();
+
+            // Scan the module for dependencies
+            IEnumerable<Type> dependencies = ScanModules(typeof(T), typeof(UtilsCompatModule));
+            foreach (Type moduleType in dependencies)
+            {
+                container.RegisterModule((ICarbonQuickModule)Activator.CreateInstance(moduleType));
+            }
+
+            return container;
+        }
+
+        public static IEnumerable<Type> ScanModules(Type moduleType, params Type[] baseDependencies)
         {
             // Utils module is added by default
             IDictionary<Type, int> dependencies = new Dictionary<Type, int>();

@@ -2,13 +2,9 @@
 {
     using System.Net;
     using System.Threading;
-
-    using Autofac;
-
-    using CarbonCore.ContentServices.IoC;
+    
     using CarbonCore.Utils.Compat.Contracts.IoC;
     using CarbonCore.Utils.Compat.Contracts.Network;
-    using CarbonCore.Utils.Compat.IoC;
     using CarbonCore.Utils.Contracts.Network;
     using CarbonCore.Utils.IoC;
     using CarbonCore.Utils.Network.Packages;
@@ -22,7 +18,7 @@
 
         private static readonly byte[] TestData = { 10, 20, 55, 0, 1 };
 
-        private IContainer container;
+        private ICarbonContainer container;
 
         private int clientsConnected;
         private int clientsDisconnected;
@@ -37,7 +33,7 @@
         [SetUp]
         public void Setup()
         {
-            this.container = new CarbonContainerAutofacBuilder().Build<UtilsModule>() as IContainer;
+            this.container = CarbonContainerAutofacBuilder.Build<UtilsModule>();
         }
 
         [TearDown]

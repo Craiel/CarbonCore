@@ -14,7 +14,7 @@
         // -------------------------------------------------------------------
         public static void Main(string[] args)
         {
-            var container = new CarbonContainerAutofacBuilder().Build<MCSyncModule>();
+            var container = CarbonContainerAutofacBuilder.Build<MCSyncModule>();
             container.Resolve<IMain>().Sync();
 
             Profiler.TraceProfilerStatistics();

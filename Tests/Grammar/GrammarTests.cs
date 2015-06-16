@@ -2,14 +2,12 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-
-    using Autofac;
-
+    
     using CarbonCore.GrammarParser;
     using CarbonCore.GrammarParser.Contracts.Grammars;
     using CarbonCore.GrammarParser.IoC;
     using CarbonCore.GrammarParser.Tokenize;
-    using CarbonCore.Utils.Compat.IoC;
+    using CarbonCore.Utils.Compat.Contracts.IoC;
     using CarbonCore.Utils.IoC;
 
     using NUnit.Framework;
@@ -17,7 +15,7 @@
     [TestFixture]
     public class GrammarTests
     {
-        private IContainer container;
+        private ICarbonContainer container;
 
         // -------------------------------------------------------------------
         // Public
@@ -25,7 +23,7 @@
         [SetUp]
         public void Setup()
         {
-            this.container = new CarbonContainerAutofacBuilder().Build<GrammarParserModule>() as IContainer;
+            this.container = CarbonContainerAutofacBuilder.Build<GrammarParserModule>();
         }
 
         [TearDown]

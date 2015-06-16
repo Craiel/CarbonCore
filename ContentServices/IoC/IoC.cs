@@ -6,7 +6,7 @@
     using CarbonCore.Utils.IoC;
 
     [DependsOnModule(typeof(UtilsModule))]
-    public class ContentServicesModule : CarbonModuleAutofac
+    public class ContentServicesModule : CarbonQuickModule
     {
         public ContentServicesModule()
         {

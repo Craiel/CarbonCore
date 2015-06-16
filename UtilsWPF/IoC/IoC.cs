@@ -4,7 +4,7 @@
     using CarbonCore.Utils.IoC;
 
     [DependsOnModule(typeof(UtilsModule))]
-    public class UtilsWPFModule : CarbonModuleAutofac
+    public class UtilsWPFModule : CarbonQuickModule
     {
     }
 }

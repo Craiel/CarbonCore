@@ -1,20 +1,21 @@
 ﻿namespace CarbonCore.Utils.IoC
 {
-    using System.Collections.Generic;
     using System.IO;
 
     using Autofac;
 
     using CarbonCore.Utils.Compat.Contracts.IoC;
-    using CarbonCore.Utils.Compat.IoC;
 
-    public abstract class CarbonModuleAutofac : Module, ICarbonModule
+    public class CarbonModuleAutofac : Module
     {
-        private readonly List<ICarbonQuickBinding> bindings;
-        
-        protected CarbonModuleAutofac()
+        private readonly ICarbonQuickModule inner;
+
+        // -------------------------------------------------------------------
+        // Constructor
+        // -------------------------------------------------------------------
+        public CarbonModuleAutofac(ICarbonQuickModule source)
         {
-            this.bindings = new List<ICarbonQuickBinding>();
+            this.inner = source;
         }
         
         // -------------------------------------------------------------------
@@ -22,9 +23,7 @@
         // -------------------------------------------------------------------
         public ICarbonQuickBinding For<T>()
         {
-            var binding = new CarbonQuickBinding().For<T>();
-            this.bindings.Add(binding);
-            return binding;
+            return this.inner.For<T>();
         }
 
         protected override void Load(ContainerBuilder builder)
@@ -32,7 +31,7 @@
             base.Load(builder);
 
             // Register our quick bindings
-            foreach (ICarbonQuickBinding binding in this.bindings)
+            foreach (ICarbonQuickBinding binding in this.inner.GetQuickBindings())
             {
                 if (binding.Interface == null || binding.Implementation == null)
                 {

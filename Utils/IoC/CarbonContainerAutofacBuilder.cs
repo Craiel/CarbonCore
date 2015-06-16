@@ -4,27 +4,27 @@
     using System.Collections.Generic;
 
     using Autofac;
-    using Autofac.Builder;
-    using Autofac.Core;
 
     using CarbonCore.Utils.Compat.Contracts.IoC;
     using CarbonCore.Utils.Compat.IoC;
 
-    public class CarbonContainerAutofacBuilder : CarbonContainerBuilder
+    public static class CarbonContainerAutofacBuilder
     {
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public ICarbonContainer Build<T>(ContainerBuildOptions options = ContainerBuildOptions.None)
-            where T : IModule
+        public static ICarbonContainer Build<T>()
+            where T : ICarbonQuickModule
         {
             // Scan the module for dependencies
-            IEnumerable<Type> dependencies = this.ScanModules(typeof(T), typeof(UtilsModule));
+            IEnumerable<Type> dependencies = CarbonContainerBuilder.ScanModules(typeof(T), typeof(UtilsModule));
 
             var builder = new ContainerBuilder();
             foreach (Type moduleType in dependencies)
             {
-                builder.RegisterModule((IModule)Activator.CreateInstance(moduleType));
+                var quickModule = (ICarbonQuickModule)Activator.CreateInstance(moduleType);
+                var autofacModule = new CarbonModuleAutofac(quickModule);
+                builder.RegisterModule(autofacModule);
             }
 
             return new CarbonContainerAutofac(builder.Build());

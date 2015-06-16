@@ -4,14 +4,12 @@
     using System.Collections.Generic;
     using System.IO.Compression;
     using System.Linq;
-
-    using Autofac;
-
+    
     using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.IoC;
     using CarbonCore.ContentServices.Logic;
     using CarbonCore.Utils.Compat;
-    using CarbonCore.Utils.Compat.IoC;
+    using CarbonCore.Utils.Compat.Contracts.IoC;
     using CarbonCore.Utils.Compat.IO;
     using CarbonCore.Utils.IoC;
 
@@ -25,7 +23,7 @@
 
         private readonly IDictionary<FileEntryKey, CarbonFile> testFiles;
 
-        private IContainer container;
+        private ICarbonContainer container;
 
         private CarbonDirectory dataDirectory;
 
@@ -43,7 +41,7 @@
         [SetUp]
         public void Setup()
         {
-            this.container = new CarbonContainerAutofacBuilder().Build<ContentServicesModule>() as IContainer;
+            this.container = CarbonContainerAutofacBuilder.Build<ContentServicesModule>();
 
             this.dataDirectory = CarbonDirectory.GetTempDirectory();
 

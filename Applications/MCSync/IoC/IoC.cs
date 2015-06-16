@@ -8,7 +8,7 @@
 
     [DependsOnModule(typeof(UtilsModule))]
     [DependsOnModule(typeof(UtilsCommandLineModule))]
-    public class MCSyncModule : CarbonModuleAutofac
+    public class MCSyncModule : CarbonQuickModule
     {
         public MCSyncModule()
         {

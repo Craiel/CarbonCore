@@ -8,7 +8,7 @@
 
     [DependsOnModule(typeof(UtilsModule))]
     [DependsOnModule(typeof(GrammarParserModule))]
-    public class UtilsCommandLineModule : CarbonModuleAutofac
+    public class UtilsCommandLineModule : CarbonQuickModule
     {
         public UtilsCommandLineModule()
         {
