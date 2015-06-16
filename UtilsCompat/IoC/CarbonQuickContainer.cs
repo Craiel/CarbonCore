@@ -17,16 +17,11 @@
         // -------------------------------------------------------------------
         public CarbonQuickContainer()
         {
-            this.bindings = new Dictionary<Type, ICarbonQuickBinding>
-                                {
-                                    {
-                                        typeof(ICarbonContainer),
-                                        new CarbonQuickBinding()
-                                        .For<ICarbonContainer>().Use(this)
-                                    }
-                                };
+            this.bindings = new Dictionary<Type, ICarbonQuickBinding>();
 
             this.bindingInstances = new Dictionary<Type, object>();
+
+            this.RegisterBinding(new CarbonQuickBinding().For<ICarbonContainer>().Use(this));
         }
 
         // -------------------------------------------------------------------
@@ -43,21 +38,18 @@
 
             foreach (ICarbonQuickBinding binding in moduleBindings)
             {
-                if (this.bindings.ContainsKey(binding.Interface))
-                {
-                    throw new InvalidOperationException(string.Format("Interface {0} was already bound, Multiple bindings are not yet supported", binding.Interface.Name));
-                }
+                this.RegisterBinding(binding);
+            }
+        }
 
-                if (binding.Instance != null)
-                {
-                    System.Diagnostics.Trace.Assert(binding.IsAlwaysUnique == false, "Binding can not be always unique with explicit instance");
-                }
+        public void RegisterBinding(ICarbonQuickBinding binding)
+        {
+            this.CheckBinding(binding);
 
-                this.bindings.Add(binding.Interface, binding);
-                if (binding.Instance != null)
-                {
-                    this.bindingInstances.Add(binding.Interface, binding.Instance);
-                }
+            this.bindings.Add(binding.Interface, binding);
+            if (binding.Instance != null)
+            {
+                this.bindingInstances.Add(binding.Interface, binding.Instance);
             }
         }
 
@@ -76,18 +68,29 @@
 
             // Check if we have an instance for this binding
             ICarbonQuickBinding binding = this.bindings[type];
-            if (binding.Instance != null && !binding.IsAlwaysUnique)
+            if (this.bindingInstances.ContainsKey(type) && !binding.IsAlwaysUnique)
             {
-                return binding.Instance;
+                return this.bindingInstances[type];
+            }
+
+            if (binding.Implementation == null)
+            {
+                throw new InvalidOperationException("No implementation to construct " + type);
             }
 
             // We need a new instance for this binding
-            ConstructorInfo[] info = type.GetConstructors();
+            ConstructorInfo[] info = binding.Implementation.GetConstructors();
             foreach (ConstructorInfo constructorInfo in info)
             {
                 var instance = this.TryConstructInstance(type, constructorInfo, customParameters);
                 if (instance != null)
                 {
+                    // Register as singleton if required
+                    if (binding.IsSingleton)
+                    {
+                        this.bindingInstances.Add(type, instance);
+                    }
+
                     return instance;
                 }
             }
@@ -114,9 +117,16 @@
                 ParameterInfo parameter = parameters[i];
 
                 // Check if it's a custom parameter
-                if (customParameters.ContainsKey(parameter.Name))
+                if (customParameters != null && customParameters.ContainsKey(parameter.Name))
                 {
                     resolvedParameters[i] = customParameters[parameter.Name];
+                    continue;
+                }
+
+                // Check if we already have an instance for this parameter
+                if (this.bindingInstances.ContainsKey(parameter.ParameterType))
+                {
+                    resolvedParameters[i] = this.bindingInstances[parameter.ParameterType];
                     continue;
                 }
 
@@ -157,6 +167,27 @@
 
             this.bindingInstances.Clear();
             this.bindings.Clear();
+        }
+
+        private void CheckBinding(ICarbonQuickBinding binding)
+        {
+            if (this.bindings.ContainsKey(binding.Interface))
+            {
+                throw new InvalidOperationException(string.Format("Interface {0} was already bound, Multiple bindings are not yet supported", binding.Interface.Name));
+            }
+
+            if (binding.Instance != null)
+            {
+                System.Diagnostics.Trace.Assert(binding.IsAlwaysUnique == false, "Binding can not be always unique with explicit instance");
+            }
+
+            if (binding.IsSingleton)
+            {
+                System.Diagnostics.Trace.Assert(!binding.IsAlwaysUnique, "Binding can not be singleton and always unique!");
+            }
+
+            // Test to make sure we have either an instance or implementation
+            System.Diagnostics.Trace.Assert(binding.Implementation != null || binding.Instance != null);
         }
     }
 }

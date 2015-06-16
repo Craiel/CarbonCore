@@ -76,7 +76,6 @@
     <Compile Include="IoC\CarbonContainerAutofac.cs" />
     <Compile Include="IoC\CarbonContainerAutofacBuilder.cs" />
     <Compile Include="IoC\CarbonModuleAutofac.cs" />
-    <Compile Include="IoC\FactoryAutofac.cs" />
     <Compile Include="IoC\IoC.cs" />
     <Compile Include="IO\JsonCarbonDirectory.cs" />
     <Compile Include="IO\JsonCarbonDirectoryFilter.cs" />

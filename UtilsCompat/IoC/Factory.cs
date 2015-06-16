@@ -4,14 +4,14 @@
 
     using CarbonCore.Utils.Compat.Contracts.IoC;
 
-    public abstract class Factory : IFactory
+    public class Factory : IFactory
     {
         private readonly ICarbonContainer container;
 
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
-        protected Factory(ICarbonContainer container)
+        public Factory(ICarbonContainer container)
         {
             this.container = container;
         }

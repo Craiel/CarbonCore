@@ -17,7 +17,10 @@
             where T : ICarbonQuickModule
         {
             // Scan the module for dependencies
-            IEnumerable<Type> dependencies = CarbonContainerBuilder.ScanModules(typeof(T), typeof(UtilsModule));
+            IEnumerable<Type> dependencies = CarbonContainerBuilder.ScanModules(
+                typeof(T),
+                typeof(UtilsCompatModule),
+                typeof(UtilsModule));
 
             var builder = new ContainerBuilder();
             foreach (Type moduleType in dependencies)
@@ -27,7 +30,14 @@
                 builder.RegisterModule(autofacModule);
             }
 
-            return new CarbonContainerAutofac(builder.Build());
+            CarbonContainerAutofac container = new CarbonContainerAutofac(builder.Build());
+
+            // Inject the container as ICarbonContainer for factory resolve
+            builder = new ContainerBuilder();
+            builder.RegisterInstance(container).As<ICarbonContainer>();
+            builder.Update(container.Inner);
+
+            return container;
         }
     }
 }

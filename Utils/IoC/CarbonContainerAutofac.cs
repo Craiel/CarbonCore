@@ -32,6 +32,14 @@
         public event EventHandler<LifetimeScopeEndingEventArgs> CurrentScopeEnding;
         public event EventHandler<ResolveOperationBeginningEventArgs> ResolveOperationBeginning;
 
+        public IContainer Inner
+        {
+            get
+            {
+                return this.innerContainer;
+            }
+        }
+
         public IComponentRegistry ComponentRegistry
         {
             get
