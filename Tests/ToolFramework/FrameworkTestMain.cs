@@ -9,7 +9,7 @@
     using CarbonCore.ToolFramework.Contracts;
     using CarbonCore.ToolFramework.Logic;
     using CarbonCore.ToolFramework.Logic.Actions;
-    using CarbonCore.Utils.Contracts.IoC;
+    using CarbonCore.Utils.Compat.Contracts.IoC;
 
     using NUnit.Framework;
 

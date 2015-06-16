@@ -1,42 +1,22 @@
-﻿namespace CarbonCore.Utils.IoC
+﻿namespace CarbonCore.Utils.Compat.IoC
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    using Autofac;
-    using Autofac.Builder;
-    using Autofac.Core;
-
-    using CarbonCore.Utils.Contracts.IoC;
-
-    public static class CarbonContainerBuilder
+    public abstract class CarbonContainerBuilder
     {
         // -------------------------------------------------------------------
-        // Public
+        // Protected
         // -------------------------------------------------------------------
-        public static ICarbonContainer Build<T>(ContainerBuildOptions options = ContainerBuildOptions.None)
-            where T : IModule
-        {
-            // Scan the module for dependencies
-            IEnumerable<Type> dependencies = ScanModules(typeof(T));
-
-            var builder = new ContainerBuilder();
-            foreach (Type moduleType in dependencies)
-            {
-                builder.RegisterModule((IModule)Activator.CreateInstance(moduleType));
-            }
-
-            return new CarbonContainer(builder.Build());
-        }
-
-        // -------------------------------------------------------------------
-        // Private
-        // -------------------------------------------------------------------
-        private static IEnumerable<Type> ScanModules(Type moduleType)
+        protected IEnumerable<Type> ScanModules(Type moduleType, params Type[] baseDependencies)
         {
             // Utils module is added by default
-            IDictionary<Type, int> dependencies = new Dictionary<Type, int> { { typeof(UtilsModule), 0 } };
+            IDictionary<Type, int> dependencies = new Dictionary<Type, int>();
+            foreach (Type dependency in baseDependencies)
+            {
+                dependencies.Add(dependency, 0);
+            }
 
             // We use a stack so module load happens in the registration order
             var pending = new Stack<Type>();
@@ -46,7 +26,7 @@
             {
                 currentOrder += 1000;
                 Type key = pending.Pop();
-                System.Diagnostics.Debug.WriteLine("[IoC] Initializing Module: {0}", key);
+                System.Diagnostics.Debug.WriteLine(string.Format("[IoC] Initializing Module: {0}", key));
 
                 if (dependencies.ContainsKey(key))
                 {

@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Utils.Contracts.IoC
+﻿namespace CarbonCore.Utils.Compat.Contracts.IoC
 {
     using System;
 

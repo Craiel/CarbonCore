@@ -5,9 +5,9 @@
     using System.Net.Sockets;
     using System.Threading;
 
+    using CarbonCore.Utils.Compat.Contracts.IoC;
     using CarbonCore.Utils.Compat.Contracts.Network;
     using CarbonCore.Utils.Compat.Network;
-    using CarbonCore.Utils.Contracts.IoC;
 
     public class CoreTcpServer : ICoreTcpServer
     {

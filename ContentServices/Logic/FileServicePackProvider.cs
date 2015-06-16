@@ -5,8 +5,8 @@
     using System.IO;
 
     using CarbonCore.ContentServices.Contracts;
+    using CarbonCore.Utils.Compat.Contracts.IoC;
     using CarbonCore.Utils.Compat.IO;
-    using CarbonCore.Utils.Contracts.IoC;
 
     public class FileServicePackProvider : FileServiceProvider, IFileServicePackProvider
     {

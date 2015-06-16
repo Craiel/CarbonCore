@@ -2,9 +2,9 @@
 {
     using System.Collections.Generic;
 
+    using CarbonCore.Utils.Compat.Contracts.IoC;
     using CarbonCore.Utils.Compat.Contracts.Network;
     using CarbonCore.Utils.Compat.Network;
-    using CarbonCore.Utils.Contracts.IoC;
     using CarbonCore.Utils.Contracts.Network;
 
     public class JsonNetServer : CoreTcpServer, IJsonNetServer

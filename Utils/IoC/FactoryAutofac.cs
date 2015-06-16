@@ -4,16 +4,16 @@
 
     using Autofac;
 
-    using CarbonCore.Utils.Contracts.IoC;
+    using CarbonCore.Utils.Compat.Contracts.IoC;
 
-    public class Factory : IFactory
+    public class FactoryAutofac : IFactory
     {
         private readonly IComponentContext container;
 
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
-        public Factory(IComponentContext container)
+        public FactoryAutofac(IComponentContext container)
         {
             this.container = container;
         }

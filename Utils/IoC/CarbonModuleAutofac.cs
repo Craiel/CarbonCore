@@ -5,15 +5,16 @@
 
     using Autofac;
 
-    using CarbonCore.Utils.Contracts.IoC;
+    using CarbonCore.Utils.Compat.Contracts.IoC;
+    using CarbonCore.Utils.Compat.IoC;
 
-    public abstract class CarbonModule : Module, ICarbonModule
+    public abstract class CarbonModuleAutofac : Module, ICarbonModule
     {
-        private readonly List<CarbonQuickBinding> bindings;
+        private readonly List<ICarbonQuickBinding> bindings;
         
-        protected CarbonModule()
+        protected CarbonModuleAutofac()
         {
-            this.bindings = new List<CarbonQuickBinding>();
+            this.bindings = new List<ICarbonQuickBinding>();
         }
         
         // -------------------------------------------------------------------
@@ -21,7 +22,7 @@
         // -------------------------------------------------------------------
         public ICarbonQuickBinding For<T>()
         {
-            var binding = new CarbonQuickBinding { Interface = typeof(T) };
+            var binding = new CarbonQuickBinding().For<T>();
             this.bindings.Add(binding);
             return binding;
         }
@@ -31,7 +32,7 @@
             base.Load(builder);
 
             // Register our quick bindings
-            foreach (CarbonQuickBinding binding in this.bindings)
+            foreach (ICarbonQuickBinding binding in this.bindings)
             {
                 if (binding.Interface == null || binding.Implementation == null)
                 {

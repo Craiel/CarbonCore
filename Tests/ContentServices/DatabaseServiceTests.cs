@@ -8,6 +8,7 @@
 
     using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.IoC;
+    using CarbonCore.Utils.Compat.IoC;
     using CarbonCore.Utils.Compat.IO;
     using CarbonCore.Utils.IoC;
 
@@ -24,7 +25,7 @@
         [SetUp]
         public void Setup()
         {
-            this.container = CarbonContainerBuilder.Build<ContentServicesModule>();
+            this.container = new CarbonContainerAutofacBuilder().Build<ContentServicesModule>() as IContainer;
         }
 
         [TearDown]

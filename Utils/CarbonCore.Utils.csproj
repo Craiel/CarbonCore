@@ -62,10 +62,6 @@
   <ItemGroup>
     <Compile Include="AssemblyExtensions.cs" />
     <Compile Include="Contracts\IJsonConfig.cs" />
-    <Compile Include="Contracts\IoC\ICarbonContainer.cs" />
-    <Compile Include="Contracts\IoC\ICarbonModule.cs" />
-    <Compile Include="Contracts\IoC\ICarbonQuickBinding.cs" />
-    <Compile Include="Contracts\IoC\IFactory.cs" />
     <Compile Include="Contracts\Network\IJsonNetClient.cs" />
     <Compile Include="Contracts\Network\IJsonNetPackage.cs" />
     <Compile Include="Contracts\Network\IJsonNetPeer.cs" />
@@ -77,12 +73,10 @@
     <Compile Include="HashFileName.cs" />
     <Compile Include="I18N\Localization.cs" />
     <Compile Include="I18N\LocalizationStringDictionary.cs" />
-    <Compile Include="IoC\CarbonContainer.cs" />
-    <Compile Include="IoC\CarbonContainerBuilder.cs" />
-    <Compile Include="IoC\CarbonModule.cs" />
-    <Compile Include="IoC\CarbonQuickBinding.cs" />
-    <Compile Include="IoC\DependsOnModuleAttribute.cs" />
-    <Compile Include="IoC\Factory.cs" />
+    <Compile Include="IoC\CarbonContainerAutofac.cs" />
+    <Compile Include="IoC\CarbonContainerAutofacBuilder.cs" />
+    <Compile Include="IoC\CarbonModuleAutofac.cs" />
+    <Compile Include="IoC\FactoryAutofac.cs" />
     <Compile Include="IoC\IoC.cs" />
     <Compile Include="IO\JsonCarbonDirectory.cs" />
     <Compile Include="IO\JsonCarbonDirectoryFilter.cs" />

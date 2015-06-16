@@ -2,10 +2,11 @@
 {
     using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.Logic;
+    using CarbonCore.Utils.Compat.IoC;
     using CarbonCore.Utils.IoC;
 
     [DependsOnModule(typeof(UtilsModule))]
-    public class ContentServicesModule : CarbonModule
+    public class ContentServicesModule : CarbonModuleAutofac
     {
         public ContentServicesModule()
         {

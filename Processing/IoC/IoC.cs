@@ -4,7 +4,7 @@
     using CarbonCore.Processing.Contracts;
     using CarbonCore.Processing.Logic;
 
-    public class CarbonProcessingModule : CarbonModule
+    public class CarbonProcessingModule : CarbonModuleAutofac
     {
         public CarbonProcessingModule()
         {

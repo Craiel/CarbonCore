@@ -4,6 +4,7 @@
 
     using CarbonCore.Tests.Contracts;
     using CarbonCore.Tests.IoC;
+    using CarbonCore.Utils.Compat.IoC;
     using CarbonCore.Utils.IoC;
 
     using NUnit.Framework;
@@ -19,7 +20,7 @@
         [SetUp]
         public void Setup()
         {
-            this.container = CarbonContainerBuilder.Build<ToolFrameworkTestModule>();
+            this.container = new CarbonContainerAutofacBuilder().Build<ToolFrameworkTestModule>() as IContainer;
         }
 
         [TearDown]

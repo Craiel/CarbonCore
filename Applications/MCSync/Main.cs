@@ -6,9 +6,9 @@
     using System.Reflection;
     using System.Threading;
 
+    using CarbonCore.Utils.Compat.Contracts.IoC;
     using CarbonCore.Utils.Compat.Diagnostics;
     using CarbonCore.Utils.Compat.IO;
-    using CarbonCore.Utils.Contracts.IoC;
     using CarbonCore.UtilsCommandLine.Contracts;
     
     using MCSync.Contracts;

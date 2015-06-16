@@ -1,6 +1,7 @@
 ﻿namespace MCSync
 {
     using CarbonCore.Utils.Compat.Diagnostics;
+    using CarbonCore.Utils.Compat.IoC;
     using CarbonCore.Utils.IoC;
     
     using MCSync.Contracts;
@@ -13,7 +14,7 @@
         // -------------------------------------------------------------------
         public static void Main(string[] args)
         {
-            var container = CarbonContainerBuilder.Build<MCSyncModule>();
+            var container = new CarbonContainerAutofacBuilder().Build<MCSyncModule>();
             container.Resolve<IMain>().Sync();
 
             Profiler.TraceProfilerStatistics();

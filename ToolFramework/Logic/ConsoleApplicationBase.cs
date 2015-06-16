@@ -11,7 +11,7 @@
     using CarbonCore.ToolFramework.Contracts;
     using CarbonCore.ToolFramework.Logic.Actions;
     using CarbonCore.Utils;
-    using CarbonCore.Utils.Contracts.IoC;
+    using CarbonCore.Utils.Compat.Contracts.IoC;
 
     public abstract class ConsoleApplicationBase : IConsoleApplicationBase
     {

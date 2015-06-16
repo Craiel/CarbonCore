@@ -8,16 +8,16 @@
     using Autofac.Core.Lifetime;
     using Autofac.Core.Resolving;
 
-    using CarbonCore.Utils.Contracts.IoC;
+    using CarbonCore.Utils.Compat.Contracts.IoC;
 
-    public class CarbonContainer : ICarbonContainer
+    public class CarbonContainerAutofac : ICarbonContainer, IContainer
     {
         private readonly IContainer innerContainer;
 
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
-        public CarbonContainer(IContainer innerContainer)
+        public CarbonContainerAutofac(IContainer innerContainer)
         {
             this.innerContainer = innerContainer;
             this.innerContainer.ChildLifetimeScopeBeginning += this.ChildLifetimeScopeBeginning;
@@ -85,6 +85,16 @@
         public ILifetimeScope BeginLifetimeScope(object tag, Action<ContainerBuilder> configurationAction)
         {
             return this.innerContainer.BeginLifetimeScope(tag, configurationAction);
+        }
+
+        public T Resolve<T>()
+        {
+            return this.innerContainer.Resolve<T>();
+        }
+
+        public object Resolve(Type type)
+        {
+            return this.innerContainer.Resolve(type);
         }
 
         public T Resolve<T>(params Parameter[] parameter)

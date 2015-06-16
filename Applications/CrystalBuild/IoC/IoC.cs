@@ -1,5 +1,6 @@
 ﻿namespace CarbonCore.Applications.CrystalBuild.IoC
 {
+    using CarbonCore.Utils.Compat.IoC;
     using CarbonCore.Utils.IoC;
     using CarbonCore.UtilsCommandLine.IoC;
 
@@ -10,7 +11,7 @@
 
     [DependsOnModule(typeof(UtilsModule))]
     [DependsOnModule(typeof(UtilsCommandLineModule))]
-    public class CrystalBuildModule : CarbonModule
+    public class CrystalBuildModule : CarbonModuleAutofac
     {
         // -------------------------------------------------------------------
         // Public

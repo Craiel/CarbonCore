@@ -12,10 +12,10 @@
     using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.Logic.Attributes;
     using CarbonCore.Utils.Compat;
+    using CarbonCore.Utils.Compat.Contracts.IoC;
     using CarbonCore.Utils.Compat.Database;
     using CarbonCore.Utils.Compat.Diagnostics;
     using CarbonCore.Utils.Compat.IO;
-    using CarbonCore.Utils.Contracts.IoC;
     using CarbonCore.Utils.Database;
 
     public class DatabaseService : IDatabaseService

@@ -1,5 +1,6 @@
 ﻿namespace MCSync.IoC
 {
+    using CarbonCore.Utils.Compat.IoC;
     using CarbonCore.Utils.IoC;
     using CarbonCore.UtilsCommandLine.IoC;
     
@@ -7,7 +8,7 @@
 
     [DependsOnModule(typeof(UtilsModule))]
     [DependsOnModule(typeof(UtilsCommandLineModule))]
-    public class MCSyncModule : CarbonModule
+    public class MCSyncModule : CarbonModuleAutofac
     {
         public MCSyncModule()
         {

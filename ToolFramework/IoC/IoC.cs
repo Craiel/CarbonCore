@@ -4,12 +4,13 @@
     using CarbonCore.ToolFramework.Contracts.ViewModels;
     using CarbonCore.ToolFramework.Logic;
     using CarbonCore.ToolFramework.ViewModel;
+    using CarbonCore.Utils.Compat.IoC;
     using CarbonCore.Utils.IoC;
     using CarbonCore.UtilsWPF.IoC;
 
     [DependsOnModule(typeof(UtilsModule))]
     [DependsOnModule(typeof(UtilsWPFModule))]
-    public class ToolFrameworkModule : CarbonModule
+    public class ToolFrameworkModule : CarbonModuleAutofac
     {
         public ToolFrameworkModule()
         {
