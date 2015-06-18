@@ -1,4 +1,4 @@
-﻿namespace MCSync.IoC
+﻿namespace CarbonCore.Applications.MCSync.IoC
 {
     using CarbonCore.Utils.Compat.IoC;
     using CarbonCore.Utils.IoC;

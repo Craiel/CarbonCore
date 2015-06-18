@@ -1,4 +1,4 @@
-﻿namespace MCSync
+﻿namespace CarbonCore.Applications.MCSync
 {
     using System;
     using System.Collections.Generic;

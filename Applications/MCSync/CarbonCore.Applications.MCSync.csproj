@@ -7,7 +7,7 @@
     <ProjectGuid>{30BE5B25-2A9C-453E-80CE-75D347245537}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MCSync</RootNamespace>
+    <RootNamespace>CarbonCore.Applications.MCSync</RootNamespace>
     <AssemblyName>MCSync</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -58,6 +58,10 @@
     <ProjectReference Include="..\..\UtilsCommandLine\CarbonCore.UtilsCommandLine.csproj">
       <Project>{E99C6721-99A5-4DC3-BD9D-DC88F65D217A}</Project>
       <Name>CarbonCore.UtilsCommandLine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\UtilsCompat\CarbonCore.Utils.Compat.csproj">
+      <Project>{b823cdce-5ed4-4030-ab35-44daf233d4c0}</Project>
+      <Name>CarbonCore.Utils.Compat</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Utils\CarbonCore.Utils.csproj">
       <Project>{E05836D9-0BB3-4BFA-89E6-F5ED40A9D93C}</Project>

@@ -1,0 +1,8 @@
+# Git folder
+.git
+
+# Default output folders
+bin
+obj
+
+*.suo
