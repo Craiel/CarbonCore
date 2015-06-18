@@ -69,7 +69,13 @@
 
         public static string GetLocalizedResourcePath(string resourcePath, string assemblyRoot)
         {
-            string localizedResourcePath = resourcePath.Replace(assemblyRoot, string.Empty).TrimStart(ResourceDelimiter);
+            string localizedResourcePath = resourcePath;
+            if (!string.IsNullOrEmpty(assemblyRoot))
+            {
+                localizedResourcePath = localizedResourcePath.Replace(assemblyRoot, string.Empty);
+            }
+
+            localizedResourcePath = localizedResourcePath.TrimStart(ResourceDelimiter);
 
             // Check if we have a local indicator in the resource path
             string localizedResourcePathSuffix = string.Empty;
@@ -119,6 +125,12 @@
 
             using (var stream = assembly.GetManifestResourceStream(resourcePath))
             {
+                if (stream == null)
+                {
+                    System.Diagnostics.Trace.TraceError("Could not Open Resource Stream: {0}", resourcePath);
+                    return null;
+                }
+
                 System.Diagnostics.Trace.Assert(stream != null);
                 var data = new byte[stream.Length];
                 stream.Read(data, 0, data.Length);
