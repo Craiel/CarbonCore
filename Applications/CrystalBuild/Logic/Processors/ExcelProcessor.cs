@@ -14,8 +14,11 @@
 
     public class ExcelProcessor : ContentProcessor, IExcelProcessor
     {
-        private const string DataPrefix = @"declare(""GameData"", function() { return {";
-        private const string DataSuffix = @"}; });";
+        private const string DataPrefixJava = @"declare(""GameData"", function() { return {";
+        private const string DataSuffixJava = @"}; });";
+
+        private const string DataPrefixUnity = @"{";
+        private const string DataSuffixUnity = @"}";
 
         private readonly IList<string> sectionDuplicateCheck;
         
@@ -25,7 +28,6 @@
         public ExcelProcessor()
         {
             this.sectionDuplicateCheck = new List<string>();
-            this.AppendLine(DataPrefix);
         }
         
         // -------------------------------------------------------------------
@@ -70,7 +72,7 @@
                 }
             }
         }
-
+        
         protected override string PostProcessData(string data)
         {
             string formattedData = data;
@@ -80,7 +82,31 @@
                 formattedData = formattedData.Substring(0, formattedData.Length - dataEnd.Length);
             }
 
-            return string.Concat(formattedData, Environment.NewLine, DataSuffix);
+            string prefix;
+            string suffix;
+            switch (this.Context.TargetPlatform)
+            {
+                case BuildTargetPlatform.Java:
+                    {
+                        prefix = DataPrefixJava;
+                        suffix = DataSuffixJava;
+                        break;
+                    }
+
+                case BuildTargetPlatform.Unity:
+                    {
+                        prefix = DataPrefixUnity;
+                        suffix = DataSuffixUnity;
+                        break;
+                    }
+
+                default:
+                    {
+                        throw new NotImplementedException();
+                    }
+            }
+
+            return string.Concat(prefix, formattedData, Environment.NewLine, suffix);
         }
 
         // -------------------------------------------------------------------
@@ -215,7 +241,6 @@
                     this.AppendFormat("{0}{1}: {{id: {1}}}", delimiter, idString);
                 }
 
-                
                 concatSection = true;
             }
 

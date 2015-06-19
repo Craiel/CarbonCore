@@ -13,11 +13,13 @@
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
-        public ProcessingContext(ProcessingCache cache)
+        public ProcessingContext(ProcessingCache cache, BuildTargetPlatform targetPlatform)
         {
             this.warnings = new List<string>();
             this.errors = new List<string>();
+
             this.Cache = cache;
+            this.TargetPlatform = targetPlatform;
         }
 
         // -------------------------------------------------------------------
@@ -32,6 +34,8 @@
         public ProcessingCache Cache { get; private set; }
         
         public CarbonDirectory Root { get; set; }
+
+        public BuildTargetPlatform TargetPlatform { get; private set; }
 
         public IReadOnlyCollection<string> Warnings
         {

@@ -1,5 +1,6 @@
 ﻿namespace CarbonCore.Applications.CrystalBuild
 {
+    using CarbonCore.Applications.CrystalBuild.Logic;
     using CarbonCore.Utils.Compat.IO;
 
     using Newtonsoft.Json;
@@ -13,6 +14,8 @@
         public string Name { get; set; }
 
         public bool ExportSourceAsModule { get; set; }
+
+        public BuildTargetPlatform TargetPlatform { get; set; }
 
         public CarbonDirectoryFilter[] Data { get; set; }
         public CarbonDirectoryFilter[] Templates { get; set; }

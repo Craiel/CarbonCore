@@ -80,7 +80,7 @@
                 IList<CarbonFileResult> files = CarbonDirectory.GetFiles(filters);
                 if (files.Count > 0)
                 {
-                    var context = new ProcessingContext(cache) { Root = this.config.Current.ImageRoot };
+                    var context = new ProcessingContext(cache, this.config.Current.TargetPlatform) { Root = this.config.Current.ImageRoot };
 
                     this.logic.BuildImages(files, context);
                 }
@@ -96,7 +96,7 @@
                 IList<CarbonFileResult> files = CarbonDirectory.GetFiles(filters);
                 if (files != null && files.Count > 0)
                 {
-                    this.logic.BuildData(files, this.config.Current.ProjectRoot.ToFile(this.config.Current.DataTarget), new ProcessingContext(cache));
+                    this.logic.BuildData(files, this.config.Current.ProjectRoot.ToFile(this.config.Current.DataTarget), new ProcessingContext(cache, this.config.Current.TargetPlatform));
                 }
                 else
                 {
@@ -110,7 +110,7 @@
                 IList<CarbonFileResult> files = CarbonDirectory.GetFiles(filters);
                 if (files != null && files.Count > 0)
                 {
-                    this.logic.BuildTemplates(files, this.config.Current.ProjectRoot.ToFile(this.config.Current.TemplateTarget), new ProcessingContext(cache));
+                    this.logic.BuildTemplates(files, this.config.Current.ProjectRoot.ToFile(this.config.Current.TemplateTarget), new ProcessingContext(cache, this.config.Current.TargetPlatform));
                 }
                 else
                 {
@@ -164,7 +164,7 @@
                     this.logic.Build(
                         files,
                         targetFile,
-                        new ProcessingContext(cache)
+                        new ProcessingContext(cache, this.config.Current.TargetPlatform)
                         {
                             Name = this.config.Current.Name,
                             IsDebug = this.useDebug,
@@ -194,7 +194,7 @@
                 IList<CarbonFileResult> files = CarbonDirectory.GetFiles(filters);
                 if (files != null && files.Count > 0)
                 {
-                    this.logic.BuildStyleSheets(files, this.config.Current.ProjectRoot.ToFile(this.config.Current.StyleSheetTarget), new ProcessingContext(cache));
+                    this.logic.BuildStyleSheets(files, this.config.Current.ProjectRoot.ToFile(this.config.Current.StyleSheetTarget), new ProcessingContext(cache, this.config.Current.TargetPlatform));
                 }
                 else
                 {
