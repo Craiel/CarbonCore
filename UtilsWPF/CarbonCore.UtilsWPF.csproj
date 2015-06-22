@@ -34,11 +34,13 @@
     <Reference Include="Autofac">
       <HintPath>..\External\Autofac\3.1.1\Autofac.dll</HintPath>
     </Reference>
-    <Reference Include="MahApps.Metro">
-      <HintPath>..\External\MahApps.Metro\bc5281a\MahApps.Metro.dll</HintPath>
+    <Reference Include="MahApps.Metro, Version=1.1.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\External\MahApps.Metro\9b0d1f0\MahApps.Metro.dll</HintPath>
     </Reference>
-    <Reference Include="MahApps.Metro.Resources">
-      <HintPath>..\External\MahApps.Metro\bc5281a\MahApps.Metro.Resources.dll</HintPath>
+    <Reference Include="MahApps.Metro.Resources, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\External\MahApps.Metro\9b0d1f0\MahApps.Metro.Resources.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
