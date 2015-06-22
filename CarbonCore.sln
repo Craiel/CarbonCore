@@ -35,6 +35,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Applications", "Application
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.Utils.Compat", "UtilsCompat\CarbonCore.Utils.Compat.csproj", "{B823CDCE-5ED4-4030-AB35-44DAF233D4C0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.Utils.Unity", "UtilsUnity\CarbonCore.Utils.Unity.csproj", "{0EC48D10-8E81-4B43-A7EE-F4BD83516CEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.Utils.Unity.Editor", "UtilsUnityEditor\CarbonCore.Utils.Unity.Editor.csproj", "{DB147104-0C6F-4723-A86F-005AC742D4E6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -100,6 +104,14 @@ Global
 		{B823CDCE-5ED4-4030-AB35-44DAF233D4C0}.Debug|x64.Build.0 = Debug|x64
 		{B823CDCE-5ED4-4030-AB35-44DAF233D4C0}.Release|x64.ActiveCfg = Release|x64
 		{B823CDCE-5ED4-4030-AB35-44DAF233D4C0}.Release|x64.Build.0 = Release|x64
+		{0EC48D10-8E81-4B43-A7EE-F4BD83516CEA}.Debug|x64.ActiveCfg = Debug|x64
+		{0EC48D10-8E81-4B43-A7EE-F4BD83516CEA}.Debug|x64.Build.0 = Debug|x64
+		{0EC48D10-8E81-4B43-A7EE-F4BD83516CEA}.Release|x64.ActiveCfg = Release|x64
+		{0EC48D10-8E81-4B43-A7EE-F4BD83516CEA}.Release|x64.Build.0 = Release|x64
+		{DB147104-0C6F-4723-A86F-005AC742D4E6}.Debug|x64.ActiveCfg = Debug|x64
+		{DB147104-0C6F-4723-A86F-005AC742D4E6}.Debug|x64.Build.0 = Debug|x64
+		{DB147104-0C6F-4723-A86F-005AC742D4E6}.Release|x64.ActiveCfg = Release|x64
+		{DB147104-0C6F-4723-A86F-005AC742D4E6}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

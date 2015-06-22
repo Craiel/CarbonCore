@@ -74,5 +74,13 @@
         {
             return Convert.ToBase64String(data);
         }
+
+        public static int GetSimpleCombinedHashCode(params object[] objects)
+        {
+            unchecked
+            {
+                return objects.Aggregate(17, (current, data) => (current * 31) + data.GetHashCode());
+            }
+        }
     }
 }
