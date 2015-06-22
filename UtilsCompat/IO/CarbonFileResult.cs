@@ -1,5 +1,8 @@
 ﻿namespace CarbonCore.Utils.Compat.IO
 {
+    using Newtonsoft.Json;
+
+    [JsonObject(MemberSerialization.OptOut)]
     public class CarbonFileResult
     {
         // -------------------------------------------------------------------

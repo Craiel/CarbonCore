@@ -17,6 +17,11 @@
             this.For<IFormatter>().Use<Formatter>();
 
             this.For<ICoreTcpClient>().Use<CoreTcpClient>();
+            this.For<ICoreTcpServer>().Use<CoreTcpServer>();
+
+            this.For<IJsonNetPeer>().Use<JsonNetPeer>();
+            this.For<IJsonNetClient>().Use<JsonNetClient>();
+            this.For<IJsonNetServer>().Use<JsonNetServer>();
         }
     }
 }

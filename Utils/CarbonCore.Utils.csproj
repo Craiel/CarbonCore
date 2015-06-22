@@ -50,9 +50,9 @@
     <Reference Include="log4net">
       <HintPath>..\External\log4net\1.2.13\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\External\Json.NET\Json60r6\Net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\External\Json.NET\Json70r1\Net35\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -61,34 +61,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyExtensions.cs" />
-    <Compile Include="Contracts\IJsonConfig.cs" />
-    <Compile Include="Contracts\Network\IJsonNetClient.cs" />
-    <Compile Include="Contracts\Network\IJsonNetPackage.cs" />
-    <Compile Include="Contracts\Network\IJsonNetPeer.cs" />
-    <Compile Include="Contracts\Network\IJsonNetServer.cs" />
     <Compile Include="Database\SqlStatement.cs" />
     <Compile Include="Diagnostics\Internal.cs" />
     <Compile Include="Diagnostics\TraceListeners\EventTraceListener.cs" />
     <Compile Include="Diagnostics\TraceListeners\Log4NetTraceListener.cs" />
     <Compile Include="HashFileName.cs" />
-    <Compile Include="I18N\Localization.cs" />
-    <Compile Include="I18N\LocalizationStringDictionary.cs" />
     <Compile Include="IoC\CarbonContainerAutofac.cs" />
     <Compile Include="IoC\CarbonContainerAutofacBuilder.cs" />
     <Compile Include="IoC\CarbonModuleAutofac.cs" />
     <Compile Include="IoC\IoC.cs" />
-    <Compile Include="IO\JsonCarbonDirectory.cs" />
-    <Compile Include="IO\JsonCarbonDirectoryFilter.cs" />
-    <Compile Include="IO\JsonCarbonFile.cs" />
-    <Compile Include="IO\JsonCarbonFileResult.cs" />
-    <Compile Include="Json\JsonCarbonDirectoryConverter.cs" />
-    <Compile Include="Json\JsonCarbonFileConverter.cs" />
-    <Compile Include="Json\JsonConcreteTypeConverter.cs" />
-    <Compile Include="Json\JsonConfig.cs" />
-    <Compile Include="Json\JsonDefaultClassStringConverter.cs" />
-    <Compile Include="Json\JsonDefaultConverter.cs" />
-    <Compile Include="Json\JsonDictionaryConverter.cs" />
-    <Compile Include="Json\JsonExtensions.cs" />
     <Compile Include="MathUtils\Circle.cs" />
     <Compile Include="MathUtils\LineF.cs" />
     <Compile Include="MathUtils\LineI.cs" />
@@ -103,14 +84,6 @@
     <Compile Include="MathUtils\Vector2I.cs" />
     <Compile Include="MathUtils\Vector2L.cs" />
     <Compile Include="MathUtils\Vector2S.cs" />
-    <Compile Include="Network\CoreTcpServer.cs" />
-    <Compile Include="Network\JsonNetClient.cs" />
-    <Compile Include="Network\JsonNetPackage.cs" />
-    <Compile Include="Network\JsonNetPeer.cs" />
-    <Compile Include="Network\JsonNetServer.cs" />
-    <Compile Include="Network\JsonNetUtils.cs" />
-    <Compile Include="Network\Packages\JsonNetPackagePayload.cs" />
-    <Compile Include="Network\Packages\JsonNetPackagePing.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -140,6 +113,9 @@
       <Project>{b823cdce-5ed4-4030-ab35-44daf233d4c0}</Project>
       <Name>CarbonCore.Utils.Compat</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Contracts\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

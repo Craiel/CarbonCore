@@ -2,7 +2,7 @@
 {
     using CarbonCore.Utils.Compat;
     using CarbonCore.Utils.Compat.IO;
-    using CarbonCore.Utils.Json;
+    using CarbonCore.Utils.Compat.Json;
 
     using CrystalBuild.Contracts;
 

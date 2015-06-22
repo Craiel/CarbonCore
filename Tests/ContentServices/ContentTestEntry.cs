@@ -4,7 +4,7 @@
 
     using CarbonCore.ContentServices.Logic;
     using CarbonCore.ContentServices.Logic.Attributes;
-    using CarbonCore.Utils.Json;
+    using CarbonCore.Utils.Compat.Json;
 
     using Newtonsoft.Json;
 

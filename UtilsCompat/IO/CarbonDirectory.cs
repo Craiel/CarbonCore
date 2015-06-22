@@ -3,6 +3,11 @@
     using System.Collections.Generic;
     using System.IO;
 
+    using CarbonCore.Utils.Compat.Json;
+
+    using Newtonsoft.Json;
+
+    [JsonConverter(typeof(JsonCarbonDirectoryConverter))]
     public class CarbonDirectory : CarbonPath
     {
         public static readonly CarbonDirectory TempDirectory = new CarbonDirectory(System.IO.Path.GetTempPath());

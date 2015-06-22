@@ -9,7 +9,6 @@
     using CarbonCore.Utils.Compat.Contracts.IoC;
     using CarbonCore.Utils.Compat.I18N;
     using CarbonCore.Utils.Compat.IO;
-    using CarbonCore.Utils.I18N;
     using CarbonCore.UtilsCommandLine.Contracts;
 
     using CrystalBuild.Contracts;

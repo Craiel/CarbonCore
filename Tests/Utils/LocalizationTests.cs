@@ -4,7 +4,6 @@
 
     using CarbonCore.Utils.Compat;
     using CarbonCore.Utils.Compat.I18N;
-    using CarbonCore.Utils.I18N;
 
     using NUnit.Framework;
 

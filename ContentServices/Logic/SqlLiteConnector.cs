@@ -10,7 +10,6 @@
     using CarbonCore.ContentServices.Contracts;
     using CarbonCore.Utils.Compat.IO;
     using CarbonCore.Utils.Database;
-    using CarbonCore.Utils.IO;
 
     public class SqlLiteConnector : ISqlLiteConnector
     {

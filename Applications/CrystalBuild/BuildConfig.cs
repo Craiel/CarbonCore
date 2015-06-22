@@ -4,6 +4,7 @@
     using CarbonCore.Utils.Compat.IO;
 
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Converters;
 
     [JsonObject(MemberSerialization.OptOut)]
     public class BuildConfig
@@ -15,6 +16,7 @@
 
         public bool ExportSourceAsModule { get; set; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public BuildTargetPlatform TargetPlatform { get; set; }
 
         public CarbonDirectoryFilter[] Data { get; set; }

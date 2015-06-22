@@ -6,6 +6,11 @@
     using System.Text;
     using System.Xml;
 
+    using CarbonCore.Utils.Compat.Json;
+
+    using Newtonsoft.Json;
+
+    [JsonConverter(typeof(JsonCarbonFileConverter))]
     public class CarbonFile : CarbonPath
     {
         // -------------------------------------------------------------------

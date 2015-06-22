@@ -1,12 +1,16 @@
 ﻿namespace CarbonCore.Utils.Compat.IO
 {
     using System.IO;
-    
+
+    using Newtonsoft.Json;
+
+    [JsonObject(MemberSerialization.OptOut)]
     public class CarbonDirectoryFilter
     {
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
+        [JsonConstructor]
         public CarbonDirectoryFilter(CarbonDirectory directory, params string[] filterStrings)
         {
             this.Directory = directory;
