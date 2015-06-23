@@ -1,6 +1,7 @@
 ﻿namespace CarbonCore.Utils.Compat.Json
 {
     using System;
+    using System.Text;
 
     using Newtonsoft.Json;
 
@@ -13,7 +14,7 @@
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            string rawValue = reader.ReadAsString();
+            string rawValue = Encoding.ASCII.GetString(reader.ReadAsBytes());
             if (objectType == typeof(string))
             {
                 return rawValue;

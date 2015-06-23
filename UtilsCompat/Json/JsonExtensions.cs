@@ -22,11 +22,16 @@
 
         public static string SaveToData<T>(T source, Formatting formatting = Formatting.None)
         {
+#if UNITY
+            // Unity Serializer does not have formatting parameter
+            var serializer = new JsonSerializer { DefaultValueHandling = DefaultValueHandling.Ignore };
+#else 
             var serializer = new JsonSerializer
             {
                 DefaultValueHandling = DefaultValueHandling.Ignore,
                 Formatting = formatting
             };
+#endif
 
             var builder = new StringBuilder();
             using (var writer = new StringWriter(builder))
