@@ -26,11 +26,11 @@
 
         private readonly IDictionary<TraceEventType, int> eventCount;
 
+        private readonly Timer updateTimer;
+
         private ICommand commandToggleError;
         private ICommand commandToggleWarning;
         private ICommand commandToggleInfo;
-
-        private Timer updateTimer;
 
         public LogViewModel(IFactory factory)
         {
