@@ -105,6 +105,12 @@
     <Compile Include="GUI\LayoutRegionSettings.cs" />
     <Compile Include="GUI\Splitter.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UtilsCompat\CarbonCore.Utils.Compat.csproj">
+      <Project>{b823cdce-5ed4-4030-ab35-44daf233d4c0}</Project>
+      <Name>CarbonCore.Utils.Compat</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

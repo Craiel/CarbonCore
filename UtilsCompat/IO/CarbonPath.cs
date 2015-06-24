@@ -118,8 +118,13 @@
             return (T)Activator.CreateInstance(typeof(T), absolutePath);
         }
 
-        public bool Contains(string pattern)
+        public bool Contains(string pattern, bool ignoreCase = false)
         {
+            if (ignoreCase)
+            {
+                return this.Path.ToLowerInvariant().Contains(pattern.ToLowerInvariant());
+            }
+
             return this.Path.Contains(pattern);
         }
 
