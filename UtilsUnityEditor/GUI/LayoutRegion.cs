@@ -100,22 +100,29 @@
         {
             if (isDisposing)
             {
-                if (this.settings.FlexibleEnd)
+                try
                 {
-                    GUILayout.FlexibleSpace();
-                }
-                else if (this.settings.MarginEnd > 0f)
-                {
-                    GUILayout.Space(this.settings.MarginEnd);
-                }
+                    if (this.settings.FlexibleEnd)
+                    {
+                        GUILayout.FlexibleSpace();
+                    }
+                    else if (this.settings.MarginEnd > 0f)
+                    {
+                        GUILayout.Space(this.settings.MarginEnd);
+                    }
 
-                if (this.settings.IsHorizontal)
-                {
-                    EditorGUILayout.EndHorizontal();
+                    if (this.settings.IsHorizontal)
+                    {
+                        EditorGUILayout.EndHorizontal();
+                    }
+                    else
+                    {
+                        EditorGUILayout.EndVertical();
+                    }
                 }
-                else
+                catch
                 {
-                    EditorGUILayout.EndVertical();
+                    // Note: We can safely ignore these, sometimes the UI is not in a responsive state
                 }
             }
         }
