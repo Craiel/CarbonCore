@@ -20,6 +20,12 @@
         private const string DataPrefixUnity = @"{";
         private const string DataSuffixUnity = @"}";
 
+        private const string IdFieldKey = "id";
+
+        private const string JavaDataDelimiter = "        ";
+
+        private const string DataEndMarker = "-END-";
+
         private readonly IList<string> sectionDuplicateCheck;
         
         // -------------------------------------------------------------------
@@ -57,15 +63,44 @@
                     int columns = this.GetColumnCount(sheet);
                     if (columns > 1)
                     {
-                        this.AppendFormatLine("    {0}: {{", sheet.SheetName);
-                        this.BuildDataEntrySection(sheet, "        ");
-                        this.AppendLine(@"    },");
+                        IDictionary<string, IDictionary<string, string>> data = this.BuildDataEntrySection(sheet);
+                        if (data == null)
+                        {
+                            continue;
+                        }
+
+                        switch (this.Context.TargetPlatform)
+                        {
+                            case BuildTargetPlatform.Java:
+                                {
+                                    this.FormatDataForJava(sheet.SheetName, data);
+                                    break;
+                                }
+
+                            case BuildTargetPlatform.Unity:
+                                {
+                                    this.FormatDataForUnity(sheet.SheetName, data);
+                                    break;
+                                }
+                        }
                     }
                     else
                     {
-                        this.AppendFormat("    {0}: [", sheet.SheetName);
-                        this.BuildDataEntryArray(sheet);
-                        this.AppendLine(@" ],");
+                        IList<string> data = this.BuildDataEntryArray(sheet);
+                        switch (this.Context.TargetPlatform)
+                        {
+                                case BuildTargetPlatform.Java:
+                                {
+                                    this.FormatDataForJava(sheet.SheetName, data);
+                                    break;
+                                }
+
+                            case BuildTargetPlatform.Unity:
+                                {
+                                    this.FormatDataForUnity(sheet.SheetName, data);
+                                    break;
+                                }
+                        }
                     }
 
                     this.sectionDuplicateCheck.Add(sheet.SheetName);
@@ -112,6 +147,159 @@
         // -------------------------------------------------------------------
         // Private
         // -------------------------------------------------------------------
+        private void FormatDataForJava(string sheetName, IDictionary<string, IDictionary<string, string>> data)
+        {
+            this.AppendFormatLine("    {0}: {{", sheetName);
+
+            IList<string> keys = new List<string>(data.Keys);
+            for (var i = 0; i < keys.Count; i++)
+            {
+                string id = keys[i];
+
+                IList<string> columns = new List<string>(data[id].Keys);
+
+                if (columns.Count <= 0)
+                {
+                    continue;
+                }
+
+                if (columns.Count == 1)
+                {
+                    this.AppendFormat(
+                        "{0}\"{1}\": {{{2}: {3}}}",
+                        JavaDataDelimiter,
+                        id.Trim('"'),
+                        columns[0],
+                        data[id][columns[0]]);
+                }
+                else
+                {
+                    // Write the key for the data
+                    this.AppendFormatLine("{0}\"{1}\": {{", JavaDataDelimiter, id.Trim('"'));
+
+                    this.AppendFormat("{0}    {1}: \"{2}\",", JavaDataDelimiter, IdFieldKey, id);
+                    for (var n = 0; n < columns.Count; n++)
+                    {
+                        this.AppendFormat("{0}    {1}: {2}", JavaDataDelimiter, columns[n], data[id][columns[n]]);
+                        if (n < columns.Count - 1)
+                        {
+                            this.AppendLine(",");
+                        }
+                        else
+                        {
+                            this.AppendLine();
+                        }
+                    }
+
+                    this.AppendFormat("{0}}}", JavaDataDelimiter);
+                }
+
+                if (i < keys.Count - 1)
+                {
+                    this.AppendLine(",");
+                }
+                else
+                {
+                    this.AppendLine();
+                }
+            }
+
+            this.AppendLine(@"    },");
+        }
+
+        private void FormatDataForJava(string sheetName, IList<string> data)
+        {
+            this.AppendFormat("    {0}: [", sheetName);
+
+            for (var i = 0; i < data.Count; i++)
+            {
+                this.AppendFormat(@"""{0}""", data[i]);
+                if (i < data.Count - 1)
+                {
+                    this.Append(", ");
+                }
+            }
+
+            this.AppendLine(@" ],");
+        }
+
+        private void FormatDataForUnity(string sheetName, IDictionary<string, IDictionary<string, string>> data)
+        {
+            bool isSingleEntry = data.Count == 1;
+
+            this.AppendFormatLine("    {0}: {1}", sheetName, isSingleEntry ? "{" : "[");
+
+            IList<string> keys = new List<string>(data.Keys);
+            for (var i = 0; i < keys.Count; i++)
+            {
+                string id = keys[i];
+
+                IList<string> columns = new List<string>(data[id].Keys);
+
+                if (columns.Count <= 0)
+                {
+                    continue;
+                }
+
+                if (columns.Count == 1)
+                {
+                    this.AppendFormat(
+                        "{0}\"{1}\": {{{2}: {3}}}",
+                        JavaDataDelimiter,
+                        id.Trim('"'),
+                        columns[0],
+                        data[id][columns[0]]);
+                }
+                else
+                {
+                    // Write the key for the data
+                    this.AppendFormatLine("{0}{1}", JavaDataDelimiter, isSingleEntry ? string.Empty : "{");
+                    
+                    for (var n = 0; n < columns.Count; n++)
+                    {
+                        this.AppendFormat("{0}    {1}: {2}", JavaDataDelimiter, columns[n], data[id][columns[n]]);
+                        if (n < columns.Count - 1)
+                        {
+                            this.AppendLine(",");
+                        }
+                        else
+                        {
+                            this.AppendLine();
+                        }
+                    }
+
+                    this.AppendFormat("{0}{1}", JavaDataDelimiter, isSingleEntry ? string.Empty : "}");
+                }
+
+                if (i < keys.Count - 1)
+                {
+                    this.AppendLine(",");
+                }
+                else
+                {
+                    this.AppendLine();
+                }
+            }
+
+            this.AppendLine(string.Format("    {0},", isSingleEntry ? "}" : "]"));
+        }
+
+        private void FormatDataForUnity(string sheetName, IList<string> data)
+        {
+            this.AppendFormat("    {0}: [", sheetName);
+
+            for (var i = 0; i < data.Count; i++)
+            {
+                this.AppendFormat(@"""{0}""", data[i]);
+                if (i < data.Count - 1)
+                {
+                    this.Append(", ");
+                }
+            }
+
+            this.AppendLine(@" ],");
+        }
+
         private int GetColumnCount(ISheet sheet)
         {
             IEnumerator rowEnum = sheet.GetRowEnumerator();
@@ -127,8 +315,10 @@
             return count;
         }
 
-        private void BuildDataEntryArray(ISheet sheet)
+        private IList<string> BuildDataEntryArray(ISheet sheet)
         {
+            IList<string> results = new List<string>();
+
             // Get the row enum
             IEnumerator rowEnum = sheet.GetRowEnumerator();
 
@@ -147,16 +337,16 @@
 
             for (var i = 0; i < entries.Count; i++)
             {
-                this.AppendFormat(@"""{0}""", entries[i]);
-                if (i < entries.Count - 1)
-                {
-                    this.Append(", ");
-                }
+                results.Add(entries[i]);
             }
+
+            return results;
         }
 
-        private void BuildDataEntrySection(ISheet sheet, string delimiter)
+        private IDictionary<string, IDictionary<string, string>> BuildDataEntrySection(ISheet sheet)
         {
+            IDictionary<string, IDictionary<string, string>> results = new Dictionary<string, IDictionary<string, string>>();
+
             // Get the row enum
             IEnumerator rowEnum = sheet.GetRowEnumerator();
 
@@ -171,27 +361,26 @@
             }
 
             // Read the data
-            bool concatSection = false;
             IList<string> primaryKeyCheck = new List<string>();
             while (rowEnum.MoveNext())
             {
                 row = (XSSFRow)rowEnum.Current;
                 cellEnum = row.CellIterator();
-
-                if (concatSection)
-                {
-                    this.AppendLine(",");
-                }
-
+                
                 string header;
                 string value;
                 if (!this.GetNextCell(cellEnum, headers, out header, out value))
                 {
-                    this.Context.AddWarning("Sheet has no columns, skipping!");
-                    return;
+                    // Reached the end of the cell
+                    break;
                 }
 
                 string key = value.Trim('"');
+                if (key.Equals(DataEndMarker, StringComparison.OrdinalIgnoreCase))
+                {
+                    break;
+                }
+
                 string idString = string.Format(@"""{0}""", key);
                 if (key.Contains(" "))
                 {
@@ -215,36 +404,21 @@
                     rowValues.Add(value);
                 }
 
+                IDictionary<string, string> entry = new Dictionary<string, string>();
                 if (rowValues.Count > 0)
                 {
-                    // We use the first column as key for the data
-                    this.AppendFormatLine("{0}{1}: {{", delimiter, key);
-                    this.AppendFormatLine("{0}    id: {1},", delimiter, idString);
-
                     for (var i = 0; i < rowHeaders.Count; i++)
                     {
-                        this.AppendFormat("{0}    {1}: {2}", delimiter, rowHeaders[i], rowValues[i]);
-                        if (i < rowHeaders.Count - 1)
-                        {
-                            this.AppendLine(",");
-                        }
-                        else
-                        {
-                            this.AppendLine();
-                        }
+                        entry.Add(rowHeaders[i], rowValues[i]);
                     }
-
-                    this.AppendFormat("{0}}}", delimiter);
-                }
-                else
-                {
-                    this.AppendFormat("{0}{1}: {{id: {1}}}", delimiter, idString);
                 }
 
-                concatSection = true;
+                results.Add(idString, entry);
             }
 
             this.AppendLine();
+
+            return results;
         }
 
         private bool GetNextCell(IEnumerator cellEnum, IList<string> headers, out string header, out string value)
