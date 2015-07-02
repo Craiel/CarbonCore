@@ -59,6 +59,19 @@
     <Reference Include="Google.ProtocolBuffers">
       <HintPath>..\External\protobuf-csharp-port\2.4.1.521\Google.ProtocolBuffers.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\External\Json.NET\Json70r1\Net35\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI">
+      <HintPath>..\External\NPOI\NPOI.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OOXML">
+      <HintPath>..\External\NPOI\NPOI.OOXML.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXml4Net">
+      <HintPath>..\External\NPOI\NPOI.OpenXml4Net.dll</HintPath>
+    </Reference>
     <Reference Include="SharpDX">
       <HintPath>..\External\SharpDX\2.5.0\DirectX11_1-net40\SharpDX.dll</HintPath>
     </Reference>
@@ -76,6 +89,9 @@
     <Compile Include="Contracts\IResourceProcessor.cs" />
     <Compile Include="Logic\ModelBuilder.cs" />
     <Compile Include="Logic\ResourceProcessor.cs" />
+    <Compile Include="Processors\Excel\ExcelData.cs" />
+    <Compile Include="Processors\Excel\ExcelDataSheet.cs" />
+    <Compile Include="Processors\Excel\ExcelProcessor.cs" />
     <Compile Include="Processors\UserInterfaceProcessor.cs" />
     <Compile Include="Processors\ScriptProcessor.cs" />
     <Compile Include="Protocol\CSharp\CSharpOptions.cs" />
