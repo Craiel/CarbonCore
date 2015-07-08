@@ -33,6 +33,7 @@
     <OutputPath>bin\x64\Unity\</OutputPath>
     <PlatformTarget>x64</PlatformTarget>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
   </PropertyGroup>
   <Choose>
     <When Condition=" '$(Configuration)'=='Unity' ">

@@ -6,8 +6,12 @@
 
     using CarbonCore.Utils.Compat.Contracts.IoC;
 
-    public class CarbonQuickContainer : ICarbonContainer
+    public partial class CarbonQuickContainer : ICarbonContainer
     {
+        private const long ResolveHardLimit = 100;
+
+        private static readonly ResolvePersistentContext PersistentContext = new ResolvePersistentContext();
+
         private readonly IDictionary<Type, ICarbonQuickBinding> bindings;
 
         private readonly IDictionary<Type, object> bindingInstances;
@@ -61,41 +65,12 @@
 
         public object Resolve(Type type, IDictionary<string, object> customParameters = null)
         {
-            if (!this.bindings.ContainsKey(type))
-            {
-                throw new InvalidOperationException("Could not resolve " + type);
-            }
+            // Reset the persistent context
+            PersistentContext.Reset();
 
-            // Check if we have an instance for this binding
-            ICarbonQuickBinding binding = this.bindings[type];
-            if (this.bindingInstances.ContainsKey(type) && !binding.IsAlwaysUnique)
-            {
-                return this.bindingInstances[type];
-            }
-
-            if (binding.Implementation == null)
-            {
-                throw new InvalidOperationException("No implementation to construct " + type);
-            }
-
-            // We need a new instance for this binding
-            ConstructorInfo[] info = binding.Implementation.GetConstructors();
-            foreach (ConstructorInfo constructorInfo in info)
-            {
-                var instance = this.TryConstructInstance(type, constructorInfo, customParameters);
-                if (instance != null)
-                {
-                    // Register as singleton if required
-                    if (binding.IsSingleton)
-                    {
-                        this.bindingInstances.Add(type, instance);
-                    }
-
-                    return instance;
-                }
-            }
-
-            throw new InvalidOperationException("Could not resolve " + type);
+            var context = new ResolveContext(type);
+            context.SetCustomParameters(customParameters);
+            return this.DoResolve(context);
         }
 
         public void Dispose()
@@ -107,7 +82,52 @@
         // -------------------------------------------------------------------
         // Private
         // -------------------------------------------------------------------
-        private object TryConstructInstance(Type type, ConstructorInfo info, IDictionary<string, object> customParameters)
+        private object DoResolve(ResolveContext context)
+        {
+            PersistentContext.Assert(context.TargetType);
+
+            if (!this.bindings.ContainsKey(context.TargetType))
+            {
+                throw new InvalidOperationException("Could not resolve " + context.TargetType);
+            }
+
+            // Check if we have an instance for this binding
+            ICarbonQuickBinding binding = this.bindings[context.TargetType];
+            if (this.bindingInstances.ContainsKey(context.TargetType) && !binding.IsAlwaysUnique)
+            {
+                return this.bindingInstances[context.TargetType];
+            }
+
+            if (binding.Implementation == null)
+            {
+                throw new InvalidOperationException("No implementation to construct " + context.TargetType);
+            }
+
+            // We need a new instance for this binding
+            ConstructorInfo[] info = binding.Implementation.GetConstructors();
+            foreach (ConstructorInfo constructorInfo in info)
+            {
+                // Lock the persistent state while we try to construct an instance
+                PersistentContext.Lock();
+                var instance = this.TryConstructInstance(context, constructorInfo);
+                PersistentContext.Unlock();
+
+                if (instance != null)
+                {
+                    // Register as singleton if required
+                    if (binding.IsSingleton)
+                    {
+                        this.bindingInstances.Add(context.TargetType, instance);
+                    }
+
+                    return instance;
+                }
+            }
+
+            throw new InvalidOperationException("Could not resolve " + context.TargetType);
+        }
+
+        private object TryConstructInstance(ResolveContext context, ConstructorInfo info)
         {
             ParameterInfo[] parameters = info.GetParameters();
             object[] resolvedParameters = new object[parameters.Length];
@@ -117,9 +137,9 @@
                 ParameterInfo parameter = parameters[i];
 
                 // Check if it's a custom parameter
-                if (customParameters != null && customParameters.ContainsKey(parameter.Name))
+                if (context.CustomParameters.ContainsKey(parameter.Name))
                 {
-                    resolvedParameters[i] = customParameters[parameter.Name];
+                    resolvedParameters[i] = context.CustomParameters[parameter.Name];
                     continue;
                 }
 
@@ -144,7 +164,9 @@
             // Now we actually resolve the dependencies to avoid resolving without a fully valid constructor
             foreach (int i in parameterResolveQueue.Keys)
             {
-                resolvedParameters[i] = this.Resolve(parameterResolveQueue[i]);
+                // Lock the context while we do a sub-resolve
+                var subContext = new ResolveContext(parameterResolveQueue[i]);
+                resolvedParameters[i] = this.DoResolve(subContext);
             }
 
             return info.Invoke(resolvedParameters);
