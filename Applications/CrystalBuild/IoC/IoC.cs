@@ -1,5 +1,6 @@
 ﻿namespace CarbonCore.Applications.CrystalBuild.IoC
 {
+    using CarbonCore.Applications.CrystalBuild.Logic.Processors.Excel;
     using CarbonCore.Utils.Compat.IoC;
     using CarbonCore.Utils.IoC;
     using CarbonCore.UtilsCommandLine.IoC;
@@ -24,7 +25,7 @@
             this.For<IBuildUtils>().Use<BuildUtils>();
 
             this.For<IBuildLogic>().Use<BuildLogic>();
-            this.For<IExcelProcessor>().Use<ExcelProcessor>();
+            this.For<IExcelProcessor>().Use<CrystalExcelProcessor>();
             this.For<ITemplateProcessor>().Use<TemplateProcessor>();
             this.For<IJavaScriptProcessor>().Use<JavaScriptProcessor>();
             this.For<ICssProcessor>().Use<CssProcessor>();

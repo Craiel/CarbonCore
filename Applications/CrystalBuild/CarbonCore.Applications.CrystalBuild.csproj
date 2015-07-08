@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuildConfig.cs" />
+    <Compile Include="Contracts\Processors\IExcelFormatter.cs" />
     <Compile Include="Logic\BuildTargetPlatform.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Constants.cs" />
@@ -94,7 +95,10 @@
     <Compile Include="Logic\ProcessingContext.cs" />
     <Compile Include="Logic\Processors\ContentProcessor.cs" />
     <Compile Include="Logic\Processors\CssProcessor.cs" />
-    <Compile Include="Logic\Processors\ExcelProcessor.cs" />
+    <Compile Include="Logic\Processors\Excel\ExcelFormatter.cs" />
+    <Compile Include="Logic\Processors\Excel\ExcelFormatterUnity.cs" />
+    <Compile Include="Logic\Processors\Excel\ExcelFormatterJava.cs" />
+    <Compile Include="Logic\Processors\Excel\CrystalExcelProcessor.cs" />
     <Compile Include="Logic\Processors\JavaScriptProcessor.cs" />
     <Compile Include="Logic\Processors\ImageProcessor.cs" />
     <Compile Include="Logic\Processors\TemplateProcessor.cs" />
@@ -105,6 +109,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Processing\CarbonCore.Processing.csproj">
+      <Project>{4db8d196-1f50-493f-9ffb-40e1e503ee87}</Project>
+      <Name>CarbonCore.Processing</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\UtilsCommandLine\CarbonCore.UtilsCommandLine.csproj">
       <Project>{E99C6721-99A5-4DC3-BD9D-DC88F65D217A}</Project>
       <Name>CarbonCore.UtilsCommandLine</Name>

@@ -78,7 +78,7 @@
 
         public void BuildData(IList<CarbonFileResult> sources, CarbonFile target, ProcessingContext context)
         {
-            this.DoBuildMultipleToOne<IExcelProcessor>("Data", sources, target, context);
+            this.DoBuildMultipleToOne<IExcelProcessor>("Data", sources, target, context, useTempFileForProcessing: true);
         }
 
         public void BuildStyleSheets(IList<CarbonFileResult> sources, CarbonFile target, ProcessingContext context)
@@ -104,7 +104,7 @@
         // -------------------------------------------------------------------
         // Private
         // -------------------------------------------------------------------
-        private void DoBuildMultipleToOne<T>(string buildName, IList<CarbonFileResult> sources, CarbonFile target, ProcessingContext context)
+        private void DoBuildMultipleToOne<T>(string buildName, IList<CarbonFileResult> sources, CarbonFile target, ProcessingContext context, bool useTempFileForProcessing = false)
             where T : IContentProcessor
         {
             System.Diagnostics.Trace.TraceInformation("Building {0} {1} into {2}", sources.Count, buildName, target);
@@ -116,7 +116,18 @@
             foreach (CarbonFileResult file in sources)
             {
                 System.Diagnostics.Trace.TraceInformation("  {0}", file.Absolute.FileName);
-                processor.Process(file.Absolute);
+                if (useTempFileForProcessing)
+                {
+                    CarbonFile tempFile = CarbonFile.GetTempFile();
+                    tempFile.DeleteIfExists();
+
+                    file.Absolute.CopyTo(tempFile);
+                    processor.Process(tempFile);
+                }
+                else
+                {
+                    processor.Process(file.Absolute);
+                }
             }
 
             CarbonDirectory targetDirectory = target.GetDirectory();
