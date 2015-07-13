@@ -8,7 +8,8 @@
 
     public partial class CarbonQuickContainer : ICarbonContainer
     {
-        private const long ResolveHardLimit = 100;
+        // Lower this to trace resolve errors
+        private const long ResolveHardLimit = long.MaxValue;
 
         private static readonly ResolvePersistentContext PersistentContext = new ResolvePersistentContext();
 
