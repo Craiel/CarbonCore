@@ -37,6 +37,8 @@
 
         public Window MainWindow { get; private set; }
 
+        public IBaseViewModel MainViewModel { get; private set; }
+
         public virtual Version Version { get; private set; }
 
         public virtual void Start()
@@ -47,8 +49,8 @@
             {
                 application = new Application();
                 applicationDispatcherRunning = false;
-
             }
+
             application.ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
             IList<IToolAction> startupActions = new List<IToolAction>();
@@ -57,7 +59,11 @@
 
             this.StartupInitializeCustomActions(startupActions);
 
-            IToolAction action = RelayToolAction.Create(this.StartupInitializeWindow);
+            IToolAction action = RelayToolAction.Create(this.StartupInitializeViewModel);
+            action.Dispatcher = application.Dispatcher;
+            startupActions.Add(action);
+
+            action = RelayToolAction.Create(this.StartupInitializeWindow);
             action.Dispatcher = application.Dispatcher;
             startupActions.Add(action);
 
@@ -96,10 +102,6 @@
         // -------------------------------------------------------------------
         // Protected
         // -------------------------------------------------------------------
-        protected Type MainWindowType { get; set; }
-
-        protected object DataContext { get; set; }
-
         protected virtual void Dispose(bool disposing)
         {
             if (!disposing)
@@ -117,23 +119,8 @@
 
         protected virtual void StartupInitializeLogic(IToolAction toolAction, CancellationToken cancellationToken)
         {
-            System.Diagnostics.Trace.TraceWarning("Test");
-            using (new ToolActionRegion(this.factory, toolAction))
-            {
-            }
         }
-
-        protected virtual void StartupInitializeWindow(IToolAction toolAction, CancellationToken cancellationToken)
-        {
-            using (new ToolActionRegion(this.factory, toolAction))
-            {
-                this.MainWindow = (Window)Activator.CreateInstance(this.MainWindowType);
-                this.MainWindow.Closing += this.OnMainWindowClosing;
-                this.MainWindow.Closed += this.OnMainWindowClosed;
-                this.MainWindow.DataContext = this.DataContext;
-            }
-        }
-
+        
         protected virtual void StartupInitializeCustomActions(IList<IToolAction> target)
         {
             // Used by inherited classes to add actions
@@ -160,6 +147,44 @@
 
         protected virtual void OnMainWindowClosing(object sender, CancelEventArgs e)
         {
+        }
+
+        protected virtual Window DoInitializeMainWindow()
+        {
+            throw new InvalidOperationException("MainWindow Initialization must be implemented");
+        }
+
+        protected virtual IBaseViewModel DoInitializeMainViewModel()
+        {
+            System.Diagnostics.Trace.TraceWarning("Main Window Initialization is not implemented, Window will not have DataContext!");
+            return null;
+        }
+
+        // -------------------------------------------------------------------
+        // Private
+        // -------------------------------------------------------------------
+        private void StartupInitializeViewModel(IToolAction toolAction, CancellationToken cancellationToken)
+        {
+            this.MainViewModel = this.DoInitializeMainViewModel();
+            if (this.MainWindow != null)
+            {
+                this.MainViewModel.Initialize();
+                this.MainWindow.DataContext = this.MainViewModel;
+            }
+        }
+
+        private void StartupInitializeWindow(IToolAction toolAction, CancellationToken cancellationToken)
+        {
+            using (new ToolActionRegion(this.factory, toolAction))
+            {
+                this.MainWindow = this.DoInitializeMainWindow();
+                this.MainWindow.Closing += this.OnMainWindowClosing;
+                this.MainWindow.Closed += this.OnMainWindowClosed;
+                if (this.MainViewModel != null)
+                {
+                    this.MainWindow.DataContext = this.MainViewModel;
+                }
+            }
         }
     }
 }

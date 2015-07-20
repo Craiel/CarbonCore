@@ -3,6 +3,9 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading;
+
+    using Timer = CarbonCore.Utils.Compat.Timer;
 
     public static class Profiler
     {
@@ -25,14 +28,18 @@
             ProfileStatistics statistics;
             lock (RegionStatistics)
             {
-                if (!RegionStatistics.ContainsKey(region.Name))
+                string name = region.IncludeThreadId
+                                  ? string.Format("({0}) {1}", Thread.CurrentThread.ManagedThreadId, region.Name)
+                                  : region.Name;
+
+                if (!RegionStatistics.ContainsKey(name))
                 {
-                    statistics = new ProfileStatistics(region.Name);
-                    RegionStatistics.Add(region.Name, statistics);
+                    statistics = new ProfileStatistics(name);
+                    RegionStatistics.Add(name, statistics);
                 }
                 else
                 {
-                    statistics = (ProfileStatistics)RegionStatistics[region.Name];
+                    statistics = (ProfileStatistics)RegionStatistics[name];
                 }
             }
 

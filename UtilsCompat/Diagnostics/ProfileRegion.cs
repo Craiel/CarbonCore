@@ -45,6 +45,8 @@
 
         public bool Discard { get; set; }
 
+        public bool IncludeThreadId { get; set; }
+
         public void Dispose()
         {
             this.Dispose(true);

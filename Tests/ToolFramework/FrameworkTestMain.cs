@@ -19,7 +19,6 @@
 
         private const string ToolName = "FrameworkTest";
 
-        private readonly IFactory factory;
         private readonly Random random = new Random((int)DateTime.Now.Ticks);
 
         private readonly IList<int> cyclesTested;
@@ -32,10 +31,6 @@
         public FrameworkTestMain(IFactory factory)
             : base(factory)
         {
-            this.factory = factory;
-
-            this.MainWindowType = typeof(FrameworkTestMainWindow);
-
             this.cyclesTested = new List<int>();
         }
 
@@ -80,15 +75,18 @@
             target.Add(action);
         }
 
+        protected override Window DoInitializeMainWindow()
+        {
+            return new FrameworkTestMainWindow();
+        }
+        
         protected override void StartupInitializeLogic(IToolAction toolAction, CancellationToken cancellationToken)
         {
-            using (new ToolActionRegion(this.factory, toolAction))
-            {
-                this.viewModel = this.factory.Resolve<IFrameworkTestMainViewModel>();
-                this.DataContext = this.viewModel;
-            }
         }
 
+        // -------------------------------------------------------------------
+        // Private
+        // -------------------------------------------------------------------
         private void TestAction(IToolAction action, CancellationToken cancellationToken)
         {
             System.Diagnostics.Debug.WriteLine(Thread.CurrentThread.ManagedThreadId + " TestAction");

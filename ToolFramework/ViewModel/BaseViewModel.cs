@@ -19,8 +19,27 @@
         // -------------------------------------------------------------------
         public event PropertyChangingCancellableEventHandler PropertyChanging;
         public event PropertyChangedDetailedEventHandler PropertyChangedDetailed;
+
         public event PropertyChangedEventHandler PropertyChanged;
-        
+
+        public bool IsInitialized { get; private set; }
+
+        public void Initialize()
+        {
+            System.Diagnostics.Trace.Assert(
+                !this.IsInitialized,
+                string.Format("ViewModel {0} was already initialized", this.GetType()));
+
+            this.DoInitialize();
+
+            this.IsInitialized = true;
+        }
+
+        // Force the view model to refresh it's internal state and sub-viewmodels
+        public virtual void Invalidate()
+        {
+        }
+
         // -------------------------------------------------------------------
         // Protected
         // -------------------------------------------------------------------
@@ -153,6 +172,10 @@
             {
                 Application.Current.DoEvents();
             }
+        }
+
+        protected virtual void DoInitialize()
+        {
         }
 
         // -------------------------------------------------------------------

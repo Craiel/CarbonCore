@@ -4,5 +4,15 @@
 
     public abstract class LogicBase : ILogicBase
     {
+        // -------------------------------------------------------------------
+        // Public
+        // -------------------------------------------------------------------
+        public virtual void Initialize()
+        {
+        }
+
+        public virtual void Reload()
+        {
+        }
     }
 }

@@ -10,5 +10,9 @@
     {
         event PropertyChangingCancellableEventHandler PropertyChanging;
         event PropertyChangedDetailedEventHandler PropertyChangedDetailed;
+
+        void Initialize();
+
+        void Invalidate();
     }
 }
