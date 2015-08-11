@@ -73,7 +73,7 @@
             }
         }
 
-        public TN this[T key]
+        public virtual TN this[T key]
         {
             get
             {
@@ -86,7 +86,7 @@
             }
         }
 
-        public T this[TN key]
+        public virtual T this[TN key]
         {
             get
             {

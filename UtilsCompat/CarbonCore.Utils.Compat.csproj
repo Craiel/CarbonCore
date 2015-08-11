@@ -76,6 +76,7 @@
     <Compile Include="AssemblyExtensions.cs" />
     <Compile Include="AttributedPropertyInfo.cs" />
     <Compile Include="CollectionExtensions.cs" />
+    <Compile Include="Collections\DefaultValueExtendedDictionary.cs" />
     <Compile Include="Collections\ExtendedDictionary.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Contracts\IExtendedDictionary.cs" />
