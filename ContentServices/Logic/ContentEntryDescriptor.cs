@@ -12,7 +12,7 @@
     {
         public static readonly IDictionary<Type, ContentEntryDescriptor> Descriptors = new Dictionary<Type, ContentEntryDescriptor>();
 
-        private readonly List<PropertyInfo> clonableProperties;
+        private readonly List<PropertyInfo> cloneableProperties;
         private readonly List<PropertyInfo> equalityProperties;
 
         // -------------------------------------------------------------------
@@ -24,10 +24,10 @@
 
             this.Type = targetType;
 
-            this.clonableProperties = new List<PropertyInfo>();
+            this.cloneableProperties = new List<PropertyInfo>();
             this.equalityProperties = new List<PropertyInfo>();
 
-            this.PropertyInfos = new List<AttributedPropertyInfo<ContentEntryElementAttribute>>();
+            this.PropertyInfo = new List<AttributedPropertyInfo<ContentEntryElementAttribute>>();
 
             this.Analyze();
         }
@@ -37,13 +37,13 @@
         // -------------------------------------------------------------------
         public Type Type { get; private set; }
         
-        public IList<AttributedPropertyInfo<ContentEntryElementAttribute>> PropertyInfos { get; private set; }
+        public IList<AttributedPropertyInfo<ContentEntryElementAttribute>> PropertyInfo { get; private set; }
 
-        public IReadOnlyCollection<PropertyInfo> ClonableProperties
+        public IReadOnlyCollection<PropertyInfo> CloneableProperties
         {
             get
             {
-                return this.clonableProperties.AsReadOnly();
+                return this.cloneableProperties.AsReadOnly();
             }
         }
 
@@ -91,7 +91,7 @@
         // -------------------------------------------------------------------
         private void Analyze()
         {
-            this.PropertyInfos.Clear();
+            this.PropertyInfo.Clear();
 
             PropertyInfo[] properties = this.Type.GetProperties();
             foreach (PropertyInfo info in properties)
@@ -114,13 +114,13 @@
                         ignoreClone = element.Attribute.IgnoreClone;
                         ignoreEquality = element.Attribute.IgnoreEquality;
 
-                        this.PropertyInfos.Add(element);
+                        this.PropertyInfo.Add(element);
                     }
                 }
 
                 if (!ignoreClone)
                 {
-                    this.clonableProperties.Add(info);
+                    this.cloneableProperties.Add(info);
                 }
 
                 if (!ignoreEquality)
