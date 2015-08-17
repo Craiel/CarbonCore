@@ -2,7 +2,7 @@
 {
     using CarbonCore.ContentServices.Logic;
 
-    public interface IDatabaseEntry : IContentEntry
+    public interface IDatabaseEntry : IDataEntry
     {
         DatabaseEntryDescriptor GetDescriptor();
     }

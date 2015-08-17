@@ -59,10 +59,10 @@
                 service.Initialize(database);
 
                 // Batch save
-                IList<ContentTestEntry2> batchData = new List<ContentTestEntry2>();
+                IList<DataTestEntry2> batchData = new List<DataTestEntry2>();
                 for (var i = 0; i < 20; i++)
                 {
-                    var clone2 = (ContentTestEntry2)ContentTestData.TestEntry2.Clone();
+                    var clone2 = (DataTestEntry2)DataTestData.TestEntry2.Clone();
                     clone2.Id = "BE" + i;
                     clone2.OtherTestFloat += i;
                     clone2.OtherTestString = "Batch entry " + i.ToString(CultureInfo.InvariantCulture);
@@ -70,12 +70,12 @@
                 }
 
                 service.Save(batchData, async: true);
-                service.Delete<ContentTestEntry2>(new List<object> { "BE5", "BE7", "BE12" }, async: true);
+                service.Delete<DataTestEntry2>(new List<object> { "BE5", "BE7", "BE12" }, async: true);
 
                 batchData.Clear();
                 for (var i = 0; i < 20; i++)
                 {
-                    var clone2 = (ContentTestEntry2)ContentTestData.TestEntry2.Clone();
+                    var clone2 = (DataTestEntry2)DataTestData.TestEntry2.Clone();
                     clone2.Id = "CE" + i;
                     clone2.OtherTestFloat += i;
                     clone2.OtherTestString = "Batch entry " + i.ToString(CultureInfo.InvariantCulture);
@@ -83,7 +83,7 @@
                 }
 
                 service.Save(batchData, async: true);
-                service.Delete<ContentTestEntry2>(new List<object> { "CE5", "CE7", "CE12" }, async: true);
+                service.Delete<DataTestEntry2>(new List<object> { "CE5", "CE7", "CE12" }, async: true);
 
                 service.WaitForAsyncActions();
             }
@@ -108,7 +108,7 @@
             service.Initialize(database);
 
             // Save
-            var clone = (ContentTestEntry)ContentTestData.TestEntry.Clone();
+            var clone = (DataTestEntry)DataTestData.TestEntry.Clone();
             service.Save(ref clone);
             Assert.NotNull(clone.Id, "Primary key value must be assigned on save");
 
@@ -121,35 +121,35 @@
             }
 
             // Joined save
-            clone.JoinedEntry = new ContentTestJoinedEntry { TestString = "I am joined with " + clone.Id };
+            clone.JoinedEntry = new DataTestJoinedEntry { TestString = "I am joined with " + clone.Id };
             service.Save(ref clone);
             Assert.IsNotNull(clone.JoinedEntry.Id, "Joined entry must be saved together with the parent");
             Assert.AreEqual(clone.Id, clone.JoinedEntry.TestEntryId, "Joined entry foreign key value must match the original");
 
-            Assert.AreEqual(service.Load<ContentTestJoinedEntry>().Count, 1, "After saving main instance we must have 1 joined entry");
+            Assert.AreEqual(service.Load<DataTestJoinedEntry>().Count, 1, "After saving main instance we must have 1 joined entry");
             clone.JoinedEntry = null;
             service.Save(ref clone);
-            Assert.AreEqual(service.Load<ContentTestJoinedEntry>().Count, 0, "After saving main instance with null joined instance the instance must be deleted");
+            Assert.AreEqual(service.Load<DataTestJoinedEntry>().Count, 0, "After saving main instance with null joined instance the instance must be deleted");
 
-            clone.JoinedEntry = new ContentTestJoinedEntry { TestString = "Yet another joined entry of " + clone.Id };
+            clone.JoinedEntry = new DataTestJoinedEntry { TestString = "Yet another joined entry of " + clone.Id };
             service.Save(ref clone);
 
             // Load
-            var savedEntry = service.Load<ContentTestEntry>((int)clone.Id);
+            var savedEntry = service.Load<DataTestEntry>((int)clone.Id);
             Assert.AreEqual(clone, savedEntry, "Load must return the proper entry");
             Assert.IsNull(savedEntry.JoinedEntry, "Joined entry must not be loaded with the original on default load");
 
             // Load full
-            savedEntry = service.Load<ContentTestEntry>((int)clone.Id, true);
+            savedEntry = service.Load<DataTestEntry>((int)clone.Id, true);
             Assert.IsNotNull(savedEntry.JoinedEntry, "Joined entry must be loaded with the original when loading fully");
 
             // Load batch
-            IList<ContentTestEntry> batchResult = service.Load<ContentTestEntry>();
+            IList<DataTestEntry> batchResult = service.Load<DataTestEntry>();
             Assert.AreEqual(6, batchResult.Count, "Load with no parameters must return all entries");
             
             // Delete
-            service.Delete<ContentTestEntry>(1);
-            savedEntry = service.Load<ContentTestEntry>(1);
+            service.Delete<DataTestEntry>(1);
+            savedEntry = service.Load<DataTestEntry>(1);
             Assert.IsNull(savedEntry, "Load after delete should return no entry");
 
             // GetTables
@@ -158,10 +158,10 @@
             Assert.IsTrue(tables.Contains("TestTable"));
 
             // Drop
-            service.Drop<ContentTestEntry>();
+            service.Drop<DataTestEntry>();
             tables = service.GetTables();
             Assert.AreEqual(1, tables.Count, "Drop must remove the table");
-            Assert.Throws<InvalidOperationException>(service.Drop<ContentTestEntry>, "Explicit Drop must fail if table does not exist");
+            Assert.Throws<InvalidOperationException>(service.Drop<DataTestEntry>, "Explicit Drop must fail if table does not exist");
         }
     }
 }

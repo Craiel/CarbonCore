@@ -34,6 +34,10 @@
     <Reference Include="Autofac">
       <HintPath>..\External\Autofac\3.1.1\Autofac.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\External\Json.NET\Json70r1\Net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
@@ -43,10 +47,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
-    <Compile Include="Contracts\IContentEntry.cs" />
     <Compile Include="Contracts\IDatabaseEntry.cs" />
     <Compile Include="Contracts\IDatabaseService.cs" />
     <Compile Include="Contracts\IDataConnector.cs" />
+    <Compile Include="Contracts\IDataEntry.cs" />
     <Compile Include="Contracts\IFileService.cs" />
     <Compile Include="Contracts\IFileServiceDiskProvider.cs" />
     <Compile Include="Contracts\IFileServiceMemoryProvider.cs" />
@@ -54,14 +58,11 @@
     <Compile Include="Contracts\IFileServiceProvider.cs" />
     <Compile Include="Contracts\ISqlLiteConnector.cs" />
     <Compile Include="IoC\IoC.cs" />
-    <Compile Include="Logic\Attributes\ContentEntryElementAttribute.cs" />
     <Compile Include="Logic\Attributes\DatabaseEntryJoinedElementAttribute.cs" />
-    <Compile Include="Logic\ContentEntryDescriptor.cs" />
     <Compile Include="Logic\Attributes\DatabaseEntryAttribute.cs" />
     <Compile Include="Logic\DatabaseEntryJoinedElementDescriptor.cs" />
     <Compile Include="Logic\DatabaseEntryDescriptor.cs" />
     <Compile Include="Logic\Attributes\DatabaseEntryElementAttribute.cs" />
-    <Compile Include="Logic\ContentEntry.cs" />
     <Compile Include="Logic\DatabaseEntryElementDescriptor.cs" />
     <Compile Include="Logic\DatabaseQueryCriterion.cs" />
     <Compile Include="Logic\DatabaseService.cs" />
@@ -69,6 +70,15 @@
     <Compile Include="Logic\DatabaseQuery.cs" />
     <Compile Include="Logic\DatabaseEntry.cs" />
     <Compile Include="Logic\DatabaseServiceAction.cs" />
+    <Compile Include="Logic\Attributes\DataElementAttribute.cs" />
+    <Compile Include="Logic\DataEntryLogic\DataEntry.cs" />
+    <Compile Include="Logic\Attributes\DataEntryAttribute.cs" />
+    <Compile Include="Logic\DataEntryLogic\DataEntryDescriptor.cs" />
+    <Compile Include="Logic\DataEntryLogic\DataEntryElementSerializer.cs" />
+    <Compile Include="Logic\DataEntryLogic\DataEntrySerialization.cs" />
+    <Compile Include="Logic\DataEntryLogic\DataEntrySerializationDescriptor.cs" />
+    <Compile Include="Logic\DataEntryLogic\DataSerializationEntry.cs" />
+    <Compile Include="Logic\DataEntryLogic\DataSerializationKey.cs" />
     <Compile Include="Logic\FileEntry.cs" />
     <Compile Include="Logic\FileEntryData.cs" />
     <Compile Include="Logic\FileEntryKey.cs" />

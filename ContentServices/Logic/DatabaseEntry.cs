@@ -3,8 +3,9 @@
     using System.Collections.Generic;
 
     using CarbonCore.ContentServices.Contracts;
+    using CarbonCore.ContentServices.Logic.DataEntryLogic;
 
-    public abstract class DatabaseEntry : ContentEntry, IDatabaseEntry
+    public abstract class DatabaseEntry : DataEntry, IDatabaseEntry
     {
         private readonly DatabaseEntryDescriptor descriptor;
 

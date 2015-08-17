@@ -75,11 +75,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ContentServices\ContentEntryTests.cs" />
-    <Compile Include="ContentServices\ContentTestData.cs" />
-    <Compile Include="ContentServices\ContentTestEntry.cs" />
-    <Compile Include="ContentServices\ContentTestEntry2.cs" />
-    <Compile Include="ContentServices\ContentTestJoinedEntry.cs" />
+    <Compile Include="ContentServices\DataEntryTests.cs" />
+    <Compile Include="ContentServices\DataTestData.cs" />
+    <Compile Include="ContentServices\DataTestEntry.cs" />
+    <Compile Include="ContentServices\DataTestEntry2.cs" />
+    <Compile Include="ContentServices\DataTestEntry3.cs" />
+    <Compile Include="ContentServices\DataTestJoinedEntry.cs" />
     <Compile Include="ContentServices\DatabaseServiceTests.cs" />
     <Compile Include="ContentServices\FileServiceTests.cs" />
     <Compile Include="Contracts\IFrameworkTestMain.cs" />

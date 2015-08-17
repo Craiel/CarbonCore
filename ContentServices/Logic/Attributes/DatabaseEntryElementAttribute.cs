@@ -10,7 +10,7 @@
     }
 
     [AttributeUsage(AttributeTargets.Property)]
-    public class DatabaseEntryElementAttribute : Attribute
+    public class DatabaseEntryElementAttribute : DataElementAttribute
     {
         // -------------------------------------------------------------------
         // Constructor

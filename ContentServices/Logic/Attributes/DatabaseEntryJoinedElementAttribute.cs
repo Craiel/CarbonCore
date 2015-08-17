@@ -1,8 +1,6 @@
 ﻿namespace CarbonCore.ContentServices.Logic.Attributes
 {
-    using System;
-
-    public class DatabaseEntryJoinedElementAttribute : Attribute
+    public class DatabaseEntryJoinedElementAttribute : DataElementAttribute
     {
         public DatabaseEntryJoinedElementAttribute(string foreignKeyColumn)
         {

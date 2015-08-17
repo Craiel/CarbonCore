@@ -10,42 +10,35 @@
 
     [DatabaseEntry("TestTable")]
     [JsonObject(MemberSerialization.OptOut)]
-    public class ContentTestEntry : DatabaseEntry
+    public class DataTestEntry : DatabaseEntry
     {
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        [ContentEntryElement(IgnoreClone = true)]
-        [DatabaseEntryElement(PrimaryKeyMode = PrimaryKeyMode.Autoincrement)]
+        [DatabaseEntryElement(PrimaryKeyMode = PrimaryKeyMode.Autoincrement, IgnoreClone = true)]
         public int? Id { get; set; }
 
-        [ContentEntryElement]
         [DatabaseEntryElement]
         public string TestString { get; set; }
 
-        [ContentEntryElement]
         [DatabaseEntryElement]
         public bool TestBool { get; set; }
 
-        [ContentEntryElement]
         [DatabaseEntryElement]
         public float TestFloat { get; set; }
 
-        [ContentEntryElement]
         [DatabaseEntryElement]
         public long TestLong { get; set; }
 
-        [ContentEntryElement(IgnoreEquality = true)]
-        [DatabaseEntryElement]
+        [DatabaseEntryElement(IgnoreEquality = true)]
         public byte[] TestByteArray { get; set; }
 
-        [ContentEntryElement(IgnoreEquality = true)]
-        [DatabaseEntryJoinedElement("TestEntryId")]
-        public ContentTestJoinedEntry JoinedEntry { get; set; }
+        [DatabaseEntryJoinedElement("TestEntryId", IgnoreEquality = true)]
+        public DataTestJoinedEntry JoinedEntry { get; set; }
 
         public override bool Load(System.IO.Stream source)
         {
-            var loadedEntry = JsonExtensions.LoadFromStream<ContentTestEntry>(source);
+            var loadedEntry = JsonExtensions.LoadFromStream<DataTestEntry>(source);
             this.CopyFrom(loadedEntry);
 
             return loadedEntry != null;

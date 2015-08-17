@@ -809,7 +809,7 @@
 
                     using (DbCommand command = this.connector.CreateCommand(statements))
                     {
-                        System.Diagnostics.Debug.WriteLine("  - {0}", args: command.CommandText);
+                        System.Diagnostics.Debug.WriteLine("  - {0}", command.CommandText);
                         int result = command.ExecuteNonQuery();
                         System.Diagnostics.Debug.WriteLine("  = {0}", result);
                     }

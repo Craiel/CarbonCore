@@ -10,23 +10,19 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        [DatabaseEntryElement(PrimaryKeyMode = PrimaryKeyMode.Autoincrement)]
-        [ContentEntryElement(IgnoreClone = true, IgnoreEquality = true)]
+        [DatabaseEntryElement(PrimaryKeyMode = PrimaryKeyMode.Autoincrement, IgnoreClone = true, IgnoreEquality = true)]
         public int? Id { get; set; }
 
         [DatabaseEntryElement]
         public string Hash { get; set; }
-        
-        [DatabaseEntryElement]
-        [ContentEntryElement(IgnoreEquality = true)]
+
+        [DatabaseEntryElement(IgnoreEquality = true)]
         public long Offset { get; set; }
 
-        [DatabaseEntryElement]
-        [ContentEntryElement(IgnoreEquality = true)]
+        [DatabaseEntryElement(IgnoreEquality = true)]
         public long Size { get; set; }
 
-        [DatabaseEntryElement]
-        [ContentEntryElement(IgnoreEquality = true)]
+        [DatabaseEntryElement(IgnoreEquality = true)]
         public long Padding { get; set; }
 
         // -------------------------------------------------------------------

@@ -1,11 +1,11 @@
 ﻿namespace CarbonCore.Tests.ContentServices
 {
-    public static class ContentTestData
+    public static class DataTestData
     {
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public static ContentTestEntry TestEntry = new ContentTestEntry
+        public static DataTestEntry TestEntry = new DataTestEntry
         {
             TestString = "test me",
             TestBool = true,
@@ -15,7 +15,7 @@
                 new byte[] { 20, 50, 20, 50, 10 }
         };
 
-        public static ContentTestEntry2 TestEntry2 = new ContentTestEntry2
+        public static DataTestEntry2 TestEntry2 = new DataTestEntry2
         {
             OtherTestString = "another test",
             OtherTestBool = true,
