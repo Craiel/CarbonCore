@@ -5,6 +5,9 @@
 
     public static class StringExtensions
     {
+        // -------------------------------------------------------------------
+        // Public
+        // -------------------------------------------------------------------
         public static string Capitalize(this string source)
         {
             if (string.IsNullOrEmpty(source))

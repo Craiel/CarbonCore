@@ -36,7 +36,7 @@
             IList<object> result = new List<object>();
             foreach (DatabaseEntryElementDescriptor info in this.descriptor.Elements)
             {
-                result.Add(info.Property.GetValue(this));
+                result.Add(info.GetValue(this));
             }
 
             return result;

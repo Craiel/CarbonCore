@@ -7,6 +7,9 @@
     {
         private readonly List<T> list;
 
+        // -------------------------------------------------------------------
+        // Public
+        // -------------------------------------------------------------------
         public LimitedList(int limit)
         {
             this.list = new List<T>(limit);

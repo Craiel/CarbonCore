@@ -5,15 +5,14 @@
 
     using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.Logic.Attributes;
+    using CarbonCore.ContentServices.Logic.DataEntryLogic.Serializers;
     using CarbonCore.Utils.Compat;
 
     public class DataEntrySerializationDescriptor
     {
         private static readonly IDictionary<Type, DataEntrySerializationDescriptor> Descriptors;
         private static readonly IDictionary<Type, DataEntryElementSerializer> Serializers;
-
-        private IDictionary<DataSerializationKey, DataSerializationEntry> entries;
-
+        
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
@@ -21,6 +20,13 @@
         {
             Descriptors = new Dictionary<Type, DataEntrySerializationDescriptor>();
             Serializers = new Dictionary<Type, DataEntryElementSerializer>();
+
+            RegisterSerializer<bool>(new BooleanSerializer());
+            RegisterSerializer<int>(new Int32Serializer());
+            RegisterSerializer<long>(new Int64Serializer());
+            RegisterSerializer<float>(new FloatSerializer());
+            RegisterSerializer<string>(new StringSerializer());
+            RegisterSerializer<byte[]>(new ByteArraySerializer());
         }
 
         public DataEntrySerializationDescriptor(Type type)
@@ -29,7 +35,7 @@
 
             this.Type = type;
 
-            this.entries = new Dictionary<DataSerializationKey, DataSerializationEntry>();
+            this.Map = new Dictionary<Type, DataSerializationMapEntry>();
 
             this.Analyze();
         }
@@ -38,6 +44,8 @@
         // Public
         // -------------------------------------------------------------------
         public Type Type { get; private set; }
+
+        public IDictionary<Type, DataSerializationMapEntry> Map { get; private set; }
         
         public static DataEntrySerializationDescriptor GetDescriptor(Type type)
         {
@@ -62,27 +70,16 @@
         // -------------------------------------------------------------------
         private void Analyze()
         {
-            var scanQueue = new Queue<Type>();
-            scanQueue.Enqueue(this.Type);
+            var scanQueue = new Queue<DataSerializationMapEntry>();
+            scanQueue.Enqueue(new DataSerializationMapEntry(this.Type));
             while (scanQueue.Count > 0)
             {
-                Type type = scanQueue.Dequeue();
+                var mapEntry = scanQueue.Dequeue();
+                this.Map.Add(mapEntry.Type, mapEntry);
 
-                DataEntryDescriptor descriptor = DataEntryDescriptor.GetDescriptor(type);
-                foreach (AttributedPropertyInfo<DataElementAttribute> info in descriptor.SerializableProperties)
+                foreach (AttributedPropertyInfo<DataElementAttribute> info in mapEntry.Descriptor.SerializableProperties)
                 {
-                    var entry = new DataSerializationEntry(type, info) { Target = info.Property.PropertyType };
-                    
-                    // Todo: add Sync<> objects
-
-                    // Check if this property is another data object
-                    if (typeof(IDataEntry).IsAssignableFrom(entry.Target))
-                    {
-                        entry.IsDataEntry = true;
-                        this.entries.Add(entry.Key, entry);
-                        scanQueue.Enqueue(entry.Target);
-                        continue;
-                    }
+                    var entry = new DataSerializationEntry(mapEntry.Type, info) { Target = info.PropertyType };
 
                     // Nullable
                     bool isNullable = entry.Target.IsNullable();
@@ -92,30 +89,83 @@
                         entry.Target = entry.Target.GetActualType();
                     }
 
-                    // Check if we have a valid serializer for this entry
-                    if (Serializers.ContainsKey(entry.Target))
+                    // Check if we have a valid serializer for this entry and add
+                    entry.Serializer = this.GetSerializer(entry.Target);
+                    if (entry.Serializer != null)
                     {
-                        this.entries.Add(entry.Key, entry);
+                        mapEntry.Entries.Add(entry);
                         continue;
                     }
-
-                    // Check if this is a primitive type
-                    /*if (entry.Target.IsPrimitive || entry.Target == typeof(string))
-                    {
-                        this.entries.Add(key, entry);
-                        continue;
-                    }*/
-
-                    // Generic support (lists & dictionaries
-                    /*if (entry.Target.IsGenericType)
-                    {
-                        Type[] genericArguments = entry.Target.GetGenericArguments();
-                    }*/
+                    
+                    // Todo: add Sync<> objects
                     
                     // Everything left over is probably not supported
                     throw new NotImplementedException("Unsupported Type for Serialization: " + entry.Target);
                 }
             }
+        }
+
+        private DataEntryElementSerializer GetSerializer(Type type)
+        {
+            // First check if we have a straight up serializer for this type
+            if (Serializers.ContainsKey(type))
+            {
+                return Serializers[type];
+            }
+
+            if (typeof(IDataEntry).IsAssignableFrom(type))
+            {
+                return new DataEntrySerializer(type);
+            }
+
+            // Check if this is a generic type
+            if (type.IsGenericType)
+            {
+                return this.GetGenericSerializer(type);
+            }
+
+            throw new InvalidOperationException("Could not determine serializer for type " + type);
+        }
+
+        private DataEntryElementSerializer GetGenericSerializer(Type type)
+        {
+            // Check the argument types and gather all required serializers
+            Type[] genericArguments = type.GetGenericArguments();
+            IDictionary<Type, DataEntryElementSerializer> genericSerializers = new Dictionary<Type, DataEntryElementSerializer>();
+            foreach (Type argumentType in genericArguments)
+            {
+                genericSerializers.Add(argumentType, this.GetSerializer(argumentType));
+            }
+
+            // Check if it's a list
+            if (genericArguments.Length == 1)
+            {
+                Type entryType = genericArguments[0];
+                Type listType = ListSerializer.BaseListType.MakeGenericType(entryType);
+                if (type.IsAssignableFrom(listType))
+                {
+                    DataEntryElementSerializer serializer = genericSerializers[entryType];
+                    return new ListSerializer(entryType, serializer);
+                }
+            }
+
+            // Check if it's a dictionary
+            if (genericArguments.Length == 2)
+            {
+                Type keyType = genericArguments[0];
+                Type valueType = genericArguments[1];
+                Type dictionaryType = DictionarySerializer.BaseDictionaryType.MakeGenericType(keyType, valueType);
+                if (type.IsAssignableFrom(dictionaryType))
+                {
+                    return new DictionarySerializer(
+                        keyType,
+                        valueType,
+                        genericSerializers[keyType],
+                        genericSerializers[valueType]);
+                }
+            }
+
+            throw new InvalidOperationException("Could not determine serializer for generic type " + type);
         }
     }
 }

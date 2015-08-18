@@ -77,12 +77,12 @@
   <ItemGroup>
     <Compile Include="ContentServices\DataEntryTests.cs" />
     <Compile Include="ContentServices\DataTestData.cs" />
-    <Compile Include="ContentServices\DataTestEntry.cs" />
     <Compile Include="ContentServices\DataTestEntry2.cs" />
     <Compile Include="ContentServices\DataTestEntry3.cs" />
     <Compile Include="ContentServices\DataTestJoinedEntry.cs" />
     <Compile Include="ContentServices\DatabaseServiceTests.cs" />
     <Compile Include="ContentServices\FileServiceTests.cs" />
+    <Compile Include="ContentServices\DataTestEntry.cs" />
     <Compile Include="Contracts\IFrameworkTestMain.cs" />
     <Compile Include="Contracts\IFrameworkTestMainViewModel.cs" />
     <Compile Include="Grammar\GrammarTests.cs" />

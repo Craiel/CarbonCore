@@ -35,7 +35,7 @@
         {
             get
             {
-                return this.Property.PropertyType;
+                return this.PropertyType;
             }
         }
 
@@ -43,7 +43,7 @@
         {
             get
             {
-                return DatabaseUtils.GetDatabaseType(this.Property.PropertyType);
+                return DatabaseUtils.GetDatabaseType(this.PropertyType);
             }
         }
     }

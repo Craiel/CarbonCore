@@ -5,6 +5,9 @@
     
     public static class MathExtension
     {
+        // -------------------------------------------------------------------
+        // Public
+        // -------------------------------------------------------------------
         public static readonly double PiOver2 = Math.PI / 2;
         public static readonly double TwoPi = Math.PI * 2;
 

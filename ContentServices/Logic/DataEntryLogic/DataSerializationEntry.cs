@@ -1,20 +1,34 @@
 ﻿namespace CarbonCore.ContentServices.Logic.DataEntryLogic
 {
     using System;
+    using System.Collections.Generic;
 
     using CarbonCore.ContentServices.Logic.Attributes;
     using CarbonCore.Utils.Compat;
 
     public class DataSerializationEntry
     {
+        // -------------------------------------------------------------------
+        // Constructor
+        // -------------------------------------------------------------------
         public DataSerializationEntry(Type source, AttributedPropertyInfo<DataElementAttribute> property)
         {
-            this.Key = new DataSerializationKey(source, property);
+            this.Source = source;
+            this.Property = property;
+
+            this.ChildEntries = new List<DataSerializationEntry>();
         }
 
-        public DataSerializationKey Key { get; private set; }
+        // -------------------------------------------------------------------
+        // Public
+        // -------------------------------------------------------------------
+        public IList<DataSerializationEntry> ChildEntries { get; private set; } 
 
-        public bool IsDataEntry { get; set; }
+        public Type Source { get; private set; }
+
+        public AttributedPropertyInfo<DataElementAttribute> Property { get; private set; }
+
+        public DataEntryElementSerializer Serializer { get; set; }
 
         public bool IsNullable { get; set; }
 

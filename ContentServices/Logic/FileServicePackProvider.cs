@@ -251,7 +251,7 @@
             {
                 if (file.IsDeleted)
                 {
-                    object key = file.GetDescriptor().PrimaryKey.Property.GetValue(file);
+                    object key = file.GetDescriptor().PrimaryKey.GetValue(file);
                     deleteList.Add(key);
                     this.databaseService.Delete<FileEntry>(key, true);
                 }

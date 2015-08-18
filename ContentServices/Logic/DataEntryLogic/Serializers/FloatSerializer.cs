@@ -1,0 +1,57 @@
+﻿namespace CarbonCore.ContentServices.Logic.DataEntryLogic.Serializers
+{
+    using System;
+    using System.Diagnostics.CodeAnalysis;
+    using System.IO;
+
+    [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1121:UseBuiltInTypeAlias", Justification = "Reviewed. Suppression is OK here.")]
+    public class FloatSerializer : DataEntryElementSerializer
+    {
+        // -------------------------------------------------------------------
+        // Public
+        // -------------------------------------------------------------------
+        public override int MinSize
+        {
+            get
+            {
+                return 5;
+            }
+        }
+
+        public override int Serialize(Stream target, object source)
+        {
+            Single typed = (Single)source;
+            if (Math.Abs(typed - default(Single)) < float.Epsilon)
+            {
+                target.WriteByte(0);
+                return 1;
+            }
+
+            target.WriteByte(1);
+
+            byte[] data = BitConverter.GetBytes(typed);
+
+            target.Write(data, 0, 4);
+            return this.MinSize;
+        }
+
+        public override object Deserialize(Stream source)
+        {
+            byte indicator = (byte)source.ReadByte();
+            if (indicator == byte.MaxValue)
+            {
+                return null;
+            }
+
+            if (indicator == 0)
+            {
+                return default(float);
+            }
+
+            byte[] data = new byte[4];
+            source.Read(data, 0, 4);
+
+            return BitConverter.ToSingle(data, 0);
+        }
+    }
+}

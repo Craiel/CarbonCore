@@ -33,12 +33,6 @@
                 return this.GetHashCode() != this.changeHashCode;
             }
         }
-        
-        public static T CompactLoad<T>(byte[] data)
-        {
-            // TODO:
-            return default(T);
-        }
 
         public virtual IDataEntry Clone()
         {
@@ -47,8 +41,8 @@
             DataEntryDescriptor descriptor = DataEntryDescriptor.GetDescriptor(localType);
             foreach (AttributedPropertyInfo<DataElementAttribute> info in descriptor.CloneableProperties)
             {
-                object localValue = info.Property.GetValue(this, null);
-                info.Property.SetValue(clone, localValue, null);
+                object localValue = info.GetValue(this);
+                info.SetValue(clone, localValue);
             }
 
             return clone;
@@ -80,7 +74,7 @@
             DataEntryDescriptor descriptor = DataEntryDescriptor.GetDescriptor(this.GetType());
             foreach (AttributedPropertyInfo<DataElementAttribute> info in descriptor.CloneableProperties)
             {
-                info.Property.SetValue(this, info.Property.GetValue(source, null), null);
+                info.SetValue(this, info.GetValue(source));
             }
 
             return false;
@@ -109,8 +103,8 @@
 
             foreach (AttributedPropertyInfo<DataElementAttribute> info in descriptor.EqualityProperties)
             {
-                object localValue = info.Property.GetValue(this, null);
-                object otherValue = info.Property.GetValue(other, null);
+                object localValue = info.GetValue(this);
+                object otherValue = info.GetValue(other);
                 if (localValue == null && otherValue == null)
                 {
                     continue;
@@ -160,7 +154,7 @@
             object[] values = new object[descriptor.HashableProperties.Count];
             for (var i = 0; i < descriptor.HashableProperties.Count; i++)
             {
-                values[i] = descriptor.HashableProperties[i].Property.GetValue(this, null);
+                values[i] = descriptor.HashableProperties[i].GetValue(this);
             }
 
             return HashUtils.CombineObjectHashes(values);

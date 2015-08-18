@@ -1,11 +1,16 @@
 ﻿namespace CarbonCore.ContentServices.Logic.DataEntryLogic
 {
+    using System.IO;
+
     public abstract class DataEntryElementSerializer
     {
-        public abstract int EstimatedSize { get; }
+        // -------------------------------------------------------------------
+        // Public
+        // -------------------------------------------------------------------
+        public abstract int MinSize { get; }
 
-        public abstract byte[] Serialize();
+        public abstract int Serialize(Stream target, object value);
 
-        public abstract object Deserialize();
+        public abstract object Deserialize(Stream source);
     }
 }

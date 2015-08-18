@@ -311,7 +311,7 @@
             IList<string> columnSegments = new List<string>();
             for (int i = 0; i < descriptor.Elements.Count; i++)
             {
-                string tableType = DatabaseUtils.GetDatabaseTypeString(descriptor.Elements[i].Property.PropertyType);
+                string tableType = DatabaseUtils.GetDatabaseTypeString(descriptor.Elements[i].PropertyType);
                 string tableColumn = descriptor.Elements[i].Name;
                 string tableTypeOptions = string.Empty;
 
@@ -367,7 +367,7 @@
             var statement = new SQLiteStatement(SqlStatementType.Insert);
             foreach (DatabaseEntryElementDescriptor element in descriptor.Elements)
             {
-                statement.With(element.Name, element.Property.GetValue(entry));
+                statement.With(element.Name, element.GetValue(entry));
             }
 
             statement.Table(descriptor.TableName);
@@ -377,7 +377,7 @@
         private SQLiteStatement BuildUpdateStatement(DatabaseEntryDescriptor descriptor, IDatabaseEntry entry)
         {
             SQLiteStatement statement;
-            object primaryKeyValue = descriptor.PrimaryKey.Property.GetValue(entry);
+            object primaryKeyValue = descriptor.PrimaryKey.GetValue(entry);
             if (descriptor.PrimaryKey.Attribute.PrimaryKeyMode != PrimaryKeyMode.Autoincrement)
             {
                 // Assigning so we have to check if the entry exists, this is not optimal!
@@ -394,7 +394,7 @@
 
             foreach (DatabaseEntryElementDescriptor element in descriptor.Elements)
             {
-                statement.With(element.Name, element.Property.GetValue(entry));
+                statement.With(element.Name, element.GetValue(entry));
             }
 
             statement.Table(descriptor.TableName);
@@ -404,7 +404,7 @@
         private IList<DatabaseServiceAction> DoSave(DatabaseEntryDescriptor descriptor, IDatabaseEntry entry)
         {
             IList<DatabaseServiceAction> results = new List<DatabaseServiceAction>();
-            object primaryKeyValue = descriptor.PrimaryKey.Property.GetValue(entry);
+            object primaryKeyValue = descriptor.PrimaryKey.GetValue(entry);
             bool hasPrimaryKey = primaryKeyValue != null;
 
             // Update the primary key if it's an insert statement into auto increment table
@@ -419,7 +419,7 @@
                 primaryKeyValue = this.GetNextPrimaryKey(descriptor);
 
                 // Assign the primary key and rebuild the statement with the new info
-                descriptor.PrimaryKey.Property.SetValue(entry, primaryKeyValue);
+                descriptor.PrimaryKey.SetValue(entry, primaryKeyValue);
                 statement = this.BuildInsertStatement(descriptor, entry);
             }
             else
@@ -439,7 +439,7 @@
                 this.CheckTable(joinedDescriptor);
 
                 // Note: this is not really fast, if the joined instance is not supplied a lookup is performed to delete it
-                var instance = (IDatabaseEntry)joinedElement.Property.GetValue(entry);
+                var instance = (IDatabaseEntry)joinedElement.GetValue(entry);
                 if (instance == null)
                 {
                     var joinedDeleteStatement = new SQLiteStatement(SqlStatementType.Delete);
@@ -524,7 +524,7 @@
                         {
                             object value = DatabaseUtils.GetInternalValue(
                                 element.DatabaseType, reader[element.Name]);
-                            element.Property.SetValue(entry, value);
+                            element.SetValue(entry, value);
                         }
 
                         results.Add(entry);
@@ -541,7 +541,7 @@
             IDictionary<object, IDatabaseEntry> primaryKeyMap = new Dictionary<object, IDatabaseEntry>();
             foreach (IDatabaseEntry entry in results)
             {
-                primaryKeyMap.Add(descriptor.PrimaryKey.Property.GetValue(entry), entry);
+                primaryKeyMap.Add(descriptor.PrimaryKey.GetValue(entry), entry);
             }
 
             // Make sure we don't attempt this with more than a thousand for now
@@ -584,7 +584,7 @@
                     object primaryKey = joinedElement.ForeignKeyProperty.GetValue(joinedEntry);
                     System.Diagnostics.Trace.Assert(primaryKeyMap.ContainsKey(primaryKey));
 
-                    joinedElement.Property.SetValue(primaryKeyMap[primaryKey], joinedEntry);
+                    joinedElement.SetValue(primaryKeyMap[primaryKey], joinedEntry);
                 }
             }
 
