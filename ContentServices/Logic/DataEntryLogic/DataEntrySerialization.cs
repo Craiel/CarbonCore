@@ -12,7 +12,7 @@
     public static class DataEntrySerialization
     {
         private static readonly JsonSerializer Serializer = new JsonSerializer();
-
+        
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
@@ -72,30 +72,60 @@
             }
         }
 
+        public static void SyncLoad(ISyncEntry instance, byte[] data)
+        {
+            using (var stream = new MemoryStream())
+            {
+                stream.Write(data, 0, data.Length);
+                stream.Seek(0, SeekOrigin.Begin);
+
+                DataEntrySyncDescriptor descriptor = DataEntryDescriptors.GetSyncDescriptor(instance.GetType());
+                for (var i = 0; i < descriptor.Entries.Count; i++)
+                {
+                    instance.Content[i].Load(stream);
+                }
+            }
+        }
+
+        public static byte[] SyncSave(ISyncEntry entry)
+        {
+            using (var stream = new MemoryStream())
+            {
+                DataEntrySyncDescriptor descriptor = DataEntryDescriptors.GetSyncDescriptor(entry.GetType());
+                for (var i = 0; i < descriptor.Entries.Count; i++)
+                {
+                    entry.Content[i].Save(stream);
+                }
+
+                stream.Seek(0, SeekOrigin.Begin);
+                byte[] data = new byte[stream.Length];
+                stream.Read(data, 0, data.Length);
+                return data;
+            }
+        }
+
         public static void NativeLoad(IDataEntry instance, byte[] data)
         {
             using (var stream = new MemoryStream())
             {
-                /*stream.Write(data, 0, data.Length);
+                stream.Write(data, 0, data.Length);
                 stream.Seek(0, SeekOrigin.Begin);
-                instance.Load(stream);
-                 */
+
+                instance.NativeLoad(stream);
             }
         }
-        
+
         public static byte[] NativeSave(IDataEntry entry)
         {
             using (var stream = new MemoryStream())
             {
-                entry.Save(stream);
+                entry.NativeSave(stream);
+
                 stream.Seek(0, SeekOrigin.Begin);
-
-                /*byte[] data = new byte[stream.Length];
+                byte[] data = new byte[stream.Length];
                 stream.Read(data, 0, data.Length);
-                return data;*/
+                return data;
             }
-
-            return new byte[1];
         }
 
         // -------------------------------------------------------------------
@@ -112,25 +142,24 @@
 
         private static void ContinueSerialize(SerializationContext context)
         {
-            DataSerializationMapEntry entry = context.MapEntry;
-            for (var i = 0; i < entry.Entries.Count; i++)
+            foreach (DataSerializationEntry serializationEntry in context.Descriptor.Entries)
             {
-                object value = entry.Entries[i].Property.GetValue(context.CurrentInstance);
+                object value = serializationEntry.Property.GetValue(context.CurrentInstance);
                 
                 //object value = serializationEntry.Property.Accessor[context.CurrentInstance];
 
                 // If we have a serializer just write the data
-                if (entry.Entries[i].Serializer != null)
+                if (serializationEntry.Serializer != null)
                 {
                     // Write the type of the serializer
-                    if (entry.Entries[i].IsNullable && value == null)
+                    if (serializationEntry.IsNullable && value == null)
                     {
                         context.Stream.WriteByte(byte.MaxValue);
                         continue;
                     }
 
                     // Write the actual content
-                    entry.Entries[i].Serializer.Serialize(context.Stream, value);
+                    serializationEntry.Serializer.Serialize(context.Stream, value);
                     continue;
                 }
 
@@ -156,8 +185,7 @@
 
         private static void ContinueDeserialize(SerializationContext context)
         {
-            DataSerializationMapEntry entry = context.MapEntry;
-            foreach (DataSerializationEntry serializationEntry in entry.Entries)
+            foreach (DataSerializationEntry serializationEntry in context.Descriptor.Entries)
             {
                 if (serializationEntry.Serializer != null)
                 {
@@ -184,7 +212,7 @@
                 this.processingQueue = new Queue<IDataEntry>();
                 this.processingQueue.Enqueue(entry);
 
-                this.Descriptor = DataEntrySerializationDescriptor.GetDescriptor(this.CurrentType);
+                this.Descriptor = DataEntryDescriptors.GetSerializationDescriptor(this.CurrentType);
             }
             
             public Stream Stream { get; private set; }
@@ -194,15 +222,7 @@
             public Type CurrentType { get; private set; }
 
             public DataEntrySerializationDescriptor Descriptor { get; private set; }
-
-            public DataSerializationMapEntry MapEntry
-            {
-                get
-                {
-                    return this.Descriptor.Map[this.CurrentType];
-                }
-            }
-
+            
             public bool Next()
             {
                 if (this.processingQueue.Count > 0)

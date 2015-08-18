@@ -1,6 +1,6 @@
 ﻿namespace CarbonCore.Tests.ContentServices
 {
-    using System.IO;
+    using System;
 
     using CarbonCore.ContentServices.Logic.DataEntryLogic;
     using CarbonCore.Utils.Compat.Diagnostics;
@@ -42,25 +42,6 @@
             Assert.AreNotEqual(clone, clone2, "Clones must mis-match after changing data");
         }
         
-        [Test]
-        public void SaveLoadTests()
-        {
-            var clone = (DataTestEntry)DataTestData.TestEntry.Clone();
-            using (var stream = new MemoryStream())
-            {
-                Assert.IsFalse(DataTestData.TestEntry2.Save(stream), "Entry with no save implementation should fail saving");
-
-                clone.Save(stream);
-                Assert.Greater(stream.Position, 0, "Entry should write itself to the stream");
-
-                stream.Seek(0, SeekOrigin.Begin);
-                var loadTest = new DataTestEntry();
-                loadTest.Load(stream);
-
-                Assert.AreEqual(clone, loadTest, "Loading should result in an equal state");
-            }
-        }
-
         [Test]
         public void HashCodeTests()
         {
@@ -104,8 +85,8 @@
         {
             var original = DataTestData.FullTestEntry;
             var clone = (DataTestEntry)original.Clone();
-            Assert.AreEqual(clone, original);
-
+            
+            // Check the deep clone
             Assert.AreEqual(6, clone.SimpleCollection.Count);
             Assert.AreEqual(3, clone.SimpleDictionary.Count);
 
@@ -113,6 +94,9 @@
             Assert.AreEqual(3, clone.CascadingDictionary.Count);
 
             Assert.AreEqual(clone.CascadedEntry, original.CascadedEntry);
+
+            // Check general equality
+            Assert.AreEqual(clone, original);
 
             clone.CascadedEntry.OtherTestLong = 998;
             Assert.AreNotEqual(clone.CascadedEntry.OtherTestLong, original.CascadedEntry.OtherTestLong);
@@ -131,7 +115,7 @@
             Assert.AreEqual(1223, jsonData.Length, "Serialization should return data");
 
             DataTestEntry restored = DataEntrySerialization.Load<DataTestEntry>(jsonData);
-            //Todo: Assert.AreEqual(clone, restored, "Deserialized data should match original class");
+            Assert.NotNull(restored);
 
             // Test compact serialization
             byte[] compact = DataEntrySerialization.CompactSave(clone);
@@ -139,14 +123,39 @@
             Assert.Less(compact.Length, jsonData.Length, "Compact serialization should be smaller");
 
             DataTestEntry restoredCompact = DataEntrySerialization.CompactLoad<DataTestEntry>(compact);
-            //Todo: Assert.AreEqual(clone, restoredCompact, "Compact Deserialization should match source data");
+            Assert.NotNull(restoredCompact);
 
             // Test native serialization
-            byte[] native = DataEntrySerialization.NativeSave(clone);
-            Assert.AreEqual(75, native.Length);
+            var combinedClone = (SyncTestEntryCombined)DataTestData.CombinedTestEntry.Clone();
+
+            byte[] native = DataEntrySerialization.NativeSave(combinedClone);
+            Assert.AreEqual(363, native.Length);
+            Assert.Less(compact.Length, jsonData.Length, "Native serialization should be smaller");
 
             DataTestEntry restoredNative = new DataTestEntry();
             DataEntrySerialization.NativeLoad(restoredNative, native);
+        }
+
+        [Test]
+        public void SyncSerializationTest()
+        {
+            // Test Sync serialization
+            byte[] native = DataEntrySerialization.SyncSave(DataTestData.SyncTestEntry);
+            Assert.AreEqual(59, native.Length);
+
+            SyncTestEntry restored = new SyncTestEntry();
+            DataEntrySerialization.SyncLoad(restored, native);
+
+            byte[] restoredData = DataEntrySerialization.SyncSave(restored);
+            Assert.AreEqual(native.Length, restoredData.Length);
+
+            restored.ResetSyncState();
+            restoredData = DataEntrySerialization.SyncSave(restored);
+            Assert.AreEqual(6, restoredData.Length);
+
+            restored.TestFloat.Value = 15.0f;
+            restoredData = DataEntrySerialization.SyncSave(restored);
+            Assert.AreEqual(11, restoredData.Length);
         }
 
         [Test]
@@ -156,7 +165,7 @@
             var clone = (DataTestEntry)DataTestData.FullTestEntry.Clone();
 
             long totalData = 0;
-            /*using (new ProfileRegion("DataEntry.JsonSerialization"))
+            using (new ProfileRegion("DataEntry.JsonSerialization"))
             {
                 var metric = Metrics.BeginMetric();
 
@@ -173,6 +182,8 @@
             }
 
             System.Diagnostics.Trace.TraceInformation("JSON Serialized {0} data, average: {1}", totalData, totalData / cycles);
+
+            GC.Collect();
 
             totalData = 0;
             using (new ProfileRegion("DataEntry.CompactSerialization"))
@@ -192,27 +203,29 @@
             }
 
             System.Diagnostics.Trace.TraceInformation("Compact Serialized {0} data, average: {1}", totalData, totalData / cycles);
-            */
+
+            GC.Collect();
+
             totalData = 0;
-            using (new ProfileRegion("DataEntry.NativeSerialization"))
+            using (new ProfileRegion("DataEntry.SyncSerialization"))
             {
                 var metric = Metrics.BeginMetric();
 
                 for (var i = 0; i < cycles; i++)
                 {
-                    byte[] data = DataEntrySerialization.NativeSave(clone);
+                    byte[] data = DataEntrySerialization.SyncSave(DataTestData.SyncTestEntry);
                     Assert.Greater(data.Length, 0);
                     totalData += data.Length;
 
-                    DataTestEntry restoredNative = new DataTestEntry();
-                    DataEntrySerialization.NativeLoad(restoredNative, data);
+                    SyncTestEntry restoredSync = new SyncTestEntry();
+                    DataEntrySerialization.SyncLoad(restoredSync, data);
                     Metrics.TakeMeasure(metric);
                 }
 
-                Metrics.TraceMeasure(metric, "DataEntry.NativeSerialization");
+                Metrics.TraceMeasure(metric, "DataEntry.SyncSerialization");
             }
 
-            System.Diagnostics.Trace.TraceInformation("Native Serialized {0} data, average: {1}", totalData, totalData / cycles);
+            System.Diagnostics.Trace.TraceInformation("Sync Serialized {0} data, average: {1}", totalData, totalData / cycles);
 
             Profiler.TraceProfilerStatistics();
         }

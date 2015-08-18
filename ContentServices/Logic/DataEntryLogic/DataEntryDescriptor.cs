@@ -10,16 +10,9 @@
 
     public class DataEntryDescriptor
     {
-        private static readonly IDictionary<Type, DataEntryDescriptor> Descriptors;
-
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
-        static DataEntryDescriptor()
-        {
-            Descriptors = new Dictionary<Type, DataEntryDescriptor>();
-        }
-
         public DataEntryDescriptor(Type targetType)
         {
             System.Diagnostics.Trace.Assert(typeof(IDataEntry).IsAssignableFrom(targetType));
@@ -51,24 +44,6 @@
         public IList<AttributedPropertyInfo<DataElementAttribute>> SerializableProperties { get; private set; }
         public IList<AttributedPropertyInfo<DataElementAttribute>> EqualityProperties { get; private set; }
         public IList<AttributedPropertyInfo<DataElementAttribute>> HashableProperties { get; private set; }
-
-        public static DataEntryDescriptor GetDescriptor<T>()
-        {
-            return GetDescriptor(typeof(T));
-        }
-
-        public static DataEntryDescriptor GetDescriptor(Type type)
-        {
-            lock (Descriptors)
-            {
-                if (!Descriptors.ContainsKey(type))
-                {
-                    Descriptors.Add(type, new DataEntryDescriptor(type));
-                }
-
-                return Descriptors[type];
-            }
-        }
 
         public override int GetHashCode()
         {

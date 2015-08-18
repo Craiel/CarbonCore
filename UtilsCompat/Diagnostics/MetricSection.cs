@@ -49,5 +49,10 @@
                 this.Max = elapsed;
             }
         }
+
+        public void Reset(long elapsed)
+        {
+            this.Elapsed = elapsed;
+        }
     }
 }

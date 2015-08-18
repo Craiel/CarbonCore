@@ -8,9 +8,10 @@
 
         IDataEntry Clone();
 
-        bool Save(Stream target);
-        bool Load(Stream source);
-        
+        int NativeSave(Stream target);
+
+        void NativeLoad(Stream source);
+
         void ResetChangedState();
     }
 }

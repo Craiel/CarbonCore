@@ -57,6 +57,8 @@
     <Compile Include="Contracts\IFileServicePackProvider.cs" />
     <Compile Include="Contracts\IFileServiceProvider.cs" />
     <Compile Include="Contracts\ISqlLiteConnector.cs" />
+    <Compile Include="Contracts\ISyncContent.cs" />
+    <Compile Include="Contracts\ISyncEntry.cs" />
     <Compile Include="IoC\IoC.cs" />
     <Compile Include="Logic\Attributes\DatabaseEntryJoinedElementAttribute.cs" />
     <Compile Include="Logic\Attributes\DatabaseEntryAttribute.cs" />
@@ -74,11 +76,14 @@
     <Compile Include="Logic\DataEntryLogic\DataEntry.cs" />
     <Compile Include="Logic\Attributes\DataEntryAttribute.cs" />
     <Compile Include="Logic\DataEntryLogic\DataEntryDescriptor.cs" />
+    <Compile Include="Logic\DataEntryLogic\DataEntryDescriptors.cs" />
     <Compile Include="Logic\DataEntryLogic\DataEntryElementSerializer.cs" />
     <Compile Include="Logic\DataEntryLogic\DataEntrySerialization.cs" />
     <Compile Include="Logic\DataEntryLogic\DataEntrySerializationDescriptor.cs" />
+    <Compile Include="Logic\DataEntryLogic\DataEntrySyncDescriptor.cs" />
+    <Compile Include="Logic\DataEntryLogic\DataEntrySyncDescriptors.cs" />
     <Compile Include="Logic\DataEntryLogic\DataSerializationEntry.cs" />
-    <Compile Include="Logic\DataEntryLogic\DataSerializationMapEntry.cs" />
+    <Compile Include="Logic\DataEntryLogic\DataSyncEntry.cs" />
     <Compile Include="Logic\DataEntryLogic\Serializers\ByteArraySerializer.cs" />
     <Compile Include="Logic\DataEntryLogic\Serializers\BooleanSerializer.cs" />
     <Compile Include="Logic\DataEntryLogic\Serializers\DataEntrySerializer.cs" />
@@ -89,6 +94,9 @@
     <Compile Include="Logic\DataEntryLogic\Serializers\DictionarySerializer.cs" />
     <Compile Include="Logic\DataEntryLogic\Serializers\ListSerializer.cs" />
     <Compile Include="Logic\DataEntryLogic\Serializers\StringSerializer.cs" />
+    <Compile Include="Logic\DataEntryLogic\Sync.cs" />
+    <Compile Include="Logic\DataEntryLogic\SyncContent.cs" />
+    <Compile Include="Logic\DataEntryLogic\SyncEntry.cs" />
     <Compile Include="Logic\FileEntry.cs" />
     <Compile Include="Logic\FileEntryData.cs" />
     <Compile Include="Logic\FileEntryKey.cs" />

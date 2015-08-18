@@ -36,28 +36,19 @@
 
         public virtual IDataEntry Clone()
         {
-            Type localType = this.GetType();
-            var clone = (IDataEntry)Activator.CreateInstance(localType, null);
-            DataEntryDescriptor descriptor = DataEntryDescriptor.GetDescriptor(localType);
-            foreach (AttributedPropertyInfo<DataElementAttribute> info in descriptor.CloneableProperties)
-            {
-                object localValue = info.GetValue(this);
-                info.SetValue(clone, localValue);
-            }
-
-            return clone;
+            // Clone by serialization, gives more consistent results
+            byte[] serialized = DataEntrySerialization.CompactSave(this);
+            return DataEntrySerialization.CompactLoad(this.GetType(), serialized);
         }
 
-        public virtual bool Save(Stream target)
+        public virtual int NativeSave(Stream target)
         {
-            System.Diagnostics.Trace.TraceError("Stream Save is not implemented for {0}", this.GetType());
-            return false;
+            throw new NotSupportedException("Class does not support native save: " + this.GetType());
         }
 
-        public virtual bool Load(Stream source)
+        public virtual void NativeLoad(Stream source)
         {
-            System.Diagnostics.Trace.TraceError("Stream Load is not implemented for {0}", this.GetType());
-            return false;
+            throw new NotSupportedException("Class does not support native load: " + this.GetType());
         }
 
         public virtual bool CopyFrom(IDataEntry source)
@@ -71,7 +62,7 @@
             }
 
             // This will clone the properties into ourselves, currently this does not consider any exclusion rules
-            DataEntryDescriptor descriptor = DataEntryDescriptor.GetDescriptor(this.GetType());
+            DataEntryDescriptor descriptor = DataEntryDescriptors.GetDescriptor(this.GetType());
             foreach (AttributedPropertyInfo<DataElementAttribute> info in descriptor.CloneableProperties)
             {
                 info.SetValue(this, info.GetValue(source));
@@ -94,7 +85,7 @@
                 return false;
             }
 
-            DataEntryDescriptor descriptor = DataEntryDescriptor.GetDescriptor(localType);
+            DataEntryDescriptor descriptor = DataEntryDescriptors.GetDescriptor(localType);
             if (descriptor.UseDefaultEquality)
             {
                 // ReSharper disable once BaseObjectEqualsIsObjectEquals
@@ -143,7 +134,7 @@
         protected virtual int DoGetHashCode()
         {
             Type localType = this.GetType();
-            DataEntryDescriptor descriptor = DataEntryDescriptor.GetDescriptor(localType);
+            DataEntryDescriptor descriptor = DataEntryDescriptors.GetDescriptor(localType);
 
             if (descriptor.UseDefaultEquality)
             {

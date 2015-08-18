@@ -23,6 +23,11 @@
             metric.Measure(Stopwatch.ElapsedTicks);
         }
 
+        public static void ResetMeasure(MetricSection metric)
+        {
+            metric.Reset(Stopwatch.ElapsedTicks);
+        }
+
         public static void TraceMeasure(MetricSection metric, string message)
         {
             StringBuilder builder = new StringBuilder();

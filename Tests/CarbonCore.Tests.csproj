@@ -83,6 +83,9 @@
     <Compile Include="ContentServices\DatabaseServiceTests.cs" />
     <Compile Include="ContentServices\FileServiceTests.cs" />
     <Compile Include="ContentServices\DataTestEntry.cs" />
+    <Compile Include="ContentServices\SyncTestEntry.cs" />
+    <Compile Include="ContentServices\SyncTestEntryCombined2.cs" />
+    <Compile Include="ContentServices\SyncTestEntryCombined.cs" />
     <Compile Include="Contracts\IFrameworkTestMain.cs" />
     <Compile Include="Contracts\IFrameworkTestMainViewModel.cs" />
     <Compile Include="Grammar\GrammarTests.cs" />
