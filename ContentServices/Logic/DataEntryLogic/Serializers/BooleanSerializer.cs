@@ -4,9 +4,19 @@
 
     public class BooleanSerializer : DataEntryElementSerializer
     {
+        private static BooleanSerializer instance;
+
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
+        public static BooleanSerializer Instance
+        {
+            get
+            {
+                return instance ?? (instance = new BooleanSerializer());
+            }
+        }
+
         public override int MinSize
         {
             get

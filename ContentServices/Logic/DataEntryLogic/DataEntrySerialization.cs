@@ -72,6 +72,32 @@
             }
         }
 
+        public static void NativeLoad(IDataEntry instance, byte[] data)
+        {
+            using (var stream = new MemoryStream())
+            {
+                /*stream.Write(data, 0, data.Length);
+                stream.Seek(0, SeekOrigin.Begin);
+                instance.Load(stream);
+                 */
+            }
+        }
+        
+        public static byte[] NativeSave(IDataEntry entry)
+        {
+            using (var stream = new MemoryStream())
+            {
+                entry.Save(stream);
+                stream.Seek(0, SeekOrigin.Begin);
+
+                /*byte[] data = new byte[stream.Length];
+                stream.Read(data, 0, data.Length);
+                return data;*/
+            }
+
+            return new byte[1];
+        }
+
         // -------------------------------------------------------------------
         // Private
         // -------------------------------------------------------------------
@@ -87,24 +113,24 @@
         private static void ContinueSerialize(SerializationContext context)
         {
             DataSerializationMapEntry entry = context.MapEntry;
-            foreach (DataSerializationEntry serializationEntry in entry.Entries)
+            for (var i = 0; i < entry.Entries.Count; i++)
             {
-                object value = serializationEntry.Property.GetValue(context.CurrentInstance);
+                object value = entry.Entries[i].Property.GetValue(context.CurrentInstance);
                 
                 //object value = serializationEntry.Property.Accessor[context.CurrentInstance];
 
                 // If we have a serializer just write the data
-                if (serializationEntry.Serializer != null)
+                if (entry.Entries[i].Serializer != null)
                 {
                     // Write the type of the serializer
-                    if (serializationEntry.IsNullable && value == null)
+                    if (entry.Entries[i].IsNullable && value == null)
                     {
                         context.Stream.WriteByte(byte.MaxValue);
                         continue;
                     }
 
                     // Write the actual content
-                    serializationEntry.Serializer.Serialize(context.Stream, value);
+                    entry.Entries[i].Serializer.Serialize(context.Stream, value);
                     continue;
                 }
 

@@ -7,9 +7,19 @@
     [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1121:UseBuiltInTypeAlias", Justification = "Reviewed. Suppression is OK here.")]
     public class FloatSerializer : DataEntryElementSerializer
     {
+        private static FloatSerializer instance;
+
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
+        public static FloatSerializer Instance
+        {
+            get
+            {
+                return instance ?? (instance = new FloatSerializer());
+            }
+        }
+
         public override int MinSize
         {
             get

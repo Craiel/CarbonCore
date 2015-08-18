@@ -5,7 +5,7 @@
 
     using CarbonCore.ContentServices.Logic;
     using CarbonCore.ContentServices.Logic.Attributes;
-    using CarbonCore.Utils.Compat.Json;
+    using CarbonCore.ContentServices.Logic.DataEntryLogic.Serializers;
 
     using Newtonsoft.Json;
 
@@ -54,15 +54,25 @@
 
         public override bool Load(System.IO.Stream source)
         {
-            var loadedEntry = JsonExtensions.LoadFromStream<DataTestEntry>(source);
-            this.CopyFrom(loadedEntry);
+            this.TestInt = (int)Int32Serializer.Instance.Deserialize(source);
+            this.TestLong = (long)Int64Serializer.Instance.Deserialize(source);
+            this.TestFloat = (float)FloatSerializer.Instance.Deserialize(source);
+            this.TestBool = (bool)BooleanSerializer.Instance.Deserialize(source);
+            this.ByteArray = (byte[])ByteArraySerializer.Instance.Deserialize(source);
+            this.TestString = (string)StringSerializer.Instance.Deserialize(source);
 
-            return loadedEntry != null;
+            return true;
         }
 
         public override bool Save(System.IO.Stream target)
         {
-            JsonExtensions.SaveToStream(target, this);
+            Int32Serializer.Instance.Serialize(target, this.TestInt);
+            Int64Serializer.Instance.Serialize(target, this.TestLong);
+            FloatSerializer.Instance.Serialize(target, this.TestFloat);
+            BooleanSerializer.Instance.Serialize(target, this.TestBool);
+            ByteArraySerializer.Instance.Serialize(target, this.ByteArray);
+            StringSerializer.Instance.Serialize(target, this.TestString);
+
             return true;
         }
 

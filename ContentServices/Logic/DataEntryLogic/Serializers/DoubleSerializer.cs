@@ -9,9 +9,19 @@
     [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1121:UseBuiltInTypeAlias", Justification = "Reviewed. Suppression is OK here.")]
     public class DoubleSerializer : DataEntryElementSerializer
     {
+        private static DoubleSerializer instance;
+
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
+        public static DoubleSerializer Instance
+        {
+            get
+            {
+                return instance ?? (instance = new DoubleSerializer());
+            }
+        }
+
         public override int MinSize
         {
             get

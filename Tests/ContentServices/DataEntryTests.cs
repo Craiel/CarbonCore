@@ -1,6 +1,5 @@
 ﻿namespace CarbonCore.Tests.ContentServices
 {
-    using System.Collections.Generic;
     using System.IO;
 
     using CarbonCore.ContentServices.Logic.DataEntryLogic;
@@ -141,24 +140,36 @@
 
             DataTestEntry restoredCompact = DataEntrySerialization.CompactLoad<DataTestEntry>(compact);
             //Todo: Assert.AreEqual(clone, restoredCompact, "Compact Deserialization should match source data");
+
+            // Test native serialization
+            byte[] native = DataEntrySerialization.NativeSave(clone);
+            Assert.AreEqual(75, native.Length);
+
+            DataTestEntry restoredNative = new DataTestEntry();
+            DataEntrySerialization.NativeLoad(restoredNative, native);
         }
 
         [Test]
         public void SerializationPerformanceTests()
         {
-            int cycles = 10000;
+            int cycles = 5000;
             var clone = (DataTestEntry)DataTestData.FullTestEntry.Clone();
 
             long totalData = 0;
-            using (new ProfileRegion("DataEntry.JsonSerialization"))
+            /*using (new ProfileRegion("DataEntry.JsonSerialization"))
             {
+                var metric = Metrics.BeginMetric();
+
                 for (var i = 0; i < cycles; i++)
                 {
                     byte[] data = DataEntrySerialization.Save(clone);
                     Assert.Greater(data.Length, 0);
                     totalData += data.Length;
                     DataEntrySerialization.Load<DataTestEntry>(data);
+                    Metrics.TakeMeasure(metric);
                 }
+
+                Metrics.TraceMeasure(metric, "DataEntry.JsonSerialization");
             }
 
             System.Diagnostics.Trace.TraceInformation("JSON Serialized {0} data, average: {1}", totalData, totalData / cycles);
@@ -166,16 +177,42 @@
             totalData = 0;
             using (new ProfileRegion("DataEntry.CompactSerialization"))
             {
+                var metric = Metrics.BeginMetric();
+
                 for (var i = 0; i < cycles; i++)
                 {
                     byte[] data = DataEntrySerialization.CompactSave(clone);
                     Assert.Greater(data.Length, 0);
                     totalData += data.Length;
                     DataEntrySerialization.CompactLoad<DataTestEntry>(data);
+                    Metrics.TakeMeasure(metric);
                 }
+
+                Metrics.TraceMeasure(metric, "DataEntry.CompactSerialization");
             }
 
             System.Diagnostics.Trace.TraceInformation("Compact Serialized {0} data, average: {1}", totalData, totalData / cycles);
+            */
+            totalData = 0;
+            using (new ProfileRegion("DataEntry.NativeSerialization"))
+            {
+                var metric = Metrics.BeginMetric();
+
+                for (var i = 0; i < cycles; i++)
+                {
+                    byte[] data = DataEntrySerialization.NativeSave(clone);
+                    Assert.Greater(data.Length, 0);
+                    totalData += data.Length;
+
+                    DataTestEntry restoredNative = new DataTestEntry();
+                    DataEntrySerialization.NativeLoad(restoredNative, data);
+                    Metrics.TakeMeasure(metric);
+                }
+
+                Metrics.TraceMeasure(metric, "DataEntry.NativeSerialization");
+            }
+
+            System.Diagnostics.Trace.TraceInformation("Native Serialized {0} data, average: {1}", totalData, totalData / cycles);
 
             Profiler.TraceProfilerStatistics();
         }
