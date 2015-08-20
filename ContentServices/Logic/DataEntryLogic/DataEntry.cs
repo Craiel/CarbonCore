@@ -1,7 +1,6 @@
 ﻿namespace CarbonCore.ContentServices.Logic.DataEntryLogic
 {
     using System;
-    using System.IO;
     using System.Runtime.Serialization;
 
     using CarbonCore.ContentServices.Contracts;
@@ -40,17 +39,7 @@
             byte[] serialized = DataEntrySerialization.CompactSave(this);
             return DataEntrySerialization.CompactLoad(this.GetType(), serialized);
         }
-
-        public virtual int NativeSave(Stream target)
-        {
-            throw new NotSupportedException("Class does not support native save: " + this.GetType());
-        }
-
-        public virtual void NativeLoad(Stream source)
-        {
-            throw new NotSupportedException("Class does not support native load: " + this.GetType());
-        }
-
+        
         public virtual bool CopyFrom(IDataEntry source)
         {
             System.Diagnostics.Trace.Assert(source != null);

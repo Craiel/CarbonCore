@@ -90,13 +90,13 @@
             Assert.AreEqual(6, clone.SimpleCollection.Count);
             Assert.AreEqual(3, clone.SimpleDictionary.Count);
 
-            Assert.AreEqual(3, clone.CascadingCollection.Count);
+            Assert.AreEqual(2, clone.CascadingCollection.Count);
             Assert.AreEqual(3, clone.CascadingDictionary.Count);
 
             Assert.AreEqual(clone.CascadedEntry, original.CascadedEntry);
 
             // Check general equality
-            Assert.AreEqual(clone, original);
+            Assert.AreNotEqual(clone, original);
 
             clone.CascadedEntry.OtherTestLong = 998;
             Assert.AreNotEqual(clone.CascadedEntry.OtherTestLong, original.CascadedEntry.OtherTestLong);
@@ -106,42 +106,42 @@
         }
 
         [Test]
-        public void SerializationTests()
+        public void CompactSerializationTest()
         {
-            var clone = (DataTestEntry)DataTestData.FullTestEntry.Clone();
-
-            // Test basic Json serialization
-            byte[] jsonData = DataEntrySerialization.Save(clone);
-            Assert.AreEqual(1223, jsonData.Length, "Serialization should return data");
-
-            DataTestEntry restored = DataEntrySerialization.Load<DataTestEntry>(jsonData);
-            Assert.NotNull(restored);
-
             // Test compact serialization
-            byte[] compact = DataEntrySerialization.CompactSave(clone);
-            Assert.AreEqual(363, compact.Length);
-            Assert.Less(compact.Length, jsonData.Length, "Compact serialization should be smaller");
+            byte[] compact = DataEntrySerialization.CompactSave(DataTestData.FullTestEntry);
+            Assert.AreEqual(327, compact.Length);
 
             DataTestEntry restoredCompact = DataEntrySerialization.CompactLoad<DataTestEntry>(compact);
             Assert.NotNull(restoredCompact);
 
-            // Test native serialization
-            var combinedClone = (SyncTestEntryCombined)DataTestData.CombinedTestEntry.Clone();
+            byte[] compact2 = DataEntrySerialization.CompactSave(restoredCompact);
+            Assert.AreEqual(compact.Length, compact2.Length);
+        }
 
-            byte[] native = DataEntrySerialization.NativeSave(combinedClone);
-            Assert.AreEqual(363, native.Length);
-            Assert.Less(compact.Length, jsonData.Length, "Native serialization should be smaller");
+        [Test]
+        public void JsonSerializationTest()
+        {
+            // Test basic Json serialization
+            byte[] jsonData = DataEntrySerialization.Save(DataTestData.FullTestEntry);
+            Assert.AreEqual(1102, jsonData.Length, "Serialization should return data");
 
-            DataTestEntry restoredNative = new DataTestEntry();
-            DataEntrySerialization.NativeLoad(restoredNative, native);
+            DataTestEntry restored = DataEntrySerialization.Load<DataTestEntry>(jsonData);
+            Assert.NotNull(restored);
+
+            byte[] jsonData2 = DataEntrySerialization.Save(restored);
+            Assert.AreEqual(jsonData.Length, jsonData2.Length);
         }
 
         [Test]
         public void SyncSerializationTest()
         {
+            // Mark everything as changed first so we get accurate results
+            DataTestData.SyncTestEntry.ResetSyncState(true);
+
             // Test Sync serialization
             byte[] native = DataEntrySerialization.SyncSave(DataTestData.SyncTestEntry);
-            Assert.AreEqual(59, native.Length);
+            Assert.AreEqual(339, native.Length);
 
             SyncTestEntry restored = new SyncTestEntry();
             DataEntrySerialization.SyncLoad(restored, native);
@@ -151,11 +151,11 @@
 
             restored.ResetSyncState();
             restoredData = DataEntrySerialization.SyncSave(restored);
-            Assert.AreEqual(6, restoredData.Length);
+            Assert.AreEqual(12, restoredData.Length);
 
-            restored.TestFloat.Value = 15.0f;
+            restored.TestFloat = 15.0f;
             restoredData = DataEntrySerialization.SyncSave(restored);
-            Assert.AreEqual(11, restoredData.Length);
+            Assert.AreEqual(17, restoredData.Length);
         }
 
         [Test]

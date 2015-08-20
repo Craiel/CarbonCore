@@ -71,7 +71,7 @@
                 return data;
             }
         }
-
+        
         public static void SyncLoad(ISyncEntry instance, byte[] data)
         {
             using (var stream = new MemoryStream())
@@ -79,11 +79,7 @@
                 stream.Write(data, 0, data.Length);
                 stream.Seek(0, SeekOrigin.Begin);
 
-                DataEntrySyncDescriptor descriptor = DataEntryDescriptors.GetSyncDescriptor(instance.GetType());
-                for (var i = 0; i < descriptor.Entries.Count; i++)
-                {
-                    instance.Content[i].Load(stream);
-                }
+                instance.Load(stream);
             }
         }
 
@@ -91,35 +87,7 @@
         {
             using (var stream = new MemoryStream())
             {
-                DataEntrySyncDescriptor descriptor = DataEntryDescriptors.GetSyncDescriptor(entry.GetType());
-                for (var i = 0; i < descriptor.Entries.Count; i++)
-                {
-                    entry.Content[i].Save(stream);
-                }
-
-                stream.Seek(0, SeekOrigin.Begin);
-                byte[] data = new byte[stream.Length];
-                stream.Read(data, 0, data.Length);
-                return data;
-            }
-        }
-
-        public static void NativeLoad(IDataEntry instance, byte[] data)
-        {
-            using (var stream = new MemoryStream())
-            {
-                stream.Write(data, 0, data.Length);
-                stream.Seek(0, SeekOrigin.Begin);
-
-                instance.NativeLoad(stream);
-            }
-        }
-
-        public static byte[] NativeSave(IDataEntry entry)
-        {
-            using (var stream = new MemoryStream())
-            {
-                entry.NativeSave(stream);
+                entry.Save(stream);
 
                 stream.Seek(0, SeekOrigin.Begin);
                 byte[] data = new byte[stream.Length];

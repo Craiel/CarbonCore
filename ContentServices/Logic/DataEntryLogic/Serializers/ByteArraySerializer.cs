@@ -28,10 +28,9 @@
             }
         }
 
-        public override int Serialize(Stream target, object source)
+        public int Serialize(Stream target, byte[] source)
         {
-            byte[] typed = (byte[])source;
-            if (typed == null || typed.Length <= 0)
+            if (source == null || source.Length <= 0)
             {
                 target.WriteByte(0);
                 return 1;
@@ -39,25 +38,24 @@
 
             target.WriteByte(1);
 
-            byte[] length = BitConverter.GetBytes((Int16)typed.Length);
+            byte[] length = BitConverter.GetBytes((Int16)source.Length);
             target.Write(length, 0, 2);
-            target.Write(typed, 0, typed.Length);
+            target.Write(source, 0, source.Length);
 
             // Return the overall written size
-            return 3 + typed.Length;
+            return 3 + source.Length;
+        }
+
+        public override int Serialize(Stream target, object source)
+        {
+            return this.Serialize(target, (byte[])source);
         }
 
         public override object Deserialize(Stream source)
         {
-            byte indicator = (byte)source.ReadByte();
-            if (indicator == byte.MaxValue)
+            if ((byte)source.ReadByte() == 0)
             {
                 return null;
-            }
-
-            if (indicator == 0)
-            {
-                return default(byte[]);
             }
 
             byte[] length = new byte[2];

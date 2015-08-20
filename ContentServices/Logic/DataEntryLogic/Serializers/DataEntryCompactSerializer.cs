@@ -7,12 +7,12 @@
     using CarbonCore.ContentServices.Contracts;
 
     [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1121:UseBuiltInTypeAlias", Justification = "Reviewed. Suppression is OK here.")]
-    public class DataEntrySerializer : DataEntryElementSerializer
+    public class DataEntryCompactSerializer : DataEntryElementSerializer
     {
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
-        public DataEntrySerializer(Type type)
+        public DataEntryCompactSerializer(Type type)
         {
             this.Type = type;
         }

@@ -25,11 +25,26 @@
             }
         }
 
+        public int Serialize(Stream target, bool? value)
+        {
+            if (value == null)
+            {
+                target.WriteByte(byte.MaxValue);
+                return 1;
+            }
+
+            return this.Serialize(target, value.Value);
+        }
+
+        public int Serialize(Stream target, bool value)
+        {
+            target.WriteByte(value ? (byte)1 : (byte)0);
+            return this.MinSize;
+        }
+
         public override int Serialize(Stream target, object source)
         {
-            bool typed = (bool)source;
-            target.WriteByte(typed ? (byte)1 : (byte)0);
-            return this.MinSize;
+            return this.Serialize(target, (bool)source);
         }
 
         public override object Deserialize(Stream source)

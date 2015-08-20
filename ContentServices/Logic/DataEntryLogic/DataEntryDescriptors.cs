@@ -10,7 +10,6 @@
     {
         private static readonly IDictionary<Type, DataEntryDescriptor> Descriptors;
         private static readonly IDictionary<Type, DataEntrySerializationDescriptor> SerializationDescriptors;
-        private static readonly IDictionary<Type, DataEntrySyncDescriptor> SyncDescriptors;
         private static readonly IDictionary<Type, DataEntryElementSerializer> Serializers;
 
         // -------------------------------------------------------------------
@@ -20,7 +19,6 @@
         {
             Descriptors = new Dictionary<Type, DataEntryDescriptor>();
             SerializationDescriptors = new Dictionary<Type, DataEntrySerializationDescriptor>();
-            SyncDescriptors = new Dictionary<Type, DataEntrySyncDescriptor>();
             Serializers = new Dictionary<Type, DataEntryElementSerializer>();
 
             RegisterSerializer<bool>(new BooleanSerializer());
@@ -54,7 +52,7 @@
 
             if (typeof(IDataEntry).IsAssignableFrom(type))
             {
-                return new DataEntrySerializer(type);
+                return new DataEntryCompactSerializer(type);
             }
 
             // Check if this is a generic type
@@ -83,20 +81,7 @@
                 return Descriptors[type];
             }
         }
-
-        public static DataEntrySyncDescriptor GetSyncDescriptor(Type type)
-        {
-            lock (SyncDescriptors)
-            {
-                if (!SyncDescriptors.ContainsKey(type))
-                {
-                    SyncDescriptors.Add(type, new DataEntrySyncDescriptor(type));
-                }
-
-                return SyncDescriptors[type];
-            }
-        }
-
+        
         public static DataEntrySerializationDescriptor GetSerializationDescriptor(Type type)
         {
             lock (Descriptors)

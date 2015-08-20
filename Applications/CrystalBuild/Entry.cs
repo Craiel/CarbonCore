@@ -16,16 +16,17 @@
         public static void Main(string[] args)
         {
             int cycles = 50000;
-            var clone = (DataTestEntry)DataTestData.FullTestEntry.Clone();
 
             int totalData = 0;
             for (var i = 0; i < cycles; i++)
             {
                 using (new ProfileRegion("DataEntry.CompactSerialization"))
                 {
-                    byte[] data = DataEntrySerialization.CompactSave(clone);
+                    byte[] data = DataEntrySerialization.SyncSave(DataTestData.SyncTestEntry);
                     totalData += data.Length;
-                    DataEntrySerialization.CompactLoad<DataTestEntry>(data);
+
+                    SyncTestEntry restoredSync = new SyncTestEntry();
+                    DataEntrySerialization.SyncLoad(restoredSync, data);
                 }
             }
 

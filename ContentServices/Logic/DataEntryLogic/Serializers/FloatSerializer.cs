@@ -28,10 +28,20 @@
             }
         }
 
-        public override int Serialize(Stream target, object source)
+        public int Serialize(Stream target, Single? source)
         {
-            Single typed = (Single)source;
-            if (Math.Abs(typed - default(Single)) < float.Epsilon)
+            if (source == null)
+            {
+                target.WriteByte(byte.MaxValue);
+                return 1;
+            }
+
+            return this.Serialize(target, source.Value);
+        }
+
+        public int Serialize(Stream target, Single source)
+        {
+            if (Math.Abs(source - default(Single)) < float.Epsilon)
             {
                 target.WriteByte(0);
                 return 1;
@@ -39,10 +49,15 @@
 
             target.WriteByte(1);
 
-            byte[] data = BitConverter.GetBytes(typed);
+            byte[] data = BitConverter.GetBytes(source);
 
             target.Write(data, 0, 4);
             return this.MinSize;
+        }
+
+        public override int Serialize(Stream target, object source)
+        {
+            return this.Serialize(target, (Single)source);
         }
 
         public override object Deserialize(Stream source)

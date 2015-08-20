@@ -1,9 +1,12 @@
 ﻿namespace CarbonCore.ContentServices.Contracts
 {
+    using System.IO;
+
     public interface ISyncEntry
     {
-        ISyncContent[] Content { get; }
+        int Save(Stream target);
+        void Load(Stream source);
 
-        void ResetSyncState();
+        void ResetSyncState(bool state = false);
     }
 }

@@ -44,7 +44,7 @@
             }
         }
 
-        public bool IsChanged { get; private set; }
+        public bool IsChanged { get; set; }
 
         public static implicit operator Sync<T>(T value)
         {
@@ -64,12 +64,12 @@
         public override bool Equals(object obj)
         {
             var typed = (Sync<T>)obj;
-            if (this.value == null && typed.value == null)
+            if (this.value == null && typed.Value == null)
             {
                 return true;
             }
 
-            if (this.value == null || typed.value == null)
+            if (this.value == null || typed.Value == null)
             {
                 return false;
             }
@@ -87,9 +87,9 @@
             return this.value.GetHashCode();
         }
 
-        public void ResetChangeState()
+        public void ResetChangeState(bool state = false)
         {
-            this.IsChanged = false;
+            this.IsChanged = state;
         }
     }
 }

@@ -34,7 +34,7 @@
             TestLong = 12999888777666555,
             ByteArray = new byte[] { 50, 50, 100, 100, 10, 2 },
             CascadedEntry = new DataTestEntry2 { Id = "Cascaded!", OtherTestBool = true, OtherTestFloat = 123.456f },
-            SimpleCollection = new List<int> { 50, 50, 100, 100, 10, 2},
+            SimpleCollection = new List<int> { 50, 50, 100, 100, 10, 2 },
             SimpleDictionary = new Dictionary<string, float>
                                     {
                                         { "First", 20.0f },
@@ -43,7 +43,6 @@
                                     },
             CascadingCollection = new List<DataTestEntry2>
                                     {
-                                        (DataTestEntry2)TestEntry2.Clone(),
                                         new DataTestEntry2 { Id = "Test Entry 2" },
                                         new DataTestEntry2 { Id = "Another type of entry", OtherTestFloat = 99.0f }
                                     },
@@ -55,7 +54,7 @@
                                     }
         };
 
-        public static SyncTestEntryCombined CombinedTestEntry = new SyncTestEntryCombined
+        public static SyncTestEntry SyncTestEntry = new SyncTestEntry
         {
             TestString = "This is a full cascaded complex test class!",
             TestBool = true,
@@ -63,7 +62,7 @@
             TestFloat = 99.987654321f,
             TestLong = 12999888777666555,
             ByteArray = new byte[] { 50, 50, 100, 100, 10, 2 },
-            CascadedEntry = new SyncTestEntryCombined2 { Id = "Cascaded!", OtherTestBool = true, OtherTestFloat = 123.456f },
+            CascadedEntry = new SyncTestEntry2 { Id = "Cascaded!", OtherTestBool = true, OtherTestFloat = 123.456f },
             SimpleCollection = new List<int> { 50, 50, 100, 100, 10, 2 },
             SimpleDictionary = new Dictionary<string, float>
                                     {
@@ -71,30 +70,25 @@
                                         { "Second", 19.0f },
                                         { "Third", 1.0f }
                                     },
-            CascadingCollection = new List<SyncTestEntryCombined2>
+            CascadingCollection = new List<SyncTestEntry2>
                                     {
-                                        new SyncTestEntryCombined2 { Id = "Test Entry 2" },
-                                        new SyncTestEntryCombined2 { Id = "Another type of entry", OtherTestFloat = 99.0f }
+                                        new SyncTestEntry2 { Id = "Test Entry 2" },
+                                        new SyncTestEntry2 { Id = "Another type of entry", OtherTestFloat = 99.0f }
                                     },
-            CascadingDictionary = new Dictionary<int, SyncTestEntryCombined2>
+            CascadingDictionary = new Dictionary<int, SyncTestEntry2>
                                     {
-                                        { 0, new SyncTestEntryCombined2 { Id = "0" } },
-                                        { 1, new SyncTestEntryCombined2 { Id = "1", OtherTestLong = 99 } },
-                                        { 50, new SyncTestEntryCombined2 { Id = "Third", OtherTestString = "Still the third..." } }
+                                        { 0, new SyncTestEntry2 { Id = "0" } },
+                                        { 1, new SyncTestEntry2 { Id = "1", OtherTestLong = 99 } },
+                                        { 50, new SyncTestEntry2 { Id = "Third", OtherTestString = "Still the third..." } }
                                     }
         };
 
-
-        public static SyncTestEntry SyncTestEntry = new SyncTestEntry();
-
-        static DataTestData()
-        {
-            SyncTestEntry.TestString.Value = "This is a test class!";
-            SyncTestEntry.TestBool.Value = true;
-            SyncTestEntry.TestInt.Value = 54321;
-            SyncTestEntry.TestFloat.Value = 99.987654321f;
-            SyncTestEntry.TestLong.Value = 12999888777666555;
-            SyncTestEntry.ByteArray.Value = new byte[] { 50, 50, 100, 100, 10, 2 };
-        }
+        public static SyncTestEntry2 SyncTestEntry2 = new SyncTestEntry2
+                                                          {
+                                                              Id = "Test Entry 2",
+                                                              OtherTestFloat = 55.545f,
+                                                              OtherTestLong = -99999999987654321,
+                                                              OtherTestString = "Custom Strings are kewl!"
+                                                          };
     }
 }

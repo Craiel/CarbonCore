@@ -29,17 +29,16 @@
             }
         }
 
-        public override int Serialize(Stream target, object value)
+        public int Serialize(Stream target, string value)
         {
-            string typed = (string)value;
-            if (string.IsNullOrEmpty(typed))
+            if (string.IsNullOrEmpty(value))
             {
                 target.WriteByte(0);
                 return 1;
             }
 
             target.WriteByte(1);
-            byte[] data = Encoding.UTF8.GetBytes(typed);
+            byte[] data = Encoding.UTF8.GetBytes(value);
 
             byte[] length = BitConverter.GetBytes((Int16)data.Length);
             target.Write(length, 0, length.Length);
@@ -50,19 +49,19 @@
             return 3 + data.Length;
         }
 
+        public override int Serialize(Stream target, object value)
+        {
+            return this.Serialize(target, (string)value);
+        }
+
         public override object Deserialize(Stream source)
         {
             byte indicator = (byte)source.ReadByte();
-            if (indicator == byte.MaxValue)
+            if (indicator == 0 || indicator == byte.MaxValue)
             {
                 return null;
             }
-
-            if (indicator == 0)
-            {
-                return default(string);
-            }
-
+            
             byte[] length = new byte[2];
             source.Read(length, 0, length.Length);
 

@@ -80,13 +80,11 @@
     <Compile Include="Logic\DataEntryLogic\DataEntryElementSerializer.cs" />
     <Compile Include="Logic\DataEntryLogic\DataEntrySerialization.cs" />
     <Compile Include="Logic\DataEntryLogic\DataEntrySerializationDescriptor.cs" />
-    <Compile Include="Logic\DataEntryLogic\DataEntrySyncDescriptor.cs" />
-    <Compile Include="Logic\DataEntryLogic\DataEntrySyncDescriptors.cs" />
     <Compile Include="Logic\DataEntryLogic\DataSerializationEntry.cs" />
-    <Compile Include="Logic\DataEntryLogic\DataSyncEntry.cs" />
+    <Compile Include="Logic\DataEntryLogic\NativeSerialization.cs" />
     <Compile Include="Logic\DataEntryLogic\Serializers\ByteArraySerializer.cs" />
     <Compile Include="Logic\DataEntryLogic\Serializers\BooleanSerializer.cs" />
-    <Compile Include="Logic\DataEntryLogic\Serializers\DataEntrySerializer.cs" />
+    <Compile Include="Logic\DataEntryLogic\Serializers\DataEntryCompactSerializer.cs" />
     <Compile Include="Logic\DataEntryLogic\Serializers\DoubleSerializer.cs" />
     <Compile Include="Logic\DataEntryLogic\Serializers\FloatSerializer.cs" />
     <Compile Include="Logic\DataEntryLogic\Serializers\Int64Serializer.cs" />
@@ -94,8 +92,9 @@
     <Compile Include="Logic\DataEntryLogic\Serializers\DictionarySerializer.cs" />
     <Compile Include="Logic\DataEntryLogic\Serializers\ListSerializer.cs" />
     <Compile Include="Logic\DataEntryLogic\Serializers\StringSerializer.cs" />
+    <Compile Include="Logic\DataEntryLogic\SyncDictionary.cs" />
+    <Compile Include="Logic\DataEntryLogic\SyncList.cs" />
     <Compile Include="Logic\DataEntryLogic\Sync.cs" />
-    <Compile Include="Logic\DataEntryLogic\SyncContent.cs" />
     <Compile Include="Logic\DataEntryLogic\SyncEntry.cs" />
     <Compile Include="Logic\FileEntry.cs" />
     <Compile Include="Logic\FileEntryData.cs" />
