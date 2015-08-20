@@ -59,40 +59,40 @@
 
         public static SyncTestEntry SyncTestEntry = new SyncTestEntry
         {
-            TestString = "This is a full cascaded complex test class!",
+            TestString = { Value = "This is a full cascaded complex test class!" },
             TestBool = true,
             TestInt = 54321,
             TestFloat = 99.987654321f,
             TestLong = 12999888777666555,
             Enum = TestEnum.Third,
-            ByteArray = new byte[] { 50, 50, 100, 100, 10, 2 },
-            CascadedEntry = new SyncTestEntry2 { Id = "Cascaded!", OtherTestBool = true, OtherTestFloat = 123.456f },
-            SimpleCollection = new List<int> { 50, 50, 100, 100, 10, 2 },
-            SimpleDictionary = new Dictionary<string, float>
+            ByteArray = { Value = new byte[] { 50, 50, 100, 100, 10, 2 } },
+            CascadedEntry = {Value = new SyncTestEntry2 { Id = {Value = "Cascaded!"}, OtherTestBool = true, OtherTestFloat = 123.456f }},
+            SimpleCollection = { Value = new List<int> { 50, 50, 100, 100, 10, 2 } },
+            SimpleDictionary = { Value = new Dictionary<string, float> 
                                     {
                                         { "First", 20.0f },
                                         { "Second", 19.0f },
                                         { "Third", 1.0f }
-                                    },
-            CascadingCollection = new List<SyncTestEntry2>
+                                    }},
+            CascadingCollection = {Value = new List<SyncTestEntry2>
                                     {
-                                        new SyncTestEntry2 { Id = "Test Entry 2" },
-                                        new SyncTestEntry2 { Id = "Another type of entry", OtherTestFloat = 99.0f }
-                                    },
-            CascadingDictionary = new Dictionary<int, SyncTestEntry2>
+                                        new SyncTestEntry2 { Id = {Value = "Test Entry 2" }},
+                                        new SyncTestEntry2 { Id = {Value = "Another type of entry"}, OtherTestFloat = 99.0f }
+                                    }},
+            CascadingDictionary = {Value = new Dictionary<int, SyncTestEntry2>
                                     {
-                                        { 0, new SyncTestEntry2 { Id = "0" } },
-                                        { 1, new SyncTestEntry2 { Id = "1", OtherTestLong = 99 } },
-                                        { 50, new SyncTestEntry2 { Id = "Third", OtherTestString = "Still the third..." } }
-                                    }
+                                        { 0, new SyncTestEntry2 { Id = {Value = "0"} } },
+                                        { 1, new SyncTestEntry2 { Id = {Value = "1"}, OtherTestLong = 99 } },
+                                        { 50, new SyncTestEntry2 { Id = {Value = "Third"}, OtherTestString = {Value = "Still the third..."} } }
+                                    }}
         };
 
         public static SyncTestEntry2 SyncTestEntry2 = new SyncTestEntry2
                                                           {
-                                                              Id = "Test Entry 2",
+                                                              Id = {Value = "Test Entry 2"},
                                                               OtherTestFloat = 55.545f,
                                                               OtherTestLong = -99999999987654321,
-                                                              OtherTestString = "Custom Strings are kewl!"
+                                                              OtherTestString = {Value = "Custom Strings are kewl!"}
                                                           };
     }
 }

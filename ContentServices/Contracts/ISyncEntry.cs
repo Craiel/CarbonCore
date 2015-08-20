@@ -4,10 +4,12 @@
 
     public interface ISyncEntry
     {
+        bool GetEntryChanged();
+
         void Save(Stream target);
 
         void Load(Stream source);
 
-        void ResetSyncState(bool state = false);
+        void ResetChangeState(bool state = false);
     }
 }

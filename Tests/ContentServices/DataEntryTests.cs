@@ -1,6 +1,8 @@
 ﻿namespace CarbonCore.Tests.ContentServices
 {
     using System;
+    using System.Collections;
+    using System.Linq;
 
     using CarbonCore.ContentServices.Logic.DataEntryLogic;
     using CarbonCore.Utils.Compat.Diagnostics;
@@ -137,25 +139,67 @@
         public void SyncSerializationTest()
         {
             // Mark everything as changed first so we get accurate results
-            DataTestData.SyncTestEntry.ResetSyncState(true);
+            DataTestData.SyncTestEntry.ResetChangeState(true);
 
             // Test Sync serialization
             byte[] native = DataEntrySerialization.SyncSave(DataTestData.SyncTestEntry);
             Assert.AreEqual(345, native.Length);
 
             SyncTestEntry restored = new SyncTestEntry();
+            SyncTestEntry restored2 = new SyncTestEntry();
             DataEntrySerialization.SyncLoad(restored, native);
+            DataEntrySerialization.SyncLoad(restored2, native);
+            TestUtils.AssertInstanceEquals(DataTestData.SyncTestEntry, restored);
+            TestUtils.AssertInstanceEquals(restored, restored2);
 
             byte[] restoredData = DataEntrySerialization.SyncSave(restored);
             Assert.AreEqual(native.Length, restoredData.Length);
 
-            restored.ResetSyncState();
+            restored.ResetChangeState();
             restoredData = DataEntrySerialization.SyncSave(restored);
             Assert.AreEqual(13, restoredData.Length);
 
+            // Modify simple types
             restored.TestFloat = 15.0f;
             restoredData = DataEntrySerialization.SyncSave(restored);
             Assert.AreEqual(18, restoredData.Length);
+
+            DataEntrySerialization.SyncLoad(restored2, restoredData);
+            TestUtils.AssertInstanceEquals(restored, restored2);
+
+            // Modify collections
+            restored.SimpleCollection.Add(1001);
+            restoredData = DataEntrySerialization.SyncSave(restored);
+            Assert.AreEqual(56, restoredData.Length);
+
+            DataEntrySerialization.SyncLoad(restored2, restoredData);
+            Assert.IsTrue(restored.SimpleCollection.SequenceEqual(restored2.SimpleCollection));
+
+            // Add and modify cascading entries
+            restored.CascadingCollection.Add(new SyncTestEntry2());
+            restored.CascadingCollection[0].OtherTestFloat = -10.0f;
+            restoredData = DataEntrySerialization.SyncSave(restored);
+            Assert.AreEqual(84, restoredData.Length);
+
+            DataEntrySerialization.SyncLoad(restored2, restoredData);
+            Assert.IsTrue(restored.CascadingCollection.SequenceEqual(restored2.CascadingCollection));
+
+            // Modify Dictionaries
+            restored.SimpleDictionary.Add("TestDict", 123);
+            restoredData = DataEntrySerialization.SyncSave(restored);
+            Assert.AreEqual(143, restoredData.Length);
+
+            DataEntrySerialization.SyncLoad(restored2, restoredData);
+            Assert.IsTrue(restored.SimpleDictionary.SequenceEqual(restored2.SimpleDictionary));
+
+            // Add and modify cascading entries
+            restored.CascadingDictionary.Add(1001, new SyncTestEntry2());
+            restored.CascadingDictionary[0].OtherTestFloat = -10.0f;
+            restoredData = DataEntrySerialization.SyncSave(restored);
+            Assert.AreEqual(192, restoredData.Length);
+
+            DataEntrySerialization.SyncLoad(restored2, restoredData);
+            Assert.IsTrue(restored.CascadingDictionary.SequenceEqual(restored2.CascadingDictionary));
         }
 
         [Test]

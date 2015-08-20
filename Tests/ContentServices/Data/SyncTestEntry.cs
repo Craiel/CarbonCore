@@ -14,16 +14,16 @@
         // -------------------------------------------------------------------
         public SyncTestEntry()
         {
-            this.Id = new Sync<int?>();
+            this.Id = new SyncNull<int?>();
             this.TestInt = new Sync<int>();
             this.TestLong = new Sync<long>();
             this.TestFloat = new Sync<float>();
             this.TestBool = new Sync<bool>();
-            this.ByteArray = new Sync<byte[]>();
-            this.TestString = new Sync<string>();
+            this.ByteArray = new SyncObject<byte[]>();
+            this.TestString = new SyncObject<string>();
             this.Enum = new Sync<TestEnum>();
 
-            this.CascadedEntry = new Sync<SyncTestEntry2>();
+            this.CascadedEntry = new SyncCascade<SyncTestEntry2>();
 
             this.SimpleCollection = new SyncList<List<int>, int>();
             this.CascadingCollection = new SyncList<List<SyncTestEntry2>, SyncTestEntry2>();
@@ -35,7 +35,7 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public Sync<int?> Id { get; set; }
+        public SyncNull<int?> Id { get; set; }
 
         public Sync<int> TestInt { get; set; }
 
@@ -45,13 +45,13 @@
 
         public Sync<bool> TestBool { get; set; }
 
-        public Sync<byte[]> ByteArray { get; set; }
+        public SyncObject<byte[]> ByteArray { get; set; }
 
-        public Sync<string> TestString { get; set; }
+        public SyncObject<string> TestString { get; set; }
 
         public Sync<TestEnum> Enum { get; set; }
 
-        public Sync<SyncTestEntry2> CascadedEntry { get; set; }
+        public SyncCascade<SyncTestEntry2> CascadedEntry { get; set; }
 
         public SyncList<List<int>, int> SimpleCollection { get; set; }
 
@@ -60,7 +60,24 @@
         public SyncDictionary<Dictionary<string, float>, string, float> SimpleDictionary { get; set; }
 
         public SyncDictionary<Dictionary<int, SyncTestEntry2>, int, SyncTestEntry2> CascadingDictionary { get; set; }
-        
+
+        public override bool GetEntryChanged()
+        {
+            return this.Id.IsChanged
+                || this.TestInt.IsChanged
+                || this.TestLong.IsChanged
+                || this.TestFloat.IsChanged
+                || this.TestBool.IsChanged
+                || this.ByteArray.IsChanged
+                || this.TestString.IsChanged
+                || this.Enum.IsChanged
+                || this.CascadedEntry.IsChanged
+                || this.SimpleCollection.IsChanged
+                || this.CascadingCollection.IsChanged
+                || this.SimpleDictionary.IsChanged
+                || this.CascadingDictionary.IsChanged;
+        }
+
         public override void Save(Stream target)
         {
             // Simple types
@@ -87,28 +104,28 @@
 
         public override void Load(Stream source)
         {
-            this.Id = NativeSerialization.Deserialize(source, this.Id.Value, Int32Serializer.Instance.Deserialize);
+            this.Id.Value = NativeSerialization.Deserialize(source, this.Id.Value, Int32Serializer.Instance.Deserialize);
             this.TestInt = NativeSerialization.Deserialize(source, this.TestInt.Value, Int32Serializer.Instance.Deserialize);
             this.TestLong = NativeSerialization.Deserialize(source, this.TestLong.Value, Int64Serializer.Instance.Deserialize);
             this.TestFloat = NativeSerialization.Deserialize(source, this.TestFloat.Value, FloatSerializer.Instance.Deserialize);
             this.TestBool = NativeSerialization.Deserialize(source, this.TestBool.Value, BooleanSerializer.Instance.Deserialize);
-            this.ByteArray = NativeSerialization.Deserialize(source, this.ByteArray.Value, ByteArraySerializer.Instance.Deserialize);
-            this.TestString = NativeSerialization.Deserialize(source, this.TestString.Value, StringSerializer.Instance.Deserialize);
+            this.ByteArray.Value = NativeSerialization.Deserialize(source, this.ByteArray.Value, ByteArraySerializer.Instance.Deserialize);
+            this.TestString.Value = NativeSerialization.Deserialize(source, this.TestString.Value, StringSerializer.Instance.Deserialize);
             this.Enum = NativeSerialization.Deserialize(source, this.Enum.Value, Int32Serializer.Instance.Deserialize);
 
-            this.CascadedEntry = NativeSerialization.DeserializeObject(
+            this.CascadedEntry.Value = NativeSerialization.DeserializeObject(
                 source,
                 this.CascadedEntry.Value,
                 () => new SyncTestEntry2(),
                 (stream, current) => current.Load(stream));
 
-            this.SimpleCollection = NativeSerialization.DeserializeList(
+            this.SimpleCollection.Value = NativeSerialization.DeserializeList(
                     source,
                     this.SimpleCollection.Value,
                     () => new List<int>(),
                     Int32Serializer.Instance.Deserialize);
 
-            this.CascadingCollection =
+            this.CascadingCollection.Value =
                 NativeSerialization.DeserializeList(
                     source,
                     this.CascadingCollection.Value,
@@ -120,14 +137,14 @@
                         return entry;
                     });
 
-            this.SimpleDictionary = NativeSerialization.DeserializeDictionary(
+            this.SimpleDictionary.Value = NativeSerialization.DeserializeDictionary(
                 source,
                 this.SimpleDictionary.Value,
                 () => new Dictionary<string, float>(),
                 StringSerializer.Instance.Deserialize,
                 FloatSerializer.Instance.Deserialize);
 
-            this.CascadingDictionary = NativeSerialization.DeserializeDictionary(
+            this.CascadingDictionary.Value = NativeSerialization.DeserializeDictionary(
                 source,
                 this.CascadingDictionary.Value,
                 () => new Dictionary<int, SyncTestEntry2>(),
@@ -140,16 +157,16 @@
                     });
         }
 
-        public override void ResetSyncState(bool state = false)
+        public override void ResetChangeState(bool state = false)
         {
             this.Id.ResetChangeState(state);
-            this.TestInt.ResetChangeState(state);
-            this.TestLong.ResetChangeState(state);
-            this.TestFloat.ResetChangeState(state);
-            this.TestBool.ResetChangeState(state);
+            this.TestInt = this.TestInt.ResetChangeState(state);
+            this.TestLong = this.TestLong.ResetChangeState(state);
+            this.TestFloat = this.TestFloat.ResetChangeState(state);
+            this.TestBool = this.TestBool.ResetChangeState(state);
             this.ByteArray.ResetChangeState(state);
             this.TestString.ResetChangeState(state);
-            this.Enum.ResetChangeState(state);
+            this.Enum = this.Enum.ResetChangeState(state);
 
             this.CascadedEntry.ResetChangeState(state);
 
@@ -159,7 +176,7 @@
             {
                 foreach (SyncTestEntry2 entry in this.CascadingCollection)
                 {
-                    entry.ResetSyncState(state);
+                    entry.ResetChangeState(state);
                 }
             }
 
@@ -169,7 +186,7 @@
             {
                 foreach (int key in this.CascadingDictionary.Keys)
                 {
-                    this.CascadingDictionary[key].ResetSyncState(state);
+                    this.CascadingDictionary[key].ResetChangeState(state);
                 }
             }
         }

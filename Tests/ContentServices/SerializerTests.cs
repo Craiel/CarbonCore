@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using System.IO;
-    using System.Reflection;
 
     using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.Logic.DataEntryLogic;
@@ -39,61 +38,61 @@
                 long streamPosition = 0;
 
                 BooleanSerializer.Instance.Serialize(stream, TestBool);
-                this.AssertStreamPos(stream, 1, ref streamPosition);
+                TestUtils.AssertStreamPos(stream, 1, ref streamPosition);
 
                 BooleanSerializer.Instance.Serialize(stream, null);
-                this.AssertStreamPos(stream, 1, ref streamPosition);
+                TestUtils.AssertStreamPos(stream, 1, ref streamPosition);
 
                 BooleanSerializer.Instance.Serialize(stream, (bool?)TestBool);
-                this.AssertStreamPos(stream, 1, ref streamPosition);
+                TestUtils.AssertStreamPos(stream, 1, ref streamPosition);
 
                 ByteArraySerializer.Instance.Serialize(stream, TestByteArray);
-                this.AssertStreamPos(stream, 6, ref streamPosition);
+                TestUtils.AssertStreamPos(stream, 6, ref streamPosition);
 
                 ByteArraySerializer.Instance.Serialize(stream, null);
-                this.AssertStreamPos(stream, 1, ref streamPosition);
+                TestUtils.AssertStreamPos(stream, 1, ref streamPosition);
 
                 DoubleSerializer.Instance.Serialize(stream, TestDouble);
-                this.AssertStreamPos(stream, 9, ref streamPosition);
+                TestUtils.AssertStreamPos(stream, 9, ref streamPosition);
 
                 DoubleSerializer.Instance.Serialize(stream, null);
-                this.AssertStreamPos(stream, 1, ref streamPosition);
+                TestUtils.AssertStreamPos(stream, 1, ref streamPosition);
 
                 DoubleSerializer.Instance.Serialize(stream, (double?)TestDouble);
-                this.AssertStreamPos(stream, 9, ref streamPosition);
+                TestUtils.AssertStreamPos(stream, 9, ref streamPosition);
 
                 FloatSerializer.Instance.Serialize(stream, TestFloat);
-                this.AssertStreamPos(stream, 5, ref streamPosition);
+                TestUtils.AssertStreamPos(stream, 5, ref streamPosition);
 
                 FloatSerializer.Instance.Serialize(stream, null);
-                this.AssertStreamPos(stream, 1, ref streamPosition);
+                TestUtils.AssertStreamPos(stream, 1, ref streamPosition);
 
                 FloatSerializer.Instance.Serialize(stream, (float?)TestFloat);
-                this.AssertStreamPos(stream, 5, ref streamPosition);
+                TestUtils.AssertStreamPos(stream, 5, ref streamPosition);
 
                 Int32Serializer.Instance.Serialize(stream, TestInt);
-                this.AssertStreamPos(stream, 5, ref streamPosition);
+                TestUtils.AssertStreamPos(stream, 5, ref streamPosition);
 
                 Int32Serializer.Instance.Serialize(stream, null);
-                this.AssertStreamPos(stream, 1, ref streamPosition);
+                TestUtils.AssertStreamPos(stream, 1, ref streamPosition);
 
                 Int32Serializer.Instance.Serialize(stream, (int?)TestInt);
-                this.AssertStreamPos(stream, 5, ref streamPosition);
+                TestUtils.AssertStreamPos(stream, 5, ref streamPosition);
 
                 Int64Serializer.Instance.Serialize(stream, TestLong);
-                this.AssertStreamPos(stream, 9, ref streamPosition);
+                TestUtils.AssertStreamPos(stream, 9, ref streamPosition);
 
                 Int64Serializer.Instance.Serialize(stream, null);
-                this.AssertStreamPos(stream, 1, ref streamPosition);
+                TestUtils.AssertStreamPos(stream, 1, ref streamPosition);
 
                 Int64Serializer.Instance.Serialize(stream, (long?)TestLong);
-                this.AssertStreamPos(stream, 9, ref streamPosition);
+                TestUtils.AssertStreamPos(stream, 9, ref streamPosition);
 
                 StringSerializer.Instance.Serialize(stream, TestString);
-                this.AssertStreamPos(stream, 32, ref streamPosition);
+                TestUtils.AssertStreamPos(stream, 32, ref streamPosition);
 
                 StringSerializer.Instance.Serialize(stream, null);
-                this.AssertStreamPos(stream, 1, ref streamPosition);
+                TestUtils.AssertStreamPos(stream, 1, ref streamPosition);
 
                 data = new byte[stream.Length];
                 stream.Seek(0, SeekOrigin.Begin);
@@ -139,15 +138,17 @@
         [Test]
         public void ListSerialization()
         {
-            Sync<List<int>> simpleCollection = new List<int> { 5, 10, 15, 99, 2999 };
+            SyncList<List<int>, int> simpleCollection = new SyncList<List<int>, int>();
+            simpleCollection.Value = new List<int> { 5, 10, 15, 99, 2999 };
 
-            Sync<List<ISyncEntry>> cascadedCollection = new List<ISyncEntry>
+            SyncList<List<ISyncEntry>, ISyncEntry> cascadedCollection = new SyncList<List<ISyncEntry>, ISyncEntry>();
+            cascadedCollection.Value = new List<ISyncEntry>
                                                              {
                                                                  DataTestData.SyncTestEntry2,
                                                                  DataTestData.SyncTestEntry2,
                                                                  new SyncTestEntry2
                                                                      {
-                                                                         Id = "Last entry",
+                                                                         Id = {Value = "Last entry"},
                                                                          OtherTestFloat =
                                                                              -15.15f
                                                                      }
@@ -157,42 +158,44 @@
             using (var stream = new MemoryStream())
             {
                 long position = stream.Position;
-                NativeSerialization.SerializeList<int>(
+                NativeSerialization.SerializeList(
                     stream,
                     simpleCollection.IsChanged,
                     simpleCollection.Value,
                     Int32Serializer.Instance.Serialize);
-                this.AssertStreamPos(stream, 29, ref position);
+                TestUtils.AssertStreamPos(stream, 29, ref position);
 
                 NativeSerialization.SerializeList(
                     stream,
                     cascadedCollection.IsChanged,
                     cascadedCollection.Value,
                     (targetStream, value) => value.Save(targetStream));
-                this.AssertStreamPos(stream, 154, ref position);
+                TestUtils.AssertStreamPos(stream, 149, ref position);
 
                 data = new byte[stream.Length];
                 stream.Seek(0, SeekOrigin.Begin);
                 stream.Read(data, 0, data.Length);
             }
 
-            Assert.AreEqual(183, data.Length);
+            Assert.AreEqual(178, data.Length);
 
             using (var stream = new MemoryStream(data))
             {
                 stream.Seek(0, SeekOrigin.Begin);
                 long position = stream.Position;
-                
-                SyncList<IList<int>, int> restoredSimpleCollection = NativeSerialization.DeserializeList<int>(
+
+                var restoredSimpleCollection = new SyncList<IList<int>, int>();
+                restoredSimpleCollection.Value = NativeSerialization.DeserializeList<int>(
                     stream,
                     null, 
                     () => new List<int>(),
                     Int32Serializer.Instance.Deserialize);
                 Assert.NotNull(restoredSimpleCollection);
-                this.AssertListEquals(simpleCollection.Value, restoredSimpleCollection);
-                this.AssertStreamPos(stream, 29, ref position);
+                TestUtils.AssertListEquals(simpleCollection.Value, restoredSimpleCollection);
+                TestUtils.AssertStreamPos(stream, 29, ref position);
 
-                SyncList<IList<ISyncEntry>, ISyncEntry> restoredCascadeCollection =
+                var restoredCascadeCollection = new SyncList<IList<ISyncEntry>, ISyncEntry>();
+                restoredCascadeCollection.Value =
                     NativeSerialization.DeserializeList<ISyncEntry>(
                         stream,
                         null,
@@ -204,27 +207,29 @@
                                 return entry;
                             });
                 Assert.NotNull(restoredCascadeCollection);
-                this.AssertListEquals(cascadedCollection.Value, restoredCascadeCollection);
+                TestUtils.AssertListEquals(cascadedCollection.Value, restoredCascadeCollection);
 
-                this.AssertStreamPos(stream, 154, ref position);
+                TestUtils.AssertStreamPos(stream, 149, ref position);
             }
         }
 
         [Test]
         public void DictionarySerialization()
         {
-            SyncDictionary<Dictionary<string, float>, string, float> simpleDictionary = new Dictionary<string, float>
+            var simpleDictionary = new SyncDictionary<Dictionary<string, float>, string, float>();
+            simpleDictionary.Value = new Dictionary<string, float>
                                    {
                                        { "First", 20.0f },
                                        { "Second", 19.0f },
                                        { "Third", 1.0f }
                                    };
 
-            SyncDictionary<Dictionary<int, SyncTestEntry2>, int, SyncTestEntry2> cascadingDictionary = new Dictionary<int, SyncTestEntry2>
+            var cascadingDictionary = new SyncDictionary<Dictionary<int, SyncTestEntry2>, int, SyncTestEntry2>();
+            cascadingDictionary.Value = new Dictionary<int, SyncTestEntry2>
                                     {
-                                        { 0, new SyncTestEntry2 { Id = "0" } },
-                                        { 1, new SyncTestEntry2 { Id = "1", OtherTestLong = 99 } },
-                                        { 50, new SyncTestEntry2 { Id = "Third", OtherTestString = "Still the third..." } }
+                                        { 0, new SyncTestEntry2 { Id = {Value = "0"} } },
+                                        { 1, new SyncTestEntry2 { Id = {Value = "1"}, OtherTestLong = 99 } },
+                                        { 50, new SyncTestEntry2 { Id = {Value = "Third"}, OtherTestString = {Value = "Still the third..."} } }
                                     };
 
             byte[] data;
@@ -237,7 +242,7 @@
                     simpleDictionary.Value,
                     StringSerializer.Instance.Serialize,
                     FloatSerializer.Instance.Serialize);
-                this.AssertStreamPos(stream, 44, ref position);
+                TestUtils.AssertStreamPos(stream, 44, ref position);
 
                 NativeSerialization.SerializeDictionary(
                     stream,
@@ -245,31 +250,33 @@
                     cascadingDictionary.Value,
                     Int32Serializer.Instance.Serialize,
                     (targetStream, value) => value.Save(targetStream));
-                this.AssertStreamPos(stream, 86, ref position);
+                TestUtils.AssertStreamPos(stream, 76, ref position);
 
                 data = new byte[stream.Length];
                 stream.Seek(0, SeekOrigin.Begin);
                 stream.Read(data, 0, data.Length);
             }
 
-            Assert.AreEqual(130, data.Length);
+            Assert.AreEqual(120, data.Length);
 
             using (var stream = new MemoryStream(data))
             {
                 stream.Seek(0, SeekOrigin.Begin);
                 long position = stream.Position;
 
-                SyncDictionary<IDictionary<string, float>, string, float> restoredSimpleDictionary = NativeSerialization.DeserializeDictionary<string, float>(
+                var restoredSimpleDictionary = new SyncDictionary<IDictionary<string, float>, string, float>();
+                restoredSimpleDictionary.Value = NativeSerialization.DeserializeDictionary<string, float>(
                     stream,
                     null,
                     () => new Dictionary<string, float>(), 
                     StringSerializer.Instance.Deserialize,
                     FloatSerializer.Instance.Deserialize);
                 Assert.NotNull(restoredSimpleDictionary);
-                this.AssertDictionaryEquals(simpleDictionary.Value, restoredSimpleDictionary);
-                this.AssertStreamPos(stream, 44, ref position);
+                TestUtils.AssertDictionaryEquals(simpleDictionary.Value, restoredSimpleDictionary);
+                TestUtils.AssertStreamPos(stream, 44, ref position);
 
-                SyncDictionary<IDictionary<int, SyncTestEntry2>, int, SyncTestEntry2> restoredCascadeDictionary =
+                var restoredCascadeDictionary = new SyncDictionary<IDictionary<int, SyncTestEntry2>, int, SyncTestEntry2>();
+                restoredCascadeDictionary.Value =
                     NativeSerialization.DeserializeDictionary<int, SyncTestEntry2>(
                         stream,
                         null,
@@ -282,58 +289,9 @@
                             return entry;
                         });
                 Assert.NotNull(restoredCascadeDictionary);
-                this.AssertDictionaryEquals(cascadingDictionary.Value, restoredCascadeDictionary);
+                TestUtils.AssertDictionaryEquals(cascadingDictionary.Value, restoredCascadeDictionary);
 
-                this.AssertStreamPos(stream, 86, ref position);
-            }
-        }
-
-        // -------------------------------------------------------------------
-        // Private
-        // -------------------------------------------------------------------
-        private void AssertStreamPos(Stream stream, long expectedCount, ref long lastPosition)
-        {
-            Assert.AreEqual(expectedCount, stream.Position - lastPosition);
-            lastPosition = stream.Position;
-        }
-
-        private void AssertListEquals<T>(IList<T> first, IList<T> second)
-        {
-            Assert.AreEqual(first.Count, second.Count);
-            for (var i = 0; i < first.Count; i++)
-            {
-                this.AssertInstanceEquals(first[i], second[i]);
-            }
-        }
-
-        private void AssertDictionaryEquals<T, TN>(IDictionary<T, TN> first, IDictionary<T, TN> second)
-        {
-            Assert.AreEqual(first.Count, second.Count);
-
-            IList<T> firstKeys = new List<T>(first.Keys);
-            IList<T> secondKeys = new List<T>(second.Keys);
-            this.AssertListEquals(firstKeys, secondKeys);
-
-            IList<TN> firstValues = new List<TN>(first.Values);
-            IList<TN> secondValues = new List<TN>(second.Values);
-            this.AssertListEquals(firstValues, secondValues);
-        }
-
-        private void AssertInstanceEquals<T>(T first, T second)
-        {
-            if ((typeof(T).IsClass || typeof(T).IsInterface) && typeof(T) != typeof(string))
-            {
-                IList<PropertyInfo> properties = first.GetType().GetProperties();
-                foreach (PropertyInfo info in properties)
-                {
-                    var firstValue = info.GetValue(first);
-                    var secondValue = info.GetValue(second);
-                    Assert.AreEqual(firstValue, secondValue);
-                }
-            }
-            else
-            {
-                Assert.AreEqual(first, second);
+                TestUtils.AssertStreamPos(stream, 76, ref position);
             }
         }
     }

@@ -3,48 +3,33 @@
     using System.Diagnostics;
 
     [DebuggerDisplay("{Value}")]
-    public class Sync<T>
+    public struct Sync<T>
+        where T : struct
     {
-        private T value;
+        private readonly bool isUnchanged;
 
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
-        public Sync()
-            : this(default(T))
+        public Sync(T value, bool isUnchanged = false)
+            : this()
         {
-        }
-
-        public Sync(T value)
-        {
-            this.value = value;
-            this.IsChanged = true;
+            this.Value = value;
+            this.isUnchanged = isUnchanged;
         }
 
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public T Value
+        public T Value { get; private set; }
+        
+        public bool IsChanged
         {
             get
             {
-                return this.value;
-            }
-
-            set
-            {
-                if ((this.Value == null && value == null)
-                    || (this.value != null && this.value.Equals(value)))
-                {
-                    return;
-                }
-
-                this.value = value;
-                this.IsChanged = true;
+                return !this.isUnchanged;
             }
         }
-
-        public bool IsChanged { get; set; }
 
         public static implicit operator Sync<T>(T value)
         {
@@ -53,53 +38,27 @@
 
         public static bool operator !=(Sync<T> first, Sync<T> second)
         {
-            if (first == null)
-            {
-                return second != null;
-            }
-
             return !first.Equals(second);
         }
 
         public static bool operator ==(Sync<T> first, Sync<T> second)
         {
-            if (first == null)
-            {
-                return second == null;
-            }
-
             return first.Equals(second);
         }
 
         public override bool Equals(object obj)
         {
-            var typed = (Sync<T>)obj;
-            if (this.value == null && typed.Value == null)
-            {
-                return true;
-            }
-
-            if (this.value == null || typed.Value == null)
-            {
-                return false;
-            }
-
-            return typed.Value.Equals(this.Value);
+            return ((Sync<T>)obj).Value.Equals(this.Value);
         }
 
         public override int GetHashCode()
         {
-            if (this.value == null)
-            {
-                return 0;
-            }
-
-            return this.value.GetHashCode();
+            return this.Value.GetHashCode();
         }
 
-        public void ResetChangeState(bool state = false)
+        public Sync<T> ResetChangeState(bool state = false)
         {
-            this.IsChanged = state;
+            return new Sync<T>(this.Value, !state);
         }
     }
 }

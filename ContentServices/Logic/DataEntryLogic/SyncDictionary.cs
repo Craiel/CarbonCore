@@ -93,31 +93,6 @@
             }
         }
         
-        public static implicit operator SyncDictionary<T, TK, TV>(T value)
-        {
-            return new SyncDictionary<T, TK, TV>(value);
-        }
-
-        public static bool operator !=(SyncDictionary<T, TK, TV> first, SyncDictionary<T, TK, TV> second)
-        {
-            if (first == null)
-            {
-                return second != null;
-            }
-
-            return !first.Equals(second);
-        }
-
-        public static bool operator ==(SyncDictionary<T, TK, TV> first, SyncDictionary<T, TK, TV> second)
-        {
-            if (first == null)
-            {
-                return second == null;
-            }
-
-            return first.Equals(second);
-        }
-
         public IEnumerator<KeyValuePair<TK, TV>> GetEnumerator()
         {
             return this.value.GetEnumerator();
@@ -125,7 +100,7 @@
 
         public override bool Equals(object obj)
         {
-            var typed = (Sync<T>)obj;
+            var typed = (SyncDictionary<T, TK, TV>)obj;
             if (this.value == null && typed.Value == null)
             {
                 return true;

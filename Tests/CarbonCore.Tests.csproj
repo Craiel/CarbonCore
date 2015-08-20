@@ -97,6 +97,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="TestUtils.cs" />
     <Compile Include="Utils\CarbonPathTests.cs" />
     <Compile Include="Utils\LocalizationTests.cs" />
     <Compile Include="Utils\NetworkTests.cs" />

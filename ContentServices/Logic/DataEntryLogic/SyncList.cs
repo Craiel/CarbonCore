@@ -78,32 +78,7 @@
                 this.IsChanged = true;
             }
         }
-
-        public static implicit operator SyncList<T, TN>(T value)
-        {
-            return new SyncList<T, TN>(value);
-        }
-
-        public static bool operator !=(SyncList<T, TN> first, SyncList<T, TN> second)
-        {
-            if (first == null)
-            {
-                return second != null;
-            }
-
-            return !first.Equals(second);
-        }
-
-        public static bool operator ==(SyncList<T, TN> first, SyncList<T, TN> second)
-        {
-            if (first == null)
-            {
-                return second == null;
-            }
-
-            return first.Equals(second);
-        }
-
+        
         public IEnumerator<TN> GetEnumerator()
         {
             return this.value.GetEnumerator();
@@ -111,7 +86,7 @@
 
         public override bool Equals(object obj)
         {
-            var typed = (Sync<T>)obj;
+            var typed = (SyncList<T, TN>)obj;
             if (this.value == null && typed.Value == null)
             {
                 return true;

@@ -103,6 +103,8 @@
                 result = (List<T>)construction();
             }
 
+            // List entries are always serialized in full
+            result.Clear();
             short length = ReadEnumerableSize(source);
             for (var i = 0; i < length; i++)
             {
@@ -147,6 +149,8 @@
                 result = (Dictionary<T, TN>)construction();
             }
 
+            // Dictionaries are always serialized in full
+            result.Clear();
             short length = ReadEnumerableSize(source);
             for (var i = 0; i < length; i++)
             {
