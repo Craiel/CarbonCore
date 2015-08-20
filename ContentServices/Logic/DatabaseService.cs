@@ -9,9 +9,11 @@
     using System.Linq;
     using System.Threading;
 
-    using CarbonCore.ContentServices.Contracts;
-    using CarbonCore.ContentServices.Logic.Attributes;
+    using CarbonCore.ContentServices.Compat.Contracts;
+    using CarbonCore.ContentServices.Compat.Logic;
+    using CarbonCore.ContentServices.Compat.Logic.Attributes;
     using CarbonCore.Utils.Compat;
+    using CarbonCore.Utils.Compat.Contracts;
     using CarbonCore.Utils.Compat.Contracts.IoC;
     using CarbonCore.Utils.Compat.Database;
     using CarbonCore.Utils.Compat.Diagnostics;
@@ -231,7 +233,7 @@
         {
             using (DbCommand command = this.connector.CreateCommand())
             {
-                command.CommandText = string.Format(ContentServices.Constants.StatementTableInfo, tableName);
+                command.CommandText = string.Format(Compat.Constants.StatementTableInfo, tableName);
                 IList<object[]> info = new List<object[]>();
                 using (DbDataReader reader = command.ExecuteReader(CommandBehavior.Default))
                 {
@@ -283,7 +285,7 @@
                 string properties = DatabaseUtils.GetDatabaseTypeString(element.DatabaseType);
                 if (element == descriptor.PrimaryKey)
                 {
-                    properties = string.Format("{0} {1} {2}", properties, ContentServices.Constants.StatementPrimaryKey, ContentServices.Constants.StatementNotNull);
+                    properties = string.Format("{0} {1} {2}", properties, Compat.Constants.StatementPrimaryKey, Compat.Constants.StatementNotNull);
                 }
 
                 statement.What(element.Name, properties);
@@ -323,7 +325,7 @@
                         tableType = string.Concat(tableType, this.connector.NotNullStatement);
                     }
 
-                    tableTypeOptions = ContentServices.Constants.StatementPrimaryKey;
+                    tableTypeOptions = Compat.Constants.StatementPrimaryKey;
                 }
 
                 // If we still assume to be consistent check more details
@@ -801,7 +803,7 @@
                 System.Diagnostics.Debug.WriteLine("Executing batch: {0}", actions.Count);
                 using (var profileRegion = new ProfileRegion("DBWrite") { Discard = true })
                 {
-                    IList<SqlStatement> statements = new List<SqlStatement>();
+                    IList<ISqlStatement> statements = new List<ISqlStatement>();
                     foreach (DatabaseServiceAction action in actions)
                     {
                         statements.Add(action.Statement);
@@ -826,7 +828,7 @@
             {
                 using (DbCommand command = this.connector.CreateCommand())
                 {
-                    command.CommandText = ContentServices.Constants.StatementRollback;
+                    command.CommandText = Compat.Constants.StatementRollback;
                     command.ExecuteNonQuery();
                 }
 

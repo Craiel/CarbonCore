@@ -3,9 +3,9 @@
     using System.Collections.Generic;
     using System.IO;
 
-    using CarbonCore.ContentServices.Contracts;
-    using CarbonCore.ContentServices.Logic.DataEntryLogic;
-    using CarbonCore.ContentServices.Logic.DataEntryLogic.Serializers;
+    using CarbonCore.ContentServices.Compat.Contracts;
+    using CarbonCore.ContentServices.Compat.Logic.DataEntryLogic;
+    using CarbonCore.ContentServices.Compat.Logic.DataEntryLogic.Serializers;
 
     using NUnit.Framework;
 
@@ -170,14 +170,14 @@
                     cascadedCollection.IsChanged,
                     cascadedCollection.Value,
                     (targetStream, value) => value.Save(targetStream));
-                TestUtils.AssertStreamPos(stream, 149, ref position);
+                TestUtils.AssertStreamPos(stream, 154, ref position);
 
                 data = new byte[stream.Length];
                 stream.Seek(0, SeekOrigin.Begin);
                 stream.Read(data, 0, data.Length);
             }
 
-            Assert.AreEqual(178, data.Length);
+            Assert.AreEqual(183, data.Length);
 
             using (var stream = new MemoryStream(data))
             {
@@ -209,7 +209,7 @@
                 Assert.NotNull(restoredCascadeCollection);
                 TestUtils.AssertListEquals(cascadedCollection.Value, restoredCascadeCollection);
 
-                TestUtils.AssertStreamPos(stream, 149, ref position);
+                TestUtils.AssertStreamPos(stream, 154, ref position);
             }
         }
 
@@ -250,14 +250,14 @@
                     cascadingDictionary.Value,
                     Int32Serializer.Instance.Serialize,
                     (targetStream, value) => value.Save(targetStream));
-                TestUtils.AssertStreamPos(stream, 76, ref position);
+                TestUtils.AssertStreamPos(stream, 86, ref position);
 
                 data = new byte[stream.Length];
                 stream.Seek(0, SeekOrigin.Begin);
                 stream.Read(data, 0, data.Length);
             }
 
-            Assert.AreEqual(120, data.Length);
+            Assert.AreEqual(130, data.Length);
 
             using (var stream = new MemoryStream(data))
             {
@@ -291,7 +291,7 @@
                 Assert.NotNull(restoredCascadeDictionary);
                 TestUtils.AssertDictionaryEquals(cascadingDictionary.Value, restoredCascadeDictionary);
 
-                TestUtils.AssertStreamPos(stream, 76, ref position);
+                TestUtils.AssertStreamPos(stream, 86, ref position);
             }
         }
     }

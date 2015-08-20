@@ -44,6 +44,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Performance1.psess = Performance1.psess
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.ContentServices .Compat", "ContentServicesCompat\CarbonCore.ContentServices .Compat.csproj", "{890FF110-443F-4647-80B1-82D414CCCD88}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -202,8 +204,8 @@ Global
 		{B823CDCE-5ED4-4030-AB35-44DAF233D4C0}.Release|x64.Build.0 = Unity|x64
 		{B823CDCE-5ED4-4030-AB35-44DAF233D4C0}.Unity|Any CPU.ActiveCfg = Unity|Any CPU
 		{B823CDCE-5ED4-4030-AB35-44DAF233D4C0}.Unity|Any CPU.Build.0 = Unity|Any CPU
-		{B823CDCE-5ED4-4030-AB35-44DAF233D4C0}.Unity|x64.ActiveCfg = Unity|x64
-		{B823CDCE-5ED4-4030-AB35-44DAF233D4C0}.Unity|x64.Build.0 = Unity|x64
+		{B823CDCE-5ED4-4030-AB35-44DAF233D4C0}.Unity|x64.ActiveCfg = Unity|Any CPU
+		{B823CDCE-5ED4-4030-AB35-44DAF233D4C0}.Unity|x64.Build.0 = Unity|Any CPU
 		{0EC48D10-8E81-4B43-A7EE-F4BD83516CEA}.Debug|Any CPU.ActiveCfg = Unity|x64
 		{0EC48D10-8E81-4B43-A7EE-F4BD83516CEA}.Debug|x64.ActiveCfg = Unity|x64
 		{0EC48D10-8E81-4B43-A7EE-F4BD83516CEA}.Release|Any CPU.ActiveCfg = Unity|x64
@@ -212,8 +214,8 @@ Global
 		{0EC48D10-8E81-4B43-A7EE-F4BD83516CEA}.Release|x64.Build.0 = Unity|x64
 		{0EC48D10-8E81-4B43-A7EE-F4BD83516CEA}.Unity|Any CPU.ActiveCfg = Unity|Any CPU
 		{0EC48D10-8E81-4B43-A7EE-F4BD83516CEA}.Unity|Any CPU.Build.0 = Unity|Any CPU
-		{0EC48D10-8E81-4B43-A7EE-F4BD83516CEA}.Unity|x64.ActiveCfg = Unity|x64
-		{0EC48D10-8E81-4B43-A7EE-F4BD83516CEA}.Unity|x64.Build.0 = Unity|x64
+		{0EC48D10-8E81-4B43-A7EE-F4BD83516CEA}.Unity|x64.ActiveCfg = Unity|Any CPU
+		{0EC48D10-8E81-4B43-A7EE-F4BD83516CEA}.Unity|x64.Build.0 = Unity|Any CPU
 		{DB147104-0C6F-4723-A86F-005AC742D4E6}.Debug|Any CPU.ActiveCfg = Unity|x64
 		{DB147104-0C6F-4723-A86F-005AC742D4E6}.Debug|x64.ActiveCfg = Unity|x64
 		{DB147104-0C6F-4723-A86F-005AC742D4E6}.Release|Any CPU.ActiveCfg = Unity|x64
@@ -222,8 +224,17 @@ Global
 		{DB147104-0C6F-4723-A86F-005AC742D4E6}.Release|x64.Build.0 = Unity|x64
 		{DB147104-0C6F-4723-A86F-005AC742D4E6}.Unity|Any CPU.ActiveCfg = Unity|Any CPU
 		{DB147104-0C6F-4723-A86F-005AC742D4E6}.Unity|Any CPU.Build.0 = Unity|Any CPU
-		{DB147104-0C6F-4723-A86F-005AC742D4E6}.Unity|x64.ActiveCfg = Unity|x64
-		{DB147104-0C6F-4723-A86F-005AC742D4E6}.Unity|x64.Build.0 = Unity|x64
+		{DB147104-0C6F-4723-A86F-005AC742D4E6}.Unity|x64.ActiveCfg = Unity|Any CPU
+		{DB147104-0C6F-4723-A86F-005AC742D4E6}.Unity|x64.Build.0 = Unity|Any CPU
+		{890FF110-443F-4647-80B1-82D414CCCD88}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{890FF110-443F-4647-80B1-82D414CCCD88}.Debug|x64.ActiveCfg = Debug|x64
+		{890FF110-443F-4647-80B1-82D414CCCD88}.Debug|x64.Build.0 = Debug|x64
+		{890FF110-443F-4647-80B1-82D414CCCD88}.Release|Any CPU.ActiveCfg = Release|x64
+		{890FF110-443F-4647-80B1-82D414CCCD88}.Release|x64.ActiveCfg = Release|x64
+		{890FF110-443F-4647-80B1-82D414CCCD88}.Release|x64.Build.0 = Release|x64
+		{890FF110-443F-4647-80B1-82D414CCCD88}.Unity|Any CPU.ActiveCfg = Release|x64
+		{890FF110-443F-4647-80B1-82D414CCCD88}.Unity|x64.ActiveCfg = Unity|Any CPU
+		{890FF110-443F-4647-80B1-82D414CCCD88}.Unity|x64.Build.0 = Unity|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

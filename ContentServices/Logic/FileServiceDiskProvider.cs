@@ -4,6 +4,8 @@
     using System.Collections.Generic;
     using System.IO;
 
+    using CarbonCore.ContentServices.Compat.Contracts;
+    using CarbonCore.ContentServices.Compat.Logic;
     using CarbonCore.ContentServices.Contracts;
     using CarbonCore.Utils.Compat.Contracts.IoC;
     using CarbonCore.Utils.Compat.IO;

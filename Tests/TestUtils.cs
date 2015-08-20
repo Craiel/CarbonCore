@@ -6,10 +6,9 @@
     using System.IO;
     using System.Linq;
     using System.Reflection;
-    using System.Runtime.CompilerServices;
 
-    using CarbonCore.ContentServices.Contracts;
-    using CarbonCore.ContentServices.Logic.DataEntryLogic;
+    using CarbonCore.ContentServices.Compat.Contracts;
+    using CarbonCore.ContentServices.Compat.Logic.DataEntryLogic;
 
     using NUnit.Framework;
 

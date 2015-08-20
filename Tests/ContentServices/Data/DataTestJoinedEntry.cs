@@ -2,8 +2,8 @@
 {
     using System;
 
-    using CarbonCore.ContentServices.Logic;
-    using CarbonCore.ContentServices.Logic.Attributes;
+    using CarbonCore.ContentServices.Compat.Logic;
+    using CarbonCore.ContentServices.Compat.Logic.Attributes;
 
     using Newtonsoft.Json;
 

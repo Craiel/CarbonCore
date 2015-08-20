@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.IO;
 
+    using CarbonCore.ContentServices.Compat.Logic;
     using CarbonCore.ContentServices.Contracts;
 
     public class FileService : IFileService

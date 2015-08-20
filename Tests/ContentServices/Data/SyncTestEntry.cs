@@ -3,8 +3,8 @@
     using System.Collections.Generic;
     using System.IO;
 
-    using CarbonCore.ContentServices.Logic.DataEntryLogic;
-    using CarbonCore.ContentServices.Logic.DataEntryLogic.Serializers;
+    using CarbonCore.ContentServices.Compat.Logic.DataEntryLogic;
+    using CarbonCore.ContentServices.Compat.Logic.DataEntryLogic.Serializers;
     using CarbonCore.Tests.ContentServices.Data;
 
     public class SyncTestEntry : SyncEntry
@@ -78,28 +78,28 @@
                 || this.CascadingDictionary.IsChanged;
         }
 
-        public override void Save(Stream target)
+        public override void Save(Stream target, bool ignoreChangeState = false)
         {
             // Simple types
-            NativeSerialization.SerializeObject(target, this.Id.IsChanged, this.Id.Value, Int32Serializer.Instance.Serialize);
-            NativeSerialization.Serialize(target, this.TestInt.IsChanged, this.TestInt.Value, Int32Serializer.Instance.Serialize);
-            NativeSerialization.Serialize(target, this.TestLong.IsChanged, this.TestLong.Value, Int64Serializer.Instance.Serialize);
-            NativeSerialization.Serialize(target, this.TestFloat.IsChanged, this.TestFloat.Value, FloatSerializer.Instance.Serialize);
-            NativeSerialization.Serialize(target, this.TestBool.IsChanged, this.TestBool.Value, BooleanSerializer.Instance.Serialize);
-            NativeSerialization.Serialize(target, this.ByteArray.IsChanged, this.ByteArray.Value, ByteArraySerializer.Instance.Serialize);
-            NativeSerialization.Serialize(target, this.TestString.IsChanged, this.TestString.Value, StringSerializer.Instance.Serialize);
-            NativeSerialization.Serialize(target, this.Enum.IsChanged, this.Enum.Value, (stream, value) => Int32Serializer.Instance.Serialize(stream, (int)value));
+            NativeSerialization.SerializeObject(target, ignoreChangeState || this.Id.IsChanged, this.Id.Value, Int32Serializer.Instance.Serialize);
+            NativeSerialization.Serialize(target, ignoreChangeState || this.TestInt.IsChanged, this.TestInt.Value, Int32Serializer.Instance.Serialize);
+            NativeSerialization.Serialize(target, ignoreChangeState || this.TestLong.IsChanged, this.TestLong.Value, Int64Serializer.Instance.Serialize);
+            NativeSerialization.Serialize(target, ignoreChangeState || this.TestFloat.IsChanged, this.TestFloat.Value, FloatSerializer.Instance.Serialize);
+            NativeSerialization.Serialize(target, ignoreChangeState || this.TestBool.IsChanged, this.TestBool.Value, BooleanSerializer.Instance.Serialize);
+            NativeSerialization.Serialize(target, ignoreChangeState || this.ByteArray.IsChanged, this.ByteArray.Value, ByteArraySerializer.Instance.Serialize);
+            NativeSerialization.Serialize(target, ignoreChangeState || this.TestString.IsChanged, this.TestString.Value, StringSerializer.Instance.Serialize);
+            NativeSerialization.Serialize(target, ignoreChangeState || this.Enum.IsChanged, this.Enum.Value, (stream, value) => Int32Serializer.Instance.Serialize(stream, (int)value));
 
             // Cascaded objects
-            NativeSerialization.SerializeObject(target, this.CascadedEntry.IsChanged, this.CascadedEntry.Value, (stream, value) => value.Save(stream));
+            NativeSerialization.SerializeObject(target, ignoreChangeState || this.CascadedEntry.IsChanged, this.CascadedEntry.Value, (stream, value) => value.Save(stream, ignoreChangeState));
 
             // Lists
-            NativeSerialization.SerializeList(target, this.SimpleCollection.IsChanged, this.SimpleCollection.Value, Int32Serializer.Instance.Serialize);
-            NativeSerialization.SerializeList(target, this.CascadingCollection.IsChanged, this.CascadingCollection.Value, (stream, value) => value.Save(stream));
+            NativeSerialization.SerializeList(target, ignoreChangeState || this.SimpleCollection.IsChanged, this.SimpleCollection.Value, Int32Serializer.Instance.Serialize);
+            NativeSerialization.SerializeList(target, ignoreChangeState || this.CascadingCollection.IsChanged, this.CascadingCollection.Value, (stream, value) => value.Save(stream, true));
             
             // Dictionaries
-            NativeSerialization.SerializeDictionary(target, this.SimpleDictionary.IsChanged, this.SimpleDictionary.Value, StringSerializer.Instance.Serialize, FloatSerializer.Instance.Serialize);
-            NativeSerialization.SerializeDictionary(target, this.CascadingDictionary.IsChanged, this.CascadingDictionary.Value, Int32Serializer.Instance.Serialize, (stream, value) => value.Save(stream));
+            NativeSerialization.SerializeDictionary(target, ignoreChangeState || this.SimpleDictionary.IsChanged, this.SimpleDictionary.Value, StringSerializer.Instance.Serialize, FloatSerializer.Instance.Serialize);
+            NativeSerialization.SerializeDictionary(target, ignoreChangeState || this.CascadingDictionary.IsChanged, this.CascadingDictionary.Value, Int32Serializer.Instance.Serialize, (stream, value) => value.Save(stream, true));
         }
 
         public override void Load(Stream source)

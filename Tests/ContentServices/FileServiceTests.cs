@@ -4,7 +4,8 @@
     using System.Collections.Generic;
     using System.IO.Compression;
     using System.Linq;
-    
+
+    using CarbonCore.ContentServices.Compat.Logic;
     using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.IoC;
     using CarbonCore.ContentServices.Logic;

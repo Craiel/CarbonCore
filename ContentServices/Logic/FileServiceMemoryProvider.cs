@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
 
+    using CarbonCore.ContentServices.Compat.Logic;
     using CarbonCore.ContentServices.Contracts;
 
     public class FileServiceMemoryProvider : FileServiceProvider, IFileServiceMemoryProvider

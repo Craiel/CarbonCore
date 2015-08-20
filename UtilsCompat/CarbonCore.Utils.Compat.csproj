@@ -104,6 +104,7 @@
     <Compile Include="Contracts\IoC\ICarbonQuickModule.cs" />
     <Compile Include="Contracts\IoC\ICarbonQuickBinding.cs" />
     <Compile Include="Contracts\IoC\IFactory.cs" />
+    <Compile Include="Contracts\ISqlStatement.cs" />
     <Compile Include="Contracts\Network\ICoreTcpClient.cs" />
     <Compile Include="Contracts\Network\ICoreTcpServer.cs" />
     <Compile Include="Contracts\IThreadQueueComponent.cs" />

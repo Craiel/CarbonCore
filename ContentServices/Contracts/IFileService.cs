@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
 
+    using CarbonCore.ContentServices.Compat.Logic;
     using CarbonCore.ContentServices.Logic;
 
     public interface IFileService : IDisposable

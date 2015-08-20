@@ -6,12 +6,8 @@
     using System.Data;
     using System.Text;
 
+    using CarbonCore.Utils.Compat.Contracts;
     using CarbonCore.Utils.Compat.Database;
-
-    public interface ISqlStatement
-    {
-        SqlStatementType Type { get; }
-    }
 
     public class SqlStatement : ISqlStatement
     {
@@ -118,19 +114,19 @@
             command.CommandText = string.Concat(command.CommandText, "\n", commandAppendix.ToString());
         }
 
-        public SqlStatement Table(string tableName)
+        public ISqlStatement Table(string tableName)
         {
             this.table = tableName;
             return this;
         }
 
-        public SqlStatement Schema(string schemaName)
+        public ISqlStatement Schema(string schemaName)
         {
             this.schema = schemaName;
             return this;
         }
 
-        public SqlStatement What(string name, string properties = null)
+        public ISqlStatement What(string name, string properties = null)
         {
             System.Diagnostics.Trace.Assert(!this.what.Contains(name));
 
@@ -143,19 +139,19 @@
             return this;
         }
 
-        public SqlStatement OrderBy(SqlStatementOrderByRule rule)
+        public ISqlStatement OrderBy(SqlStatementOrderByRule rule)
         {
             this.order.Add(rule);
             return this;
         }
 
-        public SqlStatement OrderBy(IEnumerable<SqlStatementOrderByRule> rules)
+        public ISqlStatement OrderBy(IEnumerable<SqlStatementOrderByRule> rules)
         {
             this.order.AddRange(rules);
             return this;
         }
 
-        public SqlStatement With(string name, object value, string properties = null)
+        public ISqlStatement With(string name, object value, string properties = null)
         {
             System.Diagnostics.Trace.Assert(!this.values.ContainsKey(name));
 
@@ -168,19 +164,19 @@
             return this;
         }
 
-        public SqlStatement WhereConstraint(SqlStatementConstraint constraint)
+        public ISqlStatement WhereConstraint(SqlStatementConstraint constraint)
         {
             this.where.Add(constraint);
             return this;
         }
 
-        public SqlStatement WhereConstraint(IEnumerable<SqlStatementConstraint> constraints)
+        public ISqlStatement WhereConstraint(IEnumerable<SqlStatementConstraint> constraints)
         {
             this.where.AddRange(constraints);
             return this;
         }
 
-        public SqlStatement Output(SqlStatementOutput expression)
+        public ISqlStatement Output(SqlStatementOutput expression)
         {
             this.output.Add(expression);
             return this;

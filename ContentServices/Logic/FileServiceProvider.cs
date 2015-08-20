@@ -5,6 +5,7 @@
     using System.IO;
     using System.IO.Compression;
 
+    using CarbonCore.ContentServices.Compat.Logic;
     using CarbonCore.ContentServices.Contracts;
 
     public abstract class FileServiceProvider : IFileServiceProvider

@@ -7,7 +7,8 @@
     using System.Data.SQLite;
     using System.Threading;
 
-    using CarbonCore.ContentServices.Contracts;
+    using CarbonCore.ContentServices.Compat.Contracts;
+    using CarbonCore.Utils.Compat.Contracts;
     using CarbonCore.Utils.Compat.IO;
     using CarbonCore.Utils.Database;
 
@@ -82,33 +83,33 @@
             return this.OpenConnection();
         }
 
-        public DbCommand CreateCommand(SqlStatement statement)
+        public DbCommand CreateCommand(ISqlStatement statement)
         {
             System.Diagnostics.Trace.Assert(this.connection != null);
 
             DbCommand command = this.connection.CreateCommand();
             if (statement != null)
             {
-                System.Diagnostics.Trace.TraceInformation("SQLite: {0}", statement.ToString());
+                System.Diagnostics.Trace.TraceInformation("SQLite: {0}", statement);
                 statement.IntoCommand(command);
             }
 
             return command;
         }
 
-        public DbCommand CreateCommand(IList<SqlStatement> statements)
+        public DbCommand CreateCommand(IList<ISqlStatement> statements)
         {
             System.Diagnostics.Trace.Assert(this.connection != null && statements != null && statements.Count > 0);
 
             DbCommand command = this.connection.CreateCommand();
-            command.CommandText = string.Format("{0};", Constants.StatementBegin);
+            command.CommandText = string.Format("{0};", Compat.Constants.StatementBegin);
             for (int i = 0; i < statements.Count; i++)
             {
-                SqlStatement statement = statements[i];
+                ISqlStatement statement = statements[i];
                 statement.IntoCommand(command, string.Format("_{0}", i));
             }
 
-            command.CommandText = string.Format("{0}\n{1};", command.CommandText, Constants.StatementCommit);
+            command.CommandText = string.Format("{0}\n{1};", command.CommandText, Compat.Constants.StatementCommit);
 
             return command;
         }

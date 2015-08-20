@@ -1,10 +1,9 @@
 ﻿namespace CarbonCore.Tests.ContentServices
 {
     using System;
-    using System.Collections;
     using System.Linq;
 
-    using CarbonCore.ContentServices.Logic.DataEntryLogic;
+    using CarbonCore.ContentServices.Compat.Logic.DataEntryLogic;
     using CarbonCore.Utils.Compat.Diagnostics;
 
     using NUnit.Framework;
@@ -145,6 +144,15 @@
             byte[] native = DataEntrySerialization.SyncSave(DataTestData.SyncTestEntry);
             Assert.AreEqual(345, native.Length);
 
+            // Reset the change state and test again
+            DataTestData.SyncTestEntry.ResetChangeState();
+            native = DataEntrySerialization.SyncSave(DataTestData.SyncTestEntry);
+            Assert.AreEqual(13, native.Length);
+
+            // Test saving with ignoring the change state
+            native = DataEntrySerialization.SyncSave(DataTestData.SyncTestEntry, true);
+            Assert.AreEqual(345, native.Length);
+
             SyncTestEntry restored = new SyncTestEntry();
             SyncTestEntry restored2 = new SyncTestEntry();
             DataEntrySerialization.SyncLoad(restored, native);
@@ -179,7 +187,7 @@
             restored.CascadingCollection.Add(new SyncTestEntry2());
             restored.CascadingCollection[0].OtherTestFloat = -10.0f;
             restoredData = DataEntrySerialization.SyncSave(restored);
-            Assert.AreEqual(84, restoredData.Length);
+            Assert.AreEqual(134, restoredData.Length);
 
             DataEntrySerialization.SyncLoad(restored2, restoredData);
             Assert.IsTrue(restored.CascadingCollection.SequenceEqual(restored2.CascadingCollection));
@@ -187,7 +195,7 @@
             // Modify Dictionaries
             restored.SimpleDictionary.Add("TestDict", 123);
             restoredData = DataEntrySerialization.SyncSave(restored);
-            Assert.AreEqual(143, restoredData.Length);
+            Assert.AreEqual(193, restoredData.Length);
 
             DataEntrySerialization.SyncLoad(restored2, restoredData);
             Assert.IsTrue(restored.SimpleDictionary.SequenceEqual(restored2.SimpleDictionary));
@@ -196,7 +204,7 @@
             restored.CascadingDictionary.Add(1001, new SyncTestEntry2());
             restored.CascadingDictionary[0].OtherTestFloat = -10.0f;
             restoredData = DataEntrySerialization.SyncSave(restored);
-            Assert.AreEqual(192, restoredData.Length);
+            Assert.AreEqual(297, restoredData.Length);
 
             DataEntrySerialization.SyncLoad(restored2, restoredData);
             Assert.IsTrue(restored.CascadingDictionary.SequenceEqual(restored2.CascadingDictionary));

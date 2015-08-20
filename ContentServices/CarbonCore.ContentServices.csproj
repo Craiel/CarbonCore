@@ -46,76 +46,29 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constants.cs" />
-    <Compile Include="Contracts\IDatabaseEntry.cs" />
-    <Compile Include="Contracts\IDatabaseService.cs" />
-    <Compile Include="Contracts\IDataConnector.cs" />
-    <Compile Include="Contracts\IDataEntry.cs" />
     <Compile Include="Contracts\IFileService.cs" />
     <Compile Include="Contracts\IFileServiceDiskProvider.cs" />
     <Compile Include="Contracts\IFileServiceMemoryProvider.cs" />
     <Compile Include="Contracts\IFileServicePackProvider.cs" />
     <Compile Include="Contracts\IFileServiceProvider.cs" />
-    <Compile Include="Contracts\ISqlLiteConnector.cs" />
-    <Compile Include="Contracts\ISyncContent.cs" />
-    <Compile Include="Contracts\ISyncEntry.cs" />
     <Compile Include="IoC\IoC.cs" />
-    <Compile Include="Logic\Attributes\DatabaseEntryJoinedElementAttribute.cs" />
-    <Compile Include="Logic\Attributes\DatabaseEntryAttribute.cs" />
-    <Compile Include="Logic\DatabaseEntryJoinedElementDescriptor.cs" />
-    <Compile Include="Logic\DatabaseEntryDescriptor.cs" />
-    <Compile Include="Logic\Attributes\DatabaseEntryElementAttribute.cs" />
-    <Compile Include="Logic\DatabaseEntryElementDescriptor.cs" />
-    <Compile Include="Logic\DatabaseQueryCriterion.cs" />
     <Compile Include="Logic\DatabaseService.cs" />
-    <Compile Include="Logic\DatabaseQueryOrder.cs" />
-    <Compile Include="Logic\DatabaseQuery.cs" />
-    <Compile Include="Logic\DatabaseEntry.cs" />
     <Compile Include="Logic\DatabaseServiceAction.cs" />
-    <Compile Include="Logic\Attributes\DataElementAttribute.cs" />
-    <Compile Include="Logic\DataEntryLogic\DataEntry.cs" />
-    <Compile Include="Logic\Attributes\DataEntryAttribute.cs" />
-    <Compile Include="Logic\DataEntryLogic\DataEntryDescriptor.cs" />
-    <Compile Include="Logic\DataEntryLogic\DataEntryDescriptors.cs" />
-    <Compile Include="Logic\DataEntryLogic\DataEntryElementSerializer.cs" />
-    <Compile Include="Logic\DataEntryLogic\DataEntrySerialization.cs" />
-    <Compile Include="Logic\DataEntryLogic\DataEntrySerializationDescriptor.cs" />
-    <Compile Include="Logic\DataEntryLogic\DataSerializationEntry.cs" />
-    <Compile Include="Logic\DataEntryLogic\NativeSerialization.cs" />
-    <Compile Include="Logic\DataEntryLogic\Serializers\ByteArraySerializer.cs" />
-    <Compile Include="Logic\DataEntryLogic\Serializers\BooleanSerializer.cs" />
-    <Compile Include="Logic\DataEntryLogic\CompactSerializers\DataEntrySerializer.cs" />
-    <Compile Include="Logic\DataEntryLogic\Serializers\DoubleSerializer.cs" />
-    <Compile Include="Logic\DataEntryLogic\Serializers\FloatSerializer.cs" />
-    <Compile Include="Logic\DataEntryLogic\Serializers\Int64Serializer.cs" />
-    <Compile Include="Logic\DataEntryLogic\Serializers\Int32Serializer.cs" />
-    <Compile Include="Logic\DataEntryLogic\CompactSerializers\DictionarySerializer.cs" />
-    <Compile Include="Logic\DataEntryLogic\CompactSerializers\ListSerializer.cs" />
-    <Compile Include="Logic\DataEntryLogic\Serializers\StringSerializer.cs" />
-    <Compile Include="Logic\DataEntryLogic\SyncNull.cs" />
-    <Compile Include="Logic\DataEntryLogic\SyncObject.cs" />
-    <Compile Include="Logic\DataEntryLogic\SyncCascade.cs" />
-    <Compile Include="Logic\DataEntryLogic\SyncDictionary.cs" />
-    <Compile Include="Logic\DataEntryLogic\SyncList.cs" />
-    <Compile Include="Logic\DataEntryLogic\Sync.cs" />
-    <Compile Include="Logic\DataEntryLogic\SyncEntry.cs" />
-    <Compile Include="Logic\FileEntry.cs" />
-    <Compile Include="Logic\FileEntryData.cs" />
     <Compile Include="Logic\FileEntryKey.cs" />
-    <Compile Include="Logic\FileEntryPackInfo.cs" />
     <Compile Include="Logic\FileService.cs" />
     <Compile Include="Logic\FileServiceDiskProvider.cs" />
     <Compile Include="Logic\FileServiceMemoryProvider.cs" />
     <Compile Include="Logic\FileServicePackProvider.cs" />
     <Compile Include="Logic\FileServiceProvider.cs" />
-    <Compile Include="Logic\SqlConnectorCommand.cs" />
-    <Compile Include="Logic\SqlConnectorConnection.cs" />
-    <Compile Include="Logic\SqlConnectorTransaction.cs" />
     <Compile Include="Logic\SQLiteStatement.cs" />
     <Compile Include="Logic\SqlLiteConnector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ContentServicesCompat\CarbonCore.ContentServices .Compat.csproj">
+      <Project>{890ff110-443f-4647-80b1-82d414cccd88}</Project>
+      <Name>CarbonCore.ContentServices .Compat</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UtilsCompat\CarbonCore.Utils.Compat.csproj">
       <Project>{B823CDCE-5ED4-4030-AB35-44DAF233D4C0}</Project>
       <Name>CarbonCore.Utils.Compat</Name>

@@ -3,8 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.Globalization;
-    
-    using CarbonCore.ContentServices.Contracts;
+
+    using CarbonCore.ContentServices.Compat.Contracts;
     using CarbonCore.ContentServices.IoC;
     using CarbonCore.Utils.Compat.Contracts.IoC;
     using CarbonCore.Utils.Compat.IO;

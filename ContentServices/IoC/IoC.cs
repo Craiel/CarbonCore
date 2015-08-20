@@ -1,5 +1,6 @@
 ﻿namespace CarbonCore.ContentServices.IoC
 {
+    using CarbonCore.ContentServices.Compat.Contracts;
     using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.Logic;
     using CarbonCore.Utils.Compat.IoC;
