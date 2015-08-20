@@ -53,11 +53,21 @@
 
         public static bool operator !=(Sync<T> first, Sync<T> second)
         {
+            if (first == null)
+            {
+                return second != null;
+            }
+
             return !first.Equals(second);
         }
 
         public static bool operator ==(Sync<T> first, Sync<T> second)
         {
+            if (first == null)
+            {
+                return second == null;
+            }
+
             return first.Equals(second);
         }
 

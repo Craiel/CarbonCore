@@ -20,21 +20,13 @@
                 return instance ?? (instance = new StringSerializer());
             }
         }
-
-        public override long MinSize
-        {
-            get
-            {
-                return 3;
-            }
-        }
-
-        public long Serialize(Stream target, string value)
+        
+        public void Serialize(Stream target, string value)
         {
             if (string.IsNullOrEmpty(value))
             {
                 target.WriteByte(0);
-                return 1;
+                return;
             }
 
             target.WriteByte(1);
@@ -44,14 +36,11 @@
             target.Write(length, 0, length.Length);
 
             target.Write(data, 0, data.Length);
-
-            // Return the overall written size
-            return 3 + data.Length;
         }
 
-        public override long Serialize(Stream target, object value)
+        public override void Serialize(Stream target, object value)
         {
-            return this.Serialize(target, (string)value);
+            this.Serialize(target, (string)value);
         }
 
         public override object Deserialize(Stream source)

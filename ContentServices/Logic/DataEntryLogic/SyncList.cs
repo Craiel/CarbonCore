@@ -86,11 +86,21 @@
 
         public static bool operator !=(SyncList<T, TN> first, SyncList<T, TN> second)
         {
+            if (first == null)
+            {
+                return second != null;
+            }
+
             return !first.Equals(second);
         }
 
         public static bool operator ==(SyncList<T, TN> first, SyncList<T, TN> second)
         {
+            if (first == null)
+            {
+                return second == null;
+            }
+
             return first.Equals(second);
         }
 

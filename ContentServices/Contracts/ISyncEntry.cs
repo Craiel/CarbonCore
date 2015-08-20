@@ -4,7 +4,7 @@
 
     public interface ISyncEntry
     {
-        long Save(Stream target);
+        void Save(Stream target);
 
         void Load(Stream source);
 

@@ -61,10 +61,8 @@
 
         public SyncDictionary<Dictionary<int, SyncTestEntry2>, int, SyncTestEntry2> CascadingDictionary { get; set; }
         
-        public override long Save(Stream target)
+        public override void Save(Stream target)
         {
-            long start = target.Position;
-
             // Simple types
             NativeSerialization.SerializeObject(target, this.Id.IsChanged, this.Id.Value, Int32Serializer.Instance.Serialize);
             NativeSerialization.Serialize(target, this.TestInt.IsChanged, this.TestInt.Value, Int32Serializer.Instance.Serialize);
@@ -85,8 +83,6 @@
             // Dictionaries
             NativeSerialization.SerializeDictionary(target, this.SimpleDictionary.IsChanged, this.SimpleDictionary.Value, StringSerializer.Instance.Serialize, FloatSerializer.Instance.Serialize);
             NativeSerialization.SerializeDictionary(target, this.CascadingDictionary.IsChanged, this.CascadingDictionary.Value, Int32Serializer.Instance.Serialize, (stream, value) => value.Save(stream));
-
-            return target.Position - start;
         }
 
         public override void Load(Stream source)
@@ -104,11 +100,7 @@
                 source,
                 this.CascadedEntry.Value,
                 () => new SyncTestEntry2(),
-                (stream, current) =>
-                    {
-                        current.Load(stream);
-                        return current;
-                    });
+                (stream, current) => current.Load(stream));
 
             this.SimpleCollection = NativeSerialization.DeserializeList(
                     source,

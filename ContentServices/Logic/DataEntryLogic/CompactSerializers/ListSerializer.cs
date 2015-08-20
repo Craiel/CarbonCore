@@ -33,27 +33,19 @@
         // -------------------------------------------------------------------
         public Type Type { get; private set; }
 
-        public override long MinSize
-        {
-            get
-            {
-                return 3;
-            }
-        }
-
-        public override long Serialize(Stream target, object value)
+        public override void Serialize(Stream target, object value)
         {
             if (value == null)
             {
                 target.WriteByte(0);
-                return 1;
+                return;
             }
 
             var typed = (ICollection)value;
             if (typed.Count <= 0)
             {
                 target.WriteByte(0);
-                return 1;
+                return;
             }
             
             target.WriteByte(1);
@@ -62,13 +54,10 @@
             byte[] length = BitConverter.GetBytes((Int16)typed.Count);
             target.Write(length, 0, 2);
 
-            long byteCount = 3;
             foreach (object entry in (IEnumerable)value)
             {
-                byteCount += this.innerSerializer.Serialize(target, entry);
+                this.innerSerializer.Serialize(target, entry);
             }
-
-            return byteCount;
         }
 
         public override object Deserialize(Stream source)

@@ -4,11 +4,11 @@
     using System.Collections.Generic;
     using System.IO;
     
-    public delegate long SerializationCallbackDelegate<in T>(Stream target, T value);
+    public delegate void SerializationCallbackDelegate<in T>(Stream target, T value);
 
     public delegate object DeserializationCallbackDelegate(Stream source);
 
-    public delegate object DeserializationObjectCallbackDelegate<T>(Stream source, T current);
+    public delegate void DeserializationObjectCallbackDelegate<in T>(Stream source, T current);
 
     public delegate object ConstructionCallbackDelegate();
 

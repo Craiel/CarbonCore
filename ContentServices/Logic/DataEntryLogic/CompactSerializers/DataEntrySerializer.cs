@@ -21,21 +21,13 @@
         // Public
         // -------------------------------------------------------------------
         public Type Type { get; private set; }
-
-        public override long MinSize
-        {
-            get
-            {
-                return 0;
-            }
-        }
-
-        public override long Serialize(Stream target, object value)
+        
+        public override void Serialize(Stream target, object value)
         {
             if (value == null)
             {
                 target.WriteByte(0);
-                return 1;
+                return;
             }
 
             target.WriteByte(1);
@@ -44,8 +36,6 @@
             byte[] length = BitConverter.GetBytes(data.Length);
             target.Write(length, 0, 4);
             target.Write(data, 0, data.Length);
-
-            return 5 + data.Length;
         }
 
         public override object Deserialize(Stream source)

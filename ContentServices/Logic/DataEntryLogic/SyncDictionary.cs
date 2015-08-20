@@ -100,11 +100,21 @@
 
         public static bool operator !=(SyncDictionary<T, TK, TV> first, SyncDictionary<T, TK, TV> second)
         {
+            if (first == null)
+            {
+                return second != null;
+            }
+
             return !first.Equals(second);
         }
 
         public static bool operator ==(SyncDictionary<T, TK, TV> first, SyncDictionary<T, TK, TV> second)
         {
+            if (first == null)
+            {
+                return second == null;
+            }
+
             return first.Equals(second);
         }
 

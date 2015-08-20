@@ -20,31 +20,23 @@
             }
         }
 
-        public override long MinSize
-        {
-            get
-            {
-                return 5;
-            }
-        }
-
-        public long Serialize(Stream target, Single? source)
+        public void Serialize(Stream target, Single? source)
         {
             if (source == null)
             {
                 target.WriteByte(byte.MaxValue);
-                return 1;
+                return;
             }
 
-            return this.Serialize(target, source.Value);
+            this.Serialize(target, source.Value);
         }
 
-        public long Serialize(Stream target, Single source)
+        public void Serialize(Stream target, Single source)
         {
             if (Math.Abs(source - default(Single)) < float.Epsilon)
             {
                 target.WriteByte(0);
-                return 1;
+                return;
             }
 
             target.WriteByte(1);
@@ -52,12 +44,11 @@
             byte[] data = BitConverter.GetBytes(source);
 
             target.Write(data, 0, 4);
-            return this.MinSize;
         }
 
-        public override long Serialize(Stream target, object source)
+        public override void Serialize(Stream target, object source)
         {
-            return this.Serialize(target, (Single)source);
+            this.Serialize(target, (Single)source);
         }
 
         public override object Deserialize(Stream source)

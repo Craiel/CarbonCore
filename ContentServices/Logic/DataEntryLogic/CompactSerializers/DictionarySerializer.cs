@@ -45,27 +45,19 @@
 
         public Type KeyValueType { get; private set; }
 
-        public override long MinSize
-        {
-            get
-            {
-                return 3;
-            }
-        }
-
-        public override long Serialize(Stream target, object value)
+        public override void Serialize(Stream target, object value)
         {
             if (value == null)
             {
                 target.WriteByte(0);
-                return 1;
+                return;
             }
 
             var typed = (IDictionary)value;
             if (typed.Count <= 0)
             {
                 target.WriteByte(0);
-                return 1;
+                return;
             }
             
             target.WriteByte(1);
@@ -74,14 +66,11 @@
             byte[] length = BitConverter.GetBytes((Int16)typed.Count);
             target.Write(length, 0, 2);
 
-            long byteCount = 3;
             foreach (object entry in (IEnumerable)value)
             {
-                byteCount += this.keySerializer.Serialize(target, this.keyProperty.GetValue(entry));
-                byteCount += this.valueSerializer.Serialize(target, this.valueProperty.GetValue(entry));
+                this.keySerializer.Serialize(target, this.keyProperty.GetValue(entry));
+                this.valueSerializer.Serialize(target, this.valueProperty.GetValue(entry));
             }
-
-            return byteCount;
         }
 
         public override object Deserialize(Stream source)

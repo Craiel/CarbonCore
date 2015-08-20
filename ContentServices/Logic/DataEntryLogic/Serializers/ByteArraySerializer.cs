@@ -20,20 +20,12 @@
             }
         }
 
-        public override long MinSize
-        {
-            get
-            {
-                return 3;
-            }
-        }
-
-        public long Serialize(Stream target, byte[] source)
+        public void Serialize(Stream target, byte[] source)
         {
             if (source == null || source.Length <= 0)
             {
                 target.WriteByte(0);
-                return 1;
+                return;
             }
 
             target.WriteByte(1);
@@ -41,14 +33,11 @@
             byte[] length = BitConverter.GetBytes((Int16)source.Length);
             target.Write(length, 0, 2);
             target.Write(source, 0, source.Length);
-
-            // Return the overall written size
-            return 3 + source.Length;
         }
 
-        public override long Serialize(Stream target, object source)
+        public override void Serialize(Stream target, object source)
         {
-            return this.Serialize(target, (byte[])source);
+            this.Serialize(target, (byte[])source);
         }
 
         public override object Deserialize(Stream source)
