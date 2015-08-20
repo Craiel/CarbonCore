@@ -160,13 +160,13 @@
         public override void ResetChangeState(bool state = false)
         {
             this.Id.ResetChangeState(state);
-            this.TestInt = this.TestInt.ResetChangeState(state);
-            this.TestLong = this.TestLong.ResetChangeState(state);
-            this.TestFloat = this.TestFloat.ResetChangeState(state);
-            this.TestBool = this.TestBool.ResetChangeState(state);
+            this.TestInt = this.TestInt.Unchanged();
+            this.TestLong = this.TestLong.Unchanged();
+            this.TestFloat = this.TestFloat.Unchanged();
+            this.TestBool = this.TestBool.Unchanged();
             this.ByteArray.ResetChangeState(state);
             this.TestString.ResetChangeState(state);
-            this.Enum = this.Enum.ResetChangeState(state);
+            this.Enum = this.Enum.Unchanged();
 
             this.CascadedEntry.ResetChangeState(state);
 

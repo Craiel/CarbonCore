@@ -117,6 +117,11 @@
             IDictionary<Type, DataEntryElementSerializer> genericSerializers = new Dictionary<Type, DataEntryElementSerializer>();
             foreach (Type argumentType in genericArguments)
             {
+                if (genericSerializers.ContainsKey(argumentType))
+                {
+                    continue;
+                }
+
                 genericSerializers.Add(argumentType, GetCompactSerializer(argumentType));
             }
 

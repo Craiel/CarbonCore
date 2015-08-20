@@ -6,36 +6,23 @@
     public struct Sync<T>
         where T : struct
     {
-        private readonly bool isUnchanged;
-
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
-        public Sync(T value, bool isUnchanged = false)
+        public Sync(T value, bool isChanged = true)
             : this()
         {
             this.Value = value;
-            this.isUnchanged = isUnchanged;
+            this.IsChanged = isChanged;
         }
 
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
         public T Value { get; private set; }
+
+        public bool IsChanged { get; private set; }
         
-        public bool IsChanged
-        {
-            get
-            {
-                return !this.isUnchanged;
-            }
-        }
-
-        public static implicit operator Sync<T>(T value)
-        {
-            return new Sync<T>(value);
-        }
-
         public static bool operator !=(Sync<T> first, Sync<T> second)
         {
             return !first.Equals(second);
@@ -56,9 +43,19 @@
             return this.Value.GetHashCode();
         }
 
-        public Sync<T> GetWithChangeState(bool state = false)
+        public Sync<T> Change(T newValue)
         {
-            return new Sync<T>(this.Value, !state);
+            if (this.Value.Equals(newValue))
+            {
+                return new Sync<T>(this.Value, false);
+            }
+
+            return new Sync<T>(newValue);
+        }
+
+        public Sync<T> ChangeState(bool state = false)
+        {
+            return new Sync<T>(this.Value, state);
         }
     }
 }

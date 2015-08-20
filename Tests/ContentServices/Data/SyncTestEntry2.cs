@@ -64,9 +64,9 @@
         {
             this.Id.ResetChangeState(state);
             this.OtherTestString.ResetChangeState(state);
-            this.OtherTestBool = this.OtherTestBool.ResetChangeState(state);
-            this.OtherTestFloat = this.OtherTestFloat.ResetChangeState(state);
-            this.OtherTestLong = this.OtherTestLong.ResetChangeState(state);
+            this.OtherTestBool = this.OtherTestBool.Unchanged();
+            this.OtherTestFloat = this.OtherTestFloat.Unchanged();
+            this.OtherTestLong = this.OtherTestLong.Unchanged();
         }
 
         public override bool Equals(object obj)
