@@ -20,7 +20,7 @@
             }
         }
 
-        public override int MinSize
+        public override long MinSize
         {
             get
             {
@@ -28,7 +28,7 @@
             }
         }
 
-        public int Serialize(Stream target, Single? source)
+        public long Serialize(Stream target, Single? source)
         {
             if (source == null)
             {
@@ -39,7 +39,7 @@
             return this.Serialize(target, source.Value);
         }
 
-        public int Serialize(Stream target, Single source)
+        public long Serialize(Stream target, Single source)
         {
             if (Math.Abs(source - default(Single)) < float.Epsilon)
             {
@@ -55,7 +55,7 @@
             return this.MinSize;
         }
 
-        public override int Serialize(Stream target, object source)
+        public override long Serialize(Stream target, object source)
         {
             return this.Serialize(target, (Single)source);
         }

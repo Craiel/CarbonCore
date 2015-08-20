@@ -110,7 +110,7 @@
         {
             // Test compact serialization
             byte[] compact = DataEntrySerialization.CompactSave(DataTestData.FullTestEntry);
-            Assert.AreEqual(327, compact.Length);
+            Assert.AreEqual(332, compact.Length);
 
             DataTestEntry restoredCompact = DataEntrySerialization.CompactLoad<DataTestEntry>(compact);
             Assert.NotNull(restoredCompact);
@@ -124,7 +124,7 @@
         {
             // Test basic Json serialization
             byte[] jsonData = DataEntrySerialization.Save(DataTestData.FullTestEntry);
-            Assert.AreEqual(1102, jsonData.Length, "Serialization should return data");
+            Assert.AreEqual(1112, jsonData.Length, "Serialization should return data");
 
             DataTestEntry restored = DataEntrySerialization.Load<DataTestEntry>(jsonData);
             Assert.NotNull(restored);
@@ -141,7 +141,7 @@
 
             // Test Sync serialization
             byte[] native = DataEntrySerialization.SyncSave(DataTestData.SyncTestEntry);
-            Assert.AreEqual(339, native.Length);
+            Assert.AreEqual(345, native.Length);
 
             SyncTestEntry restored = new SyncTestEntry();
             DataEntrySerialization.SyncLoad(restored, native);
@@ -151,11 +151,11 @@
 
             restored.ResetSyncState();
             restoredData = DataEntrySerialization.SyncSave(restored);
-            Assert.AreEqual(12, restoredData.Length);
+            Assert.AreEqual(13, restoredData.Length);
 
             restored.TestFloat = 15.0f;
             restoredData = DataEntrySerialization.SyncSave(restored);
-            Assert.AreEqual(17, restoredData.Length);
+            Assert.AreEqual(18, restoredData.Length);
         }
 
         [Test]

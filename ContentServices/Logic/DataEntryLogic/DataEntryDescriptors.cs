@@ -4,6 +4,7 @@
     using System.Collections.Generic;
 
     using CarbonCore.ContentServices.Contracts;
+    using CarbonCore.ContentServices.Logic.DataEntryLogic.CompactSerializers;
     using CarbonCore.ContentServices.Logic.DataEntryLogic.Serializers;
 
     public static class DataEntryDescriptors
@@ -21,12 +22,13 @@
             SerializationDescriptors = new Dictionary<Type, DataEntrySerializationDescriptor>();
             Serializers = new Dictionary<Type, DataEntryElementSerializer>();
 
-            RegisterSerializer<bool>(new BooleanSerializer());
-            RegisterSerializer<int>(new Int32Serializer());
-            RegisterSerializer<long>(new Int64Serializer());
-            RegisterSerializer<float>(new FloatSerializer());
-            RegisterSerializer<string>(new StringSerializer());
-            RegisterSerializer<byte[]>(new ByteArraySerializer());
+            RegisterSerializer<bool>(BooleanSerializer.Instance);
+            RegisterSerializer<int>(Int32Serializer.Instance);
+            RegisterSerializer<long>(Int64Serializer.Instance);
+            RegisterSerializer<float>(FloatSerializer.Instance);
+            RegisterSerializer<double>(DoubleSerializer.Instance);
+            RegisterSerializer<string>(StringSerializer.Instance);
+            RegisterSerializer<byte[]>(ByteArraySerializer.Instance);
         }
 
         // -------------------------------------------------------------------
@@ -52,7 +54,12 @@
 
             if (typeof(IDataEntry).IsAssignableFrom(type))
             {
-                return new DataEntryCompactSerializer(type);
+                return new DataEntrySerializer(type);
+            }
+
+            if (type.IsEnum)
+            {
+                return Int32Serializer.Instance;
             }
 
             // Check if this is a generic type

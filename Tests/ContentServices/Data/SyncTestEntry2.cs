@@ -32,7 +32,7 @@
 
         public Sync<long> OtherTestLong { get; set; }
 
-        public override int Save(Stream target)
+        public override long Save(Stream target)
         {
             long start = target.Position;
             NativeSerialization.Serialize(target, this.Id.IsChanged, this.Id.Value, StringSerializer.Instance.Serialize);
@@ -41,7 +41,7 @@
             NativeSerialization.Serialize(target, this.OtherTestFloat.IsChanged, this.OtherTestFloat.Value, FloatSerializer.Instance.Serialize);
             NativeSerialization.Serialize(target, this.OtherTestLong.IsChanged, this.OtherTestLong.Value, Int64Serializer.Instance.Serialize);
 
-            return (int)(target.Position - start);
+            return target.Position - start;
         }
 
         public override void Load(Stream source)

@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.ContentServices.Logic.DataEntryLogic.Serializers
+﻿namespace CarbonCore.ContentServices.Logic.DataEntryLogic.CompactSerializers
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
@@ -7,12 +7,12 @@
     using CarbonCore.ContentServices.Contracts;
 
     [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1121:UseBuiltInTypeAlias", Justification = "Reviewed. Suppression is OK here.")]
-    public class DataEntryCompactSerializer : DataEntryElementSerializer
+    public class DataEntrySerializer : DataEntryElementSerializer
     {
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
-        public DataEntryCompactSerializer(Type type)
+        public DataEntrySerializer(Type type)
         {
             this.Type = type;
         }
@@ -22,7 +22,7 @@
         // -------------------------------------------------------------------
         public Type Type { get; private set; }
 
-        public override int MinSize
+        public override long MinSize
         {
             get
             {
@@ -30,7 +30,7 @@
             }
         }
 
-        public override int Serialize(Stream target, object value)
+        public override long Serialize(Stream target, object value)
         {
             if (value == null)
             {

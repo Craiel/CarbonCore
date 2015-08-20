@@ -1,7 +1,5 @@
 ﻿namespace CarbonCore.Applications.CrystalBuild
 {
-    using CarbonCore.ContentServices.Logic.DataEntryLogic;
-    using CarbonCore.Tests.ContentServices;
     using CarbonCore.Utils.Compat.Diagnostics;
     using CarbonCore.Utils.IoC;
 
@@ -15,25 +13,10 @@
         // -------------------------------------------------------------------
         public static void Main(string[] args)
         {
-            int cycles = 50000;
+            var container = CarbonContainerAutofacBuilder.Build<CrystalBuildModule>();
+            container.Resolve<IMain>().Build();
 
-            int totalData = 0;
-            for (var i = 0; i < cycles; i++)
-            {
-                using (new ProfileRegion("DataEntry.CompactSerialization"))
-                {
-                    byte[] data = DataEntrySerialization.SyncSave(DataTestData.SyncTestEntry);
-                    totalData += data.Length;
-
-                    SyncTestEntry restoredSync = new SyncTestEntry();
-                    DataEntrySerialization.SyncLoad(restoredSync, data);
-                }
-            }
-
-            //var container = CarbonContainerAutofacBuilder.Build<CrystalBuildModule>();
-            //container.Resolve<IMain>().Build();
-
-            //Profiler.TraceProfilerStatistics();
+            Profiler.TraceProfilerStatistics();
         }
     }
 }

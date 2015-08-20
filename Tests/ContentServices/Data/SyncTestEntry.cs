@@ -3,10 +3,10 @@
     using System.Collections.Generic;
     using System.IO;
 
-    using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.Logic.DataEntryLogic;
     using CarbonCore.ContentServices.Logic.DataEntryLogic.Serializers;
-    
+    using CarbonCore.Tests.ContentServices.Data;
+
     public class SyncTestEntry : SyncEntry
     {
         // -------------------------------------------------------------------
@@ -21,6 +21,7 @@
             this.TestBool = new Sync<bool>();
             this.ByteArray = new Sync<byte[]>();
             this.TestString = new Sync<string>();
+            this.Enum = new Sync<TestEnum>();
 
             this.CascadedEntry = new Sync<SyncTestEntry2>();
 
@@ -48,6 +49,8 @@
 
         public Sync<string> TestString { get; set; }
 
+        public Sync<TestEnum> Enum { get; set; }
+
         public Sync<SyncTestEntry2> CascadedEntry { get; set; }
 
         public SyncList<List<int>, int> SimpleCollection { get; set; }
@@ -58,7 +61,7 @@
 
         public SyncDictionary<Dictionary<int, SyncTestEntry2>, int, SyncTestEntry2> CascadingDictionary { get; set; }
         
-        public override int Save(Stream target)
+        public override long Save(Stream target)
         {
             long start = target.Position;
 
@@ -70,6 +73,7 @@
             NativeSerialization.Serialize(target, this.TestBool.IsChanged, this.TestBool.Value, BooleanSerializer.Instance.Serialize);
             NativeSerialization.Serialize(target, this.ByteArray.IsChanged, this.ByteArray.Value, ByteArraySerializer.Instance.Serialize);
             NativeSerialization.Serialize(target, this.TestString.IsChanged, this.TestString.Value, StringSerializer.Instance.Serialize);
+            NativeSerialization.Serialize(target, this.Enum.IsChanged, this.Enum.Value, (stream, value) => Int32Serializer.Instance.Serialize(stream, (int)value));
 
             // Cascaded objects
             NativeSerialization.SerializeObject(target, this.CascadedEntry.IsChanged, this.CascadedEntry.Value, (stream, value) => value.Save(stream));
@@ -82,7 +86,7 @@
             NativeSerialization.SerializeDictionary(target, this.SimpleDictionary.IsChanged, this.SimpleDictionary.Value, StringSerializer.Instance.Serialize, FloatSerializer.Instance.Serialize);
             NativeSerialization.SerializeDictionary(target, this.CascadingDictionary.IsChanged, this.CascadingDictionary.Value, Int32Serializer.Instance.Serialize, (stream, value) => value.Save(stream));
 
-            return (int)(target.Position - start);
+            return target.Position - start;
         }
 
         public override void Load(Stream source)
@@ -94,6 +98,7 @@
             this.TestBool = NativeSerialization.Deserialize(source, this.TestBool.Value, BooleanSerializer.Instance.Deserialize);
             this.ByteArray = NativeSerialization.Deserialize(source, this.ByteArray.Value, ByteArraySerializer.Instance.Deserialize);
             this.TestString = NativeSerialization.Deserialize(source, this.TestString.Value, StringSerializer.Instance.Deserialize);
+            this.Enum = NativeSerialization.Deserialize(source, this.Enum.Value, Int32Serializer.Instance.Deserialize);
 
             this.CascadedEntry = NativeSerialization.DeserializeObject(
                 source,
@@ -152,6 +157,7 @@
             this.TestBool.ResetChangeState(state);
             this.ByteArray.ResetChangeState(state);
             this.TestString.ResetChangeState(state);
+            this.Enum.ResetChangeState(state);
 
             this.CascadedEntry.ResetChangeState(state);
 

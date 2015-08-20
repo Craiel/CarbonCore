@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.IO;
     
-    public delegate int SerializationCallbackDelegate<in T>(Stream target, T value);
+    public delegate long SerializationCallbackDelegate<in T>(Stream target, T value);
 
     public delegate object DeserializationCallbackDelegate(Stream source);
 

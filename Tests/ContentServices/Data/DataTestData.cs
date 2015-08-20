@@ -2,6 +2,8 @@
 {
     using System.Collections.Generic;
 
+    using CarbonCore.Tests.ContentServices.Data;
+
     public static class DataTestData
     {
         // -------------------------------------------------------------------
@@ -32,6 +34,7 @@
             TestInt = 54321,
             TestFloat = 99.987654321f,
             TestLong = 12999888777666555,
+            Enum = TestEnum.Second,
             ByteArray = new byte[] { 50, 50, 100, 100, 10, 2 },
             CascadedEntry = new DataTestEntry2 { Id = "Cascaded!", OtherTestBool = true, OtherTestFloat = 123.456f },
             SimpleCollection = new List<int> { 50, 50, 100, 100, 10, 2 },
@@ -61,6 +64,7 @@
             TestInt = 54321,
             TestFloat = 99.987654321f,
             TestLong = 12999888777666555,
+            Enum = TestEnum.Third,
             ByteArray = new byte[] { 50, 50, 100, 100, 10, 2 },
             CascadedEntry = new SyncTestEntry2 { Id = "Cascaded!", OtherTestBool = true, OtherTestFloat = 123.456f },
             SimpleCollection = new List<int> { 50, 50, 100, 100, 10, 2 },

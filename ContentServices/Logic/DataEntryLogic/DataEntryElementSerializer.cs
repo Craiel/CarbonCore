@@ -7,9 +7,9 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public abstract int MinSize { get; }
+        public abstract long MinSize { get; }
 
-        public abstract int Serialize(Stream target, object value);
+        public abstract long Serialize(Stream target, object value);
 
         public abstract object Deserialize(Stream source);
     }

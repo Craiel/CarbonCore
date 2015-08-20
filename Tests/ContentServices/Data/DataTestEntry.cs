@@ -5,6 +5,7 @@
 
     using CarbonCore.ContentServices.Logic;
     using CarbonCore.ContentServices.Logic.Attributes;
+    using CarbonCore.Tests.ContentServices.Data;
 
     using Newtonsoft.Json;
     
@@ -32,6 +33,9 @@
 
         [DatabaseEntryElement]
         public string TestString { get; set; }
+
+        [DatabaseEntryElement]
+        public TestEnum Enum { get; set; }
 
         [DataElement]
         public DataTestEntry2 CascadedEntry { get; set; }

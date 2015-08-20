@@ -4,7 +4,8 @@
 
     public interface ISyncEntry
     {
-        int Save(Stream target);
+        long Save(Stream target);
+
         void Load(Stream source);
 
         void ResetSyncState(bool state = false);

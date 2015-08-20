@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.ContentServices.Logic.DataEntryLogic.Serializers
+﻿namespace CarbonCore.ContentServices.Logic.DataEntryLogic.CompactSerializers
 {
     using System;
     using System.Collections;
@@ -33,7 +33,7 @@
         // -------------------------------------------------------------------
         public Type Type { get; private set; }
 
-        public override int MinSize
+        public override long MinSize
         {
             get
             {
@@ -41,7 +41,7 @@
             }
         }
 
-        public override int Serialize(Stream target, object value)
+        public override long Serialize(Stream target, object value)
         {
             if (value == null)
             {
@@ -62,7 +62,7 @@
             byte[] length = BitConverter.GetBytes((Int16)typed.Count);
             target.Write(length, 0, 2);
 
-            int byteCount = 3;
+            long byteCount = 3;
             foreach (object entry in (IEnumerable)value)
             {
                 byteCount += this.innerSerializer.Serialize(target, entry);

@@ -20,7 +20,7 @@
             }
         }
 
-        public override int MinSize
+        public override long MinSize
         {
             get
             {
@@ -28,7 +28,7 @@
             }
         }
 
-        public int Serialize(Stream target, byte[] source)
+        public long Serialize(Stream target, byte[] source)
         {
             if (source == null || source.Length <= 0)
             {
@@ -46,7 +46,7 @@
             return 3 + source.Length;
         }
 
-        public override int Serialize(Stream target, object source)
+        public override long Serialize(Stream target, object source)
         {
             return this.Serialize(target, (byte[])source);
         }

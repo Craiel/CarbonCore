@@ -20,7 +20,7 @@
             }
         }
 
-        public override int MinSize
+        public override long MinSize
         {
             get
             {
@@ -28,7 +28,7 @@
             }
         }
 
-        public int Serialize(Stream target, Int64? source)
+        public long Serialize(Stream target, Int64? source)
         {
             if (source == null)
             {
@@ -39,7 +39,7 @@
             return this.Serialize(target, source.Value);
         }
 
-        public int Serialize(Stream target, Int64 source)
+        public long Serialize(Stream target, Int64 source)
         {
             if (source == default(Int64))
             {
@@ -55,7 +55,7 @@
             return this.MinSize;
         }
 
-        public override int Serialize(Stream target, object source)
+        public override long Serialize(Stream target, object source)
         {
             return this.Serialize(target, (Int64)source);
         }

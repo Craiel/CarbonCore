@@ -9,7 +9,7 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public abstract int Save(Stream target);
+        public abstract long Save(Stream target);
 
         public abstract void Load(Stream source);
 

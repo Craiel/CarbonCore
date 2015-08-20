@@ -17,7 +17,7 @@
             }
         }
 
-        public override int MinSize
+        public override long MinSize
         {
             get
             {
@@ -25,7 +25,7 @@
             }
         }
 
-        public int Serialize(Stream target, bool? value)
+        public long Serialize(Stream target, bool? value)
         {
             if (value == null)
             {
@@ -36,13 +36,13 @@
             return this.Serialize(target, value.Value);
         }
 
-        public int Serialize(Stream target, bool value)
+        public long Serialize(Stream target, bool value)
         {
             target.WriteByte(value ? (byte)1 : (byte)0);
             return this.MinSize;
         }
 
-        public override int Serialize(Stream target, object source)
+        public override long Serialize(Stream target, object source)
         {
             return this.Serialize(target, (bool)source);
         }

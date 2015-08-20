@@ -21,7 +21,7 @@
             }
         }
 
-        public override int MinSize
+        public override long MinSize
         {
             get
             {
@@ -29,7 +29,7 @@
             }
         }
 
-        public int Serialize(Stream target, string value)
+        public long Serialize(Stream target, string value)
         {
             if (string.IsNullOrEmpty(value))
             {
@@ -49,7 +49,7 @@
             return 3 + data.Length;
         }
 
-        public override int Serialize(Stream target, object value)
+        public override long Serialize(Stream target, object value)
         {
             return this.Serialize(target, (string)value);
         }
