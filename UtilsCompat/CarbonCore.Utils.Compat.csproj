@@ -49,8 +49,8 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Unity|AnyCPU'">
-    <OutputPath>bin\Unity\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;UNITY</DefineConstants>
+    <OutputPath>..\bin\Unity\</OutputPath>
+    <DefineConstants>TRACE;UNITY</DefineConstants>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>

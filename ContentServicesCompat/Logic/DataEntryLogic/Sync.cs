@@ -56,7 +56,7 @@
             return this.Value.GetHashCode();
         }
 
-        public Sync<T> ResetChangeState(bool state = false)
+        public Sync<T> GetWithChangeState(bool state = false)
         {
             return new Sync<T>(this.Value, !state);
         }
