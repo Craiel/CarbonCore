@@ -138,6 +138,9 @@
         [Test]
         public void ListSerialization()
         {
+            const int FirstTestSize = 29;
+            const int SecondTestSize = 154;
+
             SyncList<List<int>, int> simpleCollection = new SyncList<List<int>, int>();
             simpleCollection.Value = new List<int> { 5, 10, 15, 99, 2999 };
 
@@ -162,21 +165,21 @@
                     simpleCollection.IsChanged,
                     simpleCollection.Value,
                     Int32Serializer.Instance.Serialize);
-                TestUtils.AssertStreamPos(stream, 29, ref position);
+                TestUtils.AssertStreamPos(stream, FirstTestSize, ref position);
 
                 NativeSerialization.SerializeList(
                     stream,
                     cascadedCollection.IsChanged,
                     cascadedCollection.Value,
                     (targetStream, value) => value.Save(targetStream));
-                TestUtils.AssertStreamPos(stream, 150, ref position);
+                TestUtils.AssertStreamPos(stream, SecondTestSize, ref position);
 
                 data = new byte[stream.Length];
                 stream.Seek(0, SeekOrigin.Begin);
                 stream.Read(data, 0, data.Length);
             }
 
-            Assert.AreEqual(179, data.Length);
+            Assert.AreEqual(FirstTestSize + SecondTestSize, data.Length);
 
             using (var stream = new MemoryStream(data))
             {
@@ -191,7 +194,7 @@
                     Int32Serializer.Instance.Deserialize);
                 Assert.NotNull(restoredSimpleCollection);
                 TestUtils.AssertListEquals(simpleCollection.Value, restoredSimpleCollection);
-                TestUtils.AssertStreamPos(stream, 29, ref position);
+                TestUtils.AssertStreamPos(stream, FirstTestSize, ref position);
 
                 var restoredCascadeCollection = new SyncList<IList<ISyncEntry>, ISyncEntry>();
                 restoredCascadeCollection.Value =
@@ -208,13 +211,16 @@
                 Assert.NotNull(restoredCascadeCollection);
                 TestUtils.AssertListEquals(cascadedCollection.Value, restoredCascadeCollection);
 
-                TestUtils.AssertStreamPos(stream, 150, ref position);
+                TestUtils.AssertStreamPos(stream, SecondTestSize, ref position);
             }
         }
 
         [Test]
         public void DictionarySerialization()
         {
+            const int FirstTestSize = 44;
+            const int SecondTestSize = 86;
+
             var simpleDictionary = new SyncDictionary<Dictionary<string, float>, string, float>();
             simpleDictionary.Value = new Dictionary<string, float>
                                    {
@@ -241,7 +247,7 @@
                     simpleDictionary.Value,
                     StringSerializer.Instance.Serialize,
                     FloatSerializer.Instance.Serialize);
-                TestUtils.AssertStreamPos(stream, 44, ref position);
+                TestUtils.AssertStreamPos(stream, FirstTestSize, ref position);
 
                 NativeSerialization.SerializeDictionary(
                     stream,
@@ -249,14 +255,14 @@
                     cascadingDictionary.Value,
                     Int32Serializer.Instance.Serialize,
                     (targetStream, value) => value.Save(targetStream));
-                TestUtils.AssertStreamPos(stream, 78, ref position);
+                TestUtils.AssertStreamPos(stream, SecondTestSize, ref position);
 
                 data = new byte[stream.Length];
                 stream.Seek(0, SeekOrigin.Begin);
                 stream.Read(data, 0, data.Length);
             }
 
-            Assert.AreEqual(122, data.Length);
+            Assert.AreEqual(FirstTestSize + SecondTestSize, data.Length);
 
             using (var stream = new MemoryStream(data))
             {
@@ -272,7 +278,7 @@
                     FloatSerializer.Instance.Deserialize);
                 Assert.NotNull(restoredSimpleDictionary);
                 TestUtils.AssertDictionaryEquals(simpleDictionary.Value, restoredSimpleDictionary);
-                TestUtils.AssertStreamPos(stream, 44, ref position);
+                TestUtils.AssertStreamPos(stream, FirstTestSize, ref position);
 
                 var restoredCascadeDictionary = new SyncDictionary<IDictionary<int, SyncTestEntry2>, int, SyncTestEntry2>();
                 restoredCascadeDictionary.Value =
@@ -290,7 +296,7 @@
                 Assert.NotNull(restoredCascadeDictionary);
                 TestUtils.AssertDictionaryEquals(cascadingDictionary.Value, restoredCascadeDictionary);
 
-                TestUtils.AssertStreamPos(stream, 78, ref position);
+                TestUtils.AssertStreamPos(stream, SecondTestSize, ref position);
             }
         }
     }

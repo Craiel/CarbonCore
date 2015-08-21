@@ -151,7 +151,7 @@
 
             // Test Sync serialization
             byte[] native = DataEntrySerialization.SyncSave(DataTestData.SyncTestEntry);
-            Assert.AreEqual(313, native.Length);
+            Assert.AreEqual(345, native.Length);
 
             // Reset the change state and test again
             DataTestData.SyncTestEntry.ResetChangeState();
@@ -177,7 +177,7 @@
             Assert.AreEqual(13, restoredData.Length);
 
             // Modify simple types
-            restored.TestFloat = restored.TestFloat.Change(15.0f);
+            restored.TestFloat.Value = 15.0f;
             restoredData = DataEntrySerialization.SyncSave(restored);
             Assert.AreEqual(18, restoredData.Length);
 
@@ -194,7 +194,7 @@
 
             // Add and modify cascading entries
             restored.CascadingCollection.Add(new SyncTestEntry2());
-            restored.CascadingCollection[0].OtherTestFloat = restored.CascadingCollection[0].OtherTestFloat.Change(-10.0f);
+            restored.CascadingCollection[0].OtherTestFloat.Value = -10.0f;
             restoredData = DataEntrySerialization.SyncSave(restored);
             Assert.AreEqual(134, restoredData.Length);
 
@@ -211,7 +211,7 @@
 
             // Add and modify cascading entries
             restored.CascadingDictionary.Add(1001, new SyncTestEntry2());
-            restored.CascadingDictionary[0].OtherTestFloat = restored.CascadingDictionary[0].OtherTestFloat.Change(-10.0f);
+            restored.CascadingDictionary[0].OtherTestFloat.Value = -10.0f;
             restoredData = DataEntrySerialization.SyncSave(restored);
             Assert.AreEqual(297, restoredData.Length);
 

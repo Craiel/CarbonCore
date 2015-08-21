@@ -3,36 +3,47 @@
     using System.Diagnostics;
 
     [DebuggerDisplay("{Value}")]
-    public struct Sync<T>
+    public class Sync<T>
         where T : struct
     {
+        private T value;
+
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
-        public Sync(T value, bool isChanged = true)
-            : this()
+        public Sync()
+            : this(default(T))
         {
-            this.Value = value;
+        }
+
+        public Sync(T value, bool isChanged = true)
+        {
+            this.value = value;
             this.IsChanged = isChanged;
         }
 
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public T Value { get; private set; }
+        public T Value
+        {
+            get
+            {
+                return this.value;
+            }
+
+            set
+            {
+                if (!this.value.Equals(value))
+                {
+                    this.value = value;
+                    this.IsChanged = true;
+                }
+            }
+        }
 
         public bool IsChanged { get; private set; }
         
-        public static bool operator !=(Sync<T> first, Sync<T> second)
-        {
-            return !first.Equals(second);
-        }
-
-        public static bool operator ==(Sync<T> first, Sync<T> second)
-        {
-            return first.Equals(second);
-        }
-
         public override bool Equals(object obj)
         {
             return ((Sync<T>)obj).Value.Equals(this.Value);
@@ -43,19 +54,9 @@
             return this.Value.GetHashCode();
         }
 
-        public Sync<T> Change(T newValue)
+        public void ResetChangeState(bool state = false)
         {
-            if (this.Value.Equals(newValue))
-            {
-                return new Sync<T>(this.Value, false);
-            }
-
-            return new Sync<T>(newValue);
-        }
-
-        public Sync<T> ChangeState(bool state = false)
-        {
-            return new Sync<T>(this.Value, state);
+            this.IsChanged = state;
         }
     }
 }
