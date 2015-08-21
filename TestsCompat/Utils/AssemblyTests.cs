@@ -1,16 +1,14 @@
 ﻿namespace CarbonCore.Tests.Utils
 {
+    using System;
     using System.Collections.Generic;
 
     using CarbonCore.Tests.Resources;
-    using CarbonCore.Utils;
     using CarbonCore.Utils.Compat;
     using CarbonCore.Utils.Compat.IO;
 
     using NUnit.Framework;
-
-    using AssemblyExtensions = CarbonCore.Utils.AssemblyExtensions;
-
+    
     [TestFixture]
     public class AssemblyTests
     {
@@ -35,7 +33,7 @@
             Assert.NotNull(RuntimeInfo.ProcessId);
             Assert.NotNull(RuntimeInfo.ProcessName);
 
-            Assert.AreEqual("CarbonCore.Utils.Compat.dll", RuntimeInfo.AssemblyName, "In test environment we should be at utils runtime info");
+            Assert.IsTrue(string.Equals("CarbonCore.Utils.Compat.dll", RuntimeInfo.AssemblyName, StringComparison.OrdinalIgnoreCase), "In test environment we should be at utils runtime info");
         }
 
         [Test]
@@ -43,7 +41,7 @@
         {
             Assert.IsTrue(UnitTest.IsRunningFromNunit, "UnitTest environment bust be recognized");
 
-            Assert.NotNull(RuntimeInfo.Assembly.GetVersion());
+            Assert.NotNull(AssemblyExtensions.GetVersion(RuntimeInfo.Assembly.GetType()));
 
             // Check if the extensions are setup properly to get the directory and file info
             CarbonDirectory directory = RuntimeInfo.Assembly.GetDirectory();
@@ -54,7 +52,7 @@
             Assert.NotNull(file);
             Assert.IsTrue(file.Exists);
             
-            IList<CarbonFile> assemblies = CarbonCore.Utils.Compat.AssemblyExtensions.GetLoadedAssemblyFiles();
+            IList<CarbonFile> assemblies = AssemblyExtensions.GetLoadedAssemblyFiles();
             Assert.NotNull(assemblies);
             Assert.GreaterOrEqual(assemblies.Count, 1);
         }

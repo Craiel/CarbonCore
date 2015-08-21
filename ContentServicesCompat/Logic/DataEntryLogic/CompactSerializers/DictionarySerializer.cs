@@ -82,6 +82,10 @@
             }
 
             object instance = Activator.CreateInstance(this.Type);
+            if (indicator == 0)
+            {
+                return instance;
+            }
 
             byte[] length = new byte[2];
             source.Read(length, 0, length.Length);

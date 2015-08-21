@@ -149,8 +149,7 @@
                                                                  new SyncTestEntry2
                                                                      {
                                                                          Id = {Value = "Last entry"},
-                                                                         OtherTestFloat =
-                                                                             -15.15f
+                                                                         OtherTestFloat = new Sync<float>(-15.15f)
                                                                      }
                                                              };
 
@@ -170,14 +169,14 @@
                     cascadedCollection.IsChanged,
                     cascadedCollection.Value,
                     (targetStream, value) => value.Save(targetStream));
-                TestUtils.AssertStreamPos(stream, 154, ref position);
+                TestUtils.AssertStreamPos(stream, 150, ref position);
 
                 data = new byte[stream.Length];
                 stream.Seek(0, SeekOrigin.Begin);
                 stream.Read(data, 0, data.Length);
             }
 
-            Assert.AreEqual(183, data.Length);
+            Assert.AreEqual(179, data.Length);
 
             using (var stream = new MemoryStream(data))
             {
@@ -209,7 +208,7 @@
                 Assert.NotNull(restoredCascadeCollection);
                 TestUtils.AssertListEquals(cascadedCollection.Value, restoredCascadeCollection);
 
-                TestUtils.AssertStreamPos(stream, 154, ref position);
+                TestUtils.AssertStreamPos(stream, 150, ref position);
             }
         }
 
@@ -228,7 +227,7 @@
             cascadingDictionary.Value = new Dictionary<int, SyncTestEntry2>
                                     {
                                         { 0, new SyncTestEntry2 { Id = {Value = "0"} } },
-                                        { 1, new SyncTestEntry2 { Id = {Value = "1"}, OtherTestLong = 99 } },
+                                        { 1, new SyncTestEntry2 { Id = {Value = "1"}, OtherTestLong = new Sync<long>(99) } },
                                         { 50, new SyncTestEntry2 { Id = {Value = "Third"}, OtherTestString = {Value = "Still the third..."} } }
                                     };
 
@@ -250,14 +249,14 @@
                     cascadingDictionary.Value,
                     Int32Serializer.Instance.Serialize,
                     (targetStream, value) => value.Save(targetStream));
-                TestUtils.AssertStreamPos(stream, 86, ref position);
+                TestUtils.AssertStreamPos(stream, 78, ref position);
 
                 data = new byte[stream.Length];
                 stream.Seek(0, SeekOrigin.Begin);
                 stream.Read(data, 0, data.Length);
             }
 
-            Assert.AreEqual(130, data.Length);
+            Assert.AreEqual(122, data.Length);
 
             using (var stream = new MemoryStream(data))
             {
@@ -291,7 +290,7 @@
                 Assert.NotNull(restoredCascadeDictionary);
                 TestUtils.AssertDictionaryEquals(cascadingDictionary.Value, restoredCascadeDictionary);
 
-                TestUtils.AssertStreamPos(stream, 86, ref position);
+                TestUtils.AssertStreamPos(stream, 78, ref position);
             }
         }
     }

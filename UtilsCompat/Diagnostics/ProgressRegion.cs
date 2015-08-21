@@ -19,6 +19,7 @@
         public string Name { get; set; }
 
         public int Progress { get; set; }
+
         public int ProgressMax { get; set; }
 
         public void Dispose()

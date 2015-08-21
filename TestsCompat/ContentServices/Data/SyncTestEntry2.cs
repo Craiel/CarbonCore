@@ -55,18 +55,18 @@
         {
             this.Id.Value = NativeSerialization.Deserialize(source, this.Id.Value, StringSerializer.Instance.Deserialize);
             this.OtherTestString.Value = NativeSerialization.Deserialize(source, this.OtherTestString.Value, StringSerializer.Instance.Deserialize);
-            this.OtherTestBool = NativeSerialization.Deserialize(source, this.OtherTestBool.Value, BooleanSerializer.Instance.Deserialize);
-            this.OtherTestFloat = NativeSerialization.Deserialize(source, this.OtherTestFloat.Value, FloatSerializer.Instance.Deserialize);
-            this.OtherTestLong = NativeSerialization.Deserialize(source, this.OtherTestLong.Value, Int64Serializer.Instance.Deserialize);
+            this.OtherTestBool = this.OtherTestBool.Change(NativeSerialization.Deserialize(source, this.OtherTestBool.Value, BooleanSerializer.Instance.Deserialize));
+            this.OtherTestFloat = this.OtherTestFloat.Change(NativeSerialization.Deserialize(source, this.OtherTestFloat.Value, FloatSerializer.Instance.Deserialize));
+            this.OtherTestLong = this.OtherTestLong.Change(NativeSerialization.Deserialize(source, this.OtherTestLong.Value, Int64Serializer.Instance.Deserialize));
         }
 
         public override void ResetChangeState(bool state = false)
         {
             this.Id.ResetChangeState(state);
             this.OtherTestString.ResetChangeState(state);
-            this.OtherTestBool = this.OtherTestBool.Unchanged();
-            this.OtherTestFloat = this.OtherTestFloat.Unchanged();
-            this.OtherTestLong = this.OtherTestLong.Unchanged();
+            this.OtherTestBool = this.OtherTestBool.ChangeState();
+            this.OtherTestFloat = this.OtherTestFloat.ChangeState();
+            this.OtherTestLong = this.OtherTestLong.ChangeState();
         }
 
         public override bool Equals(object obj)

@@ -1,7 +1,5 @@
 ﻿namespace CarbonCore.Utils.Compat.Diagnostics
 {
-    using System;
-
     public class MetricSection
     {
         // -------------------------------------------------------------------

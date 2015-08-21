@@ -105,13 +105,13 @@
         public override void Load(Stream source)
         {
             this.Id.Value = NativeSerialization.Deserialize(source, this.Id.Value, Int32Serializer.Instance.Deserialize);
-            this.TestInt = NativeSerialization.Deserialize(source, this.TestInt.Value, Int32Serializer.Instance.Deserialize);
-            this.TestLong = NativeSerialization.Deserialize(source, this.TestLong.Value, Int64Serializer.Instance.Deserialize);
-            this.TestFloat = NativeSerialization.Deserialize(source, this.TestFloat.Value, FloatSerializer.Instance.Deserialize);
-            this.TestBool = NativeSerialization.Deserialize(source, this.TestBool.Value, BooleanSerializer.Instance.Deserialize);
+            this.TestInt = this.TestInt.Change(NativeSerialization.Deserialize(source, this.TestInt.Value, Int32Serializer.Instance.Deserialize));
+            this.TestLong = this.TestLong.Change(NativeSerialization.Deserialize(source, this.TestLong.Value, Int64Serializer.Instance.Deserialize));
+            this.TestFloat = this.TestFloat.Change(NativeSerialization.Deserialize(source, this.TestFloat.Value, FloatSerializer.Instance.Deserialize));
+            this.TestBool = this.TestBool.Change(NativeSerialization.Deserialize(source, this.TestBool.Value, BooleanSerializer.Instance.Deserialize));
             this.ByteArray.Value = NativeSerialization.Deserialize(source, this.ByteArray.Value, ByteArraySerializer.Instance.Deserialize);
             this.TestString.Value = NativeSerialization.Deserialize(source, this.TestString.Value, StringSerializer.Instance.Deserialize);
-            this.Enum = NativeSerialization.Deserialize(source, this.Enum.Value, Int32Serializer.Instance.Deserialize);
+            this.Enum = this.Enum.Change(NativeSerialization.Deserialize(source, this.Enum.Value, Int32Serializer.Instance.Deserialize));
 
             this.CascadedEntry.Value = NativeSerialization.DeserializeObject(
                 source,
@@ -160,13 +160,13 @@
         public override void ResetChangeState(bool state = false)
         {
             this.Id.ResetChangeState(state);
-            this.TestInt = this.TestInt.Unchanged();
-            this.TestLong = this.TestLong.Unchanged();
-            this.TestFloat = this.TestFloat.Unchanged();
-            this.TestBool = this.TestBool.Unchanged();
+            this.TestInt = this.TestInt.ChangeState();
+            this.TestLong = this.TestLong.ChangeState();
+            this.TestFloat = this.TestFloat.ChangeState();
+            this.TestBool = this.TestBool.ChangeState();
             this.ByteArray.ResetChangeState(state);
             this.TestString.ResetChangeState(state);
-            this.Enum = this.Enum.Unchanged();
+            this.Enum = this.Enum.ChangeState();
 
             this.CascadedEntry.ResetChangeState(state);
 

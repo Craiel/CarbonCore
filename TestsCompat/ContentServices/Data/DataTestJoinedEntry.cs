@@ -4,6 +4,7 @@
 
     using CarbonCore.ContentServices.Compat.Logic;
     using CarbonCore.ContentServices.Compat.Logic.Attributes;
+    using CarbonCore.Utils.Compat;
 
     using Newtonsoft.Json;
 
@@ -28,7 +29,7 @@
         // -------------------------------------------------------------------
         protected override int DoGetHashCode()
         {
-            return Tuple.Create(this.Id, this.TestEntryId).GetHashCode();
+            return HashUtils.GetSimpleCombinedHashCode(new[] { this.Id, this.TestEntryId });
         }
     }
 }

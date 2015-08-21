@@ -30,8 +30,7 @@
             DataTestData.TestEntry.Id = 123;
 
             var clone = (DataTestEntry)DataTestData.TestEntry.Clone();
-            Assert.AreNotEqual(clone, DataTestData.TestEntry, "Clone must be different instance of original entry");
-            Assert.IsNull(clone.Id, "Clone id must be null");
+            Assert.AreEqual(clone, DataTestData.TestEntry, "Clone must be equal to original entry (custom equality)");
 
             var clone2 = (DataTestEntry)clone.Clone();
             Assert.AreEqual(clone, clone2, "Direct clone with a non-set id must match");
@@ -118,6 +117,16 @@
 
             byte[] compact2 = DataEntrySerialization.CompactSave(restoredCompact);
             Assert.AreEqual(compact.Length, compact2.Length);
+
+            // Try another instance
+            compact = DataEntrySerialization.CompactSave(DataTestData.TestEntry);
+            Assert.AreEqual(46, compact.Length);
+
+            restoredCompact = DataEntrySerialization.CompactLoad<DataTestEntry>(compact);
+            Assert.NotNull(restoredCompact);
+
+            compact2 = DataEntrySerialization.CompactSave(restoredCompact);
+            Assert.AreEqual(compact.Length, compact2.Length);
         }
 
         [Test]
@@ -142,7 +151,7 @@
 
             // Test Sync serialization
             byte[] native = DataEntrySerialization.SyncSave(DataTestData.SyncTestEntry);
-            Assert.AreEqual(345, native.Length);
+            Assert.AreEqual(313, native.Length);
 
             // Reset the change state and test again
             DataTestData.SyncTestEntry.ResetChangeState();
@@ -168,7 +177,7 @@
             Assert.AreEqual(13, restoredData.Length);
 
             // Modify simple types
-            restored.TestFloat = 15.0f;
+            restored.TestFloat = restored.TestFloat.Change(15.0f);
             restoredData = DataEntrySerialization.SyncSave(restored);
             Assert.AreEqual(18, restoredData.Length);
 
@@ -185,7 +194,7 @@
 
             // Add and modify cascading entries
             restored.CascadingCollection.Add(new SyncTestEntry2());
-            restored.CascadingCollection[0].OtherTestFloat = -10.0f;
+            restored.CascadingCollection[0].OtherTestFloat = restored.CascadingCollection[0].OtherTestFloat.Change(-10.0f);
             restoredData = DataEntrySerialization.SyncSave(restored);
             Assert.AreEqual(134, restoredData.Length);
 
@@ -202,7 +211,7 @@
 
             // Add and modify cascading entries
             restored.CascadingDictionary.Add(1001, new SyncTestEntry2());
-            restored.CascadingDictionary[0].OtherTestFloat = -10.0f;
+            restored.CascadingDictionary[0].OtherTestFloat = restored.CascadingDictionary[0].OtherTestFloat.Change(-10.0f);
             restoredData = DataEntrySerialization.SyncSave(restored);
             Assert.AreEqual(297, restoredData.Length);
 

@@ -6,13 +6,19 @@
     public static class Metrics
     {
         private static readonly Stopwatch Stopwatch;
-        
+
+        // -------------------------------------------------------------------
+        // Constructor
+        // -------------------------------------------------------------------
         static Metrics()
         {
             Stopwatch = new Stopwatch();
             Stopwatch.Start();
         }
 
+        // -------------------------------------------------------------------
+        // Public
+        // -------------------------------------------------------------------
         public static MetricSection BeginMetric()
         {
             return new MetricSection(Stopwatch.ElapsedTicks);
@@ -41,6 +47,9 @@
             Trace.TraceInformation(builder.ToString());
         }
 
+        // -------------------------------------------------------------------
+        // Private
+        // -------------------------------------------------------------------
         private static float GetTimeInMS(long ticks)
         {
             return (ticks / (float)Stopwatch.Frequency) * 1000;

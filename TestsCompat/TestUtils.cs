@@ -76,8 +76,8 @@
                 IList<PropertyInfo> properties = type.GetProperties();
                 foreach (PropertyInfo info in properties)
                 {
-                    var firstValue = info.GetValue(first);
-                    var secondValue = info.GetValue(second);
+                    var firstValue = info.GetValue(first, null);
+                    var secondValue = info.GetValue(second, null);
                     AssertInstanceEquals(firstValue, secondValue);
                 }
 
@@ -93,7 +93,7 @@
                     if (type == cascadeType)
                     {
                         PropertyInfo property = type.GetProperty("Value");
-                        AssertInstanceEquals(property.GetValue(first), property.GetValue(second));
+                        AssertInstanceEquals(property.GetValue(first, null), property.GetValue(second, null));
 
                         return;
                     }

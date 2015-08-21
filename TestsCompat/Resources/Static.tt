@@ -1,6 +1,6 @@
 ﻿<#@ template debug="true" hostSpecific="true" 
 #><#@ assembly name="EnvDTE" 
-#><#@ assembly name="$(ProjectDir)..\CodeGeneration\bin\$(ConfigurationName)\CarbonCore.CodeGeneration.dll" 
+#><#@ assembly name="$(ProjectDir)..\CodeGeneration\bin\Release\CarbonCore.CodeGeneration.dll" 
 #><#@ import namespace="EnvDTE" 
 #><#@ import namespace="System.Collections.Generic" 
 #><#@ import namespace="CarbonCore.CodeGeneration" 

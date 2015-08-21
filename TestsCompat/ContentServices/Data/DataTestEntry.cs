@@ -28,7 +28,7 @@
         [DatabaseEntryElement]
         public bool TestBool { get; set; }
 
-        [DatabaseEntryElement]
+        [DatabaseEntryElement(IgnoreEquality = true)]
         public byte[] ByteArray { get; set; }
 
         [DatabaseEntryElement]
@@ -60,7 +60,7 @@
         // -------------------------------------------------------------------
         protected override int DoGetHashCode()
         {
-            return Tuple.Create(this.Id).GetHashCode();
+            return this.Id.GetHashCode();
         }
     }
 }

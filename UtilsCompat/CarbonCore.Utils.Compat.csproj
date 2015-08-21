@@ -100,6 +100,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Contracts\IExtendedDictionary.cs" />
     <Compile Include="Contracts\IJsonConfig.cs" />
+    <Compile Include="Contracts\ICarbonDiagnostics.cs" />
     <Compile Include="Contracts\IoC\ICarbonContainer.cs" />
     <Compile Include="Contracts\IoC\ICarbonQuickModule.cs" />
     <Compile Include="Contracts\IoC\ICarbonQuickBinding.cs" />
@@ -119,7 +120,7 @@
     <Compile Include="Database\SqlStatementOrderByRule.cs" />
     <Compile Include="Database\SqlStatementOutput.cs" />
     <Compile Include="Database\SqlStatementType.cs" />
-    <Compile Include="Diagnostics\ContextualLog.cs" />
+    <Compile Include="Diagnostics\CarbonDiagnostics.cs" />
     <Compile Include="Diagnostics\Metrics.cs" />
     <Compile Include="Diagnostics\MetricSection.cs" />
     <Compile Include="Diagnostics\TraceEventData.cs" />
@@ -168,13 +169,11 @@
     <Compile Include="Contracts\IEventRelay.cs" />
     <Compile Include="Contracts\IFormatter.cs" />
     <Compile Include="Contracts\ILog.cs" />
-    <Compile Include="Contracts\ILogEvent.cs" />
     <Compile Include="Contracts\ITextFile.cs" />
     <Compile Include="Contracts\ITimer.cs" />
     <Compile Include="Diagnostics\TraceListeners\ConsoleTraceListener.cs" />
     <Compile Include="Diagnostics\TraceListeners\FileTraceListener.cs" />
-    <Compile Include="Diagnostics\LogBase.cs" />
-    <Compile Include="Diagnostics\LogEvent.cs" />
+    <Compile Include="Diagnostics\BaseLog.cs" />
     <Compile Include="Diagnostics\ProfileStatistics.cs" />
     <Compile Include="EventRelay.cs" />
     <Compile Include="FNV.cs" />
