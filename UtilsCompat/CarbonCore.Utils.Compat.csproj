@@ -121,6 +121,7 @@
     <Compile Include="Database\SqlStatementOutput.cs" />
     <Compile Include="Database\SqlStatementType.cs" />
     <Compile Include="Diagnostics\CarbonDiagnostics.cs" />
+    <Compile Include="Diagnostics\Diagnostic.cs" />
     <Compile Include="Diagnostics\Metrics.cs" />
     <Compile Include="Diagnostics\MetricSection.cs" />
     <Compile Include="Diagnostics\TraceEventData.cs" />
@@ -160,7 +161,12 @@
     <Compile Include="Network\NetworkUtils.cs" />
     <Compile Include="Network\Packages\JsonNetPackagePayload.cs" />
     <Compile Include="Network\Packages\JsonNetPackagePing.cs" />
+    <Compile Include="ProcessorSettings.cs" />
+    <Compile Include="ProcessorUtils.cs" />
     <Compile Include="StringExtensions.cs" />
+    <Compile Include="Threading\EngineThread.cs" />
+    <Compile Include="Threading\EngineThreadSettings.cs" />
+    <Compile Include="Threading\EngineTime.cs" />
     <Compile Include="Threading\ThreadQueuedComponent.cs" />
     <Compile Include="Threading\ThreadQueueOperation.cs" />
     <Compile Include="Contracts\IThreadQueueOperation.cs" />
@@ -214,9 +220,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Tests\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

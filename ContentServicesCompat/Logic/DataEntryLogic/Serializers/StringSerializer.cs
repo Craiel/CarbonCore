@@ -46,7 +46,7 @@
         public override object Deserialize(Stream source)
         {
             byte indicator = (byte)source.ReadByte();
-            if (indicator == 0 || indicator == byte.MaxValue)
+            if (indicator == 0 || indicator == Constants.SerializationNull)
             {
                 return null;
             }

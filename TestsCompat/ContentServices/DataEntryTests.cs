@@ -169,8 +169,8 @@
             TestUtils.AssertInstanceEquals(DataTestData.SyncTestEntry, restored);
             TestUtils.AssertInstanceEquals(restored, restored2);
 
-            byte[] restoredData = DataEntrySerialization.SyncSave(restored);
-            Assert.AreEqual(native.Length, restoredData.Length);
+            byte[] restoredData = DataEntrySerialization.SyncSave(restored, true);
+            Assert.IsTrue(native.SequenceEqual(restoredData));
 
             restored.ResetChangeState();
             restoredData = DataEntrySerialization.SyncSave(restored);

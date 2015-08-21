@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{322F5DB2-87ED-41EC-9A8B-AA14E1F9ACD3}</ProjectGuid>
+    <ProjectGuid>{C750C66E-56C8-4D99-846C-E690F5986842}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CarbonCore.Tests.Compat</RootNamespace>
@@ -84,8 +84,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Setup.cs" />
     <Compile Include="TestUtils.cs" />
     <Compile Include="Utils\CarbonPathTests.cs" />
+    <Compile Include="Utils\DiagnosticTests.cs" />
+    <Compile Include="Utils\EngineThreadTests.cs" />
     <Compile Include="Utils\LocalizationTests.cs" />
     <Compile Include="Utils\AssemblyTests.cs" />
   </ItemGroup>

@@ -49,7 +49,7 @@
         {
             if (value == null)
             {
-                target.WriteByte(0);
+                target.WriteByte(Constants.SerializationNull);
                 return;
             }
 
@@ -76,7 +76,7 @@
         public override object Deserialize(Stream source)
         {
             var indicator = source.ReadByte();
-            if (indicator == byte.MaxValue)
+            if (indicator == Constants.SerializationNull)
             {
                 return null;
             }

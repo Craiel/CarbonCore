@@ -186,7 +186,7 @@
 
             if (value == null)
             {
-                stream.WriteByte(byte.MaxValue);
+                stream.WriteByte(Constants.SerializationNull);
                 return false;
             }
 

@@ -122,7 +122,7 @@
                     // Write the type of the serializer
                     if (serializationEntry.IsNullable && value == null)
                     {
-                        context.Stream.WriteByte(byte.MaxValue);
+                        context.Stream.WriteByte(Constants.SerializationNull);
                         continue;
                     }
 
