@@ -6,6 +6,7 @@
     using System.Text;
     using System.Xml;
 
+    using CarbonCore.Utils.Compat.Diagnostics;
     using CarbonCore.Utils.Compat.Json;
 
     using Newtonsoft.Json;
@@ -248,7 +249,8 @@
             }
             catch (Exception e)
             {
-                System.Diagnostics.Trace.TraceError("Failed to copy file {0} to {1}: {2}", this, targetFile, e);
+                Diagnostic.Exception(e);
+                System.Diagnostics.Trace.TraceError("Failed to copy file {0} to {1}", this, targetFile);
             }
 
             return false;

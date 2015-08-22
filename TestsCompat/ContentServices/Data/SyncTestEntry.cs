@@ -24,6 +24,8 @@
             this.Enum = new Sync<TestEnum>();
 
             this.CascadedEntry = new SyncCascade<SyncTestEntry2>();
+            this.CascadedEntry2 = new SyncCascade<SyncTestEntry2>();
+            this.CascadedReadOnlyEntry = new SyncCascadeReadOnly<SyncTestEntry2>();
 
             this.SimpleCollection = new SyncList<List<int>, int>();
             this.CascadingCollection = new SyncList<List<SyncTestEntry2>, SyncTestEntry2>();
@@ -35,7 +37,7 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public SyncNull<int?> Id { get; set; }
+        public SyncNull<int?> Id { get; private set; }
 
         public Sync<int> TestInt { get; set; }
 
@@ -45,37 +47,45 @@
 
         public Sync<bool> TestBool { get; set; }
 
-        public SyncObject<byte[]> ByteArray { get; set; }
+        public SyncObject<byte[]> ByteArray { get; private set; }
 
-        public SyncObject<string> TestString { get; set; }
+        public SyncObject<string> TestString { get; private set; }
 
         public Sync<TestEnum> Enum { get; set; }
 
-        public SyncCascade<SyncTestEntry2> CascadedEntry { get; set; }
+        public SyncCascade<SyncTestEntry2> CascadedEntry { get; private set; }
 
-        public SyncList<List<int>, int> SimpleCollection { get; set; }
+        public SyncCascade<SyncTestEntry2> CascadedEntry2 { get; private set; }
 
-        public SyncList<List<SyncTestEntry2>, SyncTestEntry2> CascadingCollection { get; set; }
+        public SyncCascadeReadOnly<SyncTestEntry2> CascadedReadOnlyEntry { get; private set; }
 
-        public SyncDictionary<Dictionary<string, float>, string, float> SimpleDictionary { get; set; }
+        public SyncList<List<int>, int> SimpleCollection { get; private set; }
 
-        public SyncDictionary<Dictionary<int, SyncTestEntry2>, int, SyncTestEntry2> CascadingDictionary { get; set; }
+        public SyncList<List<SyncTestEntry2>, SyncTestEntry2> CascadingCollection { get; private set; }
 
-        public override bool GetEntryChanged()
+        public SyncDictionary<Dictionary<string, float>, string, float> SimpleDictionary { get; private set; }
+
+        public SyncDictionary<Dictionary<int, SyncTestEntry2>, int, SyncTestEntry2> CascadingDictionary { get; private set; }
+
+        public override bool IsChanged
         {
-            return this.Id.IsChanged
-                || this.TestInt.IsChanged
-                || this.TestLong.IsChanged
-                || this.TestFloat.IsChanged
-                || this.TestBool.IsChanged
-                || this.ByteArray.IsChanged
-                || this.TestString.IsChanged
-                || this.Enum.IsChanged
-                || this.CascadedEntry.IsChanged
-                || this.SimpleCollection.IsChanged
-                || this.CascadingCollection.IsChanged
-                || this.SimpleDictionary.IsChanged
-                || this.CascadingDictionary.IsChanged;
+            get 
+            {
+                return this.Id.IsChanged
+                    || this.TestInt.IsChanged
+                    || this.TestLong.IsChanged
+                    || this.TestFloat.IsChanged
+                    || this.TestBool.IsChanged
+                    || this.ByteArray.IsChanged
+                    || this.TestString.IsChanged
+                    || this.Enum.IsChanged
+                    || this.CascadedEntry.IsChanged
+                    || this.CascadedReadOnlyEntry.IsChanged
+                    || this.SimpleCollection.IsChanged
+                    || this.CascadingCollection.IsChanged
+                    || this.SimpleDictionary.IsChanged
+                    || this.CascadingDictionary.IsChanged;
+            }
         }
 
         public override void Save(Stream target, bool ignoreChangeState = false)
@@ -91,7 +101,9 @@
             NativeSerialization.Serialize(target, ignoreChangeState || this.Enum.IsChanged, this.Enum.Value, (stream, value) => Int32Serializer.Instance.Serialize(stream, (int)value));
 
             // Cascaded objects
-            NativeSerialization.SerializeObject(target, ignoreChangeState || this.CascadedEntry.IsChanged, this.CascadedEntry.Value, (stream, value) => value.Save(stream, ignoreChangeState));
+            NativeSerialization.SerializeCascade(target, this.CascadedEntry, ignoreChangeState);
+            NativeSerialization.SerializeCascade(target, this.CascadedEntry2, ignoreChangeState);
+            NativeSerialization.SerializeCascadeReadOnly(target, this.CascadedReadOnlyEntry, ignoreChangeState);
 
             // Lists
             NativeSerialization.SerializeList(target, ignoreChangeState || this.SimpleCollection.IsChanged, this.SimpleCollection.Value, Int32Serializer.Instance.Serialize);
@@ -113,11 +125,17 @@
             this.TestString.Value = NativeSerialization.Deserialize(source, this.TestString.Value, StringSerializer.Instance.Deserialize);
             this.Enum.Value = NativeSerialization.Deserialize(source, this.Enum.Value, Int32Serializer.Instance.Deserialize);
 
-            this.CascadedEntry.Value = NativeSerialization.DeserializeObject(
+            this.CascadedEntry.Value = NativeSerialization.DeserializeCascade(
                 source,
                 this.CascadedEntry.Value,
-                () => new SyncTestEntry2(),
-                (stream, current) => current.Load(stream));
+                () => new SyncTestEntry2());
+
+            this.CascadedEntry2.Value = NativeSerialization.DeserializeCascade(
+                source,
+                this.CascadedEntry2.Value,
+                () => new SyncTestEntry2());
+
+            NativeSerialization.DeserializeCascadeReadOnly(source, this.CascadedReadOnlyEntry.Value);
 
             this.SimpleCollection.Value = NativeSerialization.DeserializeList(
                     source,
@@ -169,6 +187,8 @@
             this.Enum.ResetChangeState(state);
 
             this.CascadedEntry.ResetChangeState(state);
+            this.CascadedEntry2.ResetChangeState(state);
+            this.CascadedReadOnlyEntry.ResetChangeState(state);
 
             this.SimpleCollection.ResetChangeState(state);
             this.CascadingCollection.ResetChangeState(state);

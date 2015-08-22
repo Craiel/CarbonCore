@@ -3,14 +3,16 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
-    
+
+    using CarbonCore.ContentServices.Compat.Contracts;
+
     public delegate void SerializationCallbackDelegate<in T>(Stream target, T value);
 
     public delegate object DeserializationCallbackDelegate(Stream source);
 
     public delegate void DeserializationObjectCallbackDelegate<in T>(Stream source, T current);
 
-    public delegate object ConstructionCallbackDelegate();
+    public delegate T ConstructionCallbackDelegate<out T>();
 
     public static class NativeSerialization
     {
@@ -50,7 +52,7 @@
         public static T DeserializeObject<T>(
             Stream source,
             T currentValue,
-            ConstructionCallbackDelegate construction,
+            ConstructionCallbackDelegate<T> construction,
             DeserializationObjectCallbackDelegate<T> callback)
             where T : class
         {
@@ -66,7 +68,58 @@
             }
 
             callback(source, (T)result);
-            return result as T;
+            return (T)result;
+        }
+
+        public static void SerializeCascade<T>(Stream stream, SyncCascade<T> host, bool ignoreChangeState)
+            where T : class, ISyncEntry
+        {
+            if (!WriteNullableHeader(stream, ignoreChangeState || host.IsChanged, host.Value))
+            {
+                return;
+            }
+            
+            // If the source reference changed we also have to cascade everything
+            host.Value.Save(stream, host.IsReferenceChanged || ignoreChangeState);
+        }
+
+        public static T DeserializeCascade<T>(Stream source, T currentValue, ConstructionCallbackDelegate<T> construction) where T : class, ISyncEntry
+        {
+            object result = currentValue;
+            if (!ReadNullableHeader(source, ref result))
+            {
+                return result as T;
+            }
+
+            T typed = result as T;
+            if (typed == null)
+            {
+                typed = construction();
+            }
+
+            typed.Load(source);
+            return typed;
+        }
+
+        public static void SerializeCascadeReadOnly<T>(Stream stream, SyncCascadeReadOnly<T> host, bool ignoreChangeState)
+            where T : class, ISyncEntry
+        {
+            if (!WriteHeader(stream, ignoreChangeState || host.IsChanged))
+            {
+                return;
+            }
+
+            host.Value.Save(stream, ignoreChangeState);
+        }
+
+        public static void DeserializeCascadeReadOnly<T>(Stream source, T currentValue) where T : class, ISyncEntry
+        {
+            if (!ReadHeader(source))
+            {
+                return;
+            }
+
+            currentValue.Load(source);
         }
 
         public static void SerializeList<T>(Stream stream, bool isChanged, List<T> list, SerializationCallbackDelegate<T> serializationCallback)
@@ -88,7 +141,7 @@
         public static List<T> DeserializeList<T>(
             Stream source,
             List<T> currentValue,
-            ConstructionCallbackDelegate construction,
+            ConstructionCallbackDelegate<List<T>>  construction,
             DeserializationCallbackDelegate deserializationCallback)
         {
             object resultUntyped = currentValue;
@@ -100,7 +153,7 @@
             List<T> result = resultUntyped as List<T>;
             if (result == null)
             {
-                result = (List<T>)construction();
+                result = construction();
             }
 
             // List entries are always serialized in full
@@ -133,7 +186,7 @@
         public static Dictionary<T, TN> DeserializeDictionary<T, TN>(
             Stream source,
             Dictionary<T, TN> currentValue,
-            ConstructionCallbackDelegate construction,
+            ConstructionCallbackDelegate<Dictionary<T, TN>> construction,
             DeserializationCallbackDelegate keyCallback,
             DeserializationCallbackDelegate valueCallback)
         {
@@ -146,7 +199,7 @@
             Dictionary<T, TN> result = resultUntyped as Dictionary<T, TN>;
             if (result == null)
             {
-                result = (Dictionary<T, TN>)construction();
+                result = construction();
             }
 
             // Dictionaries are always serialized in full
@@ -206,7 +259,7 @@
                 return false;
             }
 
-            if (source.ReadByte() == 0)
+            if (source.ReadByte() == Constants.SerializationNull)
             {
                 result = null;
                 return false;

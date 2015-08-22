@@ -4,6 +4,7 @@
     using System.IO;
 
     using CarbonCore.Utils.Compat.Contracts;
+    using CarbonCore.Utils.Compat.Diagnostics;
     using CarbonCore.Utils.Compat.IO;
 
     public class TextFile : ITextFile
@@ -136,7 +137,8 @@
             }
             catch (Exception e)
             {
-                System.Diagnostics.Trace.TraceError("Failed to open Log File: {0}\n{1}", this.file, e.Message);
+                Diagnostic.Exception(e);
+                System.Diagnostics.Trace.TraceError("Failed to open Log File: {0}", this.file);
             }
         }
     }

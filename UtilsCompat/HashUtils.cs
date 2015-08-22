@@ -79,7 +79,14 @@
         {
             unchecked
             {
-                return objects.Aggregate(17, (current, data) => (current * 31) + data.GetHashCode());
+                int result = 0;
+                for (var i = 0; i < objects.Length; i++)
+                {
+                    result += (result * 31) + objects[i].GetHashCode();
+                }
+
+                return result;
+                //return objects.Aggregate(17, (current, data) => (current * 31) + data.GetHashCode());
             }
         }
     }

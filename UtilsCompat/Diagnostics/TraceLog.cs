@@ -1,6 +1,5 @@
 ﻿namespace CarbonCore.Utils.Compat.Diagnostics
 {
-    using System;
     using System.Diagnostics;
 
     using CarbonCore.Utils.Compat.Contracts;
@@ -38,6 +37,11 @@
             Trace.WriteLine(formattedMessage);
         }
 
+        public void Assert(bool condition, string message = null)
+        {
+            Trace.Assert(condition, message ?? string.Empty);
+        }
+
         public virtual void Warning(string message, params object[] args)
         {
             if (this.IsMuted)
@@ -48,7 +52,7 @@
             Trace.TraceWarning(this.PreformatMessage(message), args);
         }
 
-        public virtual void Error(string message, Exception exception = null, params object[] args)
+        public virtual void Error(string message, params object[] args)
         {
             if (this.IsMuted)
             {

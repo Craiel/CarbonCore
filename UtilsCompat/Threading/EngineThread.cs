@@ -155,7 +155,7 @@
                         catch (Exception e)
                         {
                             this.isRunning = false;
-                            Diagnostic.Error("Error in EngineThread Update: {0}", e);
+                            Diagnostic.Exception(e);
                         }
                     }
                 }
@@ -166,6 +166,8 @@
             this.IsThreadRunning = false;
             this.IsThreadFinished = true;
             this.shutdownEvent.Set();
+
+            Diagnostic.Warning("Engine Thread {0} ({1}) Ended", this.ThreadId, this.ThreadName);
         }
 
         private bool CheckThreadDelay()

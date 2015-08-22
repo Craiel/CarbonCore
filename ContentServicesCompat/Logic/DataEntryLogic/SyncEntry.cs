@@ -9,7 +9,7 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public abstract bool GetEntryChanged();
+        public abstract bool IsChanged { get; }
 
         public abstract void Save(Stream target, bool ignoreChangeState = false);
 

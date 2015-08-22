@@ -1,9 +1,10 @@
-﻿namespace CarbonCore.Tests.ContentServices
+﻿namespace CarbonCore.Tests.Compat.ContentServices
 {
     using System;
     using System.Linq;
 
     using CarbonCore.ContentServices.Compat.Logic.DataEntryLogic;
+    using CarbonCore.Tests.ContentServices;
     using CarbonCore.Utils.Compat.Diagnostics;
 
     using NUnit.Framework;
@@ -146,26 +147,33 @@
         [Test]
         public void SyncSerializationTest()
         {
+            const int ExpectedFullSize = 358;
+            const int ExpectedUnchangedSize = 15;
+
             // Mark everything as changed first so we get accurate results
             DataTestData.SyncTestEntry.ResetChangeState(true);
 
             // Test Sync serialization
             byte[] native = DataEntrySerialization.SyncSave(DataTestData.SyncTestEntry);
-            Assert.AreEqual(345, native.Length);
+            Assert.AreEqual(ExpectedFullSize, native.Length);
 
             // Reset the change state and test again
             DataTestData.SyncTestEntry.ResetChangeState();
             native = DataEntrySerialization.SyncSave(DataTestData.SyncTestEntry);
-            Assert.AreEqual(13, native.Length);
+            Assert.AreEqual(ExpectedUnchangedSize, native.Length);
 
             // Test saving with ignoring the change state
             native = DataEntrySerialization.SyncSave(DataTestData.SyncTestEntry, true);
-            Assert.AreEqual(345, native.Length);
+            Assert.AreEqual(ExpectedFullSize, native.Length);
 
             SyncTestEntry restored = new SyncTestEntry();
             SyncTestEntry restored2 = new SyncTestEntry();
             DataEntrySerialization.SyncLoad(restored, native);
             DataEntrySerialization.SyncLoad(restored2, native);
+
+            restored.ResetChangeState();
+            restored2.ResetChangeState();
+
             TestUtils.AssertInstanceEquals(DataTestData.SyncTestEntry, restored);
             TestUtils.AssertInstanceEquals(restored, restored2);
 
@@ -174,12 +182,12 @@
 
             restored.ResetChangeState();
             restoredData = DataEntrySerialization.SyncSave(restored);
-            Assert.AreEqual(13, restoredData.Length);
+            Assert.AreEqual(ExpectedUnchangedSize, restoredData.Length);
 
             // Modify simple types
             restored.TestFloat.Value = 15.0f;
             restoredData = DataEntrySerialization.SyncSave(restored);
-            Assert.AreEqual(18, restoredData.Length);
+            Assert.AreEqual(ExpectedUnchangedSize + 5, restoredData.Length);
 
             DataEntrySerialization.SyncLoad(restored2, restoredData);
             TestUtils.AssertInstanceEquals(restored, restored2);
@@ -187,7 +195,7 @@
             // Modify collections
             restored.SimpleCollection.Add(1001);
             restoredData = DataEntrySerialization.SyncSave(restored);
-            Assert.AreEqual(56, restoredData.Length);
+            Assert.AreEqual(58, restoredData.Length);
 
             DataEntrySerialization.SyncLoad(restored2, restoredData);
             Assert.IsTrue(restored.SimpleCollection.SequenceEqual(restored2.SimpleCollection));
@@ -196,7 +204,7 @@
             restored.CascadingCollection.Add(new SyncTestEntry2());
             restored.CascadingCollection[0].OtherTestFloat.Value = -10.0f;
             restoredData = DataEntrySerialization.SyncSave(restored);
-            Assert.AreEqual(134, restoredData.Length);
+            Assert.AreEqual(136, restoredData.Length);
 
             DataEntrySerialization.SyncLoad(restored2, restoredData);
             Assert.IsTrue(restored.CascadingCollection.SequenceEqual(restored2.CascadingCollection));
@@ -204,7 +212,7 @@
             // Modify Dictionaries
             restored.SimpleDictionary.Add("TestDict", 123);
             restoredData = DataEntrySerialization.SyncSave(restored);
-            Assert.AreEqual(193, restoredData.Length);
+            Assert.AreEqual(195, restoredData.Length);
 
             DataEntrySerialization.SyncLoad(restored2, restoredData);
             Assert.IsTrue(restored.SimpleDictionary.SequenceEqual(restored2.SimpleDictionary));
@@ -213,7 +221,7 @@
             restored.CascadingDictionary.Add(1001, new SyncTestEntry2());
             restored.CascadingDictionary[0].OtherTestFloat.Value = -10.0f;
             restoredData = DataEntrySerialization.SyncSave(restored);
-            Assert.AreEqual(297, restoredData.Length);
+            Assert.AreEqual(299, restoredData.Length);
 
             DataEntrySerialization.SyncLoad(restored2, restoredData);
             Assert.IsTrue(restored.CascadingDictionary.SequenceEqual(restored2.CascadingDictionary));
@@ -228,7 +236,7 @@
             long totalData = 0;
             using (new ProfileRegion("DataEntry.JsonSerialization"))
             {
-                var metric = Metrics.BeginMetric();
+                var metric = Diagnostic.BeginMeasure();
 
                 for (var i = 0; i < cycles; i++)
                 {
@@ -236,10 +244,10 @@
                     Assert.Greater(data.Length, 0);
                     totalData += data.Length;
                     DataEntrySerialization.Load<DataTestEntry>(data);
-                    Metrics.TakeMeasure(metric);
+                    Diagnostic.TakeMeasure(metric);
                 }
 
-                Metrics.TraceMeasure(metric, "DataEntry.JsonSerialization");
+                Diagnostic.TraceMeasure(metric, "DataEntry.JsonSerialization");
             }
 
             System.Diagnostics.Trace.TraceInformation("JSON Serialized {0} data, average: {1}", totalData, totalData / cycles);
@@ -249,7 +257,7 @@
             totalData = 0;
             using (new ProfileRegion("DataEntry.CompactSerialization"))
             {
-                var metric = Metrics.BeginMetric();
+                var metric = Diagnostic.BeginMeasure();
 
                 for (var i = 0; i < cycles; i++)
                 {
@@ -257,10 +265,10 @@
                     Assert.Greater(data.Length, 0);
                     totalData += data.Length;
                     DataEntrySerialization.CompactLoad<DataTestEntry>(data);
-                    Metrics.TakeMeasure(metric);
+                    Diagnostic.TakeMeasure(metric);
                 }
 
-                Metrics.TraceMeasure(metric, "DataEntry.CompactSerialization");
+                Diagnostic.TraceMeasure(metric, "DataEntry.CompactSerialization");
             }
 
             System.Diagnostics.Trace.TraceInformation("Compact Serialized {0} data, average: {1}", totalData, totalData / cycles);
@@ -270,7 +278,7 @@
             totalData = 0;
             using (new ProfileRegion("DataEntry.SyncSerialization"))
             {
-                var metric = Metrics.BeginMetric();
+                var metric = Diagnostic.BeginMeasure();
 
                 for (var i = 0; i < cycles; i++)
                 {
@@ -280,10 +288,10 @@
 
                     SyncTestEntry restoredSync = new SyncTestEntry();
                     DataEntrySerialization.SyncLoad(restoredSync, data);
-                    Metrics.TakeMeasure(metric);
+                    Diagnostic.TakeMeasure(metric);
                 }
 
-                Metrics.TraceMeasure(metric, "DataEntry.SyncSerialization");
+                Diagnostic.TraceMeasure(metric, "DataEntry.SyncSerialization");
             }
 
             System.Diagnostics.Trace.TraceInformation("Sync Serialized {0} data, average: {1}", totalData, totalData / cycles);

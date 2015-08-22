@@ -130,6 +130,7 @@
     <Compile Include="Logic\DataEntryLogic\CompactSerializers\DictionarySerializer.cs" />
     <Compile Include="Logic\DataEntryLogic\CompactSerializers\ListSerializer.cs" />
     <Compile Include="Logic\DataEntryLogic\Serializers\StringSerializer.cs" />
+    <Compile Include="Logic\DataEntryLogic\SyncCascadeReadOnly.cs" />
     <Compile Include="Logic\DataEntryLogic\SyncNull.cs" />
     <Compile Include="Logic\DataEntryLogic\SyncObject.cs" />
     <Compile Include="Logic\DataEntryLogic\SyncCascade.cs" />

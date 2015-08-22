@@ -122,8 +122,9 @@
     <Compile Include="Database\SqlStatementType.cs" />
     <Compile Include="Diagnostics\CarbonDiagnostics.cs" />
     <Compile Include="Diagnostics\Diagnostic.cs" />
-    <Compile Include="Diagnostics\Metrics.cs" />
-    <Compile Include="Diagnostics\MetricSection.cs" />
+    <Compile Include="Diagnostics\Metrics\MetricLong.cs" />
+    <Compile Include="Diagnostics\Metrics\MetricSection.cs" />
+    <Compile Include="Diagnostics\Metrics\Metric.cs" />
     <Compile Include="Diagnostics\TraceEventData.cs" />
     <Compile Include="Diagnostics\ProgressRegion.cs" />
     <Compile Include="Formatting\FormatHandler.cs" />
@@ -179,7 +180,7 @@
     <Compile Include="Contracts\ITimer.cs" />
     <Compile Include="Diagnostics\TraceListeners\ConsoleTraceListener.cs" />
     <Compile Include="Diagnostics\TraceListeners\FileTraceListener.cs" />
-    <Compile Include="Diagnostics\BaseLog.cs" />
+    <Compile Include="Diagnostics\TraceLog.cs" />
     <Compile Include="Diagnostics\ProfileStatistics.cs" />
     <Compile Include="EventRelay.cs" />
     <Compile Include="FNV.cs" />

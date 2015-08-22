@@ -105,7 +105,7 @@
                 return;
             }
 
-            Assert.AreEqual(first, second);
+            Assert.AreEqual(first, second, "Mismatch: {0} - {1}", first, second);
         }
     }
 }

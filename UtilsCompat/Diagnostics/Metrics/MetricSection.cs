@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Utils.Compat.Diagnostics
+﻿namespace CarbonCore.Utils.Compat.Diagnostics.Metrics
 {
     public class MetricSection
     {
@@ -8,8 +8,7 @@
         public MetricSection(long startTime)
         {
             this.StartTime = startTime;
-
-            this.Min = long.MaxValue;
+            this.Metric = new MetricLong();
         }
 
         // -------------------------------------------------------------------
@@ -17,40 +16,20 @@
         // -------------------------------------------------------------------
         public long StartTime { get; private set; }
 
-        public long Elapsed { get; private set; }
-
-        public long Count { get; set; }
-
+        public MetricLong Metric { get; private set; }
+        
         public long AverageTime { get; private set; }
-
-        public long TotalTime { get; private set; }
-
-        public long Min { get; private set; }
-
-        public long Max { get; private set; }
-
+        
         public void Measure(long currentTime)
         {
             long elapsed = currentTime - this.StartTime;
-            this.Elapsed = elapsed;
-            this.TotalTime += elapsed;
-            this.Count++;
-            this.AverageTime = this.TotalTime / this.Count;
-
-            if (this.Min > elapsed)
-            {
-                this.Min = elapsed;
-            }
-
-            if (this.Max < elapsed)
-            {
-                this.Max = elapsed;
-            }
+            this.Metric.Add(elapsed);
         }
 
         public void Reset(long elapsed)
         {
-            this.Elapsed = elapsed;
+            this.Metric.Reset();
+            this.Metric.Add(elapsed);
         }
     }
 }

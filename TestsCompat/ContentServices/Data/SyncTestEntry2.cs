@@ -33,13 +33,16 @@
 
         public Sync<long> OtherTestLong { get; set; }
 
-        public override bool GetEntryChanged()
+        public override bool IsChanged
         {
-            return this.Id.IsChanged
-                || this.OtherTestString.IsChanged
-                || this.OtherTestFloat.IsChanged
-                || this.OtherTestBool.IsChanged
-                || this.OtherTestLong.IsChanged;
+            get
+            {
+                return this.Id.IsChanged 
+                    || this.OtherTestString.IsChanged 
+                    || this.OtherTestFloat.IsChanged
+                    || this.OtherTestBool.IsChanged 
+                    || this.OtherTestLong.IsChanged;
+            }
         }
 
         public override void Save(Stream target, bool ignoreChangeState = false)

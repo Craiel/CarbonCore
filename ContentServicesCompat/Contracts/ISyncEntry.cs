@@ -4,8 +4,8 @@
 
     public interface ISyncEntry
     {
-        bool GetEntryChanged();
-
+        bool IsChanged { get; }
+        
         void Save(Stream target, bool ignoreChangeState = false);
 
         void Load(Stream source);

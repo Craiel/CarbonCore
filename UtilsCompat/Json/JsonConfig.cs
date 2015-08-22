@@ -3,6 +3,7 @@
     using System;
 
     using CarbonCore.Utils.Compat.Contracts;
+    using CarbonCore.Utils.Compat.Diagnostics;
     using CarbonCore.Utils.Compat.IO;
 
     using Newtonsoft.Json;
@@ -35,7 +36,8 @@
             }
             catch (Exception e)
             {
-                System.Diagnostics.Trace.TraceError("Could not save config to {0}\n{1}", file, e);
+                Diagnostic.Exception(e);
+                System.Diagnostics.Trace.TraceError("Could not save config to {0}", file);
                 return false;
             }
         }

@@ -22,7 +22,13 @@
 
         public void Serialize(Stream target, byte[] source)
         {
-            if (source == null || source.Length <= 0)
+            if (source == null)
+            {
+                target.WriteByte(Constants.SerializationNull);
+                return;
+            }
+
+            if (source.Length <= 0)
             {
                 target.WriteByte(0);
                 return;
@@ -42,9 +48,15 @@
 
         public override object Deserialize(Stream source)
         {
-            if ((byte)source.ReadByte() == 0)
+            int indicator = (byte)source.ReadByte();
+            if (indicator == Constants.SerializationNull)
             {
                 return null;
+            }
+
+            if (indicator == 0)
+            {
+                return new byte[0];
             }
 
             byte[] length = new byte[2];

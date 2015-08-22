@@ -4,7 +4,9 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.IO;
-    
+
+    using CarbonCore.Utils.Compat.Diagnostics;
+
     using Newtonsoft.Json;
 
     public class DictionaryConverter<T, TN> : JsonConverter
@@ -94,7 +96,8 @@
             }
             catch (Exception e)
             {
-                System.Diagnostics.Trace.TraceError("Error reading Json Dictionary: {0}", e);
+                Diagnostic.Exception(e);
+                Diagnostic.Error("Error reading Json Dictionary");
             }
 
             return resultDictionary;
