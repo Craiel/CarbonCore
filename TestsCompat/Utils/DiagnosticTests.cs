@@ -56,7 +56,7 @@
             Assert.AreEqual(4, longResult.Count);
 
             MetricFloat floatResult = Diagnostic.GetFullMetric<MetricFloat>(SecondMetricId);
-            Assert.AreEqual(24, floatResult.Count);
+            Assert.GreaterOrEqual(23, floatResult.Count);
 
             first.Shutdown();
             second.Shutdown();
