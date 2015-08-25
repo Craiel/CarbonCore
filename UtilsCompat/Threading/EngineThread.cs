@@ -94,6 +94,8 @@
 
         public string ThreadName { get; private set; }
 
+        public long CurrentFPS { get; private set; }
+
         public bool IsThreadRunning { get; private set; }
 
         public bool IsThreadFinished { get; private set; }
@@ -219,7 +221,7 @@
                 return;
             }
 
-            Diagnostic.Info("Thread: {0} @ {1}fps", this.ThreadName, this.framesSincePerformanceMeasure);
+            this.CurrentFPS = this.framesSincePerformanceMeasure;
 
             this.framesSincePerformanceMeasure = 0;
             this.deltaSincePerformanceMeasure = 0;
