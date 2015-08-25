@@ -79,6 +79,19 @@
         // -------------------------------------------------------------------
         public int ThreadId { get; private set; }
 
+        public int ManagedThreadId
+        {
+            get
+            {
+                if (this.internalThread != null)
+                {
+                    return this.internalThread.ManagedThreadId;
+                }
+
+                return -1;
+            }
+        }
+
         public string ThreadName { get; private set; }
 
         public bool IsThreadRunning { get; private set; }
@@ -161,13 +174,12 @@
                 }
             }
 
-            Diagnostic.UnregisterThread();
-
             this.IsThreadRunning = false;
             this.IsThreadFinished = true;
             this.shutdownEvent.Set();
 
             Diagnostic.Warning("Engine Thread {0} ({1}) Ended", this.ThreadId, this.ThreadName);
+            Diagnostic.UnregisterThread();
         }
 
         private bool CheckThreadDelay()

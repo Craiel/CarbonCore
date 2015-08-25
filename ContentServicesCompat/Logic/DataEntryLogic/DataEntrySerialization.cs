@@ -5,6 +5,7 @@
     using System.IO;
 
     using CarbonCore.ContentServices.Compat.Contracts;
+    using CarbonCore.Utils.Compat.Diagnostics;
 
     using Newtonsoft.Json;
     using Newtonsoft.Json.Bson;
@@ -158,7 +159,17 @@
                 if (serializationEntry.Serializer != null)
                 {
                     object value = serializationEntry.Serializer.Deserialize(context.Stream);
-                    serializationEntry.Property.SetValue(context.CurrentInstance, value);
+
+                    try
+                    {
+                        serializationEntry.Property.SetValue(context.CurrentInstance, value);
+                    }
+                    catch (Exception e)
+                    {
+                        Diagnostic.Error("Could not set property {0} to {1}: {2}", serializationEntry.Property.PropertyName, value, e);
+                        throw e;
+                    }
+                    
                     continue;
                 }
 

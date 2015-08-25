@@ -1,14 +1,14 @@
 ﻿namespace CarbonCore.Utils.Compat.Diagnostics.Metrics
 {
-    public class MetricLong : Metric<long>
+    public class MetricInt : Metric<int>
     {
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
-        public MetricLong(int id)
+        public MetricInt(int id)
             : base(id)
         {
-            this.Min = long.MaxValue;
+            this.Min = int.MaxValue;
         }
 
         // -------------------------------------------------------------------
@@ -19,7 +19,7 @@
             this.Add(1);
         }
 
-        public override void Add(long value)
+        public override void Add(int value)
         {
             this.Count++;
             this.Total += value;
@@ -34,20 +34,20 @@
                 this.Max = value;
             }
 
-            this.Average = this.Total / this.Count;
+            this.Average = (int)(this.Total / this.Count);
         }
 
         public override void Reset()
         {
             base.Reset();
 
-            this.Min = long.MaxValue;
+            this.Min = int.MaxValue;
         }
 
         // -------------------------------------------------------------------
         // Protected
         // -------------------------------------------------------------------
-        protected override void DoAdd(Metric<long> other)
+        protected override void DoAdd(Metric<int> other)
         {
             this.Count += other.Count;
             this.Total += other.Total;
@@ -61,7 +61,7 @@
                 this.Max = other.Max;
             }
 
-            this.Average = this.Total / this.Count;
+            this.Average = (int)(this.Total / this.Count);
         }
     }
 }

@@ -3,11 +3,11 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Runtime.CompilerServices;
     using System.Text;
     using System.Threading;
 
     using CarbonCore.Utils.Compat.Contracts;
+    using CarbonCore.Utils.Compat.Contracts.Diagnostics;
     using CarbonCore.Utils.Compat.Diagnostics.Metrics;
     using CarbonCore.Utils.Compat.Threading;
 
@@ -25,7 +25,7 @@
         static Diagnostic()
         {
             // Initialize the default diagnostic instance
-            SetInstance(new CarbonDiagnostics<TraceLog>());
+            SetInstance(new CarbonDiagnostics<TraceLog, MetricProvider>());
         }
 
         // -------------------------------------------------------------------
@@ -50,19 +50,37 @@
             }
         }
 
-        public static MetricSection BeginMeasure()
+        public static void RegisterMetric<T>(int id)
+            where T : IMetric
         {
-            return instance.BeginMeasure();
+            instance.RegisterMetric<T>(id);
         }
 
-        public static void TakeMeasure(MetricSection section)
+        public static T GetMetric<T>(int id)
+            where T : IMetric
         {
-            instance.TakeMeasure(section);
+            return (T)GetMetricContext().GetMetric(id);
         }
 
-        public static void ResetMeasure(MetricSection section)
+        public static T GetFullMetric<T>(int id)
+            where T : IMetric
         {
-            instance.ResetMeasure(section);
+            return instance.GetFullMetric<T>(id);
+        }
+
+        public static MetricTime BeginTimeMeasure()
+        {
+            return GetMetricContext().BeginTimeMeasure();
+        }
+
+        public static void TakeTimeMeasure(MetricTime metric)
+        {
+            GetMetricContext().TakeTimeMeasure(metric);
+        }
+
+        public static void ResetTimeMeasure(MetricTime metric)
+        {
+            GetMetricContext().ResetTimeMeasure(metric);
         }
 
         public static void Debug(string message, params object[] args)
@@ -111,6 +129,7 @@
                 }
             }
 
+            instance.RegisterMetricContext(threadId);
             instance.RegisterLogContext(threadId, string.Format("({0}) {1}", threadId, name));
         }
 
@@ -125,23 +144,29 @@
                 }
             }
 
+            instance.UnregisterMetricContext(threadId);
             instance.UnregisterLogContext(threadId);
+        }
+
+        public static bool GetMute(int managedThreadId)
+        {
+            return instance.GetLogContext(managedThreadId).IsMuted;
         }
 
         public static void SetMute(int managedThreadId, bool mute = true)
         {
-            instance.SetMute(managedThreadId, mute);
+            instance.GetLogContext(managedThreadId).IsMuted = mute;
         }
 
-        public static void TraceMeasure(MetricSection section, string message)
+        public static void TraceMeasure(MetricTime metric, string message)
         {
             StringBuilder builder = new StringBuilder();
             builder.AppendLine(message);
-            builder.AppendFormat("  {0} measures\n", section.Metric.Count);
-            builder.AppendFormat("  -> {0} Total, {1}ms\n", section.Metric.Total, GetTimeInMS(section.Metric.Total));
-            builder.AppendFormat("  -> {0} Min, {1}ms\n", section.Metric.Min, GetTimeInMS(section.Metric.Min));
-            builder.AppendFormat("  -> {0} Max, {1}ms\n", section.Metric.Max, GetTimeInMS(section.Metric.Max));
-            builder.AppendFormat("  -> {0} Avg, {1}ms\n", section.AverageTime, GetTimeInMS(section.AverageTime));
+            builder.AppendFormat("  {0} measures\n", metric.Count);
+            builder.AppendFormat("  -> {0} Total, {1}ms\n", metric.Total, GetTimeInMS(metric.Total));
+            builder.AppendFormat("  -> {0} Min, {1}ms\n", metric.Min, GetTimeInMS(metric.Min));
+            builder.AppendFormat("  -> {0} Max, {1}ms\n", metric.Max, GetTimeInMS(metric.Max));
+            builder.AppendFormat("  -> {0} Avg, {1}ms\n", metric.Average, GetTimeInMS(metric.Average));
 
             Info(builder.ToString());
         }
@@ -154,6 +179,11 @@
         // -------------------------------------------------------------------
         // Private
         // -------------------------------------------------------------------
+        private static IMetricProvider GetMetricContext()
+        {
+            return instance.GetMetricProvider(Thread.CurrentThread.ManagedThreadId);
+        }
+
         private static ILog GetThreadContext()
         {
             return instance.GetLogContext(Thread.CurrentThread.ManagedThreadId);

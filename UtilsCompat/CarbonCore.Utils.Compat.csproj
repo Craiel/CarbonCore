@@ -98,9 +98,11 @@
     <Compile Include="Collections\DefaultValueExtendedDictionary.cs" />
     <Compile Include="Collections\ExtendedDictionary.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Contracts\Diagnostics\IMetric.cs" />
+    <Compile Include="Contracts\Diagnostics\IMetricProvider.cs" />
     <Compile Include="Contracts\IExtendedDictionary.cs" />
     <Compile Include="Contracts\IJsonConfig.cs" />
-    <Compile Include="Contracts\ICarbonDiagnostics.cs" />
+    <Compile Include="Contracts\Diagnostics\ICarbonDiagnostics.cs" />
     <Compile Include="Contracts\IoC\ICarbonContainer.cs" />
     <Compile Include="Contracts\IoC\ICarbonQuickModule.cs" />
     <Compile Include="Contracts\IoC\ICarbonQuickBinding.cs" />
@@ -122,8 +124,11 @@
     <Compile Include="Database\SqlStatementType.cs" />
     <Compile Include="Diagnostics\CarbonDiagnostics.cs" />
     <Compile Include="Diagnostics\Diagnostic.cs" />
+    <Compile Include="Diagnostics\Metrics\MetricFloat.cs" />
+    <Compile Include="Diagnostics\Metrics\MetricInt.cs" />
     <Compile Include="Diagnostics\Metrics\MetricLong.cs" />
-    <Compile Include="Diagnostics\Metrics\MetricSection.cs" />
+    <Compile Include="Diagnostics\Metrics\MetricProvider.cs" />
+    <Compile Include="Diagnostics\Metrics\MetricTime.cs" />
     <Compile Include="Diagnostics\Metrics\Metric.cs" />
     <Compile Include="Diagnostics\TraceEventData.cs" />
     <Compile Include="Diagnostics\ProgressRegion.cs" />

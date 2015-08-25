@@ -236,7 +236,7 @@
             long totalData = 0;
             using (new ProfileRegion("DataEntry.JsonSerialization"))
             {
-                var metric = Diagnostic.BeginMeasure();
+                var metric = Diagnostic.BeginTimeMeasure();
 
                 for (var i = 0; i < cycles; i++)
                 {
@@ -244,7 +244,7 @@
                     Assert.Greater(data.Length, 0);
                     totalData += data.Length;
                     DataEntrySerialization.Load<DataTestEntry>(data);
-                    Diagnostic.TakeMeasure(metric);
+                    Diagnostic.TakeTimeMeasure(metric);
                 }
 
                 Diagnostic.TraceMeasure(metric, "DataEntry.JsonSerialization");
@@ -257,7 +257,7 @@
             totalData = 0;
             using (new ProfileRegion("DataEntry.CompactSerialization"))
             {
-                var metric = Diagnostic.BeginMeasure();
+                var metric = Diagnostic.BeginTimeMeasure();
 
                 for (var i = 0; i < cycles; i++)
                 {
@@ -265,7 +265,7 @@
                     Assert.Greater(data.Length, 0);
                     totalData += data.Length;
                     DataEntrySerialization.CompactLoad<DataTestEntry>(data);
-                    Diagnostic.TakeMeasure(metric);
+                    Diagnostic.TakeTimeMeasure(metric);
                 }
 
                 Diagnostic.TraceMeasure(metric, "DataEntry.CompactSerialization");
@@ -278,7 +278,7 @@
             totalData = 0;
             using (new ProfileRegion("DataEntry.SyncSerialization"))
             {
-                var metric = Diagnostic.BeginMeasure();
+                var metric = Diagnostic.BeginTimeMeasure();
 
                 for (var i = 0; i < cycles; i++)
                 {
@@ -288,7 +288,7 @@
 
                     SyncTestEntry restoredSync = new SyncTestEntry();
                     DataEntrySerialization.SyncLoad(restoredSync, data);
-                    Diagnostic.TakeMeasure(metric);
+                    Diagnostic.TakeTimeMeasure(metric);
                 }
 
                 Diagnostic.TraceMeasure(metric, "DataEntry.SyncSerialization");

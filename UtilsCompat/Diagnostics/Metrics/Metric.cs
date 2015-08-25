@@ -1,12 +1,24 @@
 ﻿namespace CarbonCore.Utils.Compat.Diagnostics.Metrics
 {
-    public abstract class Metric<T>
+    using CarbonCore.Utils.Compat.Contracts.Diagnostics;
+
+    public abstract class Metric<T> : IMetric
         where T : struct
     {
         // -------------------------------------------------------------------
+        // Protected
+        // -------------------------------------------------------------------
+        protected Metric(int id)
+        {
+            this.Id = id;
+        }
+
+        // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public T Count { get; protected set; }
+        public int Id { get; private set; }
+        
+        public long Count { get; protected set; }
 
         public T Total { get; protected set; }
 
@@ -20,11 +32,28 @@
 
         public virtual void Reset()
         {
-            this.Count = default(T);
+            this.Count = 0;
+
             this.Total = default(T);
             this.Min = default(T);
             this.Max = default(T);
             this.Average = default(T);
         }
+
+        public void Add(IMetric other)
+        {
+            // Check if there is something to add
+            if (other.Count <= 0)
+            {
+                return;
+            }
+
+            this.DoAdd((Metric<T>)other);
+        }
+
+        // -------------------------------------------------------------------
+        // Protected
+        // -------------------------------------------------------------------
+        protected abstract void DoAdd(Metric<T> other);
     }
 }
