@@ -186,8 +186,8 @@
 
         private bool CheckThreadDelay()
         {
-            this.frameDelay += this.time.TickDeltaTicks;
-            this.deltaSinceMeasure += this.time.TickDeltaTicks;
+            this.frameDelay += this.time.DeltaTicks;
+            this.deltaSinceMeasure += this.time.DeltaTicks;
 
             if (this.frameDelay < this.frameDelayTarget)
             {

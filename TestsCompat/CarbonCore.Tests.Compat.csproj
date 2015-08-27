@@ -89,6 +89,7 @@
     <Compile Include="Utils\CarbonPathTests.cs" />
     <Compile Include="Utils\DiagnosticTests.cs" />
     <Compile Include="Utils\EngineThreadTests.cs" />
+    <Compile Include="Utils\EngineTimeTests.cs" />
     <Compile Include="Utils\HashTests.cs" />
     <Compile Include="Utils\LocalizationTests.cs" />
     <Compile Include="Utils\AssemblyTests.cs" />
