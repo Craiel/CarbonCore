@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Tests.Utils
+﻿namespace CarbonCore.Tests.Compat.Utils
 {
     using System;
     using System.Collections.Generic;
@@ -8,7 +8,7 @@
     using CarbonCore.Utils.Compat.IO;
 
     using NUnit.Framework;
-    
+
     [TestFixture]
     public class AssemblyTests
     {

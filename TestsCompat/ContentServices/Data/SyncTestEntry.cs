@@ -28,10 +28,10 @@
             this.CascadedReadOnlyEntry = new SyncCascadeReadOnly<SyncTestEntry2>();
 
             this.SimpleCollection = new SyncList<List<int>, int>();
-            this.CascadingCollection = new SyncList<List<SyncTestEntry2>, SyncTestEntry2>();
+            this.CascadingCollection = new SyncCascadeList<List<SyncTestEntry2>, SyncTestEntry2>();
 
             this.SimpleDictionary = new SyncDictionary<Dictionary<string, float>, string, float>();
-            this.CascadingDictionary = new SyncDictionary<Dictionary<int, SyncTestEntry2>, int, SyncTestEntry2>();
+            this.CascadingDictionary = new SyncCascadeValueDictionary<Dictionary<int, SyncTestEntry2>, int, SyncTestEntry2>();
         }
 
         // -------------------------------------------------------------------
@@ -61,11 +61,11 @@
 
         public SyncList<List<int>, int> SimpleCollection { get; private set; }
 
-        public SyncList<List<SyncTestEntry2>, SyncTestEntry2> CascadingCollection { get; private set; }
+        public SyncCascadeList<List<SyncTestEntry2>, SyncTestEntry2> CascadingCollection { get; private set; }
 
         public SyncDictionary<Dictionary<string, float>, string, float> SimpleDictionary { get; private set; }
 
-        public SyncDictionary<Dictionary<int, SyncTestEntry2>, int, SyncTestEntry2> CascadingDictionary { get; private set; }
+        public SyncCascadeValueDictionary<Dictionary<int, SyncTestEntry2>, int, SyncTestEntry2> CascadingDictionary { get; private set; }
 
         public override bool IsChanged
         {
@@ -187,23 +187,9 @@
 
             this.SimpleCollection.ResetChangeState(state);
             this.CascadingCollection.ResetChangeState(state);
-            if (this.CascadingCollection.Value != null)
-            {
-                foreach (SyncTestEntry2 entry in this.CascadingCollection)
-                {
-                    entry.ResetChangeState(state);
-                }
-            }
 
             this.SimpleDictionary.ResetChangeState(state);
             this.CascadingDictionary.ResetChangeState(state);
-            if (this.CascadingDictionary.Value != null)
-            {
-                foreach (int key in this.CascadingDictionary.Keys)
-                {
-                    this.CascadingDictionary[key].ResetChangeState(state);
-                }
-            }
         }
     }
 }

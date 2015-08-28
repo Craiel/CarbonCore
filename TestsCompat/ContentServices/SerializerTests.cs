@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Tests.ContentServices
+﻿namespace CarbonCore.Tests.Compat.ContentServices
 {
     using System.Collections.Generic;
     using System.IO;
@@ -6,6 +6,7 @@
     using CarbonCore.ContentServices.Compat.Contracts;
     using CarbonCore.ContentServices.Compat.Logic.DataEntryLogic;
     using CarbonCore.ContentServices.Compat.Logic.DataEntryLogic.Serializers;
+    using CarbonCore.Tests.ContentServices;
     using CarbonCore.Utils.Compat;
 
     using NUnit.Framework;
@@ -137,15 +138,12 @@
         }
 
         [Test]
-        public void ListSerialization()
+        public void ListIsChangedTests()
         {
-            const int FirstTestSize = 29;
-            const int SecondTestSize = 154;
-
-            SyncList<List<int>, int> simpleCollection = new SyncList<List<int>, int>();
+            var simpleCollection = new SyncList<List<int>, int>();
             simpleCollection.AddRange(new List<int> { 5, 10, 15, 99, 2999 });
 
-            SyncList<List<ISyncEntry>, ISyncEntry> cascadedCollection = new SyncList<List<ISyncEntry>, ISyncEntry>();
+            var cascadedCollection = new SyncCascadeList<List<ISyncEntry>, ISyncEntry>();
             cascadedCollection.AddRange(
                 new List<ISyncEntry>
                     {
@@ -157,6 +155,106 @@
                                 OtherTestFloat = new Sync<float>(-15.15f)
                             }
                     });
+
+            Assert.IsTrue(simpleCollection.IsChanged);
+            Assert.IsTrue(cascadedCollection.IsChanged);
+
+            simpleCollection.ResetChangeState();
+            cascadedCollection.ResetChangeState();
+
+            Assert.IsFalse(simpleCollection.IsChanged);
+            Assert.IsFalse(cascadedCollection.IsChanged);
+
+            // Addition
+            simpleCollection.Add(5);
+            Assert.IsTrue(simpleCollection.IsChanged);
+
+            cascadedCollection.Add(new SyncTestEntry2());
+            Assert.IsTrue(cascadedCollection.IsChanged);
+
+            simpleCollection.ResetChangeState();
+            cascadedCollection.ResetChangeState();
+
+            // Indexers
+            simpleCollection[0] = 15;
+            Assert.IsTrue(simpleCollection.IsChanged);
+
+            ((SyncTestEntry2)cascadedCollection[0]).OtherTestString.Value = "Changing a property in a cascaded collection";
+            Assert.IsTrue(cascadedCollection.IsChanged);
+        }
+
+        [Test]
+        public void DictionaryIsChangedTests()
+        {
+            var simpleDictionary = new SyncDictionary<Dictionary<string, float>, string, float>();
+            simpleDictionary.Add("First", 20);
+            simpleDictionary.Add("Second", 19);
+            simpleDictionary.Add("Third", 1);
+
+            var cascadingDictionary = new SyncCascadeValueDictionary<Dictionary<int, SyncTestEntry2>, int, SyncTestEntry2>();
+            cascadingDictionary.Add(0, new SyncTestEntry2 { Id = { Value = "0" } });
+            cascadingDictionary.Add(1, new SyncTestEntry2 { Id = { Value = "1" }, OtherTestLong = { Value = 99 } });
+            cascadingDictionary.Add(50, new SyncTestEntry2 { Id = { Value = "Third" }, OtherTestString = { Value = "Still the third..." } });
+
+
+            Assert.IsTrue(simpleDictionary.IsChanged);
+            Assert.IsTrue(cascadingDictionary.IsChanged);
+
+            simpleDictionary.ResetChangeState();
+            cascadingDictionary.ResetChangeState();
+
+            Assert.IsFalse(simpleDictionary.IsChanged);
+            Assert.IsFalse(cascadingDictionary.IsChanged);
+
+            // Addition
+            simpleDictionary.Add("test", 15.5f);
+            Assert.IsTrue(simpleDictionary.IsChanged);
+
+            cascadingDictionary.Add(15, new SyncTestEntry2());
+            Assert.IsTrue(cascadingDictionary.IsChanged);
+
+            simpleDictionary.ResetChangeState();
+            cascadingDictionary.ResetChangeState();
+
+            // Indexers
+            simpleDictionary["test"] = 125.9f;
+            Assert.IsTrue(simpleDictionary.IsChanged);
+
+            (cascadingDictionary[0]).OtherTestString.Value = "Changing a property in a cascaded collection";
+            Assert.IsTrue(cascadingDictionary.IsChanged);
+        }
+
+        [Test]
+        public void ListSerialization()
+        {
+            const int FirstTestSize = 29;
+            const int SecondTestSize = 77;
+
+            SyncList<List<int>, int> simpleCollection = new SyncList<List<int>, int>();
+            simpleCollection.AddRange(new List<int> { 5, 10, 15, 99, 2999 });
+
+            SyncList<List<ISyncEntry>, ISyncEntry> cascadedCollection = new SyncList<List<ISyncEntry>, ISyncEntry>();
+            cascadedCollection.AddRange(
+                new List<ISyncEntry>
+                    {
+                        new SyncTestEntry2
+                            {
+                                Id = { Value = "First entry" },
+                            },
+                        new SyncTestEntry2
+                            {
+                                Id = { Value = "Second entry" },
+                                OtherTestBool =  new Sync<bool>(true)
+                            },
+                        new SyncTestEntry2
+                            {
+                                Id = { Value = "Last entry" },
+                                OtherTestFloat = new Sync<float>(-15.15f)
+                            }
+                    });
+
+            simpleCollection.ResetChangeState(true);
+            cascadedCollection.ResetChangeState(true);
 
             byte[] data;
             using (var stream = new MemoryStream())
@@ -188,19 +286,19 @@
                 stream.Seek(0, SeekOrigin.Begin);
                 long position = stream.Position;
 
-                var restoredSimpleCollection = new SyncList<IList<int>, int>();
+                var restoredSimpleCollection = new SyncList<List<int>, int>();
                 NativeSerialization.DeserializeList<int>(
                     stream,
-                    null,
+                    restoredSimpleCollection.Value,
                     Int32Serializer.Instance.Deserialize);
                 Assert.NotNull(restoredSimpleCollection);
                 TestUtils.AssertListEquals(simpleCollection.Value, restoredSimpleCollection);
                 TestUtils.AssertStreamPos(stream, FirstTestSize, ref position);
 
-                var restoredCascadeCollection = new SyncList<IList<ISyncEntry>, ISyncEntry>();
+                var restoredCascadeCollection = new SyncList<List<ISyncEntry>, ISyncEntry>();
                 NativeSerialization.DeserializeList<ISyncEntry>(
                         stream,
-                        null,
+                        restoredCascadeCollection.Value,
                         source =>
                             {
                                 var entry = new SyncTestEntry2();
@@ -262,20 +360,20 @@
                 stream.Seek(0, SeekOrigin.Begin);
                 long position = stream.Position;
 
-                var restoredSimpleDictionary = new SyncDictionary<IDictionary<string, float>, string, float>();
+                var restoredSimpleDictionary = new SyncDictionary<Dictionary<string, float>, string, float>();
                 NativeSerialization.DeserializeDictionary<string, float>(
                     stream,
-                    null,
+                    restoredSimpleDictionary.Value,
                     StringSerializer.Instance.Deserialize,
                     FloatSerializer.Instance.Deserialize);
                 Assert.NotNull(restoredSimpleDictionary);
                 TestUtils.AssertDictionaryEquals(simpleDictionary.Value, restoredSimpleDictionary);
                 TestUtils.AssertStreamPos(stream, FirstTestSize, ref position);
 
-                var restoredCascadeDictionary = new SyncDictionary<IDictionary<int, SyncTestEntry2>, int, SyncTestEntry2>();
+                var restoredCascadeDictionary = new SyncDictionary<Dictionary<int, SyncTestEntry2>, int, SyncTestEntry2>();
                 NativeSerialization.DeserializeDictionary<int, SyncTestEntry2>(
                         stream,
-                        null,
+                        restoredCascadeDictionary.Value,
                         Int32Serializer.Instance.Deserialize,
                         source =>
                         {

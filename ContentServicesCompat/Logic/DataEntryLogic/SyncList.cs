@@ -32,7 +32,7 @@
         // -------------------------------------------------------------------
         public T Value { get; private set; }
 
-        public bool IsChanged { get; private set; }
+        public virtual bool IsChanged { get; private set; }
 
         public int Count
         {
@@ -100,7 +100,7 @@
             return this.GetEnumerator();
         }
 
-        public void ResetChangeState(bool state = false)
+        public virtual void ResetChangeState(bool state = false)
         {
             this.IsChanged = state;
         }

@@ -22,7 +22,7 @@
             time.Update();
             Assert.Greater(time.Ticks, 0);
             Assert.Greater(time.DeltaTicks, 0);
-            Assert.LessOrEqual(5, time.FixedTicks - time.Ticks);
+            Assert.LessOrEqual(time.FixedTicks - time.Ticks, 5);
         }
 
         [Test]
