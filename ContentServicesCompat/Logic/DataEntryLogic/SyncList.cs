@@ -1,51 +1,36 @@
 ﻿namespace CarbonCore.ContentServices.Compat.Logic.DataEntryLogic
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics;
+
+    using CarbonCore.Utils.Compat.Diagnostics;
 
     [DebuggerDisplay("{Value}")]
     public class SyncList<T, TN> : IList<TN>
         where T : IList<TN>
     {
-        private T value;
-
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
         public SyncList()
-            : this(default(T))
+            : this(Activator.CreateInstance<T>())
         {
         }
 
         public SyncList(T value)
         {
-            this.value = value;
+            Diagnostic.Assert(value != null);
+
+            this.Value = value;
             this.IsChanged = true;
         }
 
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public T Value
-        {
-            get
-            {
-                return this.value;
-            }
-
-            set
-            {
-                if ((this.Value == null && value == null)
-                    || (this.value != null && this.value.Equals(value)))
-                {
-                    return;
-                }
-
-                this.value = value;
-                this.IsChanged = true;
-            }
-        }
+        public T Value { get; private set; }
 
         public bool IsChanged { get; private set; }
 
@@ -53,7 +38,7 @@
         {
             get
             {
-                return this.value.Count;
+                return this.Value.Count;
             }
         }
 
@@ -61,7 +46,7 @@
         {
             get
             {
-                return this.value.IsReadOnly;
+                return this.Value.IsReadOnly;
             }
         }
 
@@ -69,45 +54,45 @@
         {
             get
             {
-                return this.value[index];
+                return this.Value[index];
             }
 
             set
             {
-                this.value[index] = value;
+                this.Value[index] = value;
                 this.IsChanged = true;
             }
         }
         
         public IEnumerator<TN> GetEnumerator()
         {
-            return this.value.GetEnumerator();
+            return this.Value.GetEnumerator();
         }
 
         public override bool Equals(object obj)
         {
             var typed = (SyncList<T, TN>)obj;
-            if (this.value == null && typed.Value == null)
+            if (this.Value == null && typed.Value == null)
             {
                 return true;
             }
 
-            if (this.value == null || typed.Value == null)
+            if (this.Value == null || typed.Value == null)
             {
                 return false;
             }
 
-            return typed.Value.Equals(this.value);
+            return typed.Value.Equals(this.Value);
         }
 
         public override int GetHashCode()
         {
-            if (this.value == null)
+            if (this.Value == null)
             {
                 return 0;
             }
 
-            return this.value.GetHashCode();
+            return this.Value.GetHashCode();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -122,47 +107,47 @@
 
         public void Add(TN item)
         {
-            this.value.Add(item);
+            this.Value.Add(item);
             this.IsChanged = true;
         }
 
         public void Clear()
         {
-            this.value.Clear();
+            this.Value.Clear();
             this.IsChanged = true;
         }
 
         public bool Contains(TN item)
         {
-            return this.value.Contains(item);
+            return this.Value.Contains(item);
         }
 
         public void CopyTo(TN[] array, int arrayIndex)
         {
-            this.value.CopyTo(array, arrayIndex);
+            this.Value.CopyTo(array, arrayIndex);
         }
 
         public bool Remove(TN item)
         {
-            bool result = this.value.Remove(item);
+            bool result = this.Value.Remove(item);
             this.IsChanged = true;
             return result;
         }
 
         public int IndexOf(TN item)
         {
-            return this.value.IndexOf(item);
+            return this.Value.IndexOf(item);
         }
 
         public void Insert(int index, TN item)
         {
-            this.value.Insert(index, item);
+            this.Value.Insert(index, item);
             this.IsChanged = true;
         }
 
         public void RemoveAt(int index)
         {
-            this.value.RemoveAt(index);
+            this.Value.RemoveAt(index);
             this.IsChanged = true;
         }
     }

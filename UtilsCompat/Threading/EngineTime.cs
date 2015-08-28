@@ -124,6 +124,12 @@
 
         public void UpdateFrame()
         {
+            if (this.IsPaused)
+            {
+                // No frame updates when the timer is paused
+                return;
+            }
+
             this.Frame++;
 
             this.FrameDeltaTicks = this.ticksSineLastFrame;

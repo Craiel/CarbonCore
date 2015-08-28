@@ -4,6 +4,7 @@
 
     using CarbonCore.ContentServices.Compat.Logic.DataEntryLogic;
     using CarbonCore.Tests.ContentServices.Data;
+    using CarbonCore.Utils.Compat;
 
     public static class DataTestData
     {
@@ -58,7 +59,19 @@
                                     }
         };
 
-        public static SyncTestEntry SyncTestEntry = new SyncTestEntry
+        public static SyncTestEntry SyncTestEntry;
+
+        public static SyncTestEntry2 SyncTestEntry2 = new SyncTestEntry2
+                                                          {
+                                                              Id = {Value = "Test Entry 2"},
+                                                              OtherTestFloat = new Sync<float>(55.545f),
+                                                              OtherTestLong = new Sync<long>(-99999999987654321),
+                                                              OtherTestString = {Value = "Custom Strings are kewl!"}
+                                                          };
+
+        static DataTestData()
+        {
+            SyncTestEntry = new SyncTestEntry
         {
             TestString = { Value = "This is a full cascaded complex test class!" },
             TestBool = new Sync<bool>(true),
@@ -68,32 +81,20 @@
             Enum = new Sync<TestEnum>(TestEnum.Third),
             ByteArray = { Value = new byte[] { 50, 50, 100, 100, 10, 2 } },
             CascadedEntry = { Value = new SyncTestEntry2 { Id = { Value = "Cascaded!" }, OtherTestBool = new Sync<bool>(true), OtherTestFloat = new Sync<float>(123.456f) } },
-            SimpleCollection = { Value = new List<int> { 50, 50, 100, 100, 10, 2 } },
-            SimpleDictionary = { Value = new Dictionary<string, float> 
-                                    {
-                                        { "First", 20.0f },
-                                        { "Second", 19.0f },
-                                        { "Third", 1.0f }
-                                    }},
-            CascadingCollection = {Value = new List<SyncTestEntry2>
+            };
+
+            SyncTestEntry.SimpleCollection.AddRange(new List<int> { 50, 50, 100, 100, 10, 2 });
+            SyncTestEntry.SimpleDictionary.Add("First", 20);
+            SyncTestEntry.SimpleDictionary.Add("Second", 19);
+            SyncTestEntry.SimpleDictionary.Add("Third", 1);
+            SyncTestEntry.CascadingCollection.AddRange(new List<SyncTestEntry2>
                                     {
                                         new SyncTestEntry2 { Id = {Value = "Test Entry 2" }},
                                         new SyncTestEntry2 { Id = {Value = "Another type of entry"}, OtherTestFloat = new Sync<float>(99.0f) }
-                                    }},
-            CascadingDictionary = {Value = new Dictionary<int, SyncTestEntry2>
-                                    {
-                                        { 0, new SyncTestEntry2 { Id = {Value = "0"} } },
-                                        { 1, new SyncTestEntry2 { Id = {Value = "1"}, OtherTestLong = new Sync<long>(99) } },
-                                        { 50, new SyncTestEntry2 { Id = {Value = "Third"}, OtherTestString = {Value = "Still the third..."} } }
-                                    }}
-        };
-
-        public static SyncTestEntry2 SyncTestEntry2 = new SyncTestEntry2
-                                                          {
-                                                              Id = {Value = "Test Entry 2"},
-                                                              OtherTestFloat = new Sync<float>(55.545f),
-                                                              OtherTestLong = new Sync<long>(-99999999987654321),
-                                                              OtherTestString = {Value = "Custom Strings are kewl!"}
-                                                          };
+                                    });
+            SyncTestEntry.CascadingDictionary.Add(0, new SyncTestEntry2 { Id = {Value = "0"}});
+            SyncTestEntry.CascadingDictionary.Add(1, new SyncTestEntry2 { Id = {Value = "1"}, OtherTestLong = { Value = 99 } });
+            SyncTestEntry.CascadingDictionary.Add(50, new SyncTestEntry2 { Id = { Value = "Third"}, OtherTestString = {Value = "Still the third..."} });
+        }
     }
 }

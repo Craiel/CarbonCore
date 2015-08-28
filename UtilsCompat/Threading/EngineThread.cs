@@ -140,6 +140,23 @@
             }
         }
 
+        public void ChangeTimeSettings(float scale, bool isPaused)
+        {
+            // Synchronize, then change the settings of the timer
+            lock (this.synchronizationObject)
+            {
+                this.time.ChangeSpeed(scale);
+                if (isPaused)
+                {
+                    this.time.Pause();
+                }
+                else
+                {
+                    this.time.Resume();
+                }
+            }
+        }
+
         // -------------------------------------------------------------------
         // Private
         // -------------------------------------------------------------------
@@ -149,7 +166,11 @@
 
             while (this.isRunning)
             {
-                this.time.Update();
+                // Synchronize in case something needs to be updated
+                lock (this.synchronizationObject)
+                {
+                    this.time.Update();
+                }
 
                 if (!this.useFrameDelay || this.CheckThreadDelay())
                 {

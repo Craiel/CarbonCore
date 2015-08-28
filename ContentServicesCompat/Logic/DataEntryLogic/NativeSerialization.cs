@@ -138,33 +138,24 @@
             }
         }
 
-        public static List<T> DeserializeList<T>(
+        public static void DeserializeList<T>(
             Stream source,
             List<T> currentValue,
-            ConstructionCallbackDelegate<List<T>>  construction,
             DeserializationCallbackDelegate deserializationCallback)
         {
             object resultUntyped = currentValue;
             if (!ReadNullableHeader(source, ref resultUntyped))
             {
-                return resultUntyped as List<T>;
+                return;
             }
-
-            List<T> result = resultUntyped as List<T>;
-            if (result == null)
-            {
-                result = construction();
-            }
-
+            
             // List entries are always serialized in full
-            result.Clear();
+            currentValue.Clear();
             short length = ReadEnumerableSize(source);
             for (var i = 0; i < length; i++)
             {
-                result.Add((T)deserializationCallback(source));
+                currentValue.Add((T)deserializationCallback(source));
             }
-
-            return result;
         }
 
         public static void SerializeDictionary<T, TN>(Stream stream, bool isChanged, Dictionary<T, TN> dictionary, SerializationCallbackDelegate<T> keyCallback, SerializationCallbackDelegate<TN> valueCallback)
@@ -183,36 +174,27 @@
             }
         }
 
-        public static Dictionary<T, TN> DeserializeDictionary<T, TN>(
+        public static void DeserializeDictionary<T, TN>(
             Stream source,
             Dictionary<T, TN> currentValue,
-            ConstructionCallbackDelegate<Dictionary<T, TN>> construction,
             DeserializationCallbackDelegate keyCallback,
             DeserializationCallbackDelegate valueCallback)
         {
             object resultUntyped = currentValue;
             if (!ReadNullableHeader(source, ref resultUntyped))
             {
-                return resultUntyped as Dictionary<T, TN>;
-            }
-
-            Dictionary<T, TN> result = resultUntyped as Dictionary<T, TN>;
-            if (result == null)
-            {
-                result = construction();
+                return;
             }
 
             // Dictionaries are always serialized in full
-            result.Clear();
+            currentValue.Clear();
             short length = ReadEnumerableSize(source);
             for (var i = 0; i < length; i++)
             {
                 var key = (T)keyCallback(source);
                 var value = (TN)valueCallback(source);
-                result.Add(key, value);
+                currentValue.Add(key, value);
             }
-
-            return result;
         }
 
         // -------------------------------------------------------------------

@@ -6,6 +6,7 @@
     using CarbonCore.ContentServices.Compat.Contracts;
     using CarbonCore.ContentServices.Compat.Logic.DataEntryLogic;
     using CarbonCore.ContentServices.Compat.Logic.DataEntryLogic.Serializers;
+    using CarbonCore.Utils.Compat;
 
     using NUnit.Framework;
 
@@ -142,19 +143,20 @@
             const int SecondTestSize = 154;
 
             SyncList<List<int>, int> simpleCollection = new SyncList<List<int>, int>();
-            simpleCollection.Value = new List<int> { 5, 10, 15, 99, 2999 };
+            simpleCollection.AddRange(new List<int> { 5, 10, 15, 99, 2999 });
 
             SyncList<List<ISyncEntry>, ISyncEntry> cascadedCollection = new SyncList<List<ISyncEntry>, ISyncEntry>();
-            cascadedCollection.Value = new List<ISyncEntry>
-                                                             {
-                                                                 DataTestData.SyncTestEntry2,
-                                                                 DataTestData.SyncTestEntry2,
-                                                                 new SyncTestEntry2
-                                                                     {
-                                                                         Id = {Value = "Last entry"},
-                                                                         OtherTestFloat = new Sync<float>(-15.15f)
-                                                                     }
-                                                             };
+            cascadedCollection.AddRange(
+                new List<ISyncEntry>
+                    {
+                        DataTestData.SyncTestEntry2,
+                        DataTestData.SyncTestEntry2,
+                        new SyncTestEntry2
+                            {
+                                Id = { Value = "Last entry" },
+                                OtherTestFloat = new Sync<float>(-15.15f)
+                            }
+                    });
 
             byte[] data;
             using (var stream = new MemoryStream())
@@ -187,21 +189,18 @@
                 long position = stream.Position;
 
                 var restoredSimpleCollection = new SyncList<IList<int>, int>();
-                restoredSimpleCollection.Value = NativeSerialization.DeserializeList<int>(
+                NativeSerialization.DeserializeList<int>(
                     stream,
-                    null, 
-                    () => new List<int>(),
+                    null,
                     Int32Serializer.Instance.Deserialize);
                 Assert.NotNull(restoredSimpleCollection);
                 TestUtils.AssertListEquals(simpleCollection.Value, restoredSimpleCollection);
                 TestUtils.AssertStreamPos(stream, FirstTestSize, ref position);
 
                 var restoredCascadeCollection = new SyncList<IList<ISyncEntry>, ISyncEntry>();
-                restoredCascadeCollection.Value =
-                    NativeSerialization.DeserializeList<ISyncEntry>(
+                NativeSerialization.DeserializeList<ISyncEntry>(
                         stream,
                         null,
-                        () => new List<ISyncEntry>(),
                         source =>
                             {
                                 var entry = new SyncTestEntry2();
@@ -222,20 +221,14 @@
             const int SecondTestSize = 86;
 
             var simpleDictionary = new SyncDictionary<Dictionary<string, float>, string, float>();
-            simpleDictionary.Value = new Dictionary<string, float>
-                                   {
-                                       { "First", 20.0f },
-                                       { "Second", 19.0f },
-                                       { "Third", 1.0f }
-                                   };
+            simpleDictionary.Add("First", 20);
+            simpleDictionary.Add("Second", 19);
+            simpleDictionary.Add("Third", 1);
 
             var cascadingDictionary = new SyncDictionary<Dictionary<int, SyncTestEntry2>, int, SyncTestEntry2>();
-            cascadingDictionary.Value = new Dictionary<int, SyncTestEntry2>
-                                    {
-                                        { 0, new SyncTestEntry2 { Id = {Value = "0"} } },
-                                        { 1, new SyncTestEntry2 { Id = {Value = "1"}, OtherTestLong = new Sync<long>(99) } },
-                                        { 50, new SyncTestEntry2 { Id = {Value = "Third"}, OtherTestString = {Value = "Still the third..."} } }
-                                    };
+            cascadingDictionary.Add(0, new SyncTestEntry2 { Id = { Value = "0" } });
+            cascadingDictionary.Add(1, new SyncTestEntry2 { Id = { Value = "1" }, OtherTestLong = { Value = 99 } });
+            cascadingDictionary.Add(50, new SyncTestEntry2 { Id = { Value = "Third" }, OtherTestString = { Value = "Still the third..." } });
 
             byte[] data;
             using (var stream = new MemoryStream())
@@ -270,10 +263,9 @@
                 long position = stream.Position;
 
                 var restoredSimpleDictionary = new SyncDictionary<IDictionary<string, float>, string, float>();
-                restoredSimpleDictionary.Value = NativeSerialization.DeserializeDictionary<string, float>(
+                NativeSerialization.DeserializeDictionary<string, float>(
                     stream,
                     null,
-                    () => new Dictionary<string, float>(), 
                     StringSerializer.Instance.Deserialize,
                     FloatSerializer.Instance.Deserialize);
                 Assert.NotNull(restoredSimpleDictionary);
@@ -281,11 +273,9 @@
                 TestUtils.AssertStreamPos(stream, FirstTestSize, ref position);
 
                 var restoredCascadeDictionary = new SyncDictionary<IDictionary<int, SyncTestEntry2>, int, SyncTestEntry2>();
-                restoredCascadeDictionary.Value =
-                    NativeSerialization.DeserializeDictionary<int, SyncTestEntry2>(
+                NativeSerialization.DeserializeDictionary<int, SyncTestEntry2>(
                         stream,
                         null,
-                        () => new Dictionary<int, SyncTestEntry2>(),
                         Int32Serializer.Instance.Deserialize,
                         source =>
                         {

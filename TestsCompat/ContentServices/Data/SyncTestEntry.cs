@@ -137,17 +137,14 @@
 
             NativeSerialization.DeserializeCascadeReadOnly(source, this.CascadedReadOnlyEntry.Value);
 
-            this.SimpleCollection.Value = NativeSerialization.DeserializeList(
+            NativeSerialization.DeserializeList(
                     source,
                     this.SimpleCollection.Value,
-                    () => new List<int>(),
                     Int32Serializer.Instance.Deserialize);
 
-            this.CascadingCollection.Value =
-                NativeSerialization.DeserializeList(
+            NativeSerialization.DeserializeList(
                     source,
                     this.CascadingCollection.Value,
-                    () => new List<SyncTestEntry2>(),
                     stream =>
                     {
                         var entry = new SyncTestEntry2();
@@ -155,17 +152,15 @@
                         return entry;
                     });
 
-            this.SimpleDictionary.Value = NativeSerialization.DeserializeDictionary(
+            NativeSerialization.DeserializeDictionary(
                 source,
                 this.SimpleDictionary.Value,
-                () => new Dictionary<string, float>(),
                 StringSerializer.Instance.Deserialize,
                 FloatSerializer.Instance.Deserialize);
 
-            this.CascadingDictionary.Value = NativeSerialization.DeserializeDictionary(
+            NativeSerialization.DeserializeDictionary(
                 source,
                 this.CascadingDictionary.Value,
-                () => new Dictionary<int, SyncTestEntry2>(),
                 Int32Serializer.Instance.Deserialize,
                 stream =>
                     {

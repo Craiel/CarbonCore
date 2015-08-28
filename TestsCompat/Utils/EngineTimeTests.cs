@@ -22,7 +22,7 @@
             time.Update();
             Assert.Greater(time.Ticks, 0);
             Assert.Greater(time.DeltaTicks, 0);
-            Assert.AreEqual(time.Ticks, time.FixedTicks);
+            Assert.LessOrEqual(5, time.FixedTicks - time.Ticks);
         }
 
         [Test]
@@ -100,6 +100,11 @@
             Assert.AreEqual(time.Frame, 1);
             Assert.Greater(time.FrameDeltaTicks, 0);
             Assert.Greater(time.FrameDeltaTime, 0);
+
+            time.Pause();
+            time.UpdateFrame();
+
+            Assert.AreEqual(time.Frame, 1);
         }
     }
 }
