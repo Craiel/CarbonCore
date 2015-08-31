@@ -21,8 +21,9 @@
         // Public
         // -------------------------------------------------------------------
         public Type Type { get; private set; }
-        
-        public override void Serialize(Stream target, object value)
+
+        public void Serialize<T>(Stream target, T value)
+            where T : IDataEntry
         {
             if (value == null)
             {
@@ -31,14 +32,47 @@
             }
 
             target.WriteByte(1);
-            byte[] data = DataEntrySerialization.CompactSave((IDataEntry)value);
+            byte[] data = DataEntrySerialization.CompactSave(value);
 
             byte[] length = BitConverter.GetBytes(data.Length);
             target.Write(length, 0, 4);
             target.Write(data, 0, data.Length);
         }
 
-        public override object Deserialize(Stream source)
+        public T Deserialize<T>(Stream source)
+            where T : class, IDataEntry
+        {
+            byte[] data = this.DeserializeBytes(source);
+            if (data == null)
+            {
+                return null;
+            }
+
+            T entry = DataEntrySerialization.CompactLoad<T>(data);
+            return entry;
+        }
+
+        public override void SerializeImplicit(Stream target, object value)
+        {
+            this.Serialize(target, value as IDataEntry);
+        }
+
+        public override object DeserializeImplicit(Stream source)
+        {
+            byte[] data = this.DeserializeBytes(source);
+            if (data == null)
+            {
+                return null;
+            }
+
+            IDataEntry entry = DataEntrySerialization.CompactLoad(this.Type, data);
+            return entry;
+        }
+
+        // -------------------------------------------------------------------
+        // Private
+        // -------------------------------------------------------------------
+        private byte[] DeserializeBytes(Stream source)
         {
             var indicator = source.ReadByte();
             if (indicator == Constants.SerializationNull)
@@ -51,9 +85,7 @@
 
             byte[] data = new byte[BitConverter.ToInt32(length, 0)];
             source.Read(data, 0, data.Length);
-
-            IDataEntry entry = DataEntrySerialization.CompactLoad(this.Type, data);
-            return entry;
+            return data;
         }
     }
 }

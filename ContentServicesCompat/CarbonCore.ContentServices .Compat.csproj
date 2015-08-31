@@ -120,6 +120,8 @@
     <Compile Include="Logic\DataEntryLogic\DataEntrySerializationDescriptor.cs" />
     <Compile Include="Logic\DataEntryLogic\DataSerializationEntry.cs" />
     <Compile Include="Logic\DataEntryLogic\NativeSerialization.cs" />
+    <Compile Include="Logic\DataEntryLogic\NativeSerialization.Dictionary.cs" />
+    <Compile Include="Logic\DataEntryLogic\NativeSerialization.List.cs" />
     <Compile Include="Logic\DataEntryLogic\Serializers\ByteArraySerializer.cs" />
     <Compile Include="Logic\DataEntryLogic\Serializers\BooleanSerializer.cs" />
     <Compile Include="Logic\DataEntryLogic\CompactSerializers\DataEntrySerializer.cs" />

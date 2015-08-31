@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C750C66E-56C8-4D99-846C-E690F5986842}</ProjectGuid>
+    <ProjectGuid>{FBEBE858-E55B-4823-8374-70E8E584F333}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CarbonCore.Tests.Compat</RootNamespace>
@@ -96,7 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ContentServicesCompat\CarbonCore.ContentServices .Compat.csproj">
-      <Project>{890FF110-443F-4647-80B1-82D414CCCD88}</Project>
+      <Project>{890ff110-443f-4647-80b1-82d414cccd88}</Project>
       <Name>CarbonCore.ContentServices .Compat</Name>
     </ProjectReference>
     <ProjectReference Include="..\UtilsCompat\CarbonCore.Utils.Compat.csproj">

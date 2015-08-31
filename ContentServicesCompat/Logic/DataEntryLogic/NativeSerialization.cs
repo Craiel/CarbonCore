@@ -1,20 +1,22 @@
 ﻿namespace CarbonCore.ContentServices.Compat.Logic.DataEntryLogic
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
 
     using CarbonCore.ContentServices.Compat.Contracts;
+    using CarbonCore.ContentServices.Compat.Logic.DataEntryLogic.Serializers;
 
     public delegate void SerializationCallbackDelegate<in T>(Stream target, T value);
 
-    public delegate object DeserializationCallbackDelegate(Stream source);
+    public delegate T DeserializationCallbackDelegate<T>(Stream source);
 
     public delegate void DeserializationObjectCallbackDelegate<in T>(Stream source, T current);
 
     public delegate T ConstructionCallbackDelegate<out T>();
 
-    public static class NativeSerialization
+    public delegate T EnumConversionCallback<out T>(int value);
+
+    public static partial class NativeSerialization
     {
         // -------------------------------------------------------------------
         // Public
@@ -29,14 +31,14 @@
             serializationCallback(stream, value);
         }
 
-        public static T Deserialize<T>(Stream source, T currentValue, DeserializationCallbackDelegate callback)
+        public static T Deserialize<T>(Stream source, T currentValue, DeserializationCallbackDelegate<T> callback)
         {
             if (!ReadHeader(source))
             {
                 return currentValue;
             }
 
-            return (T)callback(source);
+            return callback(source);
         }
         
         public static void SerializeObject<T>(Stream stream, bool isChanged, T value, SerializationCallbackDelegate<T> callback)
@@ -69,6 +71,29 @@
 
             callback(source, (T)result);
             return (T)result;
+        }
+
+        public static void SerializeEnum<T>(Stream stream, bool isChanged, T value)
+            where T : struct, IConvertible
+        {
+            if (!WriteHeader(stream, isChanged))
+            {
+                return;
+            }
+
+            // GetHashCode returns the actual int value for enums, we rely on that being true
+            Int32Serializer.Instance.Serialize(stream, value.GetHashCode());
+        }
+
+        public static T DeserializeEnum<T>(Stream source, T currentValue, EnumConversionCallback<T> conversion)
+            where T : struct, IConvertible
+        {
+            if (!ReadHeader(source))
+            {
+                return currentValue;
+            }
+
+            return conversion(Int32Serializer.Instance.Deserialize(source));
         }
 
         public static void SerializeCascade<T>(Stream stream, SyncCascade<T> host, bool ignoreChangeState)
@@ -120,81 +145,6 @@
             }
 
             currentValue.Load(source);
-        }
-
-        public static void SerializeList<T>(Stream stream, bool isChanged, List<T> list, SerializationCallbackDelegate<T> serializationCallback)
-        {
-            if (!WriteNullableHeader(stream, isChanged, list))
-            {
-                return;
-            }
-
-            byte[] length = BitConverter.GetBytes((Int16)list.Count);
-            stream.Write(length, 0, 2);
-
-            for (var i = 0; i < list.Count; i++)
-            {
-                serializationCallback(stream, list[i]);
-            }
-        }
-
-        public static void DeserializeList<T>(
-            Stream source,
-            List<T> currentValue,
-            DeserializationCallbackDelegate deserializationCallback)
-        {
-            object resultUntyped = currentValue;
-            if (!ReadNullableHeader(source, ref resultUntyped))
-            {
-                return;
-            }
-            
-            // List entries are always serialized in full
-            currentValue.Clear();
-            short length = ReadEnumerableSize(source);
-            for (var i = 0; i < length; i++)
-            {
-                currentValue.Add((T)deserializationCallback(source));
-            }
-        }
-
-        public static void SerializeDictionary<T, TN>(Stream stream, bool isChanged, Dictionary<T, TN> dictionary, SerializationCallbackDelegate<T> keyCallback, SerializationCallbackDelegate<TN> valueCallback)
-        {
-            if (!WriteNullableHeader(stream, isChanged, dictionary))
-            {
-                return;
-            }
-
-            WriteEnumerableSize(stream, (Int16)dictionary.Count);
-
-            foreach (T key in dictionary.Keys)
-            {
-                keyCallback(stream, key);
-                valueCallback(stream, dictionary[key]);
-            }
-        }
-
-        public static void DeserializeDictionary<T, TN>(
-            Stream source,
-            Dictionary<T, TN> currentValue,
-            DeserializationCallbackDelegate keyCallback,
-            DeserializationCallbackDelegate valueCallback)
-        {
-            object resultUntyped = currentValue;
-            if (!ReadNullableHeader(source, ref resultUntyped))
-            {
-                return;
-            }
-
-            // Dictionaries are always serialized in full
-            currentValue.Clear();
-            short length = ReadEnumerableSize(source);
-            for (var i = 0; i < length; i++)
-            {
-                var key = (T)keyCallback(source);
-                var value = (TN)valueCallback(source);
-                currentValue.Add(key, value);
-            }
         }
 
         // -------------------------------------------------------------------

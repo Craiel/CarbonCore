@@ -41,12 +41,7 @@
             target.Write(source, 0, source.Length);
         }
 
-        public override void Serialize(Stream target, object source)
-        {
-            this.Serialize(target, (byte[])source);
-        }
-
-        public override object Deserialize(Stream source)
+        public byte[] Deserialize(Stream source)
         {
             int indicator = (byte)source.ReadByte();
             if (indicator == Constants.SerializationNull)
@@ -66,6 +61,16 @@
             source.Read(data, 0, data.Length);
 
             return data;
+        }
+
+        public override void SerializeImplicit(Stream target, object source)
+        {
+            this.Serialize(target, (byte[])source);
+        }
+
+        public override object DeserializeImplicit(Stream source)
+        {
+            return this.Deserialize(source);
         }
     }
 }

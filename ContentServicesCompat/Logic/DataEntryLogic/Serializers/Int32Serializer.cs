@@ -20,7 +20,7 @@
             }
         }
 
-        public void Serialize(Stream target, Int32? source)
+        public void SerializeNullable(Stream target, Int32? source)
         {
             if (source == null)
             {
@@ -46,12 +46,23 @@
             target.Write(data, 0, data.Length);
         }
 
-        public override void Serialize(Stream target, object source)
+        public int Deserialize(Stream source)
         {
-            this.Serialize(target, (Int32)source);
+            byte indicator = (byte)source.ReadByte();
+            if (indicator == Constants.SerializationNull)
+            {
+                throw new InvalidDataException();
+            }
+
+            if (indicator == 0)
+            {
+                return default(Int32);
+            }
+
+            return this.DoDeserialize(source);
         }
 
-        public override object Deserialize(Stream source)
+        public int? DeserializeNullable(Stream source)
         {
             byte indicator = (byte)source.ReadByte();
             if (indicator == Constants.SerializationNull)
@@ -64,6 +75,24 @@
                 return default(Int32);
             }
 
+            return this.DoDeserialize(source);
+        }
+
+        public override void SerializeImplicit(Stream target, object source)
+        {
+            this.SerializeNullable(target, (Int32)source);
+        }
+
+        public override object DeserializeImplicit(Stream source)
+        {
+            return this.DeserializeNullable(source);
+        }
+
+        // -------------------------------------------------------------------
+        // Private
+        // -------------------------------------------------------------------
+        private int DoDeserialize(Stream source)
+        {
             byte[] data = new byte[4];
             source.Read(data, 0, 4);
 

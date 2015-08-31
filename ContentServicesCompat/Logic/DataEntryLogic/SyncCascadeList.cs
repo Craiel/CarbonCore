@@ -22,6 +22,14 @@
             }
         }
 
+        public bool IsListChanged
+        {
+            get
+            {
+                return base.IsChanged;
+            }
+        }
+
         public override void ResetChangeState(bool state = false)
         {
             base.ResetChangeState(state);

@@ -33,7 +33,7 @@
         // -------------------------------------------------------------------
         public Type Type { get; private set; }
 
-        public override void Serialize(Stream target, object value)
+        public override void SerializeImplicit(Stream target, object value)
         {
             if (value == null)
             {
@@ -56,11 +56,11 @@
 
             foreach (object entry in (IEnumerable)value)
             {
-                this.innerSerializer.Serialize(target, entry);
+                this.innerSerializer.SerializeImplicit(target, entry);
             }
         }
 
-        public override object Deserialize(Stream source)
+        public override object DeserializeImplicit(Stream source)
         {
             var indicator = source.ReadByte();
             if (indicator == Constants.SerializationNull)
@@ -80,7 +80,7 @@
             short count = BitConverter.ToInt16(length, 0);
             for (var i = 0; i < count; i++)
             {
-                object entry = this.innerSerializer.Deserialize(source);
+                object entry = this.innerSerializer.DeserializeImplicit(source);
                 this.addMethod.Invoke(instance, new[] { entry });
             }
 

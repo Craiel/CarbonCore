@@ -16,8 +16,8 @@
                 return instance ?? (instance = new BooleanSerializer());
             }
         }
-        
-        public void Serialize(Stream target, bool? value)
+
+        public void SerializeNullable(Stream target, bool? value)
         {
             if (value == null)
             {
@@ -33,12 +33,18 @@
             target.WriteByte(value ? (byte)1 : (byte)0);
         }
 
-        public override void Serialize(Stream target, object source)
+        public bool Deserialize(Stream source)
         {
-            this.Serialize(target, (bool)source);
+            byte indicator = (byte)source.ReadByte();
+            if (indicator == Constants.SerializationNull)
+            {
+                throw new InvalidDataException();
+            }
+
+            return indicator == 1;
         }
 
-        public override object Deserialize(Stream source)
+        public bool? DeserializeNullable(Stream source)
         {
             byte indicator = (byte)source.ReadByte();
             if (indicator == Constants.SerializationNull)
@@ -47,6 +53,16 @@
             }
 
             return indicator == 1;
+        }
+
+        public override void SerializeImplicit(Stream target, object source)
+        {
+            this.SerializeNullable(target, (bool)source);
+        }
+
+        public override object DeserializeImplicit(Stream source)
+        {
+            return this.DeserializeNullable(source);
         }
     }
 }

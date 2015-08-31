@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Tests.ContentServices
+﻿namespace CarbonCore.Tests.Compat.ContentServices.Data
 {
     using System.Collections.Generic;
     using System.IO;
@@ -91,14 +91,14 @@
         public override void Save(Stream target, bool ignoreChangeState = false)
         {
             // Simple types
-            NativeSerialization.SerializeObject(target, ignoreChangeState || this.Id.IsChanged, this.Id.Value, Int32Serializer.Instance.Serialize);
+            NativeSerialization.SerializeObject(target, ignoreChangeState || this.Id.IsChanged, this.Id.Value, Int32Serializer.Instance.SerializeNullable);
             NativeSerialization.Serialize(target, ignoreChangeState || this.TestInt.IsChanged, this.TestInt.Value, Int32Serializer.Instance.Serialize);
             NativeSerialization.Serialize(target, ignoreChangeState || this.TestLong.IsChanged, this.TestLong.Value, Int64Serializer.Instance.Serialize);
             NativeSerialization.Serialize(target, ignoreChangeState || this.TestFloat.IsChanged, this.TestFloat.Value, FloatSerializer.Instance.Serialize);
             NativeSerialization.Serialize(target, ignoreChangeState || this.TestBool.IsChanged, this.TestBool.Value, BooleanSerializer.Instance.Serialize);
             NativeSerialization.Serialize(target, ignoreChangeState || this.ByteArray.IsChanged, this.ByteArray.Value, ByteArraySerializer.Instance.Serialize);
             NativeSerialization.Serialize(target, ignoreChangeState || this.TestString.IsChanged, this.TestString.Value, StringSerializer.Instance.Serialize);
-            NativeSerialization.Serialize(target, ignoreChangeState || this.Enum.IsChanged, this.Enum.Value, (stream, value) => Int32Serializer.Instance.Serialize(stream, (int)value));
+            NativeSerialization.SerializeEnum(target, ignoreChangeState || this.Enum.IsChanged, this.Enum.Value);
 
             // Cascaded objects
             NativeSerialization.SerializeCascade(target, this.CascadedEntry, ignoreChangeState);
@@ -107,23 +107,23 @@
 
             // Lists
             NativeSerialization.SerializeList(target, ignoreChangeState || this.SimpleCollection.IsChanged, this.SimpleCollection.Value, Int32Serializer.Instance.Serialize);
-            NativeSerialization.SerializeList(target, ignoreChangeState || this.CascadingCollection.IsChanged, this.CascadingCollection.Value, (stream, value) => value.Save(stream, true));
+            NativeSerialization.SerializeCascadeList(target, this.CascadingCollection, ignoreChangeState);
             
             // Dictionaries
             NativeSerialization.SerializeDictionary(target, ignoreChangeState || this.SimpleDictionary.IsChanged, this.SimpleDictionary.Value, StringSerializer.Instance.Serialize, FloatSerializer.Instance.Serialize);
-            NativeSerialization.SerializeDictionary(target, ignoreChangeState || this.CascadingDictionary.IsChanged, this.CascadingDictionary.Value, Int32Serializer.Instance.Serialize, (stream, value) => value.Save(stream, true));
+            NativeSerialization.SerializeCascadeValueDictionary(target, this.CascadingDictionary, Int32Serializer.Instance.Serialize, ignoreChangeState);
         }
 
         public override void Load(Stream source)
         {
-            this.Id.Value = NativeSerialization.Deserialize(source, this.Id.Value, Int32Serializer.Instance.Deserialize);
+            this.Id.Value = NativeSerialization.Deserialize(source, this.Id.Value, Int32Serializer.Instance.DeserializeNullable);
             this.TestInt.Value = NativeSerialization.Deserialize(source, this.TestInt.Value, Int32Serializer.Instance.Deserialize);
             this.TestLong.Value = NativeSerialization.Deserialize(source, this.TestLong.Value, Int64Serializer.Instance.Deserialize);
             this.TestFloat.Value = NativeSerialization.Deserialize(source, this.TestFloat.Value, FloatSerializer.Instance.Deserialize);
             this.TestBool.Value = NativeSerialization.Deserialize(source, this.TestBool.Value, BooleanSerializer.Instance.Deserialize);
             this.ByteArray.Value = NativeSerialization.Deserialize(source, this.ByteArray.Value, ByteArraySerializer.Instance.Deserialize);
             this.TestString.Value = NativeSerialization.Deserialize(source, this.TestString.Value, StringSerializer.Instance.Deserialize);
-            this.Enum.Value = NativeSerialization.Deserialize(source, this.Enum.Value, Int32Serializer.Instance.Deserialize);
+            this.Enum.Value = NativeSerialization.DeserializeEnum(source, this.Enum.Value, value => (TestEnum)value);
 
             this.CascadedEntry.Value = NativeSerialization.DeserializeCascade(
                 source,
@@ -142,15 +142,10 @@
                     this.SimpleCollection.Value,
                     Int32Serializer.Instance.Deserialize);
 
-            NativeSerialization.DeserializeList(
+            NativeSerialization.DeserializeCascadeList(
                     source,
-                    this.CascadingCollection.Value,
-                    stream =>
-                    {
-                        var entry = new SyncTestEntry2();
-                        entry.Load(stream);
-                        return entry;
-                    });
+                    this.CascadingCollection,
+                    () => new SyncTestEntry2());
 
             NativeSerialization.DeserializeDictionary(
                 source,
@@ -158,16 +153,11 @@
                 StringSerializer.Instance.Deserialize,
                 FloatSerializer.Instance.Deserialize);
 
-            NativeSerialization.DeserializeDictionary(
+            NativeSerialization.DeserializeCascadeValueDictionary(
                 source,
-                this.CascadingDictionary.Value,
+                this.CascadingDictionary,
                 Int32Serializer.Instance.Deserialize,
-                stream =>
-                    {
-                        var entry = new SyncTestEntry2();
-                        entry.Load(stream);
-                        return entry;
-                    });
+                () => new SyncTestEntry2());
         }
 
         public override void ResetChangeState(bool state = false)

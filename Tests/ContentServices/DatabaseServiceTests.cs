@@ -6,6 +6,7 @@
 
     using CarbonCore.ContentServices.Compat.Contracts;
     using CarbonCore.ContentServices.IoC;
+    using CarbonCore.Tests.Compat.ContentServices.Data;
     using CarbonCore.Utils.Compat.Contracts.IoC;
     using CarbonCore.Utils.Compat.IO;
     using CarbonCore.Utils.IoC;

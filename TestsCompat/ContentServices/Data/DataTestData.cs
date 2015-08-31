@@ -1,8 +1,9 @@
-﻿namespace CarbonCore.Tests.ContentServices
+﻿namespace CarbonCore.Tests.Compat.ContentServices.Data
 {
     using System.Collections.Generic;
 
     using CarbonCore.ContentServices.Compat.Logic.DataEntryLogic;
+    using CarbonCore.Tests.ContentServices;
     using CarbonCore.Tests.ContentServices.Data;
     using CarbonCore.Utils.Compat;
 

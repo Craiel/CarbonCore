@@ -21,6 +21,14 @@
             }
         }
 
+        public bool IsDictionaryChanged
+        {
+            get
+            {
+                return base.IsChanged;
+            }
+        }
+
         public override void ResetChangeState(bool state = false)
         {
             base.ResetChangeState(state);

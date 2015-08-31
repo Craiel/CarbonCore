@@ -20,7 +20,7 @@
             }
         }
 
-        public void Serialize(Stream target, Double? source)
+        public void SerializeNullable(Stream target, Double? source)
         {
             if (source == null)
             {
@@ -46,12 +46,23 @@
             target.Write(data, 0, 8);
         }
 
-        public override void Serialize(Stream target, object source)
+        public Double Deserialize(Stream source)
         {
-            this.Serialize(target, (Double)source);
+            byte indicator = (byte)source.ReadByte();
+            if (indicator == Constants.SerializationNull)
+            {
+                throw new InvalidDataException();
+            }
+
+            if (indicator == 0)
+            {
+                return default(double);
+            }
+
+            return this.DoDeserialize(source);
         }
 
-        public override object Deserialize(Stream source)
+        public Double? DeserializeNullable(Stream source)
         {
             byte indicator = (byte)source.ReadByte();
             if (indicator == Constants.SerializationNull)
@@ -64,6 +75,24 @@
                 return default(double);
             }
 
+            return this.DoDeserialize(source);
+        }
+
+        public override void SerializeImplicit(Stream target, object source)
+        {
+            this.SerializeNullable(target, (Double)source);
+        }
+
+        public override object DeserializeImplicit(Stream source)
+        {
+            return this.DeserializeNullable(source);
+        }
+
+        // -------------------------------------------------------------------
+        // Private
+        // -------------------------------------------------------------------
+        private Double DoDeserialize(Stream source)
+        {
             byte[] data = new byte[8];
             source.Read(data, 0, 8);
 

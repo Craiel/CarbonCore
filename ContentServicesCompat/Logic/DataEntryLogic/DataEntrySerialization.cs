@@ -128,7 +128,7 @@
                     }
 
                     // Write the actual content
-                    serializationEntry.Serializer.Serialize(context.Stream, value);
+                    serializationEntry.Serializer.SerializeImplicit(context.Stream, value);
                     continue;
                 }
 
@@ -158,7 +158,7 @@
             {
                 if (serializationEntry.Serializer != null)
                 {
-                    object value = serializationEntry.Serializer.Deserialize(context.Stream);
+                    object value = serializationEntry.Serializer.DeserializeImplicit(context.Stream);
 
                     try
                     {
