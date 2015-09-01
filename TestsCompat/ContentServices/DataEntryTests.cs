@@ -136,7 +136,7 @@
         {
             // Test basic Json serialization
             byte[] jsonData = DataEntrySerialization.Save(DataTestData.FullTestEntry);
-            Assert.AreEqual(1112, jsonData.Length, "Serialization should return data");
+            Assert.AreEqual(1028, jsonData.Length, "Serialization should return data");
 
             DataTestEntry restored = DataEntrySerialization.Load<DataTestEntry>(jsonData);
             Assert.NotNull(restored);

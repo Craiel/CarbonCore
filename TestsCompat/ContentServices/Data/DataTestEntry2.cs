@@ -27,8 +27,10 @@
 #if UNITY
         protected override int DoGetHashCode()
         {
-            return this.Id.GetHashCode() 
-                ^ this.OtherTestString.GetHashCode()
+            int idHash = this.Id == null ? 0 : this.Id.GetHashCode();
+            int stringHash = this.OtherTestString == null ? 0 : this.OtherTestString.GetHashCode();
+            return idHash
+                ^ stringHash
                 ^ this.OtherTestBool.GetHashCode()
                 ^ this.OtherTestFloat.GetHashCode()
                 ^ this.OtherTestLong.GetHashCode();
