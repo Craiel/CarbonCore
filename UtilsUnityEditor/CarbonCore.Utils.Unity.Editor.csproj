@@ -38,6 +38,7 @@
     <OutputPath>..\bin\Unity\</OutputPath>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DefineConstants>UNITY</DefineConstants>
   </PropertyGroup>
   <Choose>
     <When Condition=" '$(Configuration)'=='Unity' ">

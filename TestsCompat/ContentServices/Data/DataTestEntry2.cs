@@ -23,5 +23,16 @@
 
         [DatabaseEntryElement]
         public long OtherTestLong { get; set; }
+
+#if UNITY
+        protected override int DoGetHashCode()
+        {
+            return this.Id.GetHashCode() 
+                ^ this.OtherTestString.GetHashCode()
+                ^ this.OtherTestBool.GetHashCode()
+                ^ this.OtherTestFloat.GetHashCode()
+                ^ this.OtherTestLong.GetHashCode();
+        }
+#endif
     }
 }
