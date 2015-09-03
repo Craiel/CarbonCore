@@ -299,5 +299,22 @@
 
             Profiler.TraceProfilerStatistics();
         }
+
+        [Test]
+        public void DataEntryCustomHashCodeTest()
+        {
+            var instance = new HashTestData();
+            Assert.IsFalse(instance.IsChanged);
+
+            instance.Bool = true;
+            Assert.IsTrue(instance.IsChanged);
+
+            int trueCode = instance.GetHashCode();
+
+            instance.ResetChangedState();
+            instance.Bool = false;
+            Assert.IsTrue(instance.IsChanged);
+            Assert.AreNotEqual(trueCode, instance.GetHashCode());
+        }
     }
 }
