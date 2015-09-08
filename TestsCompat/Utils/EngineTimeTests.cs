@@ -111,7 +111,7 @@
         [Test]
         public void TestTimeSaveRestore()
         {
-            var time = new EngineTime(500, 2.0f, 200000000, 500);
+            var time = new EngineTime(500, 2.0f, 400000000, 200000000, 500);
             Assert.AreEqual(500, time.Frame);
             Assert.AreEqual(200000000, time.FixedTicks);
 
@@ -122,10 +122,14 @@
                 Assert.LessOrEqual(time.DeltaTicks, Stopwatch.Frequency / 10f);
             }
 
+            Assert.Greater(time.Time, 0);
             Assert.LessOrEqual(time.FrameDeltaTicks, Stopwatch.Frequency);
 
             time.UpdateFrame();
             Assert.AreEqual(501, time.Frame);
+
+            var time2 = new EngineTime(500, 2.0f, 400000000, 200000000, 500);
+            Assert.Less(time2.Time, time.Time);
         }
     }
 }

@@ -6,7 +6,7 @@
     {
         private static readonly Stopwatch TimeSinceStart;
 
-        private long initialTicks;
+        private long lastUpdateTicks;
 
         private long ticksSineLastFrame;
         
@@ -22,21 +22,19 @@
         public EngineTime()
         {
             this.Reset();
-
-            // Save the initial ticks so we don't spike against the static watch
-            this.initialTicks = TimeSinceStart.ElapsedTicks;
         }
 
-        public EngineTime(long frame, float speed, long fixedTicks, long ticksLostToPause)
+        public EngineTime(long frame, float speed, long ticks, long fixedTicks, long ticksLostToPause)
             : this()
         {
             this.Frame = frame;
             this.Speed = speed;
+            this.Ticks = ticks;
             this.FixedTicks = fixedTicks;
             this.TicksLostToPause = ticksLostToPause;
 
             // Call a single update with the ticks to fill all the other values
-            this.DoUpdate(fixedTicks);
+            this.DoUpdate(this.lastUpdateTicks);
         }
 
         // -------------------------------------------------------------------
@@ -89,7 +87,8 @@
         {
             this.IsPaused = false;
 
-            this.initialTicks = 0;
+            // Store the start point for the time
+            this.lastUpdateTicks = TimeSinceStart.ElapsedTicks;
 
             this.Frame = 0;
             this.Ticks = 0;
@@ -112,9 +111,7 @@
 
         public void Update()
         {
-            // Update the fixed time values first
-            long fixedElapsedTicks = this.initialTicks + TimeSinceStart.ElapsedTicks;
-            this.DoUpdate(fixedElapsedTicks);
+            this.DoUpdate(TimeSinceStart.ElapsedTicks);
         }
 
         public void UpdateFrame()
@@ -165,8 +162,10 @@
 
         private void DoUpdate(long fixedElapsedTicks)
         {
-            this.FixedDeltaTicks = fixedElapsedTicks - this.FixedTicks;
-            this.FixedTicks = fixedElapsedTicks;
+            // Update the fixed time values first
+            this.FixedDeltaTicks = fixedElapsedTicks - this.lastUpdateTicks;
+            this.FixedTicks += this.FixedDeltaTicks;
+            this.lastUpdateTicks = fixedElapsedTicks;
 
             // Now get the adjusted delta ticks based on the speed
             long deltaTicks = (long)(this.FixedDeltaTicks * this.Speed);
