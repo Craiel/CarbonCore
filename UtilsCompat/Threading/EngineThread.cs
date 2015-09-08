@@ -51,7 +51,7 @@
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
-        public EngineThread(EngineThreadUpdateDelegate threadMain, string name, EngineThreadSettings settings = null)
+        public EngineThread(EngineThreadUpdateDelegate threadMain, string name, EngineThreadSettings settings = null, EngineTime customTime = null)
         {
             this.settings = settings ?? new EngineThreadSettings();
 
@@ -64,7 +64,7 @@
                 this.frameDelayTarget = this.frameDelayTargetOptimal;
             }
 
-            this.time = new EngineTime();
+            this.time = customTime ?? new EngineTime();
 
             // We start the first delay measure after 1s
             this.framesUntilMeasure = 10;
@@ -101,6 +101,14 @@
         public bool IsThreadFinished { get; private set; }
 
         public bool MuteTrace { get; set; }
+
+        public EngineTime Time
+        {
+            get
+            {
+                return this.time;
+            }
+        }
 
         public void Shutdown()
         {

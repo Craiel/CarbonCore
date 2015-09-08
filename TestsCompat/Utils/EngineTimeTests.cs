@@ -1,5 +1,6 @@
 ﻿namespace CarbonCore.Tests.Compat.Utils
 {
+    using System.Diagnostics;
     using System.Threading;
 
     using CarbonCore.Utils.Compat.Threading;
@@ -105,6 +106,26 @@
             time.UpdateFrame();
 
             Assert.AreEqual(time.Frame, 1);
+        }
+
+        [Test]
+        public void TestTimeSaveRestore()
+        {
+            var time = new EngineTime(500, 2.0f, 200000000, 500);
+            Assert.AreEqual(500, time.Frame);
+            Assert.AreEqual(200000000, time.FixedTicks);
+
+            for (int i = 0; i < TestSampleCount; i++)
+            {
+                Thread.Sleep(1);
+                time.Update();
+                Assert.LessOrEqual(time.DeltaTicks, Stopwatch.Frequency / 10f);
+            }
+
+            Assert.LessOrEqual(time.FrameDeltaTicks, Stopwatch.Frequency);
+
+            time.UpdateFrame();
+            Assert.AreEqual(501, time.Frame);
         }
     }
 }

@@ -6,6 +6,8 @@
     {
         private static readonly Stopwatch TimeSinceStart;
 
+        private long initialTicks;
+
         private long ticksSineLastFrame;
         
         // -------------------------------------------------------------------
@@ -20,6 +22,21 @@
         public EngineTime()
         {
             this.Reset();
+
+            // Save the initial ticks so we don't spike against the static watch
+            this.initialTicks = TimeSinceStart.ElapsedTicks;
+        }
+
+        public EngineTime(long frame, float speed, long fixedTicks, long ticksLostToPause)
+            : this()
+        {
+            this.Frame = frame;
+            this.Speed = speed;
+            this.FixedTicks = fixedTicks;
+            this.TicksLostToPause = ticksLostToPause;
+
+            // Call a single update with the ticks to fill all the other values
+            this.DoUpdate(fixedTicks);
         }
 
         // -------------------------------------------------------------------
@@ -72,6 +89,8 @@
         {
             this.IsPaused = false;
 
+            this.initialTicks = 0;
+
             this.Frame = 0;
             this.Ticks = 0;
             this.DeltaTicks = 0;
@@ -94,32 +113,8 @@
         public void Update()
         {
             // Update the fixed time values first
-            long fixedElapsedTicks = TimeSinceStart.ElapsedTicks;
-            this.FixedDeltaTicks = fixedElapsedTicks - this.FixedTicks;
-            this.FixedTicks = fixedElapsedTicks;
-            this.FixedTime = (double)this.FixedTicks / Stopwatch.Frequency;
-
-            // Now get the adjusted delta ticks based on the speed
-            long deltaTicks = (long)(this.FixedDeltaTicks * this.Speed);
-
-            // Check if the time is paused
-            if (this.IsPaused)
-            {
-                this.DeltaTicks = 0;
-                this.TicksLostToPause += deltaTicks;
-
-                this.TimeLostToPause = (double)this.TicksLostToPause / Stopwatch.Frequency;
-            }
-            else
-            {
-                this.Ticks += deltaTicks;
-                this.DeltaTicks = deltaTicks;
-                this.ticksSineLastFrame += deltaTicks;
-
-                this.Time = (double)this.Ticks / Stopwatch.Frequency;
-                this.DeltaTime = (double)this.DeltaTicks / Stopwatch.Frequency;
-                
-            }
+            long fixedElapsedTicks = this.initialTicks + TimeSinceStart.ElapsedTicks;
+            this.DoUpdate(fixedElapsedTicks);
         }
 
         public void UpdateFrame()
@@ -147,17 +142,53 @@
 
         public void CopyFrom(EngineTime other)
         {
+            this.Frame = other.Frame;
+
+            this.Speed = other.Speed;
+
             this.Ticks = other.Ticks;
             this.Time = other.Time;
 
             this.FixedTicks = other.FixedTicks;
             this.FixedTime = other.FixedTime;
+            this.FixedDeltaTicks = other.FixedDeltaTicks;
 
             this.DeltaTime = other.DeltaTime;
             this.DeltaTicks = other.DeltaTicks;
 
             this.FrameDeltaTicks = other.FrameDeltaTicks;
             this.FrameDeltaTime = other.FrameDeltaTime;
+
+            this.TicksLostToPause = other.TicksLostToPause;
+            this.TimeLostToPause = other.TimeLostToPause;
+        }
+
+        private void DoUpdate(long fixedElapsedTicks)
+        {
+            this.FixedDeltaTicks = fixedElapsedTicks - this.FixedTicks;
+            this.FixedTicks = fixedElapsedTicks;
+
+            // Now get the adjusted delta ticks based on the speed
+            long deltaTicks = (long)(this.FixedDeltaTicks * this.Speed);
+
+            // Check if the time is paused
+            if (this.IsPaused)
+            {
+                this.DeltaTicks = 0;
+                this.TicksLostToPause += deltaTicks;
+            }
+            else
+            {
+                this.Ticks += deltaTicks;
+                this.DeltaTicks = deltaTicks;
+                this.ticksSineLastFrame += deltaTicks;
+            }
+
+            // Recalculate the time values
+            this.Time = (double)this.Ticks / Stopwatch.Frequency;
+            this.FixedTime = (double)this.FixedTicks / Stopwatch.Frequency;
+            this.DeltaTime = (double)this.DeltaTicks / Stopwatch.Frequency;
+            this.TimeLostToPause = (double)this.TicksLostToPause / Stopwatch.Frequency;
         }
     }
 }
