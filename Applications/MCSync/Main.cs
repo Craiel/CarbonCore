@@ -9,13 +9,18 @@
     using CarbonCore.Utils.Compat.Contracts.IoC;
     using CarbonCore.Utils.Compat.Diagnostics;
     using CarbonCore.Utils.Compat.IO;
+    using CarbonCore.Utils.Compat.Json;
     using CarbonCore.UtilsCommandLine.Contracts;
     
     using MCSync.Contracts;
-    
+
+    using Newtonsoft.Json;
+
     public class Main : IMain
     {
         private const string SyncProgram = "blinksync.exe";
+
+        private const string VersionIndiciator = ".version";
         
         private static readonly CarbonDirectory SyncRoot = new CarbonDirectory(Assembly.GetEntryAssembly().Location);
 
@@ -35,6 +40,8 @@
         private CarbonDirectory targetPath;
 
         private bool isServerMode;
+
+        private bool forceSync;
         
         // -------------------------------------------------------------------
         // Constructor
@@ -54,6 +61,12 @@
             if (!this.arguments.ParseCommandLineArguments())
             {
                 // Todo: print usage
+                return;
+            }
+
+            if (this.CheckVersion())
+            {
+                Trace.TraceInformation("Skipping sync, no changes found");
                 return;
             }
             
@@ -82,17 +95,52 @@
                         Trace.TraceInformation(" Copying {0}", copyObject);
                         this.sourcePath.ToFile(copyObject).CopyTo(this.targetPath.ToFile(copyObject), true);
                     }
-
-                    Console.WriteLine();
                 }
             }
-
+            
             Profiler.TraceProfilerStatistics();
         }
 
         // -------------------------------------------------------------------
         // Private
         // -------------------------------------------------------------------
+        private bool CheckVersion()
+        {
+            SyncSettings defaults = new SyncSettings();
+
+            CarbonFile sourceVersion = this.sourcePath.ToFile(VersionIndiciator);
+            CarbonFile targetVersion = this.targetPath.ToFile(VersionIndiciator);
+            if (!sourceVersion.Exists)
+            {
+                JsonExtensions.SaveToFile(sourceVersion, defaults, false, Formatting.Indented);
+                return false;
+            }
+
+            if (!targetVersion.Exists)
+            {
+                JsonExtensions.SaveToFile(targetVersion, defaults, false, Formatting.Indented);
+                return false;
+            }
+
+            if (this.forceSync)
+            {
+                return false;
+            }
+
+            try
+            {
+                SyncSettings source = JsonExtensions.LoadFromFile<SyncSettings>(sourceVersion, false);
+                SyncSettings target = JsonExtensions.LoadFromFile<SyncSettings>(targetVersion, false);
+
+                return source.Version == target.Version;
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError("Failed to read version settings: {0}", e);
+                return false;
+            }
+        }
+
         private void DoSync(string syncObject, string syncTarget, bool deleteTargetMismatches = true)
         {
             var proc = new Process
@@ -117,13 +165,25 @@
             proc.Start();
             while (!proc.HasExited)
             {
-                Console.WriteLine(proc.StandardOutput.ReadToEnd());
-                Console.WriteLine(proc.StandardError.ReadToEnd());
+                this.TraceProcessOutput(proc);
+
                 Thread.Sleep(10);
             }
 
-            Console.WriteLine(proc.StandardOutput.ReadToEnd());
-            Console.WriteLine(proc.StandardError.ReadToEnd());
+            this.TraceProcessOutput(proc);
+        }
+
+        private void TraceProcessOutput(Process proc)
+        {
+            string stdOutTemp = proc.StandardOutput.ReadToEnd();
+            string stdErrorTemp = proc.StandardError.ReadToEnd();
+            Console.WriteLine(stdOutTemp);
+            Console.WriteLine(stdErrorTemp);
+            Trace.TraceInformation(stdOutTemp);
+            if (!string.IsNullOrEmpty(stdErrorTemp))
+            {
+                Trace.TraceError(stdErrorTemp);
+            }
         }
 
         private void RegisterCommandLineArguments()
@@ -137,6 +197,9 @@
 
             definition = this.arguments.Define("server", x => this.isServerMode = true);
             definition.Description = "Sync as server mode, default is false";
+
+            definition = this.arguments.Define("force", x => this.forceSync = true);
+            definition.Description = "Force the sync even if no indicator is present";
         }
     }
 }
