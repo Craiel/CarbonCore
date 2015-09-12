@@ -7,8 +7,8 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public abstract void Serialize(Stream target, object value);
+        public abstract void SerializeImplicit(Stream target, object value);
 
-        public abstract object Deserialize(Stream source);
+        public abstract object DeserializeImplicit(Stream source);
     }
 }

@@ -60,7 +60,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Unity|AnyCPU'">
     <OutputPath>..\bin\Unity\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;UNITY</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -120,6 +120,8 @@
     <Compile Include="Logic\DataEntryLogic\DataEntrySerializationDescriptor.cs" />
     <Compile Include="Logic\DataEntryLogic\DataSerializationEntry.cs" />
     <Compile Include="Logic\DataEntryLogic\NativeSerialization.cs" />
+    <Compile Include="Logic\DataEntryLogic\NativeSerialization.Dictionary.cs" />
+    <Compile Include="Logic\DataEntryLogic\NativeSerialization.List.cs" />
     <Compile Include="Logic\DataEntryLogic\Serializers\ByteArraySerializer.cs" />
     <Compile Include="Logic\DataEntryLogic\Serializers\BooleanSerializer.cs" />
     <Compile Include="Logic\DataEntryLogic\CompactSerializers\DataEntrySerializer.cs" />
@@ -130,7 +132,11 @@
     <Compile Include="Logic\DataEntryLogic\CompactSerializers\DictionarySerializer.cs" />
     <Compile Include="Logic\DataEntryLogic\CompactSerializers\ListSerializer.cs" />
     <Compile Include="Logic\DataEntryLogic\Serializers\StringSerializer.cs" />
+    <Compile Include="Logic\DataEntryLogic\SyncCascadeDictionary.cs" />
     <Compile Include="Logic\DataEntryLogic\SyncCascadeReadOnly.cs" />
+    <Compile Include="Logic\DataEntryLogic\SyncCascadeKeyDictionary.cs" />
+    <Compile Include="Logic\DataEntryLogic\SyncCascadeValueDictionary.cs" />
+    <Compile Include="Logic\DataEntryLogic\SyncCascadeList.cs" />
     <Compile Include="Logic\DataEntryLogic\SyncNull.cs" />
     <Compile Include="Logic\DataEntryLogic\SyncObject.cs" />
     <Compile Include="Logic\DataEntryLogic\SyncCascade.cs" />

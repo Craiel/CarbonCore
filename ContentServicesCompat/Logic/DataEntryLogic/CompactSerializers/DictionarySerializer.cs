@@ -45,7 +45,7 @@
 
         public Type KeyValueType { get; private set; }
 
-        public override void Serialize(Stream target, object value)
+        public override void SerializeImplicit(Stream target, object value)
         {
             if (value == null)
             {
@@ -68,12 +68,12 @@
 
             foreach (object entry in (IEnumerable)value)
             {
-                this.keySerializer.Serialize(target, this.keyProperty.GetValue(entry, null));
-                this.valueSerializer.Serialize(target, this.valueProperty.GetValue(entry, null));
+                this.keySerializer.SerializeImplicit(target, this.keyProperty.GetValue(entry, null));
+                this.valueSerializer.SerializeImplicit(target, this.valueProperty.GetValue(entry, null));
             }
         }
 
-        public override object Deserialize(Stream source)
+        public override object DeserializeImplicit(Stream source)
         {
             var indicator = source.ReadByte();
             if (indicator == Constants.SerializationNull)
@@ -93,8 +93,8 @@
             short count = BitConverter.ToInt16(length, 0);
             for (var i = 0; i < count; i++)
             {
-                object key = this.keySerializer.Deserialize(source);
-                object value = this.valueSerializer.Deserialize(source);
+                object key = this.keySerializer.DeserializeImplicit(source);
+                object value = this.valueSerializer.DeserializeImplicit(source);
                 this.addMethod.Invoke(instance, new[] { key, value });
             }
 

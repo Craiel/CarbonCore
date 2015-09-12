@@ -1,10 +1,10 @@
 ﻿namespace CarbonCore.Tests.ContentServices
 {
-    using System;
     using System.Collections.Generic;
 
     using CarbonCore.ContentServices.Compat.Logic;
     using CarbonCore.ContentServices.Compat.Logic.Attributes;
+    using CarbonCore.Tests.Compat.ContentServices.Data;
     using CarbonCore.Tests.ContentServices.Data;
 
     using Newtonsoft.Json;
@@ -60,7 +60,7 @@
         // -------------------------------------------------------------------
         protected override int DoGetHashCode()
         {
-            return this.Id.GetHashCode();
+            return this.Id == null ? 0 : this.Id.GetHashCode();
         }
     }
 }

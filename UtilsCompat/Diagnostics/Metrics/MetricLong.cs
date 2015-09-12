@@ -44,6 +44,44 @@
             this.Min = long.MaxValue;
         }
 
+        public static MetricLong operator +(MetricLong first, MetricLong second)
+        {
+            var diff = new MetricLong(first.Id)
+            {
+                Count = first.Count + second.Count,
+                Total = first.Total + second.Total,
+                Min = first.Min + second.Min,
+                Max = first.Max + second.Max
+            };
+            diff.UpdateAverage();
+            return diff;
+        }
+
+        public static MetricLong operator -(MetricLong first, MetricLong second)
+        {
+            var diff = new MetricLong(first.Id)
+                       {
+                           Count = first.Count - second.Count,
+                           Total = first.Total - second.Total,
+                           Min = first.Min - second.Min,
+                           Max = first.Max - second.Max
+                       };
+            diff.UpdateAverage();
+            return diff;
+        }
+
+        public void UpdateAverage()
+        {
+            if (this.Count > 0)
+            {
+                this.Average = this.Total / this.Count;
+            }
+            else
+            {
+                this.Total = this.Average;
+            }
+        }
+
         // -------------------------------------------------------------------
         // Protected
         // -------------------------------------------------------------------
@@ -61,7 +99,7 @@
                 this.Max = other.Max;
             }
 
-            this.Average = this.Total / this.Count;
+            this.UpdateAverage();
         }
     }
 }

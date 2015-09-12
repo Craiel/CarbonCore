@@ -95,7 +95,7 @@
 
         public static void Exception(Exception exception)
         {
-            GetThreadContext().Error(PreformatMessage(exception.Message));
+            GetThreadContext().Error(PreformatMessage(exception.ToString()));
         }
 
         public static void Error(string message)

@@ -63,6 +63,13 @@
         
         public override int GetHashCode()
         {
+            DataEntryDescriptor descriptor = DataEntryDescriptors.GetDescriptor(this.GetType());
+            if (descriptor.UseDefaultEquality)
+            {
+                // ReSharper disable once BaseObjectGetHashCodeCallInGetHashCode
+                return base.GetHashCode();
+            }
+
             return this.DoGetHashCode();
         }
 
@@ -121,6 +128,9 @@
         // -------------------------------------------------------------------
         // Protected
         // -------------------------------------------------------------------
+#if UNITY
+        protected abstract int DoGetHashCode();
+#else
         protected virtual int DoGetHashCode()
         {
             Type localType = this.GetType();
@@ -140,5 +150,6 @@
 
             return HashUtils.CombineObjectHashes(values);
         }
+#endif
     }
 }

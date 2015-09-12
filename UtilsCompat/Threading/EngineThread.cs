@@ -51,7 +51,7 @@
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
-        public EngineThread(EngineThreadUpdateDelegate threadMain, string name, EngineThreadSettings settings = null)
+        public EngineThread(EngineThreadUpdateDelegate threadMain, string name, EngineThreadSettings settings = null, EngineTime customTime = null)
         {
             this.settings = settings ?? new EngineThreadSettings();
 
@@ -64,7 +64,7 @@
                 this.frameDelayTarget = this.frameDelayTargetOptimal;
             }
 
-            this.time = new EngineTime();
+            this.time = customTime ?? new EngineTime();
 
             // We start the first delay measure after 1s
             this.framesUntilMeasure = 10;
@@ -101,6 +101,14 @@
         public bool IsThreadFinished { get; private set; }
 
         public bool MuteTrace { get; set; }
+
+        public EngineTime Time
+        {
+            get
+            {
+                return this.time;
+            }
+        }
 
         public void Shutdown()
         {
@@ -140,6 +148,23 @@
             }
         }
 
+        public void ChangeTimeSettings(float scale, bool isPaused)
+        {
+            // Synchronize, then change the settings of the timer
+            lock (this.synchronizationObject)
+            {
+                this.time.ChangeSpeed(scale);
+                if (isPaused)
+                {
+                    this.time.Pause();
+                }
+                else
+                {
+                    this.time.Resume();
+                }
+            }
+        }
+
         // -------------------------------------------------------------------
         // Private
         // -------------------------------------------------------------------
@@ -149,7 +174,11 @@
 
             while (this.isRunning)
             {
-                this.time.Update();
+                // Synchronize in case something needs to be updated
+                lock (this.synchronizationObject)
+                {
+                    this.time.Update();
+                }
 
                 if (!this.useFrameDelay || this.CheckThreadDelay())
                 {
@@ -186,8 +215,8 @@
 
         private bool CheckThreadDelay()
         {
-            this.frameDelay += this.time.TickDeltaTicks;
-            this.deltaSinceMeasure += this.time.TickDeltaTicks;
+            this.frameDelay += this.time.DeltaTicks;
+            this.deltaSinceMeasure += this.time.DeltaTicks;
 
             if (this.frameDelay < this.frameDelayTarget)
             {

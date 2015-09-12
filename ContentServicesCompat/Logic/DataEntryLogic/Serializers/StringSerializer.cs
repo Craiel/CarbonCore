@@ -38,19 +38,14 @@
             target.Write(data, 0, data.Length);
         }
 
-        public override void Serialize(Stream target, object value)
-        {
-            this.Serialize(target, (string)value);
-        }
-
-        public override object Deserialize(Stream source)
+        public string Deserialize(Stream source)
         {
             byte indicator = (byte)source.ReadByte();
             if (indicator == 0 || indicator == Constants.SerializationNull)
             {
                 return null;
             }
-            
+
             byte[] length = new byte[2];
             source.Read(length, 0, length.Length);
 
@@ -58,6 +53,16 @@
             source.Read(data, 0, data.Length);
 
             return Encoding.UTF8.GetString(data);
+        }
+
+        public override void SerializeImplicit(Stream target, object value)
+        {
+            this.Serialize(target, (string)value);
+        }
+
+        public override object DeserializeImplicit(Stream source)
+        {
+            return this.Deserialize(source);
         }
     }
 }

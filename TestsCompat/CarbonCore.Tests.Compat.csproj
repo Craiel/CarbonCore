@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C750C66E-56C8-4D99-846C-E690F5986842}</ProjectGuid>
+    <ProjectGuid>{322F5DB2-87ED-41EC-9A8B-AA14E1F9ACD3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CarbonCore.Tests.Compat</RootNamespace>
@@ -50,10 +50,10 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Unity|AnyCPU'">
-    <OutputPath>bin\Unity\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;UNITY</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=0.0.0.0, Culture=neutral, processorArchitecture=AMD64">
@@ -72,6 +72,7 @@
     <Compile Include="ContentServices\Data\DataTestEntry2.cs" />
     <Compile Include="ContentServices\Data\DataTestEntry3.cs" />
     <Compile Include="ContentServices\Data\DataTestJoinedEntry.cs" />
+    <Compile Include="ContentServices\Data\HashTestData.cs" />
     <Compile Include="ContentServices\Data\TestEnum.cs" />
     <Compile Include="ContentServices\Data\DataTestEntry.cs" />
     <Compile Include="ContentServices\SerializerTests.cs" />
@@ -89,13 +90,14 @@
     <Compile Include="Utils\CarbonPathTests.cs" />
     <Compile Include="Utils\DiagnosticTests.cs" />
     <Compile Include="Utils\EngineThreadTests.cs" />
+    <Compile Include="Utils\EngineTimeTests.cs" />
     <Compile Include="Utils\HashTests.cs" />
     <Compile Include="Utils\LocalizationTests.cs" />
     <Compile Include="Utils\AssemblyTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ContentServicesCompat\CarbonCore.ContentServices .Compat.csproj">
-      <Project>{890FF110-443F-4647-80B1-82D414CCCD88}</Project>
+      <Project>{890ff110-443f-4647-80b1-82d414cccd88}</Project>
       <Name>CarbonCore.ContentServices .Compat</Name>
     </ProjectReference>
     <ProjectReference Include="..\UtilsCompat\CarbonCore.Utils.Compat.csproj">

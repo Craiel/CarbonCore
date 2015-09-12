@@ -1,57 +1,42 @@
 ﻿namespace CarbonCore.ContentServices.Compat.Logic.DataEntryLogic
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
+
+    using CarbonCore.Utils.Compat.Diagnostics;
 
     public class SyncDictionary<T, TK, TV> : IDictionary<TK, TV>
         where T : IDictionary<TK, TV>
     {
-        private T value;
-
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
         public SyncDictionary()
-            : this(default(T))
+            : this(Activator.CreateInstance<T>())
         {
         }
 
         public SyncDictionary(T value)
         {
-            this.value = value;
+            Diagnostic.Assert(value != null);
+
+            this.Value = value;
             this.IsChanged = true;
         }
 
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public T Value
-        {
-            get
-            {
-                return this.value;
-            }
+        public T Value { get; private set; }
 
-            set
-            {
-                if ((this.Value == null && value == null)
-                    || (this.value != null && this.value.Equals(value)))
-                {
-                    return;
-                }
-
-                this.value = value;
-                this.IsChanged = true;
-            }
-        }
-
-        public bool IsChanged { get; private set; }
+        public virtual bool IsChanged { get; private set; }
 
         public int Count
         {
             get
             {
-                return this.value.Count;
+                return this.Value.Count;
             }
         }
 
@@ -59,7 +44,7 @@
         {
             get
             {
-                return this.value.IsReadOnly;
+                return this.Value.IsReadOnly;
             }
         }
 
@@ -67,7 +52,7 @@
         {
             get
             {
-                return this.value.Keys;
+                return this.Value.Keys;
             }
         }
 
@@ -75,7 +60,7 @@
         {
             get
             {
-                return this.value.Values;
+                return this.Value.Values;
             }
         }
 
@@ -83,30 +68,30 @@
         {
             get
             {
-                return this.value[key];
+                return this.Value[key];
             }
 
             set
             {
-                this.value[key] = value;
+                this.Value[key] = value;
                 this.IsChanged = true;
             }
         }
         
         public IEnumerator<KeyValuePair<TK, TV>> GetEnumerator()
         {
-            return this.value.GetEnumerator();
+            return this.Value.GetEnumerator();
         }
 
         public override bool Equals(object obj)
         {
             var typed = (SyncDictionary<T, TK, TV>)obj;
-            if (this.value == null && typed.Value == null)
+            if (this.Value == null && typed.Value == null)
             {
                 return true;
             }
 
-            if (this.value == null || typed.Value == null)
+            if (this.Value == null || typed.Value == null)
             {
                 return false;
             }
@@ -116,12 +101,12 @@
 
         public override int GetHashCode()
         {
-            if (this.value == null)
+            if (this.Value == null)
             {
                 return 0;
             }
 
-            return this.value.GetHashCode();
+            return this.Value.GetHashCode();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -129,61 +114,61 @@
             return this.GetEnumerator();
         }
 
-        public void ResetChangeState(bool state = false)
+        public virtual void ResetChangeState(bool state = false)
         {
             this.IsChanged = state;
         }
 
         public void Add(KeyValuePair<TK, TV> item)
         {
-            this.value.Add(item);
+            this.Value.Add(item);
             this.IsChanged = true;
         }
 
         public void Clear()
         {
-            this.value.Clear();
+            this.Value.Clear();
             this.IsChanged = true;
         }
 
         public bool Contains(KeyValuePair<TK, TV> item)
         {
-            return this.value.Contains(item);
+            return this.Value.Contains(item);
         }
 
         public void CopyTo(KeyValuePair<TK, TV>[] array, int arrayIndex)
         {
-            this.value.CopyTo(array, arrayIndex);
+            this.Value.CopyTo(array, arrayIndex);
         }
 
         public bool Remove(KeyValuePair<TK, TV> item)
         {
-            bool result = this.value.Remove(item);
+            bool result = this.Value.Remove(item);
             this.IsChanged = true;
             return result;
         }
 
         public bool ContainsKey(TK key)
         {
-            return this.value.ContainsKey(key);
+            return this.Value.ContainsKey(key);
         }
 
         public void Add(TK key, TV newValue)
         {
-            this.value.Add(key, newValue);
+            this.Value.Add(key, newValue);
             this.IsChanged = true;
         }
 
         public bool Remove(TK key)
         {
-            bool result = this.value.Remove(key);
+            bool result = this.Value.Remove(key);
             this.IsChanged = true;
             return result;
         }
 
         public bool TryGetValue(TK key, out TV outValue)
         {
-            return this.value.TryGetValue(key, out outValue);
+            return this.Value.TryGetValue(key, out outValue);
         }
     }
 }
