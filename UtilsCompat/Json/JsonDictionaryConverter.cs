@@ -9,10 +9,22 @@
 
     using Newtonsoft.Json;
 
-    public class DictionaryConverter<T, TN> : JsonConverter
+    public class JsonDictionaryConverter<T, TN> : JsonConverter
     {
         private const string PropertyNameKey = "0";
         private const string PropertyNameValue = "1";
+
+        private readonly JsonConverter keyConverter;
+        private readonly JsonConverter valueConverter;
+
+        // -------------------------------------------------------------------
+        // Public
+        // -------------------------------------------------------------------
+        public JsonDictionaryConverter(JsonConverter keyConverter = null, JsonConverter valueConverter = null)
+        {
+            this.keyConverter = keyConverter;
+            this.valueConverter = valueConverter;
+        }
 
         // -------------------------------------------------------------------
         // Public
@@ -42,9 +54,9 @@
             {
                 writer.WriteStartObject();
                 writer.WritePropertyName(PropertyNameKey);
-                this.SerializeValue(writer, entry.Key, serializer);
+                this.SerializeValue(writer, entry.Key, serializer, this.keyConverter);
                 writer.WritePropertyName(PropertyNameValue);
-                this.SerializeValue(writer, entry.Value, serializer);
+                this.SerializeValue(writer, entry.Value, serializer, this.valueConverter);
                 writer.WriteEndObject();
             }
 
@@ -76,14 +88,14 @@
                     // Note: This is a little weird, for the first one we have to read directly without skipping to the value
                     //       ReadString() of the "0" key will skip the value as well...
                     System.Diagnostics.Trace.Assert(reader.Value.Equals("0"));
-                    var keyValue = this.DeserializeValue(reader, keyType, existingValue, serializer);
+                    var keyValue = this.DeserializeValue(reader, keyType, existingValue, serializer, this.keyConverter);
                     reader.Read();
 
                     // Value
                     // Note: For this we have to first read the key token, then read the post value after
                     System.Diagnostics.Trace.Assert(reader.Value.Equals("1"));
                     reader.Read();
-                    var valueValue = this.DeserializeValue(reader, valueType, existingValue, serializer);
+                    var valueValue = this.DeserializeValue(reader, valueType, existingValue, serializer, this.valueConverter);
                     reader.Read();
 
                     // End object
@@ -111,15 +123,15 @@
         // -------------------------------------------------------------------
         // Private
         // -------------------------------------------------------------------
-        private object DeserializeValue(JsonReader reader, Type type, object existingValue, JsonSerializer serializer)
+        private object DeserializeValue(JsonReader reader, Type type, object existingValue, JsonSerializer serializer, JsonConverter customConverter)
         {
-            JsonConverter converter = this.FindConverter(type);
+            JsonConverter converter = customConverter ?? this.FindConverter(type);
             return converter.ReadJson(reader, type, existingValue, serializer);
         }
 
-        private void SerializeValue(JsonWriter writer, object value, JsonSerializer serializer)
+        private void SerializeValue(JsonWriter writer, object value, JsonSerializer serializer, JsonConverter customConverter)
         {
-            JsonConverter converter = this.FindConverter(value.GetType());
+            JsonConverter converter = customConverter ?? this.FindConverter(value.GetType());
             converter.WriteJson(writer, value, serializer);
         }
 
