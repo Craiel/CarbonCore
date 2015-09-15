@@ -3,7 +3,6 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.IO;
 
     using CarbonCore.Utils.Compat.Diagnostics;
 
@@ -11,21 +10,6 @@
 
     public class JsonDictionaryConverter<T, TN> : JsonConverter
     {
-        private const string PropertyNameKey = "0";
-        private const string PropertyNameValue = "1";
-
-        private readonly JsonConverter keyConverter;
-        private readonly JsonConverter valueConverter;
-
-        // -------------------------------------------------------------------
-        // Public
-        // -------------------------------------------------------------------
-        public JsonDictionaryConverter(JsonConverter keyConverter = null, JsonConverter valueConverter = null)
-        {
-            this.keyConverter = keyConverter;
-            this.valueConverter = valueConverter;
-        }
-
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
@@ -40,7 +24,7 @@
             var dictionary = value as IDictionary<T, TN>;
             if (dictionary == null)
             {
-                throw new ArgumentException();
+                throw new ArgumentException(string.Format("Expected Dictionary of {0} but got {1}", typeof(IDictionary<T, TN>), value.GetType()));
             }
 
             // Skip empty dictionaries
@@ -52,12 +36,10 @@
             writer.WriteStartArray();
             foreach (KeyValuePair<T, TN> entry in dictionary)
             {
-                writer.WriteStartObject();
-                writer.WritePropertyName(PropertyNameKey);
-                this.SerializeValue(writer, entry.Key, serializer, this.keyConverter);
-                writer.WritePropertyName(PropertyNameValue);
-                this.SerializeValue(writer, entry.Value, serializer, this.valueConverter);
-                writer.WriteEndObject();
+                writer.WriteStartArray();
+                this.SerializeValue(writer, entry.Key, serializer);
+                this.SerializeValue(writer, entry.Value, serializer);
+                writer.WriteEndArray();
             }
 
             writer.WriteEndArray();
@@ -81,24 +63,22 @@
                 reader.Read();
                 while (reader.TokenType != JsonToken.EndArray)
                 {
-                    // Start object
+                    // Start array
                     reader.Read();
 
                     // Key
-                    // Note: This is a little weird, for the first one we have to read directly without skipping to the value
-                    //       ReadString() of the "0" key will skip the value as well...
-                    System.Diagnostics.Trace.Assert(reader.Value.Equals("0"));
-                    var keyValue = this.DeserializeValue(reader, keyType, existingValue, serializer, this.keyConverter);
+                    var keyValue = this.DeserializeValue(reader, keyType, existingValue, serializer);
+
+                    // End Object
                     reader.Read();
 
                     // Value
-                    // Note: For this we have to first read the key token, then read the post value after
-                    System.Diagnostics.Trace.Assert(reader.Value.Equals("1"));
-                    reader.Read();
-                    var valueValue = this.DeserializeValue(reader, valueType, existingValue, serializer, this.valueConverter);
-                    reader.Read();
+                    var valueValue = this.DeserializeValue(reader, valueType, existingValue, serializer);
 
                     // End object
+                    reader.Read();
+
+                    // End Array
                     reader.Read();
 
                     ((IDictionary)resultDictionary).Add(keyValue, valueValue);
@@ -123,37 +103,27 @@
         // -------------------------------------------------------------------
         // Private
         // -------------------------------------------------------------------
-        private object DeserializeValue(JsonReader reader, Type type, object existingValue, JsonSerializer serializer, JsonConverter customConverter)
+        private object DeserializeValue(JsonReader reader, Type type, object existingValue, JsonSerializer serializer)
         {
-            JsonConverter converter = customConverter ?? this.FindConverter(type);
-            return converter.ReadJson(reader, type, existingValue, serializer);
-        }
-
-        private void SerializeValue(JsonWriter writer, object value, JsonSerializer serializer, JsonConverter customConverter)
-        {
-            JsonConverter converter = customConverter ?? this.FindConverter(value.GetType());
-            converter.WriteJson(writer, value, serializer);
-        }
-
-        private JsonConverter FindConverter(Type type)
-        {
-            object[] converterAttributes = type.GetCustomAttributes(typeof(JsonConverterAttribute), true);
-            if (converterAttributes.Length <= 0)
+            JsonConverter converter = JsonExtensions.FindConverter(type);
+            if (converter != null)
             {
-                if (type.IsClass)
-                {
-                    return new JsonDefaultClassStringConverter();
-                }
-                
-                return new JsonDefaultConverter();
+                return converter.ReadJson(reader, type, existingValue, serializer);
             }
 
-            if (converterAttributes.Length > 1)
+            return serializer.Deserialize(reader, type);
+        }
+
+        private void SerializeValue(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            JsonConverter converter = JsonExtensions.FindConverter(value.GetType());
+            if (converter != null)
             {
-                throw new InvalidDataException("More than one possible converter found");
+                converter.WriteJson(writer, value, serializer);
+                return;
             }
 
-            return (JsonConverter)Activator.CreateInstance(((JsonConverterAttribute)converterAttributes[0]).ConverterType, null);
+            serializer.Serialize(writer, value);
         }
     }
 }

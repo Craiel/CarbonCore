@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Diagnostics\UnityDebugTraceListener.cs" />
+    <Compile Include="Json\Vector3ConverterSmall.cs" />
     <Compile Include="UnityConstants.cs" />
   </ItemGroup>
   <ItemGroup>

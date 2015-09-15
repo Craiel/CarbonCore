@@ -150,8 +150,6 @@
     <Compile Include="Json\JsonCarbonFileConverter.cs" />
     <Compile Include="Json\JsonConcreteTypeConverter.cs" />
     <Compile Include="Json\JsonConfig.cs" />
-    <Compile Include="Json\JsonDefaultClassStringConverter.cs" />
-    <Compile Include="Json\JsonDefaultConverter.cs" />
     <Compile Include="Json\JsonDictionaryConverter.cs" />
     <Compile Include="Json\JsonExtensions.cs" />
     <Compile Include="MathUtils\BitOperations.cs" />

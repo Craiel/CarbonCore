@@ -1,5 +1,7 @@
 ﻿namespace CarbonCore.Utils.Compat.Json
 {
+    using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.IO.Compression;
     using System.Text;
@@ -12,9 +14,51 @@
     {
         private const int DefaultStreamBufferSize = 4096;
 
+        private static readonly IDictionary<Type, Type> GlobalConverterRegistration;
+
+        // ------------------------------------------------------------------- 
+        // Constructor
+        // ------------------------------------------------------------------- 
+        static JsonExtensions()
+        {
+            GlobalConverterRegistration = new Dictionary<Type, Type>();
+        }
+
         // ------------------------------------------------------------------- 
         // Public 
         // ------------------------------------------------------------------- 
+        public static void RegisterGlobalConverter<T, TN>()
+            where TN : JsonConverter
+        {
+            GlobalConverterRegistration.Add(typeof(T), typeof(TN));
+        }
+
+        public static JsonConverter FindConverter<T>()
+        {
+            return FindConverter(typeof(T));
+        }
+
+        public static JsonConverter FindConverter(Type type)
+        {
+            if (GlobalConverterRegistration.ContainsKey(type))
+            {
+                return (JsonConverter)Activator.CreateInstance(GlobalConverterRegistration[type], null);
+            }
+
+            object[] converterAttributes = type.GetCustomAttributes(typeof(JsonConverterAttribute), true);
+            if (converterAttributes.Length <= 0)
+            {
+                return null;
+            }
+
+            if (converterAttributes.Length > 1)
+            {
+                throw new InvalidDataException("More than one possible converter found");
+            }
+
+            return (JsonConverter)Activator.CreateInstance(((JsonConverterAttribute)converterAttributes[0]).ConverterType, null);
+        }
+
         public static T LoadFromData<T>(string data)
         {
             return JsonConvert.DeserializeObject<T>(data);
