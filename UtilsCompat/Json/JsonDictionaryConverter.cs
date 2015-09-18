@@ -18,6 +18,7 @@
             // Check if there is something to write
             if (value == null)
             {
+                writer.WriteNull();
                 return;
             }
 
@@ -25,12 +26,6 @@
             if (dictionary == null)
             {
                 throw new ArgumentException(string.Format("Expected Dictionary of {0} but got {1}", typeof(IDictionary<T, TN>), value.GetType()));
-            }
-
-            // Skip empty dictionaries
-            if (dictionary.Count <= 0)
-            {
-                return;
             }
 
             writer.WriteStartArray();

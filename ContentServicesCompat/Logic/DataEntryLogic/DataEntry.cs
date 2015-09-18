@@ -12,14 +12,13 @@
     [JsonObject(MemberSerialization.OptOut)]
     public abstract class DataEntry : IDataEntry
     {
-        private int changeHashCode;
+        private int? changeHashCode;
 
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
         protected DataEntry()
         {
-            this.ResetChangedState();
         }
 
         // -------------------------------------------------------------------
@@ -30,7 +29,8 @@
         {
             get
             {
-                return this.GetHashCode() != this.changeHashCode;
+                return !changeHashCode.HasValue ||
+                        this.GetHashCode() != this.changeHashCode;
             }
         }
 

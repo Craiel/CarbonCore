@@ -77,6 +77,13 @@
             }
         }
 
+        public static void DeserializeCascadeList<T, TN>(Stream stream, SyncCascadeList<T, TN> cascade)
+            where T : List<TN>
+            where TN : ISyncEntry, new()
+        {
+            DeserializeCascadeList(stream, cascade, () => new TN());
+        }
+
         public static void DeserializeCascadeList<T, TN>(Stream stream, SyncCascadeList<T, TN> cascade, ConstructionCallbackDelegate<TN> construction)
             where T : List<TN>
             where TN : ISyncEntry

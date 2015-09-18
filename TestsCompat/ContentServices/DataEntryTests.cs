@@ -304,6 +304,8 @@
         public void DataEntryCustomHashCodeTest()
         {
             var instance = new HashTestData();
+            Assert.IsTrue(instance.IsChanged);
+            instance.ResetChangedState();
             Assert.IsFalse(instance.IsChanged);
 
             instance.Bool = true;

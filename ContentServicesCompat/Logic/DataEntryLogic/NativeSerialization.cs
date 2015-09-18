@@ -108,6 +108,11 @@
             host.Value.Save(stream, host.IsReferenceChanged || ignoreChangeState);
         }
 
+        public static T DeserializeCascade<T>(Stream source, T currentValue) where T : class, ISyncEntry, new()
+        {
+            return DeserializeCascade(source, currentValue, () => new T());
+        }
+
         public static T DeserializeCascade<T>(Stream source, T currentValue, ConstructionCallbackDelegate<T> construction) where T : class, ISyncEntry
         {
             object result = currentValue;
