@@ -32,7 +32,8 @@
                                                                                      { "resourcepacks", "resourcepacks" },
                                                                                  };
 
-        private readonly IList<string> clientOnlyCopyObjects = new List<string> { "servers.dat" };
+        private readonly IList<string> serverOnlyCopyObjects = new List<string> { VersionIndiciator };
+        private readonly IList<string> clientOnlyCopyObjects = new List<string> { "servers.dat", VersionIndiciator };
 
         private readonly ICommandLineArguments arguments;
 
@@ -91,6 +92,17 @@
                 using (new ProfileRegion("Copying Additional Files"))
                 {
                     foreach (string copyObject in this.clientOnlyCopyObjects)
+                    {
+                        Trace.TraceInformation(" Copying {0}", copyObject);
+                        this.sourcePath.ToFile(copyObject).CopyTo(this.targetPath.ToFile(copyObject), true);
+                    }
+                }
+            }
+            else
+            {
+                using (new ProfileRegion("Copying Additional Files"))
+                {
+                    foreach (string copyObject in this.serverOnlyCopyObjects)
                     {
                         Trace.TraceInformation(" Copying {0}", copyObject);
                         this.sourcePath.ToFile(copyObject).CopyTo(this.targetPath.ToFile(copyObject), true);
