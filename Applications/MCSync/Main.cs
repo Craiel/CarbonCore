@@ -1,4 +1,7 @@
-﻿namespace CarbonCore.Applications.MCSync
+﻿using CarbonCore.ToolFramework.Contracts;
+using CarbonCore.ToolFramework.Logic;
+
+namespace CarbonCore.Applications.MCSync
 {
     using System;
     using System.Collections.Generic;
@@ -16,7 +19,7 @@
 
     using Newtonsoft.Json;
 
-    public class Main : IMain
+    public class Main : ConsoleApplicationBase, IMain
     {
         private const string SyncProgram = "blinksync.exe";
 
@@ -35,36 +38,35 @@
         private readonly IList<string> serverOnlyCopyObjects = new List<string> { VersionIndiciator };
         private readonly IList<string> clientOnlyCopyObjects = new List<string> { "servers.dat", VersionIndiciator };
 
-        private readonly ICommandLineArguments arguments;
-
         private CarbonDirectory sourcePath;
         private CarbonDirectory targetPath;
 
         private bool isServerMode;
 
         private bool forceSync;
-        
+
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
-        public Main(IFactory factory)
+        public Main(IFactory factory) : base(factory)
         {
-            this.arguments = factory.Resolve<ICommandLineArguments>();
-            
-            this.RegisterCommandLineArguments();
         }
 
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public void Sync()
-        {
-            if (!this.arguments.ParseCommandLineArguments())
-            {
-                // Todo: print usage
-                return;
-            }
+        public override string Name => "MCSync";
 
+        protected override void StartFinished()
+        {
+            this.Sync();
+        }
+
+        // -------------------------------------------------------------------
+        // Private
+        // -------------------------------------------------------------------
+        private void Sync()
+        {
             if (this.CheckVersion())
             {
                 Trace.TraceInformation("Skipping sync, no changes found");
@@ -198,20 +200,24 @@
             }
         }
 
-        private void RegisterCommandLineArguments()
+        protected override bool RegisterCommandLineArguments()
         {
-            ICommandLineSwitchDefinition definition = this.arguments.Define("s", "sourcePath", x => this.sourcePath = new CarbonDirectory(x));
+            ICommandLineSwitchDefinition definition = this.Arguments.Define("s", "sourcePath", x => this.sourcePath = new CarbonDirectory(x));
             definition.RequireArgument = true;
+            definition.Required = true;
             definition.Description = "The path where the data is located";
 
-            definition = this.arguments.Define("t", "targetPath", x => this.targetPath = new CarbonDirectory(x));
+            definition = this.Arguments.Define("t", "targetPath", x => this.targetPath = new CarbonDirectory(x));
             definition.RequireArgument = true;
+            definition.Required = true;
 
-            definition = this.arguments.Define("server", x => this.isServerMode = true);
+            definition = this.Arguments.Define("server", x => this.isServerMode = true);
             definition.Description = "Sync as server mode, default is false";
 
-            definition = this.arguments.Define("force", x => this.forceSync = true);
+            definition = this.Arguments.Define("force", x => this.forceSync = true);
             definition.Description = "Force the sync even if no indicator is present";
+
+            return true;
         }
     }
 }

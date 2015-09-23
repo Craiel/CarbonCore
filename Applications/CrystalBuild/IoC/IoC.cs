@@ -1,4 +1,6 @@
-﻿namespace CarbonCore.Applications.CrystalBuild.IoC
+﻿using CarbonCore.ToolFramework.IoC;
+
+namespace CarbonCore.Applications.CrystalBuild.IoC
 {
     using CarbonCore.Applications.CrystalBuild.Logic.Processors.Excel;
     using CarbonCore.Utils.Compat.IoC;
@@ -12,6 +14,7 @@
 
     [DependsOnModule(typeof(UtilsModule))]
     [DependsOnModule(typeof(UtilsCommandLineModule))]
+    [DependsOnModule(typeof(ToolFrameworkModule))]
     public class CrystalBuildModule : CarbonQuickModule
     {
         // -------------------------------------------------------------------

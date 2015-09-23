@@ -1,4 +1,6 @@
-﻿namespace CarbonCore.UtilsCommandLine.Logic
+﻿using System.Linq;
+
+namespace CarbonCore.UtilsCommandLine.Logic
 {
     using System.Collections.Generic;
     using System.Text;
@@ -53,16 +55,18 @@
             this.activeSwitchDictionary.Clear();
             this.activeSwitches.Clear();
 
+            int requiredDefines = this.definitions.Count(x => x.Required);
+
             if (string.IsNullOrWhiteSpace(arguments))
             {
-                return true;
+                return this.activeSwitches.Count >= requiredDefines;
             }
 
             var tokenizer = new Tokenizer();
             IList<Token> tokens = tokenizer.Tokenize(this.grammar, arguments);
             if (tokens.Count == 0)
             {
-                return true;
+                return this.activeSwitches.Count >= requiredDefines;
             }
 
             if (!this.TranslateTokens(tokens))
@@ -70,7 +74,12 @@
                 return false;
             }
 
-            return this.EvaluateDefines();
+            if (!this.EvaluateDefines())
+            {
+                return false;
+            }
+
+            return this.activeSwitches.Count >= requiredDefines;
         }
 
         public bool ParseCommandLineArguments()

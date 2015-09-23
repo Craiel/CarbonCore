@@ -22,8 +22,9 @@
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
+    <NoWarn>IDE0001</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>..\Release\CrystalBuild\</OutputPath>
@@ -32,7 +33,7 @@
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
@@ -120,6 +121,10 @@
     <ProjectReference Include="..\..\Tests\CarbonCore.Tests.csproj">
       <Project>{322f5db2-87ed-41ec-9a8b-aa14e1f9acd3}</Project>
       <Name>CarbonCore.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ToolFramework\CarbonCore.ToolFramework.csproj">
+      <Project>{E4643DF2-D2DB-4E99-AB4B-D8CE4FD94D81}</Project>
+      <Name>CarbonCore.ToolFramework</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\UtilsCommandLine\CarbonCore.UtilsCommandLine.csproj">
       <Project>{E99C6721-99A5-4DC3-BD9D-DC88F65D217A}</Project>
