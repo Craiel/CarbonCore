@@ -1,7 +1,4 @@
-﻿using CarbonCore.ToolFramework.Contracts;
-using CarbonCore.ToolFramework.Logic;
-
-namespace CarbonCore.Applications.MCSync
+﻿namespace CarbonCore.Applications.MCSync
 {
     using System;
     using System.Collections.Generic;
@@ -9,6 +6,7 @@ namespace CarbonCore.Applications.MCSync
     using System.Reflection;
     using System.Threading;
 
+    using CarbonCore.ToolFramework.Logic;
     using CarbonCore.Utils.Compat.Contracts.IoC;
     using CarbonCore.Utils.Compat.Diagnostics;
     using CarbonCore.Utils.Compat.IO;
@@ -55,7 +53,13 @@ namespace CarbonCore.Applications.MCSync
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public override string Name => "MCSync";
+        public override string Name
+        {
+            get
+            {
+                return "MCSync";
+            }
+        }
 
         protected override void StartFinished()
         {

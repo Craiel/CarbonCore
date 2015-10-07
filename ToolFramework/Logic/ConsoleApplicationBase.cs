@@ -29,7 +29,7 @@
         // -------------------------------------------------------------------
         public abstract string Name { get; }
         
-        public virtual Version Version { get; }
+        public virtual Version Version { get; private set; }
 
         public virtual void Start()
         {
