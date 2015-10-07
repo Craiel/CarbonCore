@@ -2,10 +2,16 @@
 {
     using System.Diagnostics;
 
+    // NOTE:
+    //  There is a unity issue with this class if the bool is after the generic Value<T>
+    //  It will result in an empty error and a mono crash with the message
+    //  `class->image->dynamic || field->offset > 0'
+
     [DebuggerDisplay("{Value}")]
     public class Sync<T>
         where T : struct
     {
+        private bool isChanged;
         private T value;
 
         // -------------------------------------------------------------------
@@ -19,12 +25,20 @@
         public Sync(T value, bool isChanged = true)
         {
             this.value = value;
-            this.IsChanged = isChanged;
+            this.isChanged = isChanged;
         }
 
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
+        public bool IsChanged
+        {
+            get
+            {
+                return this.isChanged;
+            }
+        }
+
         public T Value
         {
             get
@@ -37,13 +51,11 @@
                 if (!this.value.Equals(value))
                 {
                     this.value = value;
-                    this.IsChanged = true;
+                    this.isChanged = true;
                 }
             }
         }
 
-        public bool IsChanged { get; private set; }
-        
         public override bool Equals(object obj)
         {
             return ((Sync<T>)obj).Value.Equals(this.Value);
@@ -56,7 +68,7 @@
 
         public void ResetChangeState(bool state = false)
         {
-            this.IsChanged = state;
+            this.isChanged = state;
         }
     }
 }
