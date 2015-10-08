@@ -1,0 +1,184 @@
+{
+  "Seconds": 120,
+  "Level": 70,
+  "ParagonLevel": 15,
+  "TargetCountMin": 1,
+  "TargetCountMax": 8,
+  "Class": "Demon Hunter",
+  "Attributes": {
+    "Life": 316.0,
+    "Str": 77.0,
+    "Dex": 217.0,
+    "Int": 77.0,
+    "Vit": 147.0
+  },
+  "Gear": [
+    {
+      "Name": "Dire Shrike",
+      "DamageType": "Arcane",
+      "Type": "Weapon",
+      "Attributes": {
+        "DmgMin": 825.0,
+        "DmgMax": 1022.0,
+        "Dex": 539.0,
+        "Vit": 579.0,
+        "DmgBonus": 6.0,
+        "AttackSpeed": 1.6,
+        "LifeKill": 4401.0,
+      }
+    },
+    {
+      "Name": "Cinch Gift",
+      "Type": "Waist",
+      "Attributes": {
+        "Armor": 459.0,
+        "Dex": 357.0,
+        "Vit": 360.0,
+        "LifeBonus": 8.0,
+        "LifeRegen": 615.0,
+        "ResistArcane": 140.0,
+        "PickupRadius": 2.0,
+      }
+    },
+    {
+      "Name": "Agonizing Rosary",
+      "Type": "Neck",
+      "Attributes": {
+		"DmgMin": 54.0,
+        "DmgMax": 94.0,
+        "DmgBonusPhysical": 11.0,
+        "CritDmg": 99.0,
+        "LifeHit": 1879.0,
+        "ExtraGold": 67.0,
+        "HealBonus": 14989.0,
+      }
+    },
+    {
+      "Name": "Rugged Restraints",
+      "Type": "Wrist",
+      "Attributes": {
+        "Armor": 368.0,
+        "DmgBonusLightning": 12.0,
+        "Dex": 407.0,
+        "ResistAll": 87.0,
+        "LifeHit": 1243.0,
+        "Thorns": 1344.0,
+        "BonusExperience": 126.0,
+      }
+    },
+    {
+      "Name": "Feral Hold",
+      "Type": "Hands",
+      "Attributes": {
+        "Armor": 368.0,
+        "Dex": 625.0,
+        "Vit": 587.0,
+        "CritRate": 7.5,
+        "LifeHit": 827.0,
+        "ResistCold": 129.0,
+        "ExtraGold": 31.0,
+      }
+    },
+    {
+      "Name": "Stern Claim",
+      "Type": "Head",
+      "Attributes": {
+        "Armor": 703.0,
+        "Dex": 539.0,
+        "Vit": 537.0,
+        "ResistAll": 86.0,
+        "SkillBonusDHCluster": 10.0,
+        "ExtraGold": 30.0,
+        "PickupRadius": 1.0,
+      }
+    },
+    {
+      "Name": "Stark Boon",
+      "Type": "Legs",
+      "Attributes": {
+        "Armor": 756.0,
+        "Dex": 406.0,
+        "Vit": 397.0,
+        "ResistAll": 87.0,
+        "ExtraGold": 30.0,
+        "BonusExperience": 129.0,
+        "GemDex": 124.0,
+      }
+    },
+    {
+      "Name": "Profane Pauldrons",
+      "Type": "Shoulder",
+      "Attributes": {
+        "Armor": 598.0,
+        "Dex": 447.0,
+        "LifeBonus": 11.0,
+        "LifeRegen": 835.0,
+        "SkillBonusDHRainOfVengeance": 13.0,
+        "PickupRadius": 4.0,
+        "HealBonus": 20946.0,
+      }
+    },
+    {
+      "Name": "Tyrael's Might",
+      "Type": "Chest",
+      "Attributes": {
+        "Armor": 682.0,
+        "Dex": 492.0,
+        "Vit": 480.0,
+        "ResistAll": 95.0,
+        "MovementSpeed": 11.0,
+        "DmgBonusDemons": 12.0,
+        "Indestructable": 1.0,
+        "HealBonus": 27999.0,
+      }
+    },
+    {
+      "Name": "Vital Ring",
+      "Type": "Ring1",
+      "Attributes": {
+        "Vit": 377.0,
+        "ResistAll": 88.0,
+        "LifeRegen": 1232.0,
+        "LifeKill": 2861.0,
+        "HealBonus": 15803.0,
+      }
+    },
+    {
+      "Name": "Nagelring",
+      "Type": "Ring2",
+      "Attributes": {
+        "Dex": 211.0,
+        "LifeRegen": 458.0,
+        "LifeHit": 281.0,
+        "MagicFind": 45.0,
+        "Thorns": 1106.0,
+        "GemDex": 62.0,
+      }
+    },
+    {
+      "Name": "Boots of Disregard",
+      "Type": "Feet",
+      "Attributes": {
+        "Armor": 586.0,
+        "Dex": 462.0,
+        "Vit": 475.0,
+        "Armor": 375.0,
+        "LifeRegen": 967.0,
+        "HealBonus": 24321.0,
+      }
+    },
+    {
+      "Name": "Sin Seekers",
+      "Type": "Offhand",
+      "Attributes": {
+        "Dex": 667.0,
+        "Vit": 654.0,
+        "AttackSpeedBonus": 19.0,
+        "CritRate": 9.0,
+        "SkillBonusDHGenericGrenade": 15.0,
+        "SecondaryResource": 9,
+        "BlindRate": 1.7,
+      }
+    }
+  ]
+}

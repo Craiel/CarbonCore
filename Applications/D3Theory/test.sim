@@ -1,0 +1,26 @@
+{
+  "Seconds": 600,
+  "Level": 70,
+  "ParagonLevel": 0,
+  "TargetCountMin": 1,
+  "TargetCountMax": 8,
+  "Class": "Demon Hunter",
+  "Attributes": {
+    "Life": 100.0,
+    "Str": 10.0,
+    "Dex": 10.0,
+    "Int": 10.0,
+    "Vit": 10.0
+  },
+  "Gear": [
+    {
+      "Name": "Test Weapon",
+      "Type": "Weapon",
+      "Attributes": {
+        "DmgMin": 100.0,
+        "DmgMax": 200.0,
+        "AttackSpeed": 1.5,
+      }
+    }
+  ]
+}
