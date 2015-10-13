@@ -1,6 +1,3 @@
-*.dll
-*.exe
-*.config
-*.xml
-*.pdb
-*.vshost*
+CrystalBuild
+D3Theory
+MCSync

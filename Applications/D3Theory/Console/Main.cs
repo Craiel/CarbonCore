@@ -61,7 +61,7 @@
         {
             if (!this.arguments.ParseCommandLineArguments())
             {
-                // Todo: print usage
+                this.arguments.PrintArgumentUse();
                 return;
             }
 
