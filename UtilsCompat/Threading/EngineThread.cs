@@ -172,45 +172,50 @@
         {
             Diagnostic.RegisterThread(this.ThreadName, this.time);
 
-            while (this.isRunning)
+            try
             {
-                // Synchronize in case something needs to be updated
-                lock (this.synchronizationObject)
+                while (this.isRunning)
                 {
-                    this.time.Update();
-                }
-
-                if (!this.useFrameDelay || this.CheckThreadDelay())
-                {
-                    // Set the new frame
-                    this.time.UpdateFrame();
-
-                    this.CheckThreadPerformance();
-
-                    using (new ProfileRegion("EngineThread.Update: " + this.ThreadName) { IncludeThreadId = true })
+                    // Synchronize in case something needs to be updated
+                    lock (this.synchronizationObject)
                     {
-                        try
+                        this.time.Update();
+                    }
+
+                    if (!this.useFrameDelay || this.CheckThreadDelay())
+                    {
+                        // Set the new frame
+                        this.time.UpdateFrame();
+
+                        this.CheckThreadPerformance();
+
+                        using (new ProfileRegion("EngineThread.Update: " + this.ThreadName) { IncludeThreadId = true })
                         {
-                            if (!this.threadAction(this.time))
+                            try
                             {
-                                break;
+                                if (!this.threadAction(this.time))
+                                {
+                                    break;
+                                }
                             }
-                        }
-                        catch (Exception e)
-                        {
-                            this.isRunning = false;
-                            Diagnostic.Exception(e);
+                            catch (Exception e)
+                            {
+                                this.isRunning = false;
+                                Diagnostic.Exception(e);
+                            }
                         }
                     }
                 }
             }
+            finally
+            {
+                this.IsThreadRunning = false;
+                this.IsThreadFinished = true;
+                this.shutdownEvent.Set();
 
-            this.IsThreadRunning = false;
-            this.IsThreadFinished = true;
-            this.shutdownEvent.Set();
-
-            Diagnostic.Warning("Engine Thread {0} ({1}) Ended", this.ThreadId, this.ThreadName);
-            Diagnostic.UnregisterThread();
+                Diagnostic.Warning("Engine Thread {0} ({1}) Ended", this.ThreadId, this.ThreadName);
+                Diagnostic.UnregisterThread();
+            }
         }
 
         private bool CheckThreadDelay()
