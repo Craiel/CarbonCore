@@ -82,11 +82,13 @@
                 int result = 0;
                 for (var i = 0; i < objects.Length; i++)
                 {
-                    result += (result * 31) + objects[i].GetHashCode();
+                    result += (result * 31) + (objects[i] == null ? 0 : objects[i].GetHashCode());
                 }
 
                 return result;
-                //return objects.Aggregate(17, (current, data) => (current * 31) + data.GetHashCode());
+
+                // Alternative:
+                // return objects.Aggregate(17, (current, data) => (current * 31) + data.GetHashCode());
             }
         }
     }

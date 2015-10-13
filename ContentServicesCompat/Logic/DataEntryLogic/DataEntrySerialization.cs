@@ -7,6 +7,8 @@
     using CarbonCore.ContentServices.Compat.Contracts;
     using CarbonCore.Utils.Compat.Diagnostics;
 
+    using JetBrains.Annotations;
+
     using Newtonsoft.Json;
     using Newtonsoft.Json.Bson;
 
@@ -45,7 +47,7 @@
             }
         }
 
-        public static IDataEntry CompactLoad(Type type, byte[] data)
+        public static IDataEntry CompactLoad(Type type, [NotNull] byte[] data)
         {
             using (var stream = new MemoryStream())
             {
@@ -55,11 +57,12 @@
             }
         }
 
-        public static T CompactLoad<T>(byte[] data)
+        public static T CompactLoad<T>([NotNull] byte[] data)
         {
             return (T)CompactLoad(typeof(T), data);
         }
 
+        [NotNull]
         public static byte[] CompactSave(IDataEntry entry)
         {
             using (var stream = new MemoryStream())
