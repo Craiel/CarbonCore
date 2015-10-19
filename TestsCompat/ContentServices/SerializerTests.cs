@@ -24,9 +24,17 @@
 
         private const long TestLong = 112233445566778899;
 
-        private static readonly byte[] TestByteArray = { 20, 30, 5 };
-
         private const string TestString = "This is a simple test string!";
+
+        private static readonly byte[] TestByteArray = { 20, 30, 5, byte.MinValue, byte.MaxValue };
+        
+        private static readonly float[] TestFloatArray = { 15.2f, 9.999995f, 100000000001.2f, float.MinValue, float.MaxValue };
+
+        private static readonly double[] TestDoubleArray = { 999999595959595595955521.2345d, -125.0f, 55153, double.MinValue, double.MaxValue };
+
+        private static readonly int[] TestIntArray = { 500, -1000, 9321, int.MinValue, int.MaxValue };
+        
+        private static readonly long[] TestInt64Array = { 911111111111112, -5000, 123456, long.MinValue, long.MaxValue};
 
         // -------------------------------------------------------------------
         // Public
@@ -49,7 +57,7 @@
                 TestUtils.AssertStreamPos(stream, 1, ref streamPosition);
 
                 ByteArraySerializer.Instance.Serialize(stream, TestByteArray);
-                TestUtils.AssertStreamPos(stream, 6, ref streamPosition);
+                TestUtils.AssertStreamPos(stream, 8, ref streamPosition);
 
                 ByteArraySerializer.Instance.Serialize(stream, null);
                 TestUtils.AssertStreamPos(stream, 1, ref streamPosition);
@@ -63,6 +71,12 @@
                 DoubleSerializer.Instance.SerializeNullable(stream, TestDouble);
                 TestUtils.AssertStreamPos(stream, 9, ref streamPosition);
 
+                DoubleArraySerializer.Instance.Serialize(stream, TestDoubleArray);
+                TestUtils.AssertStreamPos(stream, 45, ref streamPosition);
+
+                DoubleArraySerializer.Instance.Serialize(stream, null);
+                TestUtils.AssertStreamPos(stream, 1, ref streamPosition);
+
                 FloatSerializer.Instance.Serialize(stream, TestFloat);
                 TestUtils.AssertStreamPos(stream, 5, ref streamPosition);
 
@@ -71,6 +85,12 @@
 
                 FloatSerializer.Instance.SerializeNullable(stream, TestFloat);
                 TestUtils.AssertStreamPos(stream, 5, ref streamPosition);
+
+                FloatArraySerializer.Instance.Serialize(stream, TestFloatArray);
+                TestUtils.AssertStreamPos(stream, 25, ref streamPosition);
+
+                FloatArraySerializer.Instance.Serialize(stream, null);
+                TestUtils.AssertStreamPos(stream, 1, ref streamPosition);
 
                 Int32Serializer.Instance.Serialize(stream, TestInt);
                 TestUtils.AssertStreamPos(stream, 5, ref streamPosition);
@@ -81,6 +101,12 @@
                 Int32Serializer.Instance.SerializeNullable(stream, TestInt);
                 TestUtils.AssertStreamPos(stream, 5, ref streamPosition);
 
+                Int32ArraySerializer.Instance.Serialize(stream, TestIntArray);
+                TestUtils.AssertStreamPos(stream, 25, ref streamPosition);
+
+                Int32ArraySerializer.Instance.Serialize(stream, null);
+                TestUtils.AssertStreamPos(stream, 1, ref streamPosition);
+
                 Int64Serializer.Instance.Serialize(stream, TestLong);
                 TestUtils.AssertStreamPos(stream, 9, ref streamPosition);
 
@@ -89,6 +115,12 @@
 
                 Int64Serializer.Instance.SerializeNullable(stream, TestLong);
                 TestUtils.AssertStreamPos(stream, 9, ref streamPosition);
+
+                Int64ArraySerializer.Instance.Serialize(stream, TestInt64Array);
+                TestUtils.AssertStreamPos(stream, 45, ref streamPosition);
+
+                Int64ArraySerializer.Instance.Serialize(stream, null);
+                TestUtils.AssertStreamPos(stream, 1, ref streamPosition);
 
                 StringSerializer.Instance.Serialize(stream, TestString);
                 TestUtils.AssertStreamPos(stream, 32, ref streamPosition);
@@ -101,7 +133,7 @@
                 stream.Read(data, 0, data.Length);
             }
 
-            Assert.AreEqual(103, data.Length);
+            Assert.AreEqual(249, data.Length);
 
             using (var stream = new MemoryStream(data))
             {
@@ -118,17 +150,29 @@
                 Assert.AreEqual(null, DoubleSerializer.Instance.DeserializeNullable(stream));
                 Assert.AreEqual((double?)TestDouble, DoubleSerializer.Instance.DeserializeNullable(stream));
 
+                Assert.AreEqual(TestDoubleArray, DoubleArraySerializer.Instance.Deserialize(stream));
+                Assert.AreEqual(null, DoubleArraySerializer.Instance.Deserialize(stream));
+
                 Assert.AreEqual(TestFloat, FloatSerializer.Instance.Deserialize(stream));
                 Assert.AreEqual(null, FloatSerializer.Instance.DeserializeNullable(stream));
                 Assert.AreEqual((double?)TestFloat, FloatSerializer.Instance.DeserializeNullable(stream));
+
+                Assert.AreEqual(TestFloatArray, FloatArraySerializer.Instance.Deserialize(stream));
+                Assert.AreEqual(null, FloatArraySerializer.Instance.Deserialize(stream));
 
                 Assert.AreEqual(TestInt, Int32Serializer.Instance.Deserialize(stream));
                 Assert.AreEqual(null, Int32Serializer.Instance.DeserializeNullable(stream));
                 Assert.AreEqual((double?)TestInt, Int32Serializer.Instance.DeserializeNullable(stream));
 
+                Assert.AreEqual(TestIntArray, Int32ArraySerializer.Instance.Deserialize(stream));
+                Assert.AreEqual(null, Int32ArraySerializer.Instance.Deserialize(stream));
+
                 Assert.AreEqual(TestLong, Int64Serializer.Instance.Deserialize(stream));
                 Assert.AreEqual(null, Int64Serializer.Instance.DeserializeNullable(stream));
                 Assert.AreEqual((double?)TestLong, Int64Serializer.Instance.DeserializeNullable(stream));
+
+                Assert.AreEqual(TestInt64Array, Int64ArraySerializer.Instance.Deserialize(stream));
+                Assert.AreEqual(null, Int64ArraySerializer.Instance.Deserialize(stream));
 
                 Assert.AreEqual(TestString, StringSerializer.Instance.Deserialize(stream));
                 Assert.AreEqual(null, StringSerializer.Instance.Deserialize(stream));

@@ -134,6 +134,10 @@
     <Compile Include="Logic\DataEntryLogic\Serializers\BooleanSerializer.cs" />
     <Compile Include="Logic\DataEntryLogic\CompactSerializers\DataEntrySerializer.cs" />
     <Compile Include="Logic\DataEntryLogic\Serializers\DoubleSerializer.cs" />
+    <Compile Include="Logic\DataEntryLogic\Serializers\DoubleArraySerializer.cs" />
+    <Compile Include="Logic\DataEntryLogic\Serializers\Int64ArraySerializer.cs" />
+    <Compile Include="Logic\DataEntryLogic\Serializers\Int32ArraySerializer.cs" />
+    <Compile Include="Logic\DataEntryLogic\Serializers\FloatArraySerializer.cs" />
     <Compile Include="Logic\DataEntryLogic\Serializers\FloatSerializer.cs" />
     <Compile Include="Logic\DataEntryLogic\Serializers\Int64Serializer.cs" />
     <Compile Include="Logic\DataEntryLogic\Serializers\Int32Serializer.cs" />

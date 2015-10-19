@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.IO;
 
+    using CarbonCore.Utils.Compat.Diagnostics;
     using CarbonCore.Utils.Compat.Json;
 
     using Newtonsoft.Json;
@@ -146,6 +147,12 @@
 
         public long GetFreeSpace()
         {
+            if (this.Drive == null)
+            {
+                Diagnostic.Warning("GetFreeSpace called with no drive available!");
+                return 0;
+            }
+
             return this.Drive.AvailableFreeSpace;
         }
 

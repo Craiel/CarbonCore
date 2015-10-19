@@ -5,7 +5,7 @@
     using System.Globalization;
     using System.IO;
     using System.Text.RegularExpressions;
-
+    
     public abstract class CarbonPath
     {
         public static readonly string DirectorySeparator = System.IO.Path.DirectorySeparatorChar.ToString(CultureInfo.InvariantCulture);
@@ -218,6 +218,7 @@
         {
             System.Diagnostics.Trace.Assert(!this.IsRelative);
 
+            string currentPath = this.GetPath();
             foreach (DriveInfo info in DriveInfo.GetDrives())
             {
                 if (!info.IsReady)
@@ -225,7 +226,7 @@
                     continue;
                 }
 
-                if (!this.GetPath().StartsWith(info.RootDirectory.FullName))
+                if (!currentPath.StartsWith(info.RootDirectory.FullName, StringComparison.OrdinalIgnoreCase))
                 {
                     continue;
                 }

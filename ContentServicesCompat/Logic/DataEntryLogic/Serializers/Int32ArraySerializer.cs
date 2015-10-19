@@ -5,22 +5,22 @@
     using System.IO;
 
     [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1121:UseBuiltInTypeAlias", Justification = "Reviewed. Suppression is OK here.")]
-    public class FloatSerializer : DataEntryElementSerializer
+    public class Int32ArraySerializer : DataEntryElementSerializer
     {
-        private static FloatSerializer instance;
+        private static Int32ArraySerializer instance;
 
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public static FloatSerializer Instance
+        public static Int32ArraySerializer Instance
         {
             get
             {
-                return instance ?? (instance = new FloatSerializer());
+                return instance ?? (instance = new Int32ArraySerializer());
             }
         }
 
-        public void SerializeNullable(Stream target, float? source)
+        public void Serialize(Stream target, Int32[] source)
         {
             if (source == null)
             {
@@ -28,12 +28,7 @@
                 return;
             }
 
-            this.Serialize(target, source.Value);
-        }
-
-        public void Serialize(Stream target, float source)
-        {
-            if (Math.Abs(source - default(float)) < float.Epsilon)
+            if (source.Length == 0)
             {
                 target.WriteByte(0);
                 return;
@@ -41,28 +36,19 @@
 
             target.WriteByte(1);
 
-            byte[] data = BitConverter.GetBytes(source);
+            // Count
+            byte[] data = BitConverter.GetBytes(source.Length);
+            target.Write(data, 0, data.Length);
 
-            target.Write(data, 0, 4);
+            // Entries
+            for (var i = 0; i < source.Length; i++)
+            {
+                data = BitConverter.GetBytes(source[i]);
+                target.Write(data, 0, data.Length);
+            }
         }
 
-        public float Deserialize(Stream source)
-        {
-            byte indicator = (byte)source.ReadByte();
-            if (indicator == Constants.SerializationNull)
-            {
-                throw new InvalidDataException();
-            }
-
-            if (indicator == 0)
-            {
-                return default(float);
-            }
-
-            return this.DoDeserialize(source);
-        }
-
-        public float? DeserializeNullable(Stream source)
+        public Int32[] Deserialize(Stream source)
         {
             byte indicator = (byte)source.ReadByte();
             if (indicator == Constants.SerializationNull)
@@ -72,7 +58,7 @@
 
             if (indicator == 0)
             {
-                return default(float);
+                return new Int32[0];
             }
 
             return this.DoDeserialize(source);
@@ -80,23 +66,34 @@
 
         public override void SerializeImplicit(Stream target, object source)
         {
-            this.SerializeNullable(target, (float)source);
+            this.Serialize(target, (Int32[])source);
         }
 
         public override object DeserializeImplicit(Stream source)
         {
-            return this.DeserializeNullable(source);
+            return this.Deserialize(source);
         }
 
         // -------------------------------------------------------------------
         // Private
         // -------------------------------------------------------------------
-        private float DoDeserialize(Stream source)
+        private Int32[] DoDeserialize(Stream source)
         {
+            // Read the count
             byte[] data = new byte[4];
             source.Read(data, 0, 4);
 
-            return BitConverter.ToSingle(data, 0);
+            int count = BitConverter.ToInt32(data, 0);
+
+            // Read the values
+            Int32[] result = new Int32[count];
+            for (var i = 0; i < count; i++)
+            {
+                source.Read(data, 0, 4);
+                result[i] = BitConverter.ToInt32(data, 0);
+            }
+
+            return result;
         }
     }
 }

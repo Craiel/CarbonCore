@@ -29,6 +29,10 @@
             RegisterSerializer<double>(DoubleSerializer.Instance);
             RegisterSerializer<string>(StringSerializer.Instance);
             RegisterSerializer<byte[]>(ByteArraySerializer.Instance);
+            RegisterSerializer<float[]>(FloatArraySerializer.Instance);
+            RegisterSerializer<double[]>(DoubleArraySerializer.Instance);
+            RegisterSerializer<int[]>(Int32ArraySerializer.Instance);
+            RegisterSerializer<long[]>(Int64ArraySerializer.Instance);
         }
 
         // -------------------------------------------------------------------
