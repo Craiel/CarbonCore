@@ -59,12 +59,12 @@
             return (JsonConverter)Activator.CreateInstance(((JsonConverterAttribute)converterAttributes[0]).ConverterType, null);
         }
 
-        public static T LoadFromData<T>(string data)
+        public static T LoadFromData<T>(string data, params JsonConverter[] converters)
         {
-            return JsonConvert.DeserializeObject<T>(data);
+            return JsonConvert.DeserializeObject<T>(data, converters);
         }
 
-        public static string SaveToData<T>(T source, Formatting formatting = Formatting.None)
+        public static string SaveToData<T>(T source, Formatting formatting = Formatting.None, params JsonConverter[] converters)
         {
 #if UNITY
             // Unity Serializer does not have formatting parameter
@@ -77,6 +77,11 @@
             };
 #endif
 
+            if (converters != null && converters.Length > 0)
+            {
+                serializer.Converters.AddRange(converters);
+            }
+
             var builder = new StringBuilder();
             using (var writer = new StringWriter(builder))
             {
@@ -86,11 +91,11 @@
             return builder.ToString();
         }
 
-        public static byte[] SaveToByte<T>(T source, bool compress = true, Formatting formatting = Formatting.None)
+        public static byte[] SaveToByte<T>(T source, bool compress = true, Formatting formatting = Formatting.None, params JsonConverter[] converters)
         {
             using (var stream = new MemoryStream())
             {
-                SaveToStream(stream, source, compress, formatting);
+                SaveToStream(stream, source, compress, formatting, converters);
 
                 stream.Seek(0, SeekOrigin.Begin);
                 var result = new byte[stream.Length];
@@ -100,7 +105,7 @@
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = "Checked")]
-        public static T LoadFromFile<T>(CarbonFile file, bool compressed = true)
+        public static T LoadFromFile<T>(CarbonFile file, bool compressed = true, params JsonConverter[] converters)
         {
             if (!file.Exists)
             {
@@ -109,11 +114,11 @@
             
             using (var stream = file.OpenRead())
             {
-                return LoadFromStream<T>(stream, compressed);
+                return LoadFromStream<T>(stream, compressed, converters);
             }
         }
 
-        public static T LoadFromStream<T>(Stream source, bool compressed = true)
+        public static T LoadFromStream<T>(Stream source, bool compressed = true, params JsonConverter[] converters)
         {
             string rawData;
             if (compressed)
@@ -134,11 +139,11 @@
                 }
             }
 
-            return LoadFromData<T>(rawData);
+            return LoadFromData<T>(rawData, converters);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = "Checked")]
-        public static void SaveToFile<T>(CarbonFile file, T data, bool compress = true, Formatting formatting = Formatting.None)
+        public static void SaveToFile<T>(CarbonFile file, T data, bool compress = true, Formatting formatting = Formatting.None, params JsonConverter[] converters)
         {
             // Check if we need to create directories
             CarbonDirectory directory = file.GetDirectory();
@@ -148,7 +153,7 @@
             }
 
             // Serialize
-            string serialized = SaveToData(data, formatting);
+            string serialized = SaveToData(data, formatting, converters);
 
             // Write to disk either compressed or bare
             using (var stream = file.OpenCreate())
@@ -157,10 +162,10 @@
             }
         }
 
-        public static void SaveToStream<T>(Stream target, T data, bool compress = true, Formatting formatting = Formatting.None)
+        public static void SaveToStream<T>(Stream target, T data, bool compress = true, Formatting formatting = Formatting.None, params JsonConverter[] converters)
         {
             // Serialize
-            string serialized = SaveToData(data, formatting);
+            string serialized = SaveToData(data, formatting, converters);
 
             DoSaveToStream(target, serialized, compress);
         }

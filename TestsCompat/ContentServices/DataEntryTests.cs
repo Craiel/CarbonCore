@@ -6,6 +6,7 @@
     using CarbonCore.ContentServices.Compat.Logic.DataEntryLogic;
     using CarbonCore.Tests.Compat.ContentServices.Data;
     using CarbonCore.Tests.ContentServices;
+    using CarbonCore.Tests.ContentServices.Data;
     using CarbonCore.Utils.Compat.Diagnostics;
 
     using NUnit.Framework;
@@ -148,8 +149,8 @@
         [Test]
         public void SyncSerializationTest()
         {
-            const int ExpectedFullSize = 356;
-            const int ExpectedUnchangedSize = 15;
+            const int ExpectedFullSize = 359;
+            const int ExpectedUnchangedSize = 16;
 
             // Mark everything as changed first so we get accurate results
             DataTestData.SyncTestEntry.ResetChangeState(true);
@@ -196,7 +197,7 @@
             // Modify collections
             restored.SimpleCollection.Add(1001);
             restoredData = DataEntrySerialization.SyncSave(restored);
-            Assert.AreEqual(57, restoredData.Length);
+            Assert.AreEqual(58, restoredData.Length);
 
             DataEntrySerialization.SyncLoad(restored2, restoredData);
             Assert.IsTrue(restored.SimpleCollection.SequenceEqual(restored2.SimpleCollection));
@@ -205,24 +206,28 @@
             restored.CascadingCollection.Add(new SyncTestEntry2());
             restored.CascadingCollection[0].OtherTestFloat.Value = -10.0f;
             restoredData = DataEntrySerialization.SyncSave(restored);
-            Assert.AreEqual(135, restoredData.Length);
+            Assert.AreEqual(136, restoredData.Length);
 
             DataEntrySerialization.SyncLoad(restored2, restoredData);
             Assert.IsTrue(restored.CascadingCollection.SequenceEqual(restored2.CascadingCollection));
 
             // Modify Dictionaries
             restored.SimpleDictionary.Add("TestDict", 123);
+            restored.EnumDictionary.Add(TestEnum.First, -double.MaxValue);
+            restored.EnumDictionary.Add(TestEnum.Second, double.Epsilon);
+            restored.EnumDictionary.Add(TestEnum.Third, 543999999999999999.2123f);
             restoredData = DataEntrySerialization.SyncSave(restored);
-            Assert.AreEqual(193, restoredData.Length);
+            Assert.AreEqual(234, restoredData.Length);
 
             DataEntrySerialization.SyncLoad(restored2, restoredData);
             Assert.IsTrue(restored.SimpleDictionary.SequenceEqual(restored2.SimpleDictionary));
+            Assert.IsTrue(restored.EnumDictionary.SequenceEqual(restored2.EnumDictionary));
 
             // Add and modify cascading entries
             restored.CascadingDictionary.Add(1001, new SyncTestEntry2());
             restored.CascadingDictionary[0].OtherTestFloat.Value = -10.0f;
             restoredData = DataEntrySerialization.SyncSave(restored);
-            Assert.AreEqual(297, restoredData.Length);
+            Assert.AreEqual(338, restoredData.Length);
 
             DataEntrySerialization.SyncLoad(restored2, restoredData);
             Assert.IsTrue(restored.CascadingDictionary.SequenceEqual(restored2.CascadingDictionary));

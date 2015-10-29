@@ -25,11 +25,7 @@
         private readonly object synchronizationObject = new object();
 
         private readonly bool useFrameDelay;
-
-        private readonly int targetFrameRate;
-
-        private readonly EngineThreadSettings settings;
-
+        
         private readonly long frameDelayTargetOptimal;
 
         private readonly int framesUntilMeasure;
@@ -40,11 +36,8 @@
 
         private long frameDelay;
         private long frameDelayTarget;
-
         private int framesSinceMeasure;
-
         private long deltaSinceMeasure;
-
         private long framesSincePerformanceMeasure;
         private long deltaSincePerformanceMeasure;
         
@@ -53,14 +46,14 @@
         // -------------------------------------------------------------------
         public EngineThread(EngineThreadUpdateDelegate threadMain, string name, EngineThreadSettings settings = null, EngineTime customTime = null)
         {
-            this.settings = settings ?? new EngineThreadSettings();
+            EngineThreadSettings currentSettings = settings ?? new EngineThreadSettings();
 
             this.threadAction = threadMain;
-            if (this.settings.ThrottleFrameRate)
+            if (currentSettings.ThrottleFrameRate)
             {
                 this.useFrameDelay = true;
-                this.targetFrameRate = this.settings.TargetFrameRate;
-                this.frameDelayTargetOptimal = Stopwatch.Frequency / this.targetFrameRate;
+                int targetFrameRate = currentSettings.TargetFrameRate;
+                this.frameDelayTargetOptimal = Stopwatch.Frequency / targetFrameRate;
                 this.frameDelayTarget = this.frameDelayTargetOptimal;
             }
 
@@ -100,6 +93,8 @@
 
         public bool IsThreadFinished { get; private set; }
 
+        public bool HadErrors { get; private set; }
+
         public bool MuteTrace { get; set; }
 
         public EngineTime Time
@@ -131,6 +126,7 @@
 
             this.IsThreadRunning = true;
             this.isRunning = true;
+            this.HadErrors = false;
             this.internalThread = new Thread(this.ThreadMain) { Name = this.ThreadName, IsBackground = true };
             this.internalThread.Start();
 
@@ -201,6 +197,7 @@
                             catch (Exception e)
                             {
                                 this.isRunning = false;
+                                this.HadErrors = true;
                                 Diagnostic.Exception(e);
                             }
                         }

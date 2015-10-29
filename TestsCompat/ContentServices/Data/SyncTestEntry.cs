@@ -31,6 +31,7 @@
             this.CascadingCollection = new SyncCascadeList<List<SyncTestEntry2>, SyncTestEntry2>();
 
             this.SimpleDictionary = new SyncDictionary<Dictionary<string, float>, string, float>();
+            this.EnumDictionary = new SyncDictionary<Dictionary<TestEnum, double>, TestEnum, double>();
             this.CascadingDictionary = new SyncCascadeValueDictionary<Dictionary<int, SyncTestEntry2>, int, SyncTestEntry2>();
         }
 
@@ -65,6 +66,8 @@
 
         public SyncDictionary<Dictionary<string, float>, string, float> SimpleDictionary { get; private set; }
 
+        public SyncDictionary<Dictionary<TestEnum, double>, TestEnum, double> EnumDictionary { get; private set; }
+
         public SyncCascadeValueDictionary<Dictionary<int, SyncTestEntry2>, int, SyncTestEntry2> CascadingDictionary { get; private set; }
 
         public override bool IsChanged
@@ -84,6 +87,7 @@
                     || this.SimpleCollection.IsChanged
                     || this.CascadingCollection.IsChanged
                     || this.SimpleDictionary.IsChanged
+                    || this.EnumDictionary.IsChanged
                     || this.CascadingDictionary.IsChanged;
             }
         }
@@ -111,6 +115,14 @@
             
             // Dictionaries
             NativeSerialization.SerializeDictionary(target, ignoreChangeState || this.SimpleDictionary.IsChanged, this.SimpleDictionary.Value, StringSerializer.Instance.Serialize, FloatSerializer.Instance.Serialize);
+
+            NativeSerialization.SerializeDictionary(
+                target,
+                ignoreChangeState || this.EnumDictionary.IsChanged,
+                this.EnumDictionary.Value,
+                (stream, value) => Int32Serializer.Instance.Serialize(stream, (int)value),
+                DoubleSerializer.Instance.Serialize);
+
             NativeSerialization.SerializeCascadeValueDictionary(target, this.CascadingDictionary, Int32Serializer.Instance.Serialize, ignoreChangeState);
         }
 
@@ -153,6 +165,12 @@
                 StringSerializer.Instance.Deserialize,
                 FloatSerializer.Instance.Deserialize);
 
+            NativeSerialization.DeserializeDictionary(
+                source,
+                this.EnumDictionary.Value,
+                stream => (TestEnum)Int32Serializer.Instance.Deserialize(stream),
+                DoubleSerializer.Instance.Deserialize);
+
             NativeSerialization.DeserializeCascadeValueDictionary(
                 source,
                 this.CascadingDictionary,
@@ -179,6 +197,7 @@
             this.CascadingCollection.ResetChangeState(state);
 
             this.SimpleDictionary.ResetChangeState(state);
+            this.EnumDictionary.ResetChangeState(state);
             this.CascadingDictionary.ResetChangeState(state);
         }
     }
