@@ -114,7 +114,7 @@
             return true;
         }
 
-        public void ResetChangedState()
+        public virtual void ResetChangedState()
         {
             this.changeHashCode = this.GetHashCode();
         }
@@ -128,7 +128,7 @@
         // -------------------------------------------------------------------
         // Protected
         // -------------------------------------------------------------------
-#if UNITY
+#if UNITY_5
         protected abstract int DoGetHashCode();
 #else
         protected virtual int DoGetHashCode()
