@@ -11,9 +11,9 @@
     {
         private const string RootName = "Scene";
 
-        private readonly IDictionary<T, SceneContainer> containers;
+        private readonly IDictionary<T, SceneObjectContainer> containers;
 
-        private SceneContainer rootContainer;
+        private SceneObjectContainer rootContainer;
 
         // -------------------------------------------------------------------
         // Constructor
@@ -21,7 +21,7 @@
         public SceneObjectController()
             : base(RootName)
         {
-            this.containers = new Dictionary<T, SceneContainer>();
+            this.containers = new Dictionary<T, SceneObjectContainer>();
         }
 
         // -------------------------------------------------------------------
@@ -34,11 +34,20 @@
             return this.containers[category].AcquireRoot(rootName);
         }
 
-        public SceneObjectRoot RegisterObjectAsRoot(T category, GameObject gameObject)
+        public SceneObjectRoot RegisterObjectAsRoot(T category, GameObject gameObject, bool persistent)
         {
             this.EnsureContainer(category);
+            SceneObjectRoot root = this.containers[category].RegisterAsRoot(gameObject);
+            root.Persistent = persistent;
+            return root;
+        }
 
-            return this.containers[category].RegisterAsRoot(gameObject);
+        public void Clear(bool clearPersistentObjects = false)
+        {
+            foreach (SceneObjectContainer container in this.containers.Values)
+            {
+                container.Clear(clearPersistentObjects);
+            }
         }
 
         // -------------------------------------------------------------------
@@ -48,17 +57,29 @@
         {
             if (this.rootContainer == null)
             {
-                this.rootContainer = new SceneContainer(null, this.Name);
+                this.rootContainer = new SceneObjectContainer(null, this.Name);
+
+                // Attach the cleanup script
+                var cleanup = this.rootContainer.GameObject.AddComponent<SceneObjectCleanup>();
+                cleanup.OnCleanup += this.OnCleanup;
             }
         }
-
+        
         private void EnsureContainer(T category)
         {
             this.EnsureRootContainer();
 
             if (!this.containers.ContainsKey(category))
             {
-                this.containers[category] = new SceneContainer(this.rootContainer, category.ToString(CultureInfo.InvariantCulture));
+                this.containers[category] = new SceneObjectContainer(this.rootContainer, category.ToString(CultureInfo.InvariantCulture));
+            }
+        }
+
+        private void OnCleanup()
+        {
+            foreach (SceneObjectContainer container in this.containers.Values)
+            {
+                container.Cleanup();
             }
         }
     }

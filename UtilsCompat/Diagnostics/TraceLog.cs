@@ -76,5 +76,11 @@
         {
             return string.Format("[{0}]\t{1}", this.SourceName, message);
         }
+
+
+        public void LogException(System.Exception exception)
+        {
+            Trace.TraceError(this.PreformatMessage(exception.ToString()));
+        }
     }
 }

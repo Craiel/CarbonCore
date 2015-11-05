@@ -1,10 +1,14 @@
-﻿namespace CarbonCore.Utils.Compat.Contracts
+﻿using System;
+
+namespace CarbonCore.Utils.Compat.Contracts
 {
     public interface ILog
     {
         string SourceName { get; }
 
         bool IsMuted { get; set; }
+
+        void LogException(Exception exception);
 
         void Assert(bool condition, string message);
 

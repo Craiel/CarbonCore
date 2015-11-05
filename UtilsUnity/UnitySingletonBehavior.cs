@@ -8,10 +8,10 @@
     using UnityEngine;
 
     public abstract class UnitySingletonBehavior<T> : MonoBehaviour
-        where T : MonoBehaviour
+        where T : UnitySingletonBehavior<T>
     {
         private static T instance;
-        
+
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
@@ -63,10 +63,29 @@
         // -------------------------------------------------------------------
         // Protected
         // -------------------------------------------------------------------
-        protected void RegisterInController<TN>(SceneObjectController<TN> parent, TN category)
+        protected SceneObjectRoot RegisterInController<TN>(SceneObjectController<TN> parent, TN category, bool persistent = false)
             where TN : struct, IConvertible
         {
-            parent.RegisterObjectAsRoot(category, this.gameObject);
+            SceneObjectRoot root = parent.RegisterObjectAsRoot(category, this.gameObject, persistent);
+
+            root.OnDestroying += this.OnSingletonDestroying;
+
+            return root;
+        }
+        
+        protected void DisposeSingleton()
+        {
+            Diagnostic.Info("Disposing Singleton MonoBehavior {0}", this.name);
+
+            this.OnSingletonDestroying();
+
+            Destroy(this.gameObject);
+        }
+
+        protected virtual void OnSingletonDestroying()
+        {
+            // Clear out the instance since our parent got destroyed
+            instance = null;
         }
     }
 }

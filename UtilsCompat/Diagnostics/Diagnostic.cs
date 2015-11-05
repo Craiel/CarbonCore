@@ -95,7 +95,7 @@
 
         public static void Exception(Exception exception)
         {
-            GetThreadContext().Error(PreformatMessage(exception.ToString()));
+            GetThreadContext().LogException(exception);
         }
 
         public static void Error(string message)
@@ -129,8 +129,11 @@
                 }
             }
 
+            string threadContextName = string.Format("({0}) {1}", threadId, name);
             instance.RegisterMetricContext(threadId);
-            instance.RegisterLogContext(threadId, string.Format("({0}) {1}", threadId, name));
+            instance.RegisterLogContext(threadId, threadContextName);
+
+            Info("Registered Thread {0}", threadContextName);
         }
 
         public static void UnregisterThread()

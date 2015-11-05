@@ -47,7 +47,7 @@
         {
             this.CreateGameObject();
 
-            parent.RegisterObjectAsRoot(category, this.GameObject);
+            parent.RegisterObjectAsRoot(category, this.GameObject, true);
         }
 
         protected void RegisterAsChild<TN>(SceneObjectController<TN> controller, TN category, string parent)
@@ -57,6 +57,13 @@
 
             SceneObjectRoot root = controller.AcquireRoot(category, parent);
             root.AddChild(this.GameObject);
+        }
+
+        protected void DisposeSingleton()
+        {
+            Diagnostic.Info("Disposing Singleton {0}", this.Name);
+
+            Instance = null;
         }
     }
 }

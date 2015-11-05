@@ -6,6 +6,7 @@
     using System.IO.Compression;
     using System.Text;
 
+    using CarbonCore.Utils.Compat.Diagnostics;
     using CarbonCore.Utils.Compat.IO;
 
     using Newtonsoft.Json;
@@ -30,6 +31,12 @@
         public static void RegisterGlobalConverter<T, TN>()
             where TN : JsonConverter
         {
+            if (GlobalConverterRegistration.ContainsKey(typeof(T)))
+            {
+                Diagnostic.Warning("Converter for type {0} already registered to {1}, skipping registration as {2}", typeof(T), GlobalConverterRegistration[typeof(T)], typeof(TN));
+                return;
+            }
+
             GlobalConverterRegistration.Add(typeof(T), typeof(TN));
         }
 

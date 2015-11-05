@@ -6,18 +6,19 @@
 
     using UnityEngine;
 
-    public class SceneContainer
+    public class SceneObjectContainer
     {
         private readonly IDictionary<string, SceneObjectRoot> rootEntries;
 
         // -------------------------------------------------------------------
         // Private
         // -------------------------------------------------------------------
-        public SceneContainer(SceneContainer parent, string name)
+        public SceneObjectContainer(SceneObjectContainer parent, string name)
         {
             this.Name = name;
 
             this.GameObject = new GameObject(name);
+            GameObject.DontDestroyOnLoad(this.GameObject);
 
             if (parent != null)
             {
@@ -33,12 +34,40 @@
         public string Name { get; private set; }
 
         public GameObject GameObject { get; private set; }
-
+        
         public int ChildCount
         {
             get
             {
                 return this.rootEntries.Count;
+            }
+        }
+
+        public void Clear(bool clearPersistentObjects)
+        {
+            foreach (string key in new List<string>(this.rootEntries.Keys))
+            {
+                if (this.rootEntries[key].Persistent && !clearPersistentObjects)
+                {
+                    continue;
+                }
+
+                this.rootEntries[key].Destroy();
+                this.rootEntries.Remove(key);
+            }
+        }
+
+        public void Cleanup()
+        {
+            foreach (string key in new List<string>(this.rootEntries.Keys))
+            {
+                if (this.rootEntries[key].GameObject == null)
+                {
+                    this.rootEntries.Remove(key);
+                    continue;
+                }
+                
+                this.rootEntries[key].Cleanup();
             }
         }
 
