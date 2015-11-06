@@ -12,8 +12,8 @@
         private static readonly List<string> UriResultList = new List<string>();
         private static readonly List<string> XamlResultList = new List<string>();
 
-        public static Project currentProject;
-        public static string projectPath;
+        public static Project CurrentProject;
+        public static string ProjectPath;
         
         // -------------------------------------------------------------------
         // Public
@@ -53,15 +53,15 @@
             var provider = (IServiceProvider)host;
             var dteObject = (DTE)provider.GetService(typeof(DTE));
 
-            currentProject = dteObject.Solution.FindProjectItem(templateFile).ContainingProject;
+            CurrentProject = dteObject.Solution.FindProjectItem(templateFile).ContainingProject;
 
-            projectPath = System.IO.Path.GetDirectoryName(currentProject.FullName) + System.IO.Path.DirectorySeparatorChar;
+            ProjectPath = System.IO.Path.GetDirectoryName(CurrentProject.FullName) + System.IO.Path.DirectorySeparatorChar;
         }
 
         public static void LocateResources()
         {
             var candidates = new Queue<ProjectItem>();
-            foreach (ProjectItem item in currentProject.ProjectItems)
+            foreach (ProjectItem item in CurrentProject.ProjectItems)
             {
                 candidates.Enqueue(item);
             }
@@ -112,7 +112,7 @@
                 return;
             }
 
-            string file = item.FileNames[0].Replace(projectPath, string.Empty);
+            string file = item.FileNames[0].Replace(ProjectPath, string.Empty);
             ResourceGenerationType generationType = DetermineType(file);
 
             PlainResultList.Add(file);
@@ -129,14 +129,9 @@
                         file = file.Replace("\\", "/");
 
                         string id = System.IO.Path.GetFileNameWithoutExtension(file);
-                        if (id == null)
-                        {
-                            return;
-                        }
-
                         id = string.Concat("Icon", id[0].ToString(CultureInfo.InvariantCulture).ToUpper(), id.Substring(1, id.Length - 1));
 
-                        UriResultList.Add(string.Format("public static readonly Uri {0}Uri = new Uri(\"pack://application:,,,/{1};component/{2}\", UriKind.Absolute);", id, currentProject.Name, file));
+                        UriResultList.Add(string.Format("public static readonly Uri {0}Uri = new Uri(\"pack://application:,,,/{1};component/{2}\", UriKind.Absolute);", id, CurrentProject.Name, file));
                         XamlResultList.Add(string.Concat(@"<Image x:Shared=""false"" x:Key=""", id, @""" Source=""{Binding Source={x:Static resources:Static.", id, @"Uri}}""/>"));
                         return;
                     }

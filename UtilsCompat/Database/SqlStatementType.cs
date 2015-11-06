@@ -1,4 +1,4 @@
-﻿﻿namespace CarbonCore.Utils.Database
+﻿﻿namespace CarbonCore.Utils.Compat.Database
  {
      public enum SqlStatementType
      {

@@ -1,14 +1,12 @@
-﻿namespace CarbonCore.Tests.ContentServices
+﻿namespace CarbonCore.Tests.Compat.ContentServices.Data
 {
     using System.Collections.Generic;
 
     using CarbonCore.ContentServices.Compat.Logic;
     using CarbonCore.ContentServices.Compat.Logic.Attributes;
-    using CarbonCore.Tests.Compat.ContentServices.Data;
-    using CarbonCore.Tests.ContentServices.Data;
 
     using Newtonsoft.Json;
-    
+
     [DatabaseEntry("TestTable")]
     [JsonObject(MemberSerialization.OptOut)]
     public class DataTestEntry : DatabaseEntry

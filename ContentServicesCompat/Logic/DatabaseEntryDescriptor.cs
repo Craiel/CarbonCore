@@ -61,9 +61,9 @@
                 {
                     Descriptors.Add(type, new DatabaseEntryDescriptor(type));
                 }
-            }
 
-            return Descriptors[type];
+                return Descriptors[type];
+            }
         }
 
         public override int GetHashCode()

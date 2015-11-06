@@ -5,6 +5,9 @@
 
     public static class NetworkUtils
     {
+        // -------------------------------------------------------------------
+        // Public
+        // -------------------------------------------------------------------
         public static string GetLocalHostName()
         {
             return Dns.GetHostName();

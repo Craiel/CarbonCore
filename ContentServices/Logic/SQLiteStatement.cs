@@ -2,6 +2,7 @@
 {
     using System.Data;
 
+    using CarbonCore.Utils.Compat.Database;
     using CarbonCore.Utils.Database;
 
     public class SQLiteStatement : SqlStatement

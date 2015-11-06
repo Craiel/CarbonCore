@@ -2,10 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
-
-    using CarbonCore.Utils.Compat.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
 
     using UnityEngine;
+
+    using Object = UnityEngine.Object;
 
     public class SceneObjectRoot
     {
@@ -57,7 +58,7 @@
                 this.OnDestroying();
             }
 
-            GameObject.Destroy(this.GameObject);
+            Object.Destroy(this.GameObject);
             this.GameObject = null;
 
             if (this.OnDestroyed != null)
@@ -90,6 +91,7 @@
             return Time.time - this.childRegistrationTime[entry];
         }
 
+        [SuppressMessage("ReSharper", "ExpressionIsAlwaysNull")]
         public void Cleanup()
         {
             foreach (GameObject gameObject in new List<GameObject>(this.children))

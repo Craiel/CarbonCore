@@ -18,7 +18,7 @@
             this.Name = name;
 
             this.GameObject = new GameObject(name);
-            GameObject.DontDestroyOnLoad(this.GameObject);
+            Object.DontDestroyOnLoad(this.GameObject);
 
             if (parent != null)
             {

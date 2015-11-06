@@ -51,7 +51,7 @@
 
             // Build the dictionary of eligible test files
             this.testFiles.Clear();
-            foreach (string file in Resources.Static.ResourceList)
+            foreach (string file in Compat.Resources.Static.ResourceList)
             {
                 if (!file.StartsWith(FileEntryFolder))
                 {

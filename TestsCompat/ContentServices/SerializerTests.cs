@@ -230,10 +230,12 @@
         [Test]
         public void DictionaryIsChangedTests()
         {
-            var simpleDictionary = new SyncDictionary<Dictionary<string, float>, string, float>();
-            simpleDictionary.Add("First", 20);
-            simpleDictionary.Add("Second", 19);
-            simpleDictionary.Add("Third", 1);
+            var simpleDictionary = new SyncDictionary<Dictionary<string, float>, string, float>
+                                       {
+                                           { "First", 20 },
+                                           { "Second", 19 },
+                                           { "Third", 1 }
+                                       };
 
             var cascadingDictionary = new SyncCascadeValueDictionary<Dictionary<int, SyncTestEntry2>, int, SyncTestEntry2>();
             cascadingDictionary.Add(0, new SyncTestEntry2 { Id = { Value = "0" } });
@@ -376,10 +378,12 @@
             const int FirstTestSize = 43;
             const int SecondTestSize = 86;
 
-            var simpleDictionary = new SyncDictionary<Dictionary<string, float>, string, float>();
-            simpleDictionary.Add("First", 20);
-            simpleDictionary.Add("Second", 19);
-            simpleDictionary.Add("Third", 1);
+            var simpleDictionary = new SyncDictionary<Dictionary<string, float>, string, float>
+                                       {
+                                           { "First", 20 },
+                                           { "Second", 19 },
+                                           { "Third", 1 }
+                                       };
 
             var cascadingDictionary = new SyncCascadeValueDictionary<Dictionary<int, SyncTestEntry2>, int, SyncTestEntry2>();
             cascadingDictionary.Add(0, new SyncTestEntry2 { Id = { Value = "0" } });

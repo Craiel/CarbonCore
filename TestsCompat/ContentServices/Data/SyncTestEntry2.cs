@@ -1,5 +1,6 @@
 ﻿namespace CarbonCore.Tests.Compat.ContentServices.Data
 {
+    using System;
     using System.IO;
 
     using CarbonCore.ContentServices.Compat.Logic.DataEntryLogic;
@@ -81,7 +82,7 @@
             }
 
             return this.Id.Value == typed.Id.Value
-                && this.OtherTestFloat.Value == typed.OtherTestFloat.Value
+                && Math.Abs(this.OtherTestFloat.Value - typed.OtherTestFloat.Value) < float.Epsilon
                 && this.OtherTestBool.Value == typed.OtherTestBool.Value
                 && this.OtherTestLong.Value == typed.OtherTestLong.Value
                 && this.OtherTestString.Value == typed.OtherTestString.Value;

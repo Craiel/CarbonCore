@@ -66,7 +66,7 @@
             {
                 if (filter.Directory.IsNull || !filter.Directory.Exists)
                 {
-                    System.Diagnostics.Trace.TraceWarning("Specified directory is invalid: {0}", filter.Directory.ToString());
+                    System.Diagnostics.Trace.TraceWarning("Specified directory is invalid: {0}", filter.Directory);
                     continue;
                 }
 
@@ -86,6 +86,40 @@
                         }
 
                         results.Add(file);
+                    }
+                }
+            }
+
+            return results;
+        }
+
+        public static IList<CarbonDirectoryResult> GetDirectories(IEnumerable<CarbonDirectoryFilter> filters)
+        {
+            IList<CarbonDirectoryResult> results = new List<CarbonDirectoryResult>();
+            foreach (CarbonDirectoryFilter filter in filters)
+            {
+                if (filter.Directory.IsNull || !filter.Directory.Exists)
+                {
+                    System.Diagnostics.Trace.TraceWarning("Specified directory is invalid: {0}", filter.Directory);
+                    continue;
+                }
+
+                foreach (string filterString in filter.FilterStrings)
+                {
+                    CarbonDirectoryResult[] directories = filter.Directory.GetDirectories(filterString, filter.Option);
+                    if (directories == null)
+                    {
+                        continue;
+                    }
+
+                    foreach (CarbonDirectoryResult directory in directories)
+                    {
+                        if (results.Contains(directory))
+                        {
+                            continue;
+                        }
+
+                        results.Add(directory);
                     }
                 }
             }
@@ -173,6 +207,29 @@
                                      Root = this,
                                      Absolute = new CarbonFile(files[i]),
                                      Relative = new CarbonFile(relative)
+                                 };
+                results[i] = result;
+            }
+
+            return results;
+        }
+
+        public CarbonDirectoryResult[] GetDirectories(string pattern = "*", SearchOption options = SearchOption.TopDirectoryOnly)
+        {
+            if (!this.Exists)
+            {
+                return new CarbonDirectoryResult[0];
+            }
+
+            string[] subDirectories = Directory.GetDirectories(this.DirectoryName, pattern, options);
+            var results = new CarbonDirectoryResult[subDirectories.Length];
+            for (int i = 0; i < subDirectories.Length; i++)
+            {
+                string relative = subDirectories[i].Replace(this.ToString(), string.Empty);
+                var result = new CarbonDirectoryResult
+                                 {
+                                     Absolute = new CarbonDirectory(subDirectories[i]),
+                                     Relative = new CarbonDirectory(relative)
                                  };
                 results[i] = result;
             }

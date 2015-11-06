@@ -27,5 +27,17 @@
             Assert.IsTrue(relative.Exists, "Relative directory must exist");
             Assert.IsTrue(relative.IsRelative, "Relative directory must be set to relative");
         }
+
+        [Test]
+        public void SearchTests()
+        {
+            CarbonDirectory current = RuntimeInfo.WorkingDirectory;
+
+            CarbonFileResult[] fileResults = current.GetFiles();
+            Assert.Greater(fileResults.Length, 0);
+
+            CarbonDirectoryResult[] dirResults = current.GetParent().GetDirectories();
+            Assert.Greater(dirResults.Length, 0);
+        }
     }
 }

@@ -7,7 +7,6 @@
 
     using CarbonCore.Utils.Compat.Contracts.IoC;
     using CarbonCore.Utils.Compat.Contracts.Network;
-    using CarbonCore.Utils.Compat.Network;
 
     public class CoreTcpServer : ICoreTcpServer
     {

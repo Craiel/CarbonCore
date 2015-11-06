@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Tests
+﻿namespace CarbonCore.Tests.Compat
 {
     using System;
     using System.Collections;

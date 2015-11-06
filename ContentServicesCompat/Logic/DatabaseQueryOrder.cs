@@ -1,7 +1,5 @@
 ﻿namespace CarbonCore.ContentServices.Compat.Logic
 {
-    using System;
-    
     public class DatabaseQueryOrder
     {
         // -------------------------------------------------------------------

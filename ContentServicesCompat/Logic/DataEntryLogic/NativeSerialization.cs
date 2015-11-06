@@ -8,7 +8,7 @@
 
     public delegate void SerializationCallbackDelegate<in T>(Stream target, T value);
 
-    public delegate T DeserializationCallbackDelegate<T>(Stream source);
+    public delegate T DeserializationCallbackDelegate<out T>(Stream source);
 
     public delegate void DeserializationObjectCallbackDelegate<in T>(Stream source, T current);
 
@@ -121,11 +121,7 @@
                 return result as T;
             }
 
-            T typed = result as T;
-            if (typed == null)
-            {
-                typed = construction();
-            }
+            T typed = result as T ?? construction();
 
             typed.Load(source);
             return typed;

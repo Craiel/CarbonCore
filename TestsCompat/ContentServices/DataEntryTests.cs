@@ -5,8 +5,6 @@
 
     using CarbonCore.ContentServices.Compat.Logic.DataEntryLogic;
     using CarbonCore.Tests.Compat.ContentServices.Data;
-    using CarbonCore.Tests.ContentServices;
-    using CarbonCore.Tests.ContentServices.Data;
     using CarbonCore.Utils.Compat.Diagnostics;
 
     using NUnit.Framework;

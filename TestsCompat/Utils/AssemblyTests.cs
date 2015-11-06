@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
 
-    using CarbonCore.Tests.Resources;
+    using CarbonCore.Tests.Compat.Resources;
     using CarbonCore.Utils.Compat;
     using CarbonCore.Utils.Compat.IO;
 

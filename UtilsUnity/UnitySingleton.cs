@@ -21,8 +21,6 @@
         protected UnitySingleton(string name = null)
         {
             this.Name = name ?? typeof(T).Name;
-
-            Diagnostic.Info("UnitySingleton Initialized: {0}", this.Name);
         }
 
         // -------------------------------------------------------------------

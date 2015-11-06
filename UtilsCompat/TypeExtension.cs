@@ -1,9 +1,11 @@
 ﻿namespace CarbonCore.Utils.Compat
 {
     using System;
-    using System.Diagnostics;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Reflection;
 
     public static class TypeExtension
     {
@@ -124,7 +126,7 @@
                 string name;
                 if (source is string)
                 {
-                    name = source as string;
+                    name = (string)source;
                 }
                 else
                 {
@@ -141,6 +143,13 @@
             }
 
             throw new NotImplementedException(string.Format("Can not get Typed value of {0} for target type {1}", source.GetType(), targetType));
+        }
+
+        public static IDictionary<string, T> GetStaticProperties<T>(this Type type)
+        {
+            return type.GetFields(BindingFlags.Public | BindingFlags.Static)
+                    .Where(f => f.FieldType == typeof(T))
+                    .ToDictionary(f => f.Name, f => (T)f.GetValue(null));
         }
     }
 }

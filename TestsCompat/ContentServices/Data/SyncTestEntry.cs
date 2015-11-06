@@ -5,7 +5,6 @@
 
     using CarbonCore.ContentServices.Compat.Logic.DataEntryLogic;
     using CarbonCore.ContentServices.Compat.Logic.DataEntryLogic.Serializers;
-    using CarbonCore.Tests.ContentServices.Data;
 
     public class SyncTestEntry : SyncEntry
     {

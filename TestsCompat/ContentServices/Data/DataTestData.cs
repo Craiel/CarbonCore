@@ -3,8 +3,6 @@
     using System.Collections.Generic;
 
     using CarbonCore.ContentServices.Compat.Logic.DataEntryLogic;
-    using CarbonCore.Tests.ContentServices;
-    using CarbonCore.Tests.ContentServices.Data;
     using CarbonCore.Utils.Compat;
 
     public static class DataTestData

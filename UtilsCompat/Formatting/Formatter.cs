@@ -6,7 +6,6 @@
     using System.Text.RegularExpressions;
     using System.Threading;
 
-    using CarbonCore.Utils;
     using CarbonCore.Utils.Compat.Contracts;
 
     // Formats a string using a dictionary approach

@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Tests.ContentServices
+﻿namespace CarbonCore.Tests.Compat.ContentServices.Data
 {
     using CarbonCore.ContentServices.Compat.Logic;
     using CarbonCore.ContentServices.Compat.Logic.Attributes;

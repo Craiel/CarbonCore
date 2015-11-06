@@ -1,11 +1,11 @@
-﻿namespace CarbonCore.Tests.Resources
+﻿namespace CarbonCore.Tests.Compat.Resources
 {
     public static class Static
     {
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public static string[] ResourceList = new[] {
+        public static string[] ResourceList = {
                 @"Todo.png",
                 @"FileEntries\HouseScene.xcd",
                 @"FileEntries\SmallHouse.dae",

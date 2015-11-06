@@ -4,6 +4,9 @@
 
     public static class LocaleConstants
     {
+        // -------------------------------------------------------------------
+        // Public
+        // -------------------------------------------------------------------
         public static readonly CultureInfo LocaleEnglishGB = new CultureInfo("en-GB");
         public static readonly CultureInfo LocaleEnglishUS = new CultureInfo("en-US");
         public static readonly CultureInfo LocaleFrench = new CultureInfo("fr-FR");

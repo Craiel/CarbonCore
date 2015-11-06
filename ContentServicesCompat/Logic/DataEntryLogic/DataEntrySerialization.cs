@@ -170,7 +170,7 @@
                     catch (Exception e)
                     {
                         Diagnostic.Error("Could not set property {0} to {1}: {2}", serializationEntry.Property.PropertyName, value, e);
-                        throw e;
+                        throw;
                     }
                     
                     continue;
