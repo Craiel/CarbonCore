@@ -15,6 +15,14 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
+        public static bool IsInstanceActive
+        {
+            get
+            {
+                return instance != default(T);
+            }
+        }
+
         public static T Instance
         {
             get

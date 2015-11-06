@@ -20,12 +20,22 @@
             CarbonFileResult[] files = current.GetFiles();
             Assert.Greater(files.Length, 0, "GetFiles without arguments must return all in the same directory");
 
-            long freeSpace = current.GetFreeSpace();
-            Assert.Greater(freeSpace, 0, "GetFreeSpace must return non-zero value");
-
             var relative = current.GetParent().ToRelative<CarbonDirectory>(RuntimeInfo.WorkingDirectory);
             Assert.IsTrue(relative.Exists, "Relative directory must exist");
             Assert.IsTrue(relative.IsRelative, "Relative directory must be set to relative");
+
+            string testPath = @"FirstPath/SecondPath\ThirdPath/ActualName\\";
+            CarbonDirectory stringInitialized = new CarbonDirectory(testPath);
+            Assert.AreEqual(testPath, stringInitialized.DirectoryName);
+            Assert.AreEqual(@"ActualName", stringInitialized.DirectoryNameWithoutPath);
+            Assert.NotNull(stringInitialized.GetParent().GetParent().GetParent());
+
+            CarbonDirectory extended = stringInitialized.ToDirectory("OneMore");
+            Assert.AreEqual("OneMore", extended.DirectoryNameWithoutPath);
+            Assert.AreEqual(stringInitialized, extended.GetParent());
+
+            long freeSpace = current.GetFreeSpace();
+            Assert.Greater(freeSpace, 0, "GetFreeSpace must return non-zero value");
         }
 
         [Test]

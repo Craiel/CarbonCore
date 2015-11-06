@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.IO;
+    using System.Text.RegularExpressions;
 
     using CarbonCore.Utils.Compat.Diagnostics;
     using CarbonCore.Utils.Compat.Json;
@@ -33,7 +34,19 @@
                 }
             }
 
+            if (string.IsNullOrEmpty(this.Path))
+            {
+                return;
+            }
+
+            string trimmedPath = this.Path;
+            if (this.EndsWithSeperator)
+            {
+                trimmedPath = this.Path.TrimEnd(System.IO.Path.DirectorySeparatorChar);
+            }
+
             this.DirectoryName = this.Path;
+            this.DirectoryNameWithoutPath = System.IO.Path.GetFileName(trimmedPath);
         }
 
         public CarbonDirectory(CarbonFile file)
@@ -167,8 +180,16 @@
             var info = new DirectoryInfo(this.Path);
             if (info.Parent != null)
             {
-                int index = this.Path.LastIndexOf(System.IO.Path.DirectorySeparatorChar + info.Parent.Name + System.IO.Path.DirectorySeparatorChar, System.StringComparison.Ordinal);
-                return new CarbonDirectory(this.Path.Substring(0, index));
+                var subDirRegex = new Regex(string.Format(DirectoryRegex, info.Parent.Name));
+                MatchCollection matches = subDirRegex.Matches(this.Path);
+                if (matches.Count <= 0)
+                {
+                    return null;
+                }
+
+                Match lastMatch = matches[matches.Count - 1];
+                int index = this.Path.LastIndexOf(lastMatch.Value, System.StringComparison.Ordinal);
+                return new CarbonDirectory(this.Path.Substring(0, index + lastMatch.Value.Length));
             }
 
             return null;

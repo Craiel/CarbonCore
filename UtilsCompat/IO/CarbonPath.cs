@@ -11,6 +11,9 @@
         public static readonly string DirectorySeparator = System.IO.Path.DirectorySeparatorChar.ToString(CultureInfo.InvariantCulture);
         public static readonly string DirectorySeparatorAlternative = System.IO.Path.AltDirectorySeparatorChar.ToString(CultureInfo.InvariantCulture);
 
+        public static readonly string DirectorySeperatorRegexSegment = string.Format(@"[\{0}\{1}]*", DirectorySeparator, DirectorySeparatorAlternative);
+        public static readonly string DirectoryRegex = string.Concat(DirectorySeperatorRegexSegment, "{0}", DirectorySeperatorRegexSegment);
+
         // Note: this is win32 specific and might have to be adjusted for other platforms
         private static readonly Regex Win32AbsolutePathRegex = new Regex(@"^([a-z]):[\\\/]+(.*)$", RegexOptions.IgnoreCase);
 
@@ -31,6 +34,8 @@
         // -------------------------------------------------------------------
         public string DirectoryName { get; protected set; }
 
+        public string DirectoryNameWithoutPath { get; protected set; }
+        
         public bool IsNull { get; private set; }
 
         public bool EndsWithSeperator { get; private set; }
@@ -191,7 +196,10 @@
 
         protected bool HasDelimiter(string first, string second)
         {
-            return first.EndsWith(DirectorySeparator) || second.StartsWith(DirectorySeparator);
+            return first.EndsWith(DirectorySeparator) 
+                || first.EndsWith(DirectorySeparatorAlternative)
+                || second.StartsWith(DirectorySeparator)
+                || second.StartsWith(DirectorySeparatorAlternative);
         }
 
         protected string GetRelativePath(CarbonPath other)
