@@ -7,6 +7,7 @@
     using CarbonCore.ToolFramework.Contracts;
     using CarbonCore.Utils;
     using CarbonCore.Utils.Compat.Contracts.IoC;
+    using CarbonCore.Utils.Compat.Diagnostics;
     using CarbonCore.UtilsCommandLine.Contracts;
 
     public abstract class ConsoleApplicationBase : IConsoleApplicationBase
@@ -22,6 +23,8 @@
             this.Version = AssemblyExtensions.GetVersion(this.GetType());
 
             this.Arguments = factory.Resolve<ICommandLineArguments>();
+
+            Diagnostic.RegisterThread(this.GetType().Name);
         }
 
         // -------------------------------------------------------------------
@@ -49,6 +52,7 @@
 
             if (!this.ParseCommandLineArguments())
             {
+                this.Arguments.PrintArgumentUse();
                 return;
             }
 
