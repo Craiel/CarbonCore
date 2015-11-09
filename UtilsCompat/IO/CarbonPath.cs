@@ -94,11 +94,6 @@
             return this.path;
         }
 
-        public virtual bool CopyTo(CarbonPath target, bool overwrite = false)
-        {
-            throw new NotImplementedException();
-        }
-
         public T ToRelative<T>(CarbonPath other) where T : CarbonPath
         {
             string relativePath = this.GetRelativePath(other);
@@ -185,7 +180,16 @@
             string result = this.Path;
             for (int i = 0; i < other.Length; i++)
             {
-                string otherValue = other[i].ToString();
+                string otherValue;
+                if (typeof(T) == typeof(string))
+                {
+                    otherValue = other[i] as string;
+                }
+                else
+                {
+                    otherValue = other[i].ToString();
+                }
+
                 result = string.IsNullOrEmpty(this.path) || this.HasDelimiter(result, otherValue) ? 
                     string.Concat(result, otherValue) :
                     string.Concat(result, DirectorySeparator, otherValue);

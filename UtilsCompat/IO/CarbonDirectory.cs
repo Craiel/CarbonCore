@@ -1,5 +1,6 @@
 ﻿namespace CarbonCore.Utils.Compat.IO
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Text.RegularExpressions;
@@ -25,7 +26,7 @@
                 // Check if we are creating from a File
                 if (File.Exists(path))
                 {
-                    this.Path = System.IO.Path.GetDirectoryName(path);
+                    throw new InvalidOperationException("File with the same name exists: " + path);
                 }
 
                 if (!this.EndsWithSeperator)

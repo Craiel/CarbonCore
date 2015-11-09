@@ -232,25 +232,18 @@
             return typed.Path == this.Path;
         }
 
-        public override bool CopyTo(CarbonPath target, bool overwrite = false)
+        public bool CopyTo(CarbonFile target, bool overwrite = false)
         {
-            var targetFile = target as CarbonFile;
-            if (targetFile == null)
-            {
-                var targetDirectory = (CarbonDirectory)target;
-                targetFile = this.IsRelative ? targetDirectory.ToFile(this) : targetDirectory.ToFile(this.FileName);
-            }
-
-            targetFile.GetDirectory().Create();
+            target.GetDirectory().Create();
             try
             {
-                File.Copy(this.Path, targetFile.Path, overwrite);
-                return targetFile.Exists;
+                File.Copy(this.Path, target.Path, overwrite);
+                return target.Exists;
             }
             catch (Exception e)
             {
                 Diagnostic.Exception(e);
-                System.Diagnostics.Trace.TraceError("Failed to copy file {0} to {1}", this, targetFile);
+                System.Diagnostics.Trace.TraceError("Failed to copy file {0} to {1}", this, target);
             }
 
             return false;
