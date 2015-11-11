@@ -2,12 +2,12 @@
 {
     using System.Data.SQLite;
 
-    public class DatabaseServiceAction
+    public class SqlLiteDatabaseServiceAction
     {
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
-        public DatabaseServiceAction(SQLiteStatement statement)
+        public SqlLiteDatabaseServiceAction(SQLiteStatement statement)
         {
             this.Statement = statement;
             this.CanBatch = true;

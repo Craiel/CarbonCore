@@ -47,22 +47,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Contracts\IFileService.cs" />
-    <Compile Include="Contracts\IFileServiceDiskProvider.cs" />
-    <Compile Include="Contracts\IFileServiceMemoryProvider.cs" />
-    <Compile Include="Contracts\IFileServicePackProvider.cs" />
-    <Compile Include="Contracts\IFileServiceProvider.cs" />
+    <Compile Include="Contracts\ISqlLiteDatabaseService.cs" />
+    <Compile Include="Contracts\ISqlLiteFileServicePackProvider.cs" />
+    <Compile Include="Contracts\ISqlLiteFileServiceDiskProvider.cs" />
     <Compile Include="IoC\IoC.cs" />
-    <Compile Include="Logic\DatabaseService.cs" />
-    <Compile Include="Logic\DatabaseServiceAction.cs" />
-    <Compile Include="Logic\FileEntryKey.cs" />
-    <Compile Include="Logic\FileService.cs" />
-    <Compile Include="Logic\FileServiceDiskProvider.cs" />
-    <Compile Include="Logic\FileServiceMemoryProvider.cs" />
-    <Compile Include="Logic\FileServicePackProvider.cs" />
-    <Compile Include="Logic\FileServiceProvider.cs" />
+    <Compile Include="Logic\SqlLiteDatabaseService.cs" />
+    <Compile Include="Logic\SqlLiteDatabaseServiceAction.cs" />
     <Compile Include="Logic\SQLiteStatement.cs" />
     <Compile Include="Logic\SqlLiteConnector.cs" />
+    <Compile Include="Logic\SqlLiteFileServicePackProvider.cs" />
+    <Compile Include="Logic\SqlLiteFileServiceDiskProvider.cs" />
+    <Compile Include="Logic\ZipStreamCompressionProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

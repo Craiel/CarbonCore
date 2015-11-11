@@ -5,6 +5,7 @@
     using System.Globalization;
 
     using CarbonCore.ContentServices.Compat.Contracts;
+    using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.IoC;
     using CarbonCore.Tests.Compat.ContentServices.Data;
     using CarbonCore.Utils.Compat.Contracts.IoC;
@@ -35,7 +36,7 @@
         [Test]
         public void GeneralTests()
         {
-            using (var service = this.container.Resolve<IDatabaseService>())
+            using (var service = this.container.Resolve<ISqlLiteDatabaseService>())
             {
                 this.TestGeneric(service);
             }
@@ -44,7 +45,7 @@
         [Test]
         public void ServiceTests()
         {
-            using (var service = this.container.Resolve<IDatabaseService>())
+            using (var service = this.container.Resolve<ISqlLiteDatabaseService>())
             {
                 this.TestServiceDetails(service);
             }
@@ -53,7 +54,7 @@
         [Test]
         public void ServiceTestsAsync()
         {
-            using (var service = this.container.Resolve<IDatabaseService>())
+            using (var service = this.container.Resolve<ISqlLiteDatabaseService>())
             {
                 CarbonFile database = CarbonFile.GetTempFile();
                 database.DeleteIfExists();

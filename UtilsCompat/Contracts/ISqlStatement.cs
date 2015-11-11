@@ -27,6 +27,6 @@
 
         ISqlStatement Output(SqlStatementOutput expression);
 
-        void IntoCommand(IDbCommand target, string statementSuffix = "", bool append = false);
+        void IntoCommand(IDbCommand target, string statementSuffix = "", bool append = false, bool finalize = true);
     }
 }

@@ -1,21 +1,30 @@
-﻿namespace CarbonCore.ContentServices.Logic
+﻿namespace CarbonCore.ContentServices.Compat.Logic
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.IO;
     using System.IO.Compression;
 
-    using CarbonCore.ContentServices.Compat.Logic;
-    using CarbonCore.ContentServices.Contracts;
+    using CarbonCore.ContentServices.Compat.Contracts;
+    using CarbonCore.ContentServices.Compat.Data;
+    using CarbonCore.ContentServices.Compat.Logic.Enums;
 
     public abstract class FileServiceProvider : IFileServiceProvider
     {
         private readonly List<CompressionLevel> supportedCompressionLevels = new List<CompressionLevel>();
 
+        private readonly ICompressionProvider compressionProvider;
+
         private CompressionLevel compressionLevel = CompressionLevel.NoCompression;
 
-        protected FileServiceProvider()
+        // -------------------------------------------------------------------
+        // Constructor
+        // -------------------------------------------------------------------
+        protected FileServiceProvider(ICompressionProvider provider)
         {
+            this.compressionProvider = provider;
+
             this.RegisterCompressionLevel(CompressionLevel.NoCompression);
             this.RegisterCompressionLevel(CompressionLevel.Fastest);
             this.RegisterCompressionLevel(CompressionLevel.Optimal);
@@ -65,7 +74,7 @@
 
         public long EntriesDeleted { get; private set; }
 
-        public IReadOnlyCollection<CompressionLevel> SupportedCompressionLevels
+        public ReadOnlyCollection<CompressionLevel> SupportedCompressionLevels
         {
             get
             {
@@ -178,14 +187,12 @@
 
         public void GetMetadata(FileEntryKey key, int metadataKey, out int? value, out string stringValue)
         {
-            value = null;
-            stringValue = null;
-            Utils.Diagnostics.Internal.NotImplemented();
+            throw new NotImplementedException();
         }
 
         public void SetMetadata(FileEntryKey key, int metadataKey, int? value = null, string stringValue = null)
         {
-            Utils.Diagnostics.Internal.NotImplemented();
+            throw new NotImplementedException();
         }
 
         public void Dispose()
@@ -227,7 +234,24 @@
             {
                 using (var targetStream = new MemoryStream())
                 {
-                    if (mode == CompressionMode.Compress)
+                    switch (mode)
+                    {
+                        case CompressionMode.Compress:
+                            {
+                                this.compressionProvider.Compress(stream, targetStream, level);
+                                break;
+                            }
+
+                        case CompressionMode.Decompress:
+                            {
+                                this.compressionProvider.Decompress(stream, targetStream);
+                                break;
+                            }
+                    }
+
+
+                    // TODO
+                    /*if (mode == CompressionMode.Compress)
                     {
                         using (var zipStream = new GZipStream(targetStream, level, true))
                         {
@@ -243,7 +267,7 @@
                         {
                             zipStream.CopyTo(targetStream);
                         }
-                    }
+                    }*/
 
                     // Write the modified data to the target buffer
                     target = new byte[targetStream.Length];

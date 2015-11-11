@@ -62,7 +62,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyExtensions.cs" />
-    <Compile Include="Database\SqlStatement.cs" />
     <Compile Include="Diagnostics\Internal.cs" />
     <Compile Include="Diagnostics\TraceListeners\EventTraceListener.cs" />
     <Compile Include="Diagnostics\TraceListeners\Log4NetTraceListener.cs" />
@@ -117,6 +116,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Contracts\" />
+    <Folder Include="Database\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

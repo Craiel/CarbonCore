@@ -10,11 +10,17 @@
 
     public class DatabaseEntryElementDescriptor : AttributedPropertyInfo<DatabaseEntryElementAttribute>
     {
+        // -------------------------------------------------------------------
+        // Constructor
+        // -------------------------------------------------------------------
         public DatabaseEntryElementDescriptor(Type host, DatabaseEntryElementAttribute attribute, PropertyInfo property)
             : base(host, attribute, property)
         {
         }
 
+        // -------------------------------------------------------------------
+        // Public
+        // -------------------------------------------------------------------
         public string Name
         {
             get

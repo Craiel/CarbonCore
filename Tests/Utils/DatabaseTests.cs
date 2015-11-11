@@ -1,7 +1,6 @@
 ﻿namespace CarbonCore.Tests.Utils
 {
     using CarbonCore.Utils.Compat.Database;
-    using CarbonCore.Utils.Database;
 
     using NUnit.Framework;
 

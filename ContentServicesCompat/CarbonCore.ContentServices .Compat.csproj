@@ -100,14 +100,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
+    <Compile Include="Contracts\ICompressionProvider.cs" />
     <Compile Include="Contracts\IDatabaseEntry.cs" />
     <Compile Include="Contracts\IDatabaseService.cs" />
     <Compile Include="Contracts\IDatabaseServiceAction.cs" />
     <Compile Include="Contracts\IDataConnector.cs" />
     <Compile Include="Contracts\IDataEntry.cs" />
+    <Compile Include="Contracts\IFileService.cs" />
+    <Compile Include="Contracts\IFileServiceDiskProvider.cs" />
+    <Compile Include="Contracts\IFileServiceMemoryProvider.cs" />
+    <Compile Include="Contracts\IFileServicePackProvider.cs" />
+    <Compile Include="Contracts\IFileServiceProvider.cs" />
+    <Compile Include="Contracts\IJsonDatabaseService.cs" />
     <Compile Include="Contracts\ISqlLiteConnector.cs" />
     <Compile Include="Contracts\ISyncContent.cs" />
     <Compile Include="Contracts\ISyncEntry.cs" />
+    <Compile Include="Data\FileEntryKey.cs" />
+    <Compile Include="Data\JsonDatabase.cs" />
+    <Compile Include="Data\JsonDatabaseTable.cs" />
+    <Compile Include="IoC\IoC.cs" />
     <Compile Include="Logic\Attributes\DatabaseEntryJoinedElementAttribute.cs" />
     <Compile Include="Logic\Attributes\DatabaseEntryAttribute.cs" />
     <Compile Include="Logic\DatabaseEntryJoinedElementDescriptor.cs" />
@@ -156,9 +167,17 @@
     <Compile Include="Logic\DataEntryLogic\SyncList.cs" />
     <Compile Include="Logic\DataEntryLogic\Sync.cs" />
     <Compile Include="Logic\DataEntryLogic\SyncEntry.cs" />
+    <Compile Include="Logic\DefaultCompressionProvider.cs" />
+    <Compile Include="Logic\Enums\CompressionLevel.cs" />
     <Compile Include="Logic\FileEntry.cs" />
     <Compile Include="Logic\FileEntryData.cs" />
     <Compile Include="Logic\FileEntryPackInfo.cs" />
+    <Compile Include="Logic\FileService.cs" />
+    <Compile Include="Logic\FileServiceDiskProvider.cs" />
+    <Compile Include="Logic\FileServiceMemoryProvider.cs" />
+    <Compile Include="Logic\FileServicePackProvider.cs" />
+    <Compile Include="Logic\FileServiceProvider.cs" />
+    <Compile Include="Logic\JsonDatabaseService.cs" />
     <Compile Include="Logic\SqlConnectorCommand.cs" />
     <Compile Include="Logic\SqlConnectorConnection.cs" />
     <Compile Include="Logic\SqlConnectorTransaction.cs" />

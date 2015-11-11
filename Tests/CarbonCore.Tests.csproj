@@ -83,11 +83,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ContentServices\DatabaseServiceTests.cs" />
-    <Compile Include="ContentServices\FileServiceTests.cs" />
     <Compile Include="Contracts\IFrameworkTestMain.cs" />
     <Compile Include="Contracts\IFrameworkTestMainViewModel.cs" />
     <Compile Include="Grammar\GrammarTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Setup.cs" />
     <Compile Include="Utils\NetworkTests.cs" />
     <Compile Include="IoC\IoCTests.cs" />
     <Compile Include="Utils\TestMath.cs" />

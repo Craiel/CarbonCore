@@ -36,6 +36,12 @@
         public static SqlDbType GetDatabaseType(Type internalType)
         {
             Type actualType = internalType.GetActualType();
+
+            if (actualType.IsEnum)
+            {
+                return SqlDbType.Int;
+            }
+
             SqlDbType type;
             if (TypeToDbType.TryGetKey(actualType, out type))
             {

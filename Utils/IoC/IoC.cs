@@ -5,8 +5,5 @@
     [DependsOnModule(typeof(UtilsCompatModule))]
     public class UtilsModule : CarbonQuickModule
     {
-        public UtilsModule()
-        {
-        }
     }
 }

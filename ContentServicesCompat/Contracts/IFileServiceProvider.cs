@@ -1,10 +1,11 @@
-﻿namespace CarbonCore.ContentServices.Contracts
+﻿namespace CarbonCore.ContentServices.Compat.Contracts
 {
     using System;
     using System.Collections.Generic;
-    using System.IO.Compression;
+    using System.Collections.ObjectModel;
 
-    using CarbonCore.ContentServices.Logic;
+    using CarbonCore.ContentServices.Compat.Data;
+    using CarbonCore.ContentServices.Compat.Logic.Enums;
 
     public interface IFileServiceProvider : IDisposable
     {
@@ -23,7 +24,7 @@
 
         long EntriesDeleted { get; }
 
-        IReadOnlyCollection<CompressionLevel> SupportedCompressionLevels { get; } 
+        ReadOnlyCollection<CompressionLevel> SupportedCompressionLevels { get; } 
         
         void Load(FileEntryKey key, out byte[] data);
         void Save(FileEntryKey key, byte[] data);

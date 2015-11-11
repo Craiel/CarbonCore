@@ -1,11 +1,11 @@
-﻿namespace CarbonCore.ContentServices.Logic
+﻿namespace CarbonCore.ContentServices.Compat.Logic
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
 
-    using CarbonCore.ContentServices.Compat.Logic;
-    using CarbonCore.ContentServices.Contracts;
+    using CarbonCore.ContentServices.Compat.Contracts;
+    using CarbonCore.ContentServices.Compat.Data;
 
     public class FileService : IFileService
     {
@@ -30,7 +30,7 @@
         {
             get
             {
-                return Utils.Diagnostics.Internal.NotImplemented<int>();
+                throw new NotImplementedException();
             }
         }
 
@@ -120,7 +120,7 @@
 
         public void Move(FileEntryKey key, IFileServiceProvider targetProvider)
         {
-            Utils.Diagnostics.Internal.NotImplemented();
+            throw new NotImplementedException();
         }
 
         public void Dispose()

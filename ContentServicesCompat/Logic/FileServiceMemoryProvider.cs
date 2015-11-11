@@ -1,10 +1,10 @@
-﻿namespace CarbonCore.ContentServices.Logic
+﻿namespace CarbonCore.ContentServices.Compat.Logic
 {
     using System;
     using System.Collections.Generic;
 
-    using CarbonCore.ContentServices.Compat.Logic;
-    using CarbonCore.ContentServices.Contracts;
+    using CarbonCore.ContentServices.Compat.Contracts;
+    using CarbonCore.ContentServices.Compat.Data;
 
     public class FileServiceMemoryProvider : FileServiceProvider, IFileServiceMemoryProvider
     {
@@ -15,6 +15,12 @@
         // Constructor
         // -------------------------------------------------------------------
         public FileServiceMemoryProvider()
+            : this(new DefaultCompressionProvider())
+        {
+        }
+
+        public FileServiceMemoryProvider(ICompressionProvider customProvider)
+            : base(customProvider)
         {
             this.fileEntries = new Dictionary<FileEntryKey, FileEntry>();
             this.files = new Dictionary<FileEntryKey, byte[]>();
@@ -48,7 +54,7 @@
 
             if (!this.fileEntries.ContainsKey(key))
             {
-                var entry = new FileEntry { Hash = key.Hash.Value, Size = data.Length };
+                var entry = new FileEntry { Hash = key.Hash, Size = data.Length };
                 this.fileEntries.Add(key, entry);
             }
         }

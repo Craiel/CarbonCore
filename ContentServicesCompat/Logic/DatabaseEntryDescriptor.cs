@@ -82,6 +82,18 @@
             return other.Type == this.Type;
         }
 
+        public object GetPrimaryKey<T>(T entry)
+            where T : IDatabaseEntry
+        {
+            return this.PrimaryKey.GetValue(entry);
+        }
+
+        public void SetPrimaryKey<T>(T entry, object value)
+            where T : IDatabaseEntry
+        {
+            this.PrimaryKey.SetValue(entry, value);
+        }
+
         public DatabaseEntryElementDescriptor GetElementByName(string name)
         {
             if (this.elementNameLookup.ContainsKey(name))

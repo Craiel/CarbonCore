@@ -12,15 +12,15 @@
     using CarbonCore.ContentServices.Compat.Contracts;
     using CarbonCore.ContentServices.Compat.Logic;
     using CarbonCore.ContentServices.Compat.Logic.Attributes;
+    using CarbonCore.ContentServices.Contracts;
     using CarbonCore.Utils.Compat;
     using CarbonCore.Utils.Compat.Contracts;
     using CarbonCore.Utils.Compat.Contracts.IoC;
     using CarbonCore.Utils.Compat.Database;
     using CarbonCore.Utils.Compat.Diagnostics;
     using CarbonCore.Utils.Compat.IO;
-    using CarbonCore.Utils.Database;
 
-    public class DatabaseService : IDatabaseService
+    public class SqlLiteDatabaseService : ISqlLiteDatabaseService
     {
         private readonly ISqlLiteConnector connector;
 
@@ -28,7 +28,7 @@
 
         private readonly object threadLock = new object();
 
-        private readonly Queue<DatabaseServiceAction> pendingActions;
+        private readonly Queue<SqlLiteDatabaseServiceAction> pendingActions;
 
         private readonly IDictionary<string, int> nextPrimaryKeyLookup;
 
@@ -41,13 +41,13 @@
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
-        public DatabaseService(IFactory factory)
+        public SqlLiteDatabaseService(IFactory factory)
         {
             this.connector = factory.Resolve<ISqlLiteConnector>();
 
             this.checkedTables = new Dictionary<string, DatabaseEntryDescriptor>();
 
-            this.pendingActions = new Queue<DatabaseServiceAction>();
+            this.pendingActions = new Queue<SqlLiteDatabaseServiceAction>();
 
             this.nextPrimaryKeyLookup = new Dictionary<string, int>();
         }
@@ -78,7 +78,7 @@
             DatabaseEntryDescriptor descriptor = DatabaseEntryDescriptor.GetDescriptor<T>();
             this.CheckTable(descriptor);
 
-            IList<DatabaseServiceAction> actions = this.DoSave(descriptor, entry);
+            IList<SqlLiteDatabaseServiceAction> actions = this.DoSave(descriptor, entry);
             this.pendingActions.EnqueueRange(actions);
             if (async)
             {
@@ -94,10 +94,10 @@
             DatabaseEntryDescriptor descriptor = DatabaseEntryDescriptor.GetDescriptor<T>();
             this.CheckTable(descriptor);
 
-            IList<DatabaseServiceAction> actions = new List<DatabaseServiceAction>();
+            IList<SqlLiteDatabaseServiceAction> actions = new List<SqlLiteDatabaseServiceAction>();
             foreach (T entry in entries)
             {
-                IList<DatabaseServiceAction> entryActions = this.DoSave(descriptor, entry);
+                IList<SqlLiteDatabaseServiceAction> entryActions = this.DoSave(descriptor, entry);
                 actions.AddRange(entryActions);
             }
 
@@ -145,7 +145,7 @@
             DatabaseEntryDescriptor descriptor = DatabaseEntryDescriptor.GetDescriptor<T>();
             this.CheckTable(descriptor);
 
-            DatabaseServiceAction action = this.DoDelete(descriptor, new List<object> { key });
+            SqlLiteDatabaseServiceAction action = this.DoDelete(descriptor, new List<object> { key });
             if (async)
             {
                 return;
@@ -159,7 +159,7 @@
             DatabaseEntryDescriptor descriptor = DatabaseEntryDescriptor.GetDescriptor<T>();
             this.CheckTable(descriptor);
 
-            DatabaseServiceAction action = this.DoDelete(descriptor, keys);
+            SqlLiteDatabaseServiceAction action = this.DoDelete(descriptor, keys);
             if (async)
             {
                 return;
@@ -183,7 +183,7 @@
             var statement = new SQLiteStatement(SqlStatementType.Drop);
             statement.Table(descriptor.TableName);
 
-            var action = new DatabaseServiceAction(statement) { IgnoreFailure = true };
+            var action = new SqlLiteDatabaseServiceAction(statement) { IgnoreFailure = true };
             this.pendingActions.Enqueue(action);
             this.ProcessPendingWrites(action);
 
@@ -276,7 +276,7 @@
             return results;
         }
 
-        private DatabaseServiceAction CreateTable(DatabaseEntryDescriptor descriptor)
+        private SqlLiteDatabaseServiceAction CreateTable(DatabaseEntryDescriptor descriptor)
         {
             var statement = new SQLiteStatement(SqlStatementType.Create) { DisableRowId = true };
 
@@ -293,7 +293,7 @@
 
             statement.Table(descriptor.TableName);
 
-            var action = new DatabaseServiceAction(statement);
+            var action = new SqlLiteDatabaseServiceAction(statement);
             this.pendingActions.Enqueue(action);
             return action;
         }
@@ -354,7 +354,7 @@
             {
                 System.Diagnostics.Trace.TraceWarning("Table {0} needs to be re-created", tableName);
 
-                DatabaseServiceAction action = this.CreateTable(descriptor);
+                SqlLiteDatabaseServiceAction action = this.CreateTable(descriptor);
                 this.ProcessPendingWrites(action);
             }
 
@@ -403,9 +403,9 @@
             return statement;
         }
 
-        private IList<DatabaseServiceAction> DoSave(DatabaseEntryDescriptor descriptor, IDatabaseEntry entry)
+        private IList<SqlLiteDatabaseServiceAction> DoSave(DatabaseEntryDescriptor descriptor, IDatabaseEntry entry)
         {
-            IList<DatabaseServiceAction> results = new List<DatabaseServiceAction>();
+            IList<SqlLiteDatabaseServiceAction> results = new List<SqlLiteDatabaseServiceAction>();
             object primaryKeyValue = descriptor.PrimaryKey.GetValue(entry);
             bool hasPrimaryKey = primaryKeyValue != null;
 
@@ -429,7 +429,7 @@
                 statement = this.BuildUpdateStatement(descriptor, entry);
             }
 
-            results.Add(new DatabaseServiceAction(statement));
+            results.Add(new SqlLiteDatabaseServiceAction(statement));
 
             // Process the joined properties
             foreach (DatabaseEntryJoinedElementDescriptor joinedElement in descriptor.JoinedElements)
@@ -447,12 +447,12 @@
                     var joinedDeleteStatement = new SQLiteStatement(SqlStatementType.Delete);
                     joinedDeleteStatement.Table(joinedDescriptor.TableName);
                     joinedDeleteStatement.WhereConstraint(new SqlStatementConstraint(joinedElement.ForeignKeyColumn, primaryKeyValue));
-                    this.pendingActions.Enqueue(new DatabaseServiceAction(joinedDeleteStatement) { IgnoreFailure = true });
+                    this.pendingActions.Enqueue(new SqlLiteDatabaseServiceAction(joinedDeleteStatement) { IgnoreFailure = true });
                 }
                 else
                 {
                     joinedElement.ForeignKeyProperty.SetValue(instance, primaryKeyValue);
-                    IList<DatabaseServiceAction> subResults = this.DoSave(joinedDescriptor, instance);
+                    IList<SqlLiteDatabaseServiceAction> subResults = this.DoSave(joinedDescriptor, instance);
                     results.AddRange(subResults);
                 }
             }
@@ -593,13 +593,13 @@
             return results;
         }
 
-        private DatabaseServiceAction DoDelete(DatabaseEntryDescriptor descriptor, IList<object> keys)
+        private SqlLiteDatabaseServiceAction DoDelete(DatabaseEntryDescriptor descriptor, IList<object> keys)
         {
             var statement = new SQLiteStatement(SqlStatementType.Delete);
             statement.Table(descriptor.TableName);
             this.BuildBaseWhereClause(statement, descriptor, keys);
 
-            var action = new DatabaseServiceAction(statement);
+            var action = new SqlLiteDatabaseServiceAction(statement);
             this.pendingActions.Enqueue(action);
 
             return action;
@@ -701,7 +701,7 @@
             }
         }
 
-        private void ProcessPendingWrites(DatabaseServiceAction targetAction = null)
+        private void ProcessPendingWrites(SqlLiteDatabaseServiceAction targetAction = null)
         {
             if (targetAction == null)
             {
@@ -729,11 +729,11 @@
                     continue;
                 }
 
-                IList<DatabaseServiceAction> actionBulk = new List<DatabaseServiceAction>();
-                var currentPending = new Queue<DatabaseServiceAction>(this.pendingActions);
+                IList<SqlLiteDatabaseServiceAction> actionBulk = new List<SqlLiteDatabaseServiceAction>();
+                var currentPending = new Queue<SqlLiteDatabaseServiceAction>(this.pendingActions);
                 while (currentPending.Count > 0)
                 {
-                    DatabaseServiceAction action = currentPending.Dequeue();
+                    SqlLiteDatabaseServiceAction action = currentPending.Dequeue();
                     if (!action.CanBatch || 
                         (action.Statement.Type != SqlStatementType.Insert
                         && action.Statement.Type != SqlStatementType.Update
@@ -769,7 +769,7 @@
             }
         }
 
-        private void CommitAction(DatabaseServiceAction action)
+        private void CommitAction(SqlLiteDatabaseServiceAction action)
         {
             try
             {
@@ -796,7 +796,7 @@
             }
         }
 
-        private void CommitActionBatch(IList<DatabaseServiceAction> actions)
+        private void CommitActionBatch(IList<SqlLiteDatabaseServiceAction> actions)
         {
             try
             {
@@ -804,7 +804,7 @@
                 using (var profileRegion = new ProfileRegion("DBWrite") { Discard = true })
                 {
                     IList<ISqlStatement> statements = new List<ISqlStatement>();
-                    foreach (DatabaseServiceAction action in actions)
+                    foreach (SqlLiteDatabaseServiceAction action in actions)
                     {
                         statements.Add(action.Statement);
                     }
@@ -816,7 +816,7 @@
                         System.Diagnostics.Debug.WriteLine("  = {0}", result);
                     }
 
-                    foreach (DatabaseServiceAction action in actions)
+                    foreach (SqlLiteDatabaseServiceAction action in actions)
                     {
                         // We divide the execution time accross the bulk, not 100% accurate but good enough for batching
                         action.ExecutionTime = profileRegion.ElapsedMilliseconds / actions.Count;
@@ -832,7 +832,7 @@
                     command.ExecuteNonQuery();
                 }
 
-                foreach (DatabaseServiceAction action in actions)
+                foreach (SqlLiteDatabaseServiceAction action in actions)
                 {
                     action.Exception = e;
                     action.Success = false;

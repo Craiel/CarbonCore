@@ -1,20 +1,18 @@
-﻿namespace CarbonCore.ContentServices.Logic
+﻿namespace CarbonCore.ContentServices.Compat.Data
 {
-    using CarbonCore.Utils;
-
     public struct FileEntryKey
     {
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
-        public FileEntryKey(string fileName)
+        public FileEntryKey(string fileName, string hash)
             : this()
         {
             this.File = fileName;
-            this.Hash = HashFileName.GetHashFileName(fileName, HashFileNameMethod.SHA1);
+            this.Hash = hash;
         }
 
-        public FileEntryKey(HashFileName hash)
+        public FileEntryKey(string hash)
             : this()
         {
             this.Hash = hash;
@@ -25,7 +23,7 @@
         // -------------------------------------------------------------------
         public string File { get; private set; }
 
-        public HashFileName Hash { get; private set; }
+        public string Hash { get; private set; }
 
         public override bool Equals(object obj)
         {

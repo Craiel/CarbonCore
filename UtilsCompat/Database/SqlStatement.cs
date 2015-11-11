@@ -1,13 +1,13 @@
-﻿namespace CarbonCore.Utils.Database
+﻿namespace CarbonCore.Utils.Compat.Database
 {
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Data;
+    using System.Linq;
     using System.Text;
 
     using CarbonCore.Utils.Compat.Contracts;
-    using CarbonCore.Utils.Compat.Database;
 
     public class SqlStatement : ISqlStatement
     {
@@ -87,7 +87,7 @@
 
             if (insertOutput.Count > 0)
             {
-                builder.AppendFormat("DECLARE {0} table ({1})", InsertOutputTempTable, string.Join(",", insertOutput));
+                builder.AppendFormat("DECLARE {0} table ({1})", InsertOutputTempTable, string.Join(",", insertOutput.ToArray()));
             }
 
             builder.AppendLine();
@@ -187,9 +187,9 @@
             return this.ToString(string.Empty);
         }
 
-        public virtual void IntoCommand(IDbCommand target, string statementSuffix = "", bool append = false)
+        public virtual void IntoCommand(IDbCommand target, string statementSuffix = "", bool append = false, bool finalize = true)
         {
-            string commandText = string.Concat(this.ToString(statementSuffix), ";");
+            string commandText = string.Concat(this.ToString(statementSuffix), finalize ? ";" : string.Empty);
 
             foreach (string key in this.Values.Keys)
             {
@@ -207,13 +207,14 @@
                     string inValues;
 
                     // Have to escape string values...
+                    string[] valueArray = constraint.Values.Select(x => x.ToString()).ToArray();
                     if (constraint.Values[0] is string)
                     {
-                        inValues = string.Format("'{0}'", string.Join("','", constraint.Values));
+                        inValues = string.Format("'{0}'", string.Join("','", valueArray));
                     }
                     else
                     {
-                        inValues = string.Join(",", constraint.Values);
+                        inValues = string.Join(",", valueArray);
                     }
 
                     commandText = commandText.Replace(WhereInParameterPrefix + constraint.Column + statementSuffix, inValues);
@@ -296,7 +297,7 @@
 
                 default:
                     {
-                        return Diagnostics.Internal.NotImplemented<string>(this.Type.ToString());
+                        throw new NotImplementedException(this.Type.ToString());
                     }
             }
         }
@@ -321,7 +322,7 @@
                 return "VARCHAR(4096)";
             }
 
-            return Diagnostics.Internal.NotImplemented<string>("GetDatabaseType: " + internalType);
+            throw new NotImplementedException("GetDatabaseType: " + internalType);
         }
 
         private string GetFullTableName()
@@ -358,7 +359,7 @@
                 whatSegments.Add(string.Format("{0} {1}", name, this.whatProperties[name]));
             }
 
-            builder.AppendFormat("({0})", string.Join(",", whatSegments));
+            builder.AppendFormat("({0})", string.Join(",", whatSegments.ToArray()));
             return builder.ToString();
         }
 
@@ -381,7 +382,7 @@
 
             var builder = new StringBuilder("SELECT ");
 
-            builder.Append(this.what.Count > 0 ? string.Join(",", this.what) : "*");
+            builder.Append(this.what.Count > 0 ? string.Join(",", this.what.ToArray()) : "*");
 
             if (!string.IsNullOrEmpty(tableName))
             {
@@ -402,7 +403,7 @@
             var builder = new StringBuilder();
             builder.AppendFormat("INSERT INTO {0}", tableName);
 
-            builder.AppendFormat("({0})", string.Join(",", this.values.Keys));
+            builder.AppendFormat("({0})", string.Join(",", this.values.Keys.ToArray()));
 
             if (this.output.Count > 0)
             {
@@ -412,7 +413,7 @@
                     outputExpressions.Add(statementOutput.What);
                 }
 
-                builder.AppendFormat(" OUTPUT {0} INTO {1}", string.Join(",", outputExpressions), InsertOutputTempTable);
+                builder.AppendFormat(" OUTPUT {0} INTO {1}", string.Join(",", outputExpressions.ToArray()), InsertOutputTempTable);
             }
 
             IList<string> valueKeys = new List<string>();
@@ -421,7 +422,7 @@
                 valueKeys.Add(key + suffix);
             }
 
-            builder.AppendFormat(" VALUES (@{0})", string.Join(",@", valueKeys));
+            builder.AppendFormat(" VALUES (@{0})", string.Join(",@", valueKeys.ToArray()));
 
             return builder.ToString();
         }
@@ -442,7 +443,7 @@
                 segments.Add(string.Format("{0} = @{0}{1}", key, suffix));
             }
 
-            builder.Append(string.Join(",", segments));
+            builder.Append(string.Join(",", segments.ToArray()));
             builder.Append(this.BuildWhereSegment(suffix));
 
             return builder.ToString();
@@ -473,53 +474,63 @@
 
                 if (constraint.Values.Count > 1)
                 {
-                    segment.AppendFormat("{0} IN ({1})", constraint.Column, WhereInParameterPrefix + constraint.Column + suffix);
-                    continue;
+                    segment.AppendFormat(
+                        "{0} IN ({1})",
+                        constraint.Column,
+                        WhereInParameterPrefix + constraint.Column + suffix);
                 }
-
-                string sign = null;
-                switch (constraint.Type)
+                else
                 {
-                    case SqlStatementConstraintType.Equals:
-                        {
-                            sign = "=";
-                            break;
-                        }
+                    string sign;
+                    switch (constraint.Type)
+                    {
+                        case SqlStatementConstraintType.Equals:
+                            {
+                                sign = "=";
+                                break;
+                            }
 
-                    case SqlStatementConstraintType.GreaterThen:
-                        {
-                            sign = ">";
-                            break;
-                        }
+                        case SqlStatementConstraintType.GreaterThen:
+                            {
+                                sign = ">";
+                                break;
+                            }
 
-                    case SqlStatementConstraintType.GreaterThenEquals:
-                        {
-                            sign = ">=";
-                            break;
-                        }
+                        case SqlStatementConstraintType.GreaterThenEquals:
+                            {
+                                sign = ">=";
+                                break;
+                            }
 
-                    case SqlStatementConstraintType.LessThen:
-                        {
-                            sign = "<";
-                            break;
-                        }
+                        case SqlStatementConstraintType.LessThen:
+                            {
+                                sign = "<";
+                                break;
+                            }
 
-                    case SqlStatementConstraintType.LessThenEquals:
-                        {
-                            sign = "<=";
-                            break;
-                        }
+                        case SqlStatementConstraintType.LessThenEquals:
+                            {
+                                sign = "<=";
+                                break;
+                            }
 
-                    default:
-                        {
-                            return Diagnostics.Internal.NotImplemented<string>(constraint.Type.ToString());
-                        }
+                        default:
+                            {
+                                throw new NotImplementedException(constraint.Type.ToString());
+                            }
+                    }
+
+                    segment.AppendFormat(
+                        "{0} {1} {2}",
+                        constraint.Column,
+                        sign,
+                        WhereParameterPrefix + constraint.Column + suffix);
                 }
 
-                segments.Add(string.Format("{0} {1} {2}", constraint.Column, sign, WhereParameterPrefix + constraint.Column + suffix));
+                segments.Add(segment.ToString());
             }
 
-            return string.Format(" WHERE {0}", string.Join(" AND ", segments));
+            return string.Format(" WHERE {0}", string.Join(" AND ", segments.ToArray()));
         }
 
         private string BuildOrderSegment()
@@ -536,7 +547,7 @@
                 segments.Add(string.Format("{0} {1}", rule.Column, rule.Ascending ? "ASC" : "DESC"));
             }
 
-            builder.Append(string.Join(",", segments));
+            builder.Append(string.Join(",", segments.ToArray()));
 
             return builder.ToString();
         }

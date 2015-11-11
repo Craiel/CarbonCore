@@ -10,7 +10,6 @@
     using CarbonCore.ContentServices.Compat.Contracts;
     using CarbonCore.Utils.Compat.Contracts;
     using CarbonCore.Utils.Compat.IO;
-    using CarbonCore.Utils.Database;
 
     public class SqlLiteConnector : ISqlLiteConnector
     {
@@ -106,7 +105,7 @@
             for (int i = 0; i < statements.Count; i++)
             {
                 ISqlStatement statement = statements[i];
-                statement.IntoCommand(command, string.Format("_{0}", i));
+                statement.IntoCommand(command, string.Format("_{0}", i), append: true);
             }
 
             command.CommandText = string.Format("{0}\n{1};", command.CommandText, Compat.Constants.StatementCommit);
