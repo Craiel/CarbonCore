@@ -27,7 +27,7 @@
         public int NextPrimaryKey { get; set; }
 
         [DatabaseEntryElement]
-        public IDictionary<int, string> RowData { get; set; }
+        public Dictionary<int, string> RowData { get; set; }
 
         // -------------------------------------------------------------------
         // Protected

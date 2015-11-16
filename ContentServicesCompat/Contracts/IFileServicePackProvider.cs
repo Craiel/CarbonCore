@@ -4,7 +4,7 @@
 
     public interface IFileServicePackProvider : IFileServiceProvider
     {
-        string PackPrefix { get; set; }
+        string PackName { get; set; }
 
         CarbonDirectory Root { get; set; }
     }

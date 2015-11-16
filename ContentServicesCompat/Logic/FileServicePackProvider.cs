@@ -14,17 +14,16 @@
         private const int PaddingValueMultiplier = 512;
         private const int PaddingValueMin = 512;
 
-        private const string DefaultPackPrefix = "data";
         private const string PackFilePattern = "{0}.df";
-        private const string IndexFile = "index.db";
+        private const string IndexFile = "{0}.db";
 
         private readonly IDatabaseService databaseService;
 
         private readonly IDictionary<FileEntryKey, FileEntry> files;
 
         private readonly IDictionary<FileEntryKey, FileEntryPackInfo> packInfo;
-        
-        private string packPrefix = DefaultPackPrefix;
+
+        private string packName = "Data";
 
         private long endOfFile;
 
@@ -51,11 +50,11 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public string PackPrefix
+        public string PackName
         {
             get
             {
-                return this.packPrefix;
+                return this.packName;
             }
 
             set
@@ -65,7 +64,7 @@
                     throw new InvalidOperationException("Can not change the pack prefix after initialization");
                 }
 
-                this.packPrefix = value;
+                this.packName = value;
             }
         }
 
@@ -118,12 +117,12 @@
             this.Capacity = this.root.GetFreeSpace();
 
             // Initialize the pack file
-            CarbonFile pack = this.root.ToFile(string.Format(PackFilePattern, this.packPrefix));
+            CarbonFile pack = this.root.ToFile(string.Format(PackFilePattern, this.packName));
             this.packStream = pack.OpenWrite(FileMode.Create);
             System.Diagnostics.Trace.Assert(this.packStream != null);
 
             // Initialize the index db
-            CarbonFile index = this.root.ToFile(IndexFile);
+            CarbonFile index = this.root.ToFile(string.Format(IndexFile, this.packName));
             this.databaseService.Initialize(index);
 
             // Read all the file entries and verify
