@@ -12,21 +12,9 @@
         // -------------------------------------------------------------------
         // Protected
         // -------------------------------------------------------------------
-        protected override string DataPrefix
-        {
-            get
-            {
-                return @"{";
-            }
-        }
+        protected override string DataPrefix => @"{";
 
-        protected override string DataSuffix
-        {
-            get
-            {
-                return @"}";
-            }
-        }
+        protected override string DataSuffix => @"}";
 
         protected override void FormatData(ExcelDataSheet sheet, StringBuilder target)
         {

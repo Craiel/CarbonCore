@@ -1,6 +1,5 @@
 ﻿namespace CarbonCore.Processing.IoC
 {
-    using CarbonCore.Utils.IoC;
     using CarbonCore.Processing.Contracts;
     using CarbonCore.Processing.Logic;
     using CarbonCore.Utils.Compat.IoC;

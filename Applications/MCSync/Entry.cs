@@ -1,7 +1,6 @@
 ﻿namespace CarbonCore.Applications.MCSync
 {
     using CarbonCore.Utils.Compat.Diagnostics;
-    using CarbonCore.Utils.Compat.IoC;
     using CarbonCore.Utils.IoC;
     
     using MCSync.Contracts;

@@ -20,21 +20,9 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public IReadOnlyDictionary<string, string> Images
-        {
-            get
-            {
-                return new ReadOnlyDictionary<string, string>(this.images);
-            }
-        }
+        public IReadOnlyDictionary<string, string> Images => new ReadOnlyDictionary<string, string>(this.images);
 
-        public IReadOnlyDictionary<string, long> ImageUseCount
-        {
-            get
-            {
-                return new ReadOnlyDictionary<string, long>(this.imageUseCount);
-            }
-        }
+        public IReadOnlyDictionary<string, long> ImageUseCount => new ReadOnlyDictionary<string, long>(this.imageUseCount);
 
         public void RegisterImage(string key, string value)
         {

@@ -32,7 +32,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Unity|x64'">
     <OutputPath>bin\x64\Unity\</OutputPath>
     <PlatformTarget>x64</PlatformTarget>
-    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\CarbonCore.ruleset</CodeAnalysisRuleSet>
     <NoWarn>IDE0001</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Unity|AnyCPU'">

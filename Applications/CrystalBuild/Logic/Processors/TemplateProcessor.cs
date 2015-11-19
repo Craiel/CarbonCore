@@ -34,7 +34,7 @@
             string content = source.ReadAsString();
             string[] segments = content.Split(StripFromTemplates, StringSplitOptions.RemoveEmptyEntries);
             content = string.Join(" ", segments);
-            this.templateSegments.Add(string.Format("{0}: '{1}'", source.FileNameWithoutExtension, content));
+            this.templateSegments.Add($"{source.FileNameWithoutExtension}: '{content}'");
         }
 
         protected override void PreprocessData()

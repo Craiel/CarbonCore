@@ -153,7 +153,7 @@
             }
 
             float total = this.DamageTotal.ContainsKey(damageType) ? this.DamageTotal[damageType] : 0f;
-            return total / (float)seconds;
+            return total / seconds;
         }
 
         // -------------------------------------------------------------------

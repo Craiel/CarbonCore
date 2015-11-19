@@ -134,8 +134,8 @@
                 string entry = match.Groups[1].ToString();
                 string name = match.Groups[2].ToString();
                 string varName = string.Concat(char.ToLower(name[1]), name.Substring(2, name.Length - 3));
-                context.OutputLine = context.OutputLine.Replace(entry, string.Format("var {0} = {1}", varName, entry));
-                context.OutputLine = context.OutputLine.Replace(name, string.Format("{0},'{1}'", name, context.SourceName));
+                context.OutputLine = context.OutputLine.Replace(entry, $"var {varName} = {entry}");
+                context.OutputLine = context.OutputLine.Replace(name, $"{name},'{context.SourceName}'");
                 if (context.UsingVars.ContainsKey(varName))
                 {
                     this.Context.AddError("Duplicate using: {0} in {1}", varName, context.SourceName);
@@ -154,7 +154,7 @@
             if (match.Success)
             {
                 string localized = match.Groups[2].ToString().Localized();
-                context.OutputLine = context.OutputLine.Replace(match.Groups[1].ToString(), string.Format("\"{0}\"", localized));
+                context.OutputLine = context.OutputLine.Replace(match.Groups[1].ToString(), $"\"{localized}\"");
             }
         }
 
@@ -185,7 +185,7 @@
                 }
 
                 // Todo: need to actually hash the string with something like .Obfuscate(Constants.ObfuscationValue))
-                context.OutputLine = context.OutputLine.Replace(expression, string.Format("\"{0}\"", hash));
+                context.OutputLine = context.OutputLine.Replace(expression, $"\"{hash}\"");
             }
         }
 
@@ -250,14 +250,14 @@
             // -------------------------------------------------------------------
             public int CurrentLineIndex { get; private set; }
 
-            public string SourceName { get; private set; }
+            public string SourceName { get; }
             public string OutputLine { get; set; }
             public string CurrentLine { get; private set; }
             public string CurrentTrimmedLine { get; private set; }
 
-            public Stack<ProcessingInstructions> DirectiveStack { get; private set; }
+            public Stack<ProcessingInstructions> DirectiveStack { get; }
 
-            public IDictionary<string, int> UsingVars { get; private set; }
+            public IDictionary<string, int> UsingVars { get; }
 
             public void SetLine(int index, string line)
             {

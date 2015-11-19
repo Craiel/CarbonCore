@@ -134,7 +134,6 @@
                     // Todo: - log and award
                     this.targets.Remove(entity);
                     sampleSet.AddStat(SimulationStat.TargetsKilled);
-                    continue;
                 }
             }
 

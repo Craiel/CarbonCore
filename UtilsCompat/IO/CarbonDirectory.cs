@@ -189,7 +189,7 @@
                 }
 
                 Match lastMatch = matches[matches.Count - 1];
-                int index = this.Path.LastIndexOf(lastMatch.Value, System.StringComparison.Ordinal);
+                int index = this.Path.LastIndexOf(lastMatch.Value, StringComparison.Ordinal);
                 return new CarbonDirectory(this.Path.Substring(0, index + lastMatch.Value.Length));
             }
 

@@ -68,7 +68,7 @@
                 }
             }
 
-            this.TraceProcessorResult(processor, string.Format("Building {0}", "Sources"));
+            this.TraceProcessorResult(processor, "Building Sources");
         }
 
         public void BuildTemplates(IList<CarbonFileResult> sources, CarbonFile target, ProcessingContext context)
@@ -144,7 +144,7 @@
                 }
             }
 
-            this.TraceProcessorResult(processor, string.Format("Building {0}", buildName));
+            this.TraceProcessorResult(processor, $"Building {buildName}");
         }
 
         private void DoBuildMultiple<T>(string buildName, IList<CarbonFileResult> sources, ProcessingContext context)
@@ -162,7 +162,7 @@
                 processor.Process(file.Absolute);
             }
             
-            this.TraceProcessorResult(processor, string.Format("Building {0}", buildName));
+            this.TraceProcessorResult(processor, $"Building {buildName}");
         }
 
         private void TraceProcessorResult(IContentProcessor processor, string name)

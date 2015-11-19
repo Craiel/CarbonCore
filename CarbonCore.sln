@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.GrammarParser", "GrammarParser\CarbonCore.GrammarParser.csproj", "{50C22F18-89F6-48F3-A29F-CA25FDADDB90}"
 EndProject
@@ -41,7 +41,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.Utils.Unity.Edit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.ContentServices .Compat", "ContentServicesCompat\CarbonCore.ContentServices .Compat.csproj", "{890FF110-443F-4647-80B1-82D414CCCD88}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.Tests.Compat", "TestsCompat\CarbonCore.Tests.Compat.csproj", "{FBEBE858-E55B-4823-8374-70E8E584F333}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.Tests.Compat", "TestsCompat\CarbonCore.Tests.Compat.csproj", "{C750C66E-56C8-4D99-846C-E690F5986842}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.Applications.D3Theory.Console", "Applications\D3Theory\Console\CarbonCore.Applications.D3Theory.Console.csproj", "{592CF598-0C12-4D6D-B2AE-3C0E671A1CD5}"
 EndProject
@@ -50,6 +50,14 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "D3Theory", "D3Theory", "{3BBFFFD2-B912-4B4E-AC21-29404C9E5B34}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.Modules.D3Theory", "Applications\D3Theory\CarbonCore.Modules.D3Theory.csproj", "{C630F5C6-75E4-40C1-9343-44B7EB05B67C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.Applications.CFS.UI", "Applications\CFS\CarbonCore.Applications.CFS.UI.csproj", "{2FF7D9C8-1A44-4EFD-B982-90F44A0A338B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CFS", "CFS", "{110016C0-C80E-4620-8F32-7651BC3BF895}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.Applications.CFS.Console", "Applications\CFS\Console\CarbonCore.Applications.CFS.Console.csproj", "{03B59FF1-4640-47FA-8DF1-2A6A793F2098}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.CFS", "CFS\CarbonCore.CFS.csproj", "{06D0CA41-40B7-4C49-A230-5DD1540D9767}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -147,12 +155,12 @@ Global
 		{890FF110-443F-4647-80B1-82D414CCCD88}.Release|x64.Build.0 = Release|x64
 		{890FF110-443F-4647-80B1-82D414CCCD88}.Unity|x64.ActiveCfg = Unity|Any CPU
 		{890FF110-443F-4647-80B1-82D414CCCD88}.Unity|x64.Build.0 = Unity|Any CPU
-		{FBEBE858-E55B-4823-8374-70E8E584F333}.Debug|x64.ActiveCfg = Debug|x64
-		{FBEBE858-E55B-4823-8374-70E8E584F333}.Debug|x64.Build.0 = Debug|x64
-		{FBEBE858-E55B-4823-8374-70E8E584F333}.Release|x64.ActiveCfg = Release|x64
-		{FBEBE858-E55B-4823-8374-70E8E584F333}.Release|x64.Build.0 = Release|x64
-		{FBEBE858-E55B-4823-8374-70E8E584F333}.Unity|x64.ActiveCfg = Unity|x64
-		{FBEBE858-E55B-4823-8374-70E8E584F333}.Unity|x64.Build.0 = Unity|x64
+		{C750C66E-56C8-4D99-846C-E690F5986842}.Debug|x64.ActiveCfg = Debug|x64
+		{C750C66E-56C8-4D99-846C-E690F5986842}.Debug|x64.Build.0 = Debug|x64
+		{C750C66E-56C8-4D99-846C-E690F5986842}.Release|x64.ActiveCfg = Release|x64
+		{C750C66E-56C8-4D99-846C-E690F5986842}.Release|x64.Build.0 = Release|x64
+		{C750C66E-56C8-4D99-846C-E690F5986842}.Unity|x64.ActiveCfg = Unity|x64
+		{C750C66E-56C8-4D99-846C-E690F5986842}.Unity|x64.Build.0 = Unity|x64
 		{592CF598-0C12-4D6D-B2AE-3C0E671A1CD5}.Debug|x64.ActiveCfg = Debug|x64
 		{592CF598-0C12-4D6D-B2AE-3C0E671A1CD5}.Debug|x64.Build.0 = Debug|x64
 		{592CF598-0C12-4D6D-B2AE-3C0E671A1CD5}.Release|x64.ActiveCfg = Release|x64
@@ -171,6 +179,24 @@ Global
 		{C630F5C6-75E4-40C1-9343-44B7EB05B67C}.Release|x64.Build.0 = Release|x64
 		{C630F5C6-75E4-40C1-9343-44B7EB05B67C}.Unity|x64.ActiveCfg = Release|x64
 		{C630F5C6-75E4-40C1-9343-44B7EB05B67C}.Unity|x64.Build.0 = Release|x64
+		{2FF7D9C8-1A44-4EFD-B982-90F44A0A338B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2FF7D9C8-1A44-4EFD-B982-90F44A0A338B}.Debug|x64.Build.0 = Debug|Any CPU
+		{2FF7D9C8-1A44-4EFD-B982-90F44A0A338B}.Release|x64.ActiveCfg = Release|Any CPU
+		{2FF7D9C8-1A44-4EFD-B982-90F44A0A338B}.Release|x64.Build.0 = Release|Any CPU
+		{2FF7D9C8-1A44-4EFD-B982-90F44A0A338B}.Unity|x64.ActiveCfg = Release|Any CPU
+		{2FF7D9C8-1A44-4EFD-B982-90F44A0A338B}.Unity|x64.Build.0 = Release|Any CPU
+		{03B59FF1-4640-47FA-8DF1-2A6A793F2098}.Debug|x64.ActiveCfg = Debug|x64
+		{03B59FF1-4640-47FA-8DF1-2A6A793F2098}.Debug|x64.Build.0 = Debug|x64
+		{03B59FF1-4640-47FA-8DF1-2A6A793F2098}.Release|x64.ActiveCfg = Release|x64
+		{03B59FF1-4640-47FA-8DF1-2A6A793F2098}.Release|x64.Build.0 = Release|x64
+		{03B59FF1-4640-47FA-8DF1-2A6A793F2098}.Unity|x64.ActiveCfg = Release|x64
+		{03B59FF1-4640-47FA-8DF1-2A6A793F2098}.Unity|x64.Build.0 = Release|x64
+		{06D0CA41-40B7-4C49-A230-5DD1540D9767}.Debug|x64.ActiveCfg = Debug|x64
+		{06D0CA41-40B7-4C49-A230-5DD1540D9767}.Debug|x64.Build.0 = Debug|x64
+		{06D0CA41-40B7-4C49-A230-5DD1540D9767}.Release|x64.ActiveCfg = Release|x64
+		{06D0CA41-40B7-4C49-A230-5DD1540D9767}.Release|x64.Build.0 = Release|x64
+		{06D0CA41-40B7-4C49-A230-5DD1540D9767}.Unity|x64.ActiveCfg = Release|x64
+		{06D0CA41-40B7-4C49-A230-5DD1540D9767}.Unity|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -182,5 +208,8 @@ Global
 		{DAE8FDED-C715-4DEC-B540-AE5B92CE698B} = {3BBFFFD2-B912-4B4E-AC21-29404C9E5B34}
 		{3BBFFFD2-B912-4B4E-AC21-29404C9E5B34} = {7038249C-12AD-4560-BC2A-01FAD5D9B7BD}
 		{C630F5C6-75E4-40C1-9343-44B7EB05B67C} = {3BBFFFD2-B912-4B4E-AC21-29404C9E5B34}
+		{2FF7D9C8-1A44-4EFD-B982-90F44A0A338B} = {110016C0-C80E-4620-8F32-7651BC3BF895}
+		{110016C0-C80E-4620-8F32-7651BC3BF895} = {7038249C-12AD-4560-BC2A-01FAD5D9B7BD}
+		{03B59FF1-4640-47FA-8DF1-2A6A793F2098} = {110016C0-C80E-4620-8F32-7651BC3BF895}
 	EndGlobalSection
 EndGlobal

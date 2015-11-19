@@ -21,7 +21,7 @@
     {
         private const string SyncProgram = "blinksync.exe";
 
-        private const string VersionIndiciator = ".version";
+        private const string VersionIndicator = ".version";
         
         private static readonly CarbonDirectory SyncRoot = new CarbonDirectory(Assembly.GetEntryAssembly().Location);
 
@@ -33,8 +33,8 @@
                                                                                      { "resourcepacks", "resourcepacks" },
                                                                                  };
 
-        private readonly IList<string> serverOnlyCopyObjects = new List<string> { VersionIndiciator };
-        private readonly IList<string> clientOnlyCopyObjects = new List<string> { "servers.dat", VersionIndiciator };
+        private readonly IList<string> serverOnlyCopyObjects = new List<string> { VersionIndicator };
+        private readonly IList<string> clientOnlyCopyObjects = new List<string> { "servers.dat", VersionIndicator };
 
         private CarbonDirectory sourcePath;
         private CarbonDirectory targetPath;
@@ -53,13 +53,7 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public override string Name
-        {
-            get
-            {
-                return "MCSync";
-            }
-        }
+        public override string Name => "MCSync";
 
         protected override void StartFinished()
         {
@@ -79,7 +73,7 @@
             
             foreach (string syncObject in this.commonSyncObjects)
             {
-                using (new ProfileRegion(string.Format("Syncing {0}", syncObject)))
+                using (new ProfileRegion($"Syncing {syncObject}"))
                 {
                     this.DoSync(syncObject, syncObject);
                 }
@@ -89,7 +83,7 @@
             {
                 foreach (string syncSource in this.clientOnlySyncObjects.Keys)
                 {
-                    using (new ProfileRegion(string.Format("Syncing {0}", syncSource)))
+                    using (new ProfileRegion($"Syncing {syncSource}"))
                     {
                         this.DoSync(syncSource, this.clientOnlySyncObjects[syncSource], false);
                     }
@@ -126,8 +120,8 @@
         {
             SyncSettings defaults = new SyncSettings();
 
-            CarbonFile sourceVersion = this.sourcePath.ToFile(VersionIndiciator);
-            CarbonFile targetVersion = this.targetPath.ToFile(VersionIndiciator);
+            CarbonFile sourceVersion = this.sourcePath.ToFile(VersionIndicator);
+            CarbonFile targetVersion = this.targetPath.ToFile(VersionIndicator);
             if (!sourceVersion.Exists)
             {
                 JsonExtensions.SaveToFile(sourceVersion, defaults, false, Formatting.Indented);
@@ -161,40 +155,35 @@
 
         private void DoSync(string syncObject, string syncTarget, bool deleteTargetMismatches = true)
         {
-            var proc = new Process
+            var process = new Process
             {
                 StartInfo =
                 {
                     FileName = SyncRoot.ToFile(SyncProgram).GetPath(),
                     Arguments =
-                        string.Format(
-                            @"{0} ""{1}\{2}"" ""{3}\{4}""",
-                            deleteTargetMismatches ? "-d" : string.Empty,
-                            this.sourcePath.GetPath(),
-                            syncObject,
-                            this.targetPath.GetPath(),
-                            syncTarget),
+                        $@"{(deleteTargetMismatches ? "-d" : string.Empty)} ""{this.sourcePath.GetPath()}\{syncObject
+                        }"" ""{this.targetPath.GetPath()}\{syncTarget}""",
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true
                 }
             };
 
-            proc.Start();
-            while (!proc.HasExited)
+            process.Start();
+            while (!process.HasExited)
             {
-                this.TraceProcessOutput(proc);
+                this.TraceProcessOutput(process);
 
                 Thread.Sleep(10);
             }
 
-            this.TraceProcessOutput(proc);
+            this.TraceProcessOutput(process);
         }
 
-        private void TraceProcessOutput(Process proc)
+        private void TraceProcessOutput(Process process)
         {
-            string stdOutTemp = proc.StandardOutput.ReadToEnd();
-            string stdErrorTemp = proc.StandardError.ReadToEnd();
+            string stdOutTemp = process.StandardOutput.ReadToEnd();
+            string stdErrorTemp = process.StandardError.ReadToEnd();
             Console.WriteLine(stdOutTemp);
             Console.WriteLine(stdErrorTemp);
             Trace.TraceInformation(stdOutTemp);

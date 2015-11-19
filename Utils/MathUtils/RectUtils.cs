@@ -82,7 +82,7 @@
 
                     default:
                         {
-                            return Utils.Diagnostics.Internal.NotImplemented<int>();
+                            return Diagnostics.Internal.NotImplemented<int>();
                         }
                 }
 
