@@ -1,41 +1,13 @@
 ﻿namespace CarbonCore.Utils.Unity.Editor.GUI
 {
-    using System;
-
     using UnityEditor;
 
     using UnityEngine;
 
-    public class LayoutRegion : IDisposable
+    public class LayoutRegion
     {
-        private readonly LayoutRegionSettings settings;
-
-        // -------------------------------------------------------------------
-        // Constructor
-        // -------------------------------------------------------------------
-        public LayoutRegion(LayoutRegionSettings settings)
-        {
-            this.settings = settings;
-
-            if (this.settings.IsHorizontal)
-            {
-                EditorGUILayout.BeginHorizontal();
-            }
-            else
-            {
-                EditorGUILayout.BeginVertical();
-            }
-
-            if (settings.FlexibleStart)
-            {
-                GUILayout.FlexibleSpace();
-            }
-            else if (settings.MarginStart > 0f)
-            {
-                GUILayout.Space(settings.MarginStart);
-            }
-        }
-
+        private LayoutRegionSettings settings;
+        
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
@@ -48,7 +20,7 @@
                                    IsHorizontal = isHorizontal
                                };
 
-            return new LayoutRegion(settings);
+            return new LayoutRegion().Begin(settings);
         }
 
         public static LayoutRegion EndAligned(float marginEnd = 0f, bool isHorizontal = false)
@@ -60,7 +32,7 @@
                 IsHorizontal = isHorizontal
             };
 
-            return new LayoutRegion(settings);
+            return new LayoutRegion().Begin(settings);
         }
 
         public static LayoutRegion Centered(bool isHorizontal = false)
@@ -72,7 +44,7 @@
                 IsHorizontal = isHorizontal
             };
 
-            return new LayoutRegion(settings);
+            return new LayoutRegion().Begin(settings);
         }
 
         public static LayoutRegion Default(float marginStart = 0f, float marginEnd = 0f, bool isHorizontal = false)
@@ -84,47 +56,55 @@
                                    IsHorizontal = isHorizontal
                                };
 
-            return new LayoutRegion(settings);
+            return new LayoutRegion().Begin(settings);
         }
 
-        public void Dispose()
+        public LayoutRegion Begin(LayoutRegionSettings newSettings)
         {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+            this.settings = newSettings;
 
-        // -------------------------------------------------------------------
-        // Private
-        // -------------------------------------------------------------------
-        private void Dispose(bool isDisposing)
-        {
-            if (isDisposing)
+            if (this.settings.IsHorizontal)
             {
-                try
-                {
-                    if (this.settings.FlexibleEnd)
-                    {
-                        GUILayout.FlexibleSpace();
-                    }
-                    else if (this.settings.MarginEnd > 0f)
-                    {
-                        GUILayout.Space(this.settings.MarginEnd);
-                    }
-
-                    if (this.settings.IsHorizontal)
-                    {
-                        EditorGUILayout.EndHorizontal();
-                    }
-                    else
-                    {
-                        EditorGUILayout.EndVertical();
-                    }
-                }
-                catch
-                {
-                    // Note: We can safely ignore these, sometimes the UI is not in a responsive state
-                }
+                EditorGUILayout.BeginHorizontal();
             }
+            else
+            {
+                EditorGUILayout.BeginVertical();
+            }
+
+            if (this.settings.FlexibleStart)
+            {
+                GUILayout.FlexibleSpace();
+            }
+            else if (this.settings.MarginStart > 0f)
+            {
+                GUILayout.Space(this.settings.MarginStart);
+            }
+
+            return this;
+        }
+
+        public LayoutRegion End()
+        {
+            if (this.settings.FlexibleEnd)
+            {
+                GUILayout.FlexibleSpace();
+            }
+            else if (this.settings.MarginEnd > 0f)
+            {
+                GUILayout.Space(this.settings.MarginEnd);
+            }
+
+            if (this.settings.IsHorizontal)
+            {
+                EditorGUILayout.EndHorizontal();
+            }
+            else
+            {
+                EditorGUILayout.EndVertical();
+            }
+
+            return this;
         }
     }
 }

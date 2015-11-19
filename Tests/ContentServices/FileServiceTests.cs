@@ -1,17 +1,18 @@
-﻿namespace CarbonCore.Tests.Compat.ContentServices
+﻿namespace CarbonCore.Tests.ContentServices
 {
     using System;
     using System.Collections.Generic;
+    using System.IO.Compression;
     using System.Linq;
 
-    using CarbonCore.ContentServices.Compat.Contracts;
-    using CarbonCore.ContentServices.Compat.Data;
-    using CarbonCore.ContentServices.Compat.IoC;
     using CarbonCore.ContentServices.Compat.Logic;
+    using CarbonCore.ContentServices.Contracts;
+    using CarbonCore.ContentServices.IoC;
+    using CarbonCore.ContentServices.Logic;
     using CarbonCore.Utils.Compat;
     using CarbonCore.Utils.Compat.Contracts.IoC;
     using CarbonCore.Utils.Compat.IO;
-    using CarbonCore.Utils.Compat.IoC;
+    using CarbonCore.Utils.IoC;
 
     using NUnit.Framework;
 
@@ -41,7 +42,7 @@
         [SetUp]
         public void Setup()
         {
-            this.container = CarbonContainerBuilder.BuildQuick<ContentServicesCompatModule>();
+            this.container = CarbonContainerAutofacBuilder.Build<ContentServicesModule>();
 
             this.dataDirectory = CarbonDirectory.GetTempDirectory();
 
@@ -50,7 +51,7 @@
 
             // Build the dictionary of eligible test files
             this.testFiles.Clear();
-            foreach (string file in Resources.Static.ResourceList)
+            foreach (string file in Compat.Resources.Static.ResourceList)
             {
                 if (!file.StartsWith(FileEntryFolder))
                 {
@@ -93,7 +94,6 @@
 
                 var packProvider = this.container.Resolve<IFileServicePackProvider>();
                 packProvider.Root = this.dataDirectory;
-                packProvider.PackName = "InitializationTests";
                 packProvider.Initialize();
                 service.AddProvider(packProvider);
 
@@ -117,7 +117,7 @@
             {
                 using (var provider = this.container.Resolve<IFileServiceMemoryProvider>())
                 {
-                    provider.CompressionLevel = CarbonCore.ContentServices.Compat.Logic.Enums.CompressionLevel.Optimal;
+                    provider.CompressionLevel = CompressionLevel.Optimal;
                     provider.Initialize();
 
                     service.AddProvider(provider);
@@ -137,7 +137,7 @@
             {
                 using (var provider = this.container.Resolve<IFileServiceDiskProvider>())
                 {
-                    provider.CompressionLevel = CarbonCore.ContentServices.Compat.Logic.Enums.CompressionLevel.Optimal;
+                    provider.CompressionLevel = CompressionLevel.Optimal;
                     provider.Root = this.dataDirectory;
                     provider.Initialize();
 
@@ -158,9 +158,8 @@
             {
                 using (var provider = this.container.Resolve<IFileServicePackProvider>())
                 {
-                    provider.CompressionLevel = CarbonCore.ContentServices.Compat.Logic.Enums.CompressionLevel.Optimal;
+                    provider.CompressionLevel = CompressionLevel.Optimal;
                     provider.Root = this.dataDirectory;
-                    provider.PackName = "FileServiceTests";
                     provider.Initialize();
                     service.AddProvider(provider);
 
@@ -188,7 +187,7 @@
             }
 
             Assert.AreEqual(testFileSize, provider.BytesWritten, "Must have written exact number of bytes");
-            Assert.GreaterOrEqual(testFileSize, provider.BytesWrittenActual, "Must have exact number of actual bytes");
+            Assert.Greater(testFileSize, provider.BytesWrittenActual, "Must have exact number of actual bytes");
             Assert.AreEqual(0, provider.BytesRead, "Must have no bytes read yet");
 
             // Test load
@@ -200,7 +199,7 @@
             }
 
             Assert.AreEqual(testFileSize, provider.BytesRead, "Must have read exact number of bytes");
-            Assert.GreaterOrEqual(testFileSize, provider.BytesReadActual, "Must have exact number of actual bytes");
+            Assert.Greater(testFileSize, provider.BytesReadActual, "Must have exact number of actual bytes");
 
             // Meta info get
             DateTime currentDate = DateTime.Now;
@@ -226,6 +225,8 @@
             }
 
             Assert.AreEqual(this.testFiles.Count, provider.EntriesDeleted, "Must have deleted count of test files");
+
+            Assert.AreEqual(this.testFiles.Count, service.Cleanup(), "Cleanup must purge the deleted entries");
         }
     }
 }
