@@ -20,7 +20,7 @@
             string fileNameId = this.BuildPathId(relativeRootPath + source.FileNameWithoutExtension);
             string rootPathId = this.BuildPathId(relativeRootPath, true);
 
-            this.Context.Cache.RegisterImage(fileNameId, string.Format(@"staticData.imageRoot{0} + ""{1}""", rootPathId, fileName));
+            this.Context.Cache.RegisterImage(fileNameId, $@"staticData.imageRoot{rootPathId} + ""{fileName}""");
         }
 
         // -------------------------------------------------------------------

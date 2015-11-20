@@ -1,6 +1,5 @@
 ﻿namespace CarbonCore.GrammarParser
 {
-    using System;
     using System.Collections.Generic;
 
     using CarbonCore.GrammarParser.Contracts;

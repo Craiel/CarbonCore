@@ -11,8 +11,9 @@
         public static readonly string DirectorySeparator = System.IO.Path.DirectorySeparatorChar.ToString(CultureInfo.InvariantCulture);
         public static readonly string DirectorySeparatorAlternative = System.IO.Path.AltDirectorySeparatorChar.ToString(CultureInfo.InvariantCulture);
 
-        public static readonly string DirectorySeperatorRegexSegment = string.Format(@"[\{0}\{1}]*", DirectorySeparator, DirectorySeparatorAlternative);
-        public static readonly string DirectoryRegex = string.Concat(DirectorySeperatorRegexSegment, "{0}", DirectorySeperatorRegexSegment);
+        //public static readonly string DirectorySeparatorOptionalRegexSegment = string.Format(@"[\{0}\{1}]*", DirectorySeparator, DirectorySeparatorAlternative);
+        public static readonly string DirectorySeparatorMandatoryRegexSegment = string.Format(@"[\{0}\{1}]+", DirectorySeparator, DirectorySeparatorAlternative);
+        public static readonly string DirectoryRegex = string.Concat(string.Format("(^|{0})", DirectorySeparatorMandatoryRegexSegment), "{0}", DirectorySeparatorMandatoryRegexSegment);
 
         // Note: this is win32 specific and might have to be adjusted for other platforms
         private static readonly Regex Win32AbsolutePathRegex = new Regex(@"^([a-z]):[\\\/]+(.*)$", RegexOptions.IgnoreCase);
@@ -38,7 +39,13 @@
         
         public bool IsNull { get; private set; }
 
-        public bool EndsWithSeperator { get; private set; }
+        public bool EndsWithSeparator
+        {
+            get
+            {
+                return this.path.EndsWith(DirectorySeparator) || this.path.EndsWith(DirectorySeparatorAlternative);
+            }
+        }
 
         public bool IsRelative { get; private set; }
 
@@ -154,9 +161,6 @@
                 }
                 else
                 {
-                    this.EndsWithSeperator = this.path.EndsWith(DirectorySeparator)
-                                             || this.path.EndsWith(DirectorySeparatorAlternative);
-
                     this.IsRelative = !Win32AbsolutePathRegex.IsMatch(this.path);
                 }
             }
@@ -224,6 +228,34 @@
             }
 
             return new Uri(other.GetUri(UriKind.Absolute), this.path).AbsolutePath;
+        }
+
+        protected string TrimStart(params string[] values)
+        {
+            string result = this.path;
+            foreach (string value in values)
+            {
+                while (result.StartsWith(value))
+                {
+                    result = result.Substring(value.Length, result.Length - value.Length);
+                }
+            }
+
+            return result;
+        }
+
+        protected string TrimEnd(params string[] values)
+        {
+            string result = this.path;
+            foreach (string value in values)
+            {
+                while (result.EndsWith(value))
+                {
+                    result = result.Substring(0, result.Length - value.Length);
+                }
+            }
+
+            return result;
         }
 
         protected void UpdateDrive()

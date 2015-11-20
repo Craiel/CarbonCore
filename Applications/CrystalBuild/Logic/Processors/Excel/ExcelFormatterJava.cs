@@ -1,6 +1,5 @@
 ﻿namespace CarbonCore.Applications.CrystalBuild.Logic.Processors.Excel
 {
-    using System.Collections.Generic;
     using System.Linq;
     using System.Text;
 
@@ -17,21 +16,9 @@
         // -------------------------------------------------------------------
         // Protected
         // -------------------------------------------------------------------
-        protected override string DataPrefix
-        {
-            get
-            {
-                return @"declare(""GameData"", function() { return {";
-            }
-        }
+        protected override string DataPrefix => @"declare(""GameData"", function() { return {";
 
-        protected override string DataSuffix
-        {
-            get
-            {
-                return @"}; });";
-            }
-        }
+        protected override string DataSuffix => @"}; });";
 
         protected override void FormatData(ExcelDataSheet sheet, StringBuilder target)
         {

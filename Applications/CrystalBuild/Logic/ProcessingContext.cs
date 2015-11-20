@@ -37,21 +37,9 @@
 
         public BuildTargetPlatform TargetPlatform { get; private set; }
 
-        public IReadOnlyCollection<string> Warnings
-        {
-            get
-            {
-                return this.warnings.AsReadOnly();
-            }
-        }
+        public IReadOnlyCollection<string> Warnings => this.warnings.AsReadOnly();
 
-        public IReadOnlyCollection<string> Errors
-        {
-            get
-            {
-                return this.errors.AsReadOnly();
-            }
-        }
+        public IReadOnlyCollection<string> Errors => this.errors.AsReadOnly();
 
         public void AddWarning(string message, params object[] args)
         {

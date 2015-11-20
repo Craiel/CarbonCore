@@ -29,7 +29,7 @@
                     throw new InvalidOperationException("File with the same name exists: " + path);
                 }
 
-                if (!this.EndsWithSeperator)
+                if (!this.EndsWithSeparator)
                 {
                     this.Path += System.IO.Path.DirectorySeparatorChar;
                 }
@@ -41,7 +41,7 @@
             }
 
             string trimmedPath = this.Path;
-            if (this.EndsWithSeperator)
+            if (this.EndsWithSeparator)
             {
                 trimmedPath = this.Path.TrimEnd(System.IO.Path.DirectorySeparatorChar);
             }
@@ -178,19 +178,19 @@
 
         public CarbonDirectory GetParent()
         {
-            var info = new DirectoryInfo(this.Path);
+            string trimmedPath = this.TrimEnd(DirectorySeparator, DirectorySeparatorAlternative);
+            var info = new DirectoryInfo(trimmedPath);
             if (info.Parent != null)
             {
                 var subDirRegex = new Regex(string.Format(DirectoryRegex, info.Parent.Name));
-                MatchCollection matches = subDirRegex.Matches(this.Path);
+                MatchCollection matches = subDirRegex.Matches(trimmedPath);
                 if (matches.Count <= 0)
                 {
                     return null;
                 }
 
                 Match lastMatch = matches[matches.Count - 1];
-                int index = this.Path.LastIndexOf(lastMatch.Value, System.StringComparison.Ordinal);
-                return new CarbonDirectory(this.Path.Substring(0, index + lastMatch.Value.Length));
+                return new CarbonDirectory(trimmedPath.Substring(0, lastMatch.Index + lastMatch.Value.Length));
             }
 
             return null;
@@ -210,6 +210,15 @@
             }
 
             return this.Drive.AvailableFreeSpace;
+        }
+
+        public void RemoveAttributes(params FileAttributes[] attributes)
+        {
+            var info = new DirectoryInfo(this.Path);
+            foreach (FileAttributes attribute in attributes)
+            {
+                info.Attributes &= ~attribute;
+            }
         }
 
         public CarbonFileResult[] GetFiles(string pattern = "*", SearchOption options = SearchOption.TopDirectoryOnly)
