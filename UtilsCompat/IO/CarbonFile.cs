@@ -186,6 +186,15 @@
             this.Delete();
         }
 
+        public void RemoveAttributes(params FileAttributes[] attributes)
+        {
+            var info = new FileInfo(this.Path);
+            foreach (FileAttributes attribute in attributes)
+            {
+                info.Attributes &= ~attribute;
+            }
+        }
+
         public void Move(CarbonFile target)
         {
             File.Move(this.Path, target.GetPath());

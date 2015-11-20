@@ -212,6 +212,15 @@
             return this.Drive.AvailableFreeSpace;
         }
 
+        public void RemoveAttributes(params FileAttributes[] attributes)
+        {
+            var info = new DirectoryInfo(this.Path);
+            foreach (FileAttributes attribute in attributes)
+            {
+                info.Attributes &= ~attribute;
+            }
+        }
+
         public CarbonFileResult[] GetFiles(string pattern = "*", SearchOption options = SearchOption.TopDirectoryOnly)
         {
             if (!this.Exists)
