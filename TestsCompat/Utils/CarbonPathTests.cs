@@ -36,6 +36,22 @@
 
             long freeSpace = current.GetFreeSpace();
             Assert.Greater(freeSpace, 0, "GetFreeSpace must return non-zero value");
+
+            CarbonDirectory parentTest = new CarbonDirectory(@"FirstPath//SamePath\\SamePath//SamePath\\Something_SamePath//EndPath");
+            int iterations = 0;
+            while (parentTest != null)
+            {
+                iterations++;
+                parentTest = parentTest.GetParent();
+
+                if (iterations >= 10)
+                {
+                    Assert.Fail("GetParent did not end in the expected duration, check implementation!");
+                    break;
+                }
+            }
+
+            Assert.AreEqual(5, iterations, "GetParent should have succeeded 5 times, got " + iterations);
         }
 
         [Test]
