@@ -38,8 +38,11 @@
             if (AssemblyName == null)
             {
                 Assembly = UnitTest.IsRunningFromNunit ? Assembly.GetExecutingAssembly() : Assembly.GetEntryAssembly();
-                AssemblyName = System.IO.Path.GetFileName(Assembly.Location);
-                Path = Assembly.GetDirectory();
+                if (Assembly != null)
+                {
+                    AssemblyName = System.IO.Path.GetFileName(Assembly.Location);
+                    Path = Assembly.GetDirectory();
+                }
             }
         }
     }
