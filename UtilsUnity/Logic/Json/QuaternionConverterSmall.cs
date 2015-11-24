@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Utils.Unity.Json
+﻿namespace CarbonCore.Utils.Unity.Logic.Json
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
@@ -7,20 +7,20 @@
 
     using UnityEngine;
 
-    public class ColorConverter : JsonConverter
+    public class QuaternionConverterSmall : JsonConverter
     {
         // ------------------------------------------------------------------- 
         // Public 
         // ------------------------------------------------------------------- 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            Color typed = (Color)value;
+            Quaternion typed = (Quaternion)value;
 
             writer.WriteStartArray();
-            writer.WriteValue(typed.r);
-            writer.WriteValue(typed.g);
-            writer.WriteValue(typed.b);
-            writer.WriteValue(typed.a);
+            writer.WriteValue(typed.x);
+            writer.WriteValue(typed.y);
+            writer.WriteValue(typed.z);
+            writer.WriteValue(typed.w);
             writer.WriteEndArray();
         }
 
@@ -29,21 +29,21 @@
         {
             // Start Array + First Value
             reader.Read();
-            float r = (float)Convert.ChangeType(reader.Value, typeof(float));
+            float x = (float)Convert.ChangeType(reader.Value, typeof(float));
 
             reader.Read();
-            float g = (float)Convert.ChangeType(reader.Value, typeof(float));
+            float y = (float)Convert.ChangeType(reader.Value, typeof(float));
 
             reader.Read();
-            float b = (float)Convert.ChangeType(reader.Value, typeof(float));
+            float z = (float)Convert.ChangeType(reader.Value, typeof(float));
 
             reader.Read();
-            float a = (float)Convert.ChangeType(reader.Value, typeof(float));
+            float w = (float)Convert.ChangeType(reader.Value, typeof(float));
 
             // End Array
             reader.Read();
 
-            return new Color(r, g, b, a);
+            return new Quaternion(x, y, z, w);
         }
 
         public override bool CanRead
@@ -53,7 +53,7 @@
 
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(Color);
+            return objectType == typeof(Quaternion);
         }
     }
 }

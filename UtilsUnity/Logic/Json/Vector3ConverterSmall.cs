@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Utils.Unity.Json
+﻿namespace CarbonCore.Utils.Unity.Logic.Json
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
@@ -7,20 +7,19 @@
 
     using UnityEngine;
 
-    public class QuaternionConverterSmall : JsonConverter
+    public class Vector3ConverterSmall : JsonConverter
     {
         // ------------------------------------------------------------------- 
         // Public 
         // ------------------------------------------------------------------- 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            Quaternion typed = (Quaternion)value;
+            Vector3 typed = (Vector3)value;
 
             writer.WriteStartArray();
             writer.WriteValue(typed.x);
             writer.WriteValue(typed.y);
             writer.WriteValue(typed.z);
-            writer.WriteValue(typed.w);
             writer.WriteEndArray();
         }
 
@@ -37,13 +36,10 @@
             reader.Read();
             float z = (float)Convert.ChangeType(reader.Value, typeof(float));
 
-            reader.Read();
-            float w = (float)Convert.ChangeType(reader.Value, typeof(float));
-
             // End Array
             reader.Read();
 
-            return new Quaternion(x, y, z, w);
+            return new Vector3(x, y, z);
         }
 
         public override bool CanRead
@@ -53,7 +49,7 @@
 
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(Quaternion);
+            return objectType == typeof(Vector3);
         }
     }
 }

@@ -82,18 +82,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Diagnostics\UnityDebugTraceListener.cs" />
-    <Compile Include="Scene\SceneObjectCleanup.cs" />
-    <Compile Include="StringExtensions.cs" />
-    <Compile Include="Json\ColorConverter.cs" />
-    <Compile Include="Json\QuaternionConverterSmall.cs" />
-    <Compile Include="Json\Vector3ConverterSmall.cs" />
-    <Compile Include="Scene\SceneObjectContainer.cs" />
-    <Compile Include="Scene\SceneObjectController.cs" />
-    <Compile Include="Scene\SceneObjectRoot.cs" />
+    <Compile Include="Contracts\IScene.cs" />
+    <Compile Include="Logic\UnityDebugTraceListener.cs" />
+    <Compile Include="Logic\Enums\SceneTransitionStep.cs" />
+    <Compile Include="Logic\Scene\SceneObjectCleanup.cs" />
+    <Compile Include="Logic\StringExtensions.cs" />
+    <Compile Include="Logic\Json\ColorConverter.cs" />
+    <Compile Include="Logic\Json\QuaternionConverterSmall.cs" />
+    <Compile Include="Logic\Json\Vector3ConverterSmall.cs" />
+    <Compile Include="Logic\Scene\SceneObjectContainer.cs" />
+    <Compile Include="Logic\Scene\SceneObjectController.cs" />
+    <Compile Include="Logic\Scene\SceneObjectRoot.cs" />
     <Compile Include="UnityConstants.cs" />
-    <Compile Include="UnitySingletonBehavior.cs" />
-    <Compile Include="UnitySingleton.cs" />
+    <Compile Include="Logic\UnitySingletonBehavior.cs" />
+    <Compile Include="Logic\UnitySingleton.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">

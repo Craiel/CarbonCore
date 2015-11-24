@@ -1,9 +1,9 @@
-﻿namespace CarbonCore.Utils.Unity
+﻿namespace CarbonCore.Utils.Unity.Logic
 {
     using System;
 
     using CarbonCore.Utils.Compat.Diagnostics;
-    using CarbonCore.Utils.Unity.Scene;
+    using CarbonCore.Utils.Unity.Logic.Scene;
 
     using UnityEngine;
 

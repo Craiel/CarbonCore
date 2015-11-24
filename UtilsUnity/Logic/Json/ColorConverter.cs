@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Utils.Unity.Json
+﻿namespace CarbonCore.Utils.Unity.Logic.Json
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
@@ -7,19 +7,20 @@
 
     using UnityEngine;
 
-    public class Vector3ConverterSmall : JsonConverter
+    public class ColorConverter : JsonConverter
     {
         // ------------------------------------------------------------------- 
         // Public 
         // ------------------------------------------------------------------- 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            Vector3 typed = (Vector3)value;
+            Color typed = (Color)value;
 
             writer.WriteStartArray();
-            writer.WriteValue(typed.x);
-            writer.WriteValue(typed.y);
-            writer.WriteValue(typed.z);
+            writer.WriteValue(typed.r);
+            writer.WriteValue(typed.g);
+            writer.WriteValue(typed.b);
+            writer.WriteValue(typed.a);
             writer.WriteEndArray();
         }
 
@@ -28,18 +29,21 @@
         {
             // Start Array + First Value
             reader.Read();
-            float x = (float)Convert.ChangeType(reader.Value, typeof(float));
+            float r = (float)Convert.ChangeType(reader.Value, typeof(float));
 
             reader.Read();
-            float y = (float)Convert.ChangeType(reader.Value, typeof(float));
+            float g = (float)Convert.ChangeType(reader.Value, typeof(float));
 
             reader.Read();
-            float z = (float)Convert.ChangeType(reader.Value, typeof(float));
+            float b = (float)Convert.ChangeType(reader.Value, typeof(float));
+
+            reader.Read();
+            float a = (float)Convert.ChangeType(reader.Value, typeof(float));
 
             // End Array
             reader.Read();
 
-            return new Vector3(x, y, z);
+            return new Color(r, g, b, a);
         }
 
         public override bool CanRead
@@ -49,7 +53,7 @@
 
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(Vector3);
+            return objectType == typeof(Color);
         }
     }
 }

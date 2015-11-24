@@ -1,9 +1,9 @@
-﻿namespace CarbonCore.Utils.Unity.Scene
+﻿namespace CarbonCore.Utils.Unity.Logic.Scene
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-
+    
     using UnityEngine;
 
     using Object = UnityEngine.Object;
@@ -39,13 +39,7 @@
         public event Action OnDestroying;
         public event Action OnDestroyed;
 
-        public int ChildCount
-        {
-            get
-            {
-                return this.children.Count;
-            }
-        }
+        public int ChildCount => this.children.Count;
 
         public GameObject GameObject { get; private set; }
 
@@ -53,18 +47,12 @@
 
         public void Destroy()
         {
-            if (this.OnDestroying != null)
-            {
-                this.OnDestroying();
-            }
+            this.OnDestroying?.Invoke();
 
             Object.Destroy(this.GameObject);
             this.GameObject = null;
 
-            if (this.OnDestroyed != null)
-            {
-                this.OnDestroyed();
-            }
+            this.OnDestroyed?.Invoke();
         }
 
         public void AddChild(GameObject entry, bool worldPositionStays = false)

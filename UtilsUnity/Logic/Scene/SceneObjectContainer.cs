@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Utils.Unity.Scene
+﻿namespace CarbonCore.Utils.Unity.Logic.Scene
 {
     using System.Collections.Generic;
 
