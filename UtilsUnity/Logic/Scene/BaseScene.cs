@@ -27,9 +27,9 @@ namespace CarbonCore.Utils.Unity.Logic.Scene
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public string Name { get; private set; }
+        public string Name { get; }
 
-        public string LevelName { get; private set; }
+        public string LevelName { get; }
 
         public bool HadErrors { get; private set; }
         
