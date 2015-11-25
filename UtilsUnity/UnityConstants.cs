@@ -13,5 +13,13 @@
         public const string UnityExtensionMaterial = ".mat";
         public const string UnityExtensionOverrideController = ".overrideController";
         public const string UnityExtensionController = ".controller";
+
+        public const string SceneControllerRoot = "SceneRoot";
+
+#if DEBUG
+        public static bool EnableVerboseLogging = true;
+#else
+        public static bool EnableVerboseLogging = false;
+#endif
     }
 }
