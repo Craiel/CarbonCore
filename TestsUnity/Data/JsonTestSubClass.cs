@@ -1,0 +1,28 @@
+﻿namespace CarbonCore.Tests.Unity.Data
+{
+    using System;
+
+    using CarbonCore.ContentServices.Compat.Logic.Attributes;
+    using CarbonCore.ContentServices.Compat.Logic.DataEntryLogic;
+
+    [DataEntry(UseDefaultEquality = true)]
+    public class JsonTestSubClass : DataEntry
+    {
+        // -------------------------------------------------------------------
+        // Public
+        // -------------------------------------------------------------------
+        public string String { get; set; }
+
+        public int Int { get; set; }
+
+        public float Float { get; set; }
+
+        // -------------------------------------------------------------------
+        // Protected
+        // -------------------------------------------------------------------
+        protected override int DoGetHashCode()
+        {
+            throw new InvalidOperationException();
+        }
+    }
+}

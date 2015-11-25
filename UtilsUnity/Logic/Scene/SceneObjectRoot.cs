@@ -39,7 +39,13 @@
         public event Action OnDestroying;
         public event Action OnDestroyed;
 
-        public int ChildCount => this.children.Count;
+        public int ChildCount
+        {
+            get
+            {
+                return this.children.Count;
+            }
+        }
 
         public GameObject GameObject { get; private set; }
 
@@ -47,12 +53,18 @@
 
         public void Destroy()
         {
-            this.OnDestroying?.Invoke();
+            if (this.OnDestroying != null)
+            {
+                this.OnDestroying();
+            }
 
             Object.Destroy(this.GameObject);
             this.GameObject = null;
 
-            this.OnDestroyed?.Invoke();
+            if (this.OnDestroyed != null)
+            {
+                this.OnDestroyed();
+            }
         }
 
         public void AddChild(GameObject entry, bool worldPositionStays = false)

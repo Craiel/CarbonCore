@@ -41,7 +41,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.Utils.Unity.Edit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.ContentServices .Compat", "ContentServicesCompat\CarbonCore.ContentServices .Compat.csproj", "{890FF110-443F-4647-80B1-82D414CCCD88}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.Tests.Compat", "TestsCompat\CarbonCore.Tests.Compat.csproj", "{C750C66E-56C8-4D99-846C-E690F5986842}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.Tests.Compat", "TestsCompat\CarbonCore.Tests.Compat.csproj", "{FBEBE858-E55B-4823-8374-70E8E584F333}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.Applications.D3Theory.Console", "Applications\D3Theory\Console\CarbonCore.Applications.D3Theory.Console.csproj", "{592CF598-0C12-4D6D-B2AE-3C0E671A1CD5}"
 EndProject
@@ -58,6 +58,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.Applications.CFS.Console", "Applications\CFS\Console\CarbonCore.Applications.CFS.Console.csproj", "{03B59FF1-4640-47FA-8DF1-2A6A793F2098}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.CFS", "CFS\CarbonCore.CFS.csproj", "{06D0CA41-40B7-4C49-A230-5DD1540D9767}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.Tests.Unity", "TestsUnity\CarbonCore.Tests.Unity.csproj", "{79AB4C92-A569-412D-93B3-165553D93CCC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -141,7 +143,8 @@ Global
 		{B823CDCE-5ED4-4030-AB35-44DAF233D4C0}.Release|x64.Build.0 = Release|x64
 		{B823CDCE-5ED4-4030-AB35-44DAF233D4C0}.Unity|x64.ActiveCfg = Unity|Any CPU
 		{B823CDCE-5ED4-4030-AB35-44DAF233D4C0}.Unity|x64.Build.0 = Unity|Any CPU
-		{0EC48D10-8E81-4B43-A7EE-F4BD83516CEA}.Debug|x64.ActiveCfg = Unity|x64
+		{0EC48D10-8E81-4B43-A7EE-F4BD83516CEA}.Debug|x64.ActiveCfg = Debug|x64
+		{0EC48D10-8E81-4B43-A7EE-F4BD83516CEA}.Debug|x64.Build.0 = Debug|x64
 		{0EC48D10-8E81-4B43-A7EE-F4BD83516CEA}.Release|x64.ActiveCfg = Unity|x64
 		{0EC48D10-8E81-4B43-A7EE-F4BD83516CEA}.Unity|x64.ActiveCfg = Unity|Any CPU
 		{0EC48D10-8E81-4B43-A7EE-F4BD83516CEA}.Unity|x64.Build.0 = Unity|Any CPU
@@ -155,12 +158,12 @@ Global
 		{890FF110-443F-4647-80B1-82D414CCCD88}.Release|x64.Build.0 = Release|x64
 		{890FF110-443F-4647-80B1-82D414CCCD88}.Unity|x64.ActiveCfg = Unity|Any CPU
 		{890FF110-443F-4647-80B1-82D414CCCD88}.Unity|x64.Build.0 = Unity|Any CPU
-		{C750C66E-56C8-4D99-846C-E690F5986842}.Debug|x64.ActiveCfg = Debug|x64
-		{C750C66E-56C8-4D99-846C-E690F5986842}.Debug|x64.Build.0 = Debug|x64
-		{C750C66E-56C8-4D99-846C-E690F5986842}.Release|x64.ActiveCfg = Release|x64
-		{C750C66E-56C8-4D99-846C-E690F5986842}.Release|x64.Build.0 = Release|x64
-		{C750C66E-56C8-4D99-846C-E690F5986842}.Unity|x64.ActiveCfg = Unity|x64
-		{C750C66E-56C8-4D99-846C-E690F5986842}.Unity|x64.Build.0 = Unity|x64
+		{FBEBE858-E55B-4823-8374-70E8E584F333}.Debug|x64.ActiveCfg = Debug|x64
+		{FBEBE858-E55B-4823-8374-70E8E584F333}.Debug|x64.Build.0 = Debug|x64
+		{FBEBE858-E55B-4823-8374-70E8E584F333}.Release|x64.ActiveCfg = Release|x64
+		{FBEBE858-E55B-4823-8374-70E8E584F333}.Release|x64.Build.0 = Release|x64
+		{FBEBE858-E55B-4823-8374-70E8E584F333}.Unity|x64.ActiveCfg = Unity|x64
+		{FBEBE858-E55B-4823-8374-70E8E584F333}.Unity|x64.Build.0 = Unity|x64
 		{592CF598-0C12-4D6D-B2AE-3C0E671A1CD5}.Debug|x64.ActiveCfg = Debug|x64
 		{592CF598-0C12-4D6D-B2AE-3C0E671A1CD5}.Debug|x64.Build.0 = Debug|x64
 		{592CF598-0C12-4D6D-B2AE-3C0E671A1CD5}.Release|x64.ActiveCfg = Release|x64
@@ -197,6 +200,12 @@ Global
 		{06D0CA41-40B7-4C49-A230-5DD1540D9767}.Release|x64.Build.0 = Release|x64
 		{06D0CA41-40B7-4C49-A230-5DD1540D9767}.Unity|x64.ActiveCfg = Release|x64
 		{06D0CA41-40B7-4C49-A230-5DD1540D9767}.Unity|x64.Build.0 = Release|x64
+		{79AB4C92-A569-412D-93B3-165553D93CCC}.Debug|x64.ActiveCfg = Debug|x64
+		{79AB4C92-A569-412D-93B3-165553D93CCC}.Debug|x64.Build.0 = Debug|x64
+		{79AB4C92-A569-412D-93B3-165553D93CCC}.Release|x64.ActiveCfg = Debug|x64
+		{79AB4C92-A569-412D-93B3-165553D93CCC}.Release|x64.Build.0 = Debug|x64
+		{79AB4C92-A569-412D-93B3-165553D93CCC}.Unity|x64.ActiveCfg = Debug|x64
+		{79AB4C92-A569-412D-93B3-165553D93CCC}.Unity|x64.Build.0 = Debug|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

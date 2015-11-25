@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C750C66E-56C8-4D99-846C-E690F5986842}</ProjectGuid>
+    <ProjectGuid>{FBEBE858-E55B-4823-8374-70E8E584F333}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CarbonCore.Tests.Compat</RootNamespace>
