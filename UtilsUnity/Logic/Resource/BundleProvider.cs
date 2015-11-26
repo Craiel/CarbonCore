@@ -20,9 +20,7 @@
 
         private readonly Queue<BundleKey> currentPendingLoads;
 
-#if UNITY_EDITOR
         private readonly IDictionary<BundleKey, long> history;
-#endif
 
         // -------------------------------------------------------------------
         // Constructor
@@ -34,9 +32,7 @@
 
             this.currentPendingLoads = new Queue<BundleKey>();
 
-#if UNITY_EDITOR
             this.history = new Dictionary<BundleKey, long>();
-#endif
         }
 
         // -------------------------------------------------------------------
@@ -54,6 +50,8 @@
         }
 
         public int BundlesLoaded { get; private set; }
+
+        public bool EnableHistory { get; set; }
 
         public BundleLoadRequest CurrentRequest { get; private set; }
 
@@ -82,12 +80,7 @@
 
         public IDictionary<BundleKey, long> GetHistory()
         {
-#if UNITY_EDITOR
             return this.history;
-#else
-            Diagnostic.Warning("Bundle History is not available in Release build!");
-            return null;
-#endif
         }
 
         public BundleKey? GetBundleKey(CarbonFile file)
@@ -189,9 +182,10 @@
             this.bundles[key] = bundle;
             Diagnostic.TakeTimeMeasure(metric);
 
-#if UNITY_EDITOR
-            this.history.Add(key, metric.Total);
-#endif
+            if (this.EnableHistory)
+            {
+                this.history.Add(key, metric.Total);
+            }
 
             ResourceLoader.RegisterBundle(key, bundle);
             if (this.BundleLoaded != null)

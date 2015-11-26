@@ -18,7 +18,7 @@
 
         private const int MaxConsecutiveSyncCallsInAsync = 20;
 
-        private readonly ResourceMap resourceMap;
+        private readonly ResourceMap<UnityEngine.Object> resourceMap;
 
         private readonly IDictionary<ResourceKey, int> referenceCount;
         
@@ -27,18 +27,16 @@
         private readonly IList<ResourceKey> forceSyncLoad;
         private readonly IList<UnityEngine.Object> pendingInstantiations;
 
-        private readonly ResourceLoadRequestPool requestPool;
-
-#if UNITY_EDITOR
+        private readonly ResourceRequestPool<ResourceLoadRequest> requestPool;
+        
         private readonly IDictionary<ResourceKey, long> history;
-#endif
         
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
         public ResourceProvider()
         {
-            this.resourceMap = new ResourceMap();
+            this.resourceMap = new ResourceMap<UnityEngine.Object>();
             this.referenceCount = new Dictionary<ResourceKey, int>();
 
             this.currentPendingLoads = new Queue<ResourceKey>();
@@ -46,11 +44,9 @@
             this.forceSyncLoad = new List<ResourceKey>();
             this.pendingInstantiations = new List<UnityEngine.Object>();
 
-            this.requestPool = new ResourceLoadRequestPool(DefaultRequestPoolSize);
-
-#if UNITY_EDITOR
+            this.requestPool = new ResourceRequestPool<ResourceLoadRequest>(DefaultRequestPoolSize);
+            
             this.history = new Dictionary<ResourceKey, long>();
-#endif
         }
 
         // -------------------------------------------------------------------
@@ -69,9 +65,11 @@
 
         public int ResourcesLoaded { get; private set; }
 
+        public bool EnableHistory { get; set; }
+
         public bool EnableInstantiation { get; set; }
 
-        public ResourceLoadRequestPool RequestPool
+        public ResourceRequestPool<ResourceLoadRequest> RequestPool
         {
             get
             {
@@ -99,12 +97,7 @@
 
         public IDictionary<ResourceKey, long> GetHistory()
         {
-#if UNITY_EDITOR
             return this.history;
-#else
-            Diagnostic.Warning("Resource History is not available in Release build!");
-            return null;
-#endif
         }
 
         public void RegisterLoadedResource(ResourceKey key, UnityEngine.Object resource)
@@ -138,13 +131,6 @@
         public void UnregisterResource(ResourceKey key)
         {
             this.resourceMap.UnregisterResource(key);
-
-#if UNITY_EDITOR
-            if (this.history.ContainsKey(key))
-            {
-                this.history.Remove(key);
-            }
-#endif
         }
 
         public ResourceReference<T> AcquireOrLoadResource<T>(ResourceKey key)
@@ -294,13 +280,11 @@
         private ResourceReference<T> BuildReference<T>(ResourceKey key, UnityEngine.Object data)
             where T : UnityEngine.Object
         {
-#if UNITY_EDITOR
             if (!(data is T))
             {
                 Diagnostic.Error("Type requested {0} did not match the registered key type {1} for {2}", typeof(T), key.Type, key);
                 return null;
             }
-#endif
 
             var reference = new ResourceReference<T>(key, (T)data, this);
             this.IncreaseResourceRefCount(key);
@@ -353,16 +337,17 @@
                 return;
             }
 
-#if UNITY_EDITOR
-            if (this.history.ContainsKey(key))
+            if (this.EnableHistory)
             {
-                this.history[key] += elapsedTime.Total;
+                if (this.history.ContainsKey(key))
+                {
+                    this.history[key] += elapsedTime.Total;
+                }
+                else
+                {
+                    this.history.Add(key, elapsedTime.Total);
+                }
             }
-            else
-            {
-                this.history.Add(key, elapsedTime.Total);
-            }
-#endif
 
             if (this.EnableInstantiation && this.instantiateOnLoad.Contains(key) && data is UnityEngine.GameObject)
             {

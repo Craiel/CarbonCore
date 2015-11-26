@@ -3,16 +3,18 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    public class ResourceLoadRequestPool
+    using CarbonCore.Utils.Unity.Contracts;
+
+    public class ResourceRequestPool<T> where T : class, IResourceRequest
     {
-        private readonly ResourceLoadRequest[] requests;
+        private readonly T[] requests;
 
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
-        public ResourceLoadRequestPool(int size)
+        public ResourceRequestPool(int size)
         {
-            this.requests = new ResourceLoadRequest[size];
+            this.requests = new T[size];
         }
 
         // -------------------------------------------------------------------
@@ -28,11 +30,11 @@
 
         public int ActiveRequestCount { get; private set; }
 
-        public IList<ResourceLoadRequest> GetFinishedRequests()
+        public IList<T> GetFinishedRequests()
         {
             if (this.requests.Any(x => x != null && x.IsDone))
             {
-                IList<ResourceLoadRequest> results = new List<ResourceLoadRequest>();
+                IList<T> results = new List<T>();
                 for (var i = 0; i < this.requests.Length; i++)
                 {
                     if (this.requests[i] == null || !this.requests[i].IsDone)
@@ -61,7 +63,7 @@
             return this.requests.Any(x => x != null);
         }
 
-        public void AddRequest(ResourceLoadRequest request)
+        public void AddRequest(T request)
         {
             for (var i = 0; i < this.requests.Length; i++)
             {
@@ -74,7 +76,7 @@
             }
         }
 
-        public ResourceLoadRequest GetFirstActiveRequest()
+        public T GetFirstActiveRequest()
         {
             for (var i = 0; i < this.requests.Length; i++)
             {

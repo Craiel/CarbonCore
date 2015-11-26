@@ -5,11 +5,11 @@
 
     using CarbonCore.Utils.Unity.Data;
 
-    public class ResourceMap
+    public class ResourceMap<T> where T : class
     {
         private const int KeyLookupLength = 2;
 
-        private readonly IDictionary<ResourceKey, UnityEngine.Object> data;
+        private readonly IDictionary<ResourceKey, T> data;
 
         private readonly IDictionary<string, IList<ResourceKey>> keyLookup;
         private readonly IDictionary<Type, IList<ResourceKey>> typeLookup;
@@ -21,7 +21,7 @@
         // -------------------------------------------------------------------
         public ResourceMap()
         {
-            this.data = new Dictionary<ResourceKey, UnityEngine.Object>();
+            this.data = new Dictionary<ResourceKey, T>();
             this.keyLookup = new Dictionary<string, IList<ResourceKey>>();
             this.typeLookup = new Dictionary<Type, IList<ResourceKey>>();
             this.resources = new List<ResourceKey>();
@@ -40,7 +40,7 @@
             return null;
         }
 
-        public void RegisterResource(ResourceKey key, UnityEngine.Object resourceData = null)
+        public void RegisterResource(ResourceKey key, T resourceData = null)
         {
             if (this.resources.Contains(key))
             {
@@ -90,9 +90,9 @@
             this.resources.Remove(key);
         }
 
-        public UnityEngine.Object GetData(ResourceKey key)
+        public T GetData(ResourceKey key)
         {
-            UnityEngine.Object result;
+            T result;
             if (this.data.TryGetValue(key, out result))
             {
                 return result;
@@ -106,7 +106,7 @@
             return this.data.ContainsKey(key) && this.data[key] != null;
         }
 
-        public void SetData(ResourceKey key, UnityEngine.Object resourceData)
+        public void SetData(ResourceKey key, T resourceData)
         {
             if (this.data.ContainsKey(key))
             {

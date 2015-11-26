@@ -5,12 +5,13 @@
 
     using CarbonCore.Utils.Compat.Diagnostics;
     using CarbonCore.Utils.Compat.Diagnostics.Metrics;
+    using CarbonCore.Utils.Unity.Contracts;
     using CarbonCore.Utils.Unity.Data;
     using CarbonCore.Utils.Unity.Logic.Enums;
 
     using UnityEngine;
 
-    public class ResourceLoadRequest
+    public class ResourceLoadRequest : IResourceRequest
     {
         private readonly UnityEngine.Object[] assets;
         private readonly ResourceRequest resourceRequest;
