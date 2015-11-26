@@ -23,6 +23,13 @@
 
         public long TriggerCount { get; private set; }
 
+        public static IntervalTrigger Create(float interval, IntervalTriggerDelegate target)
+        {
+            var trigger = new IntervalTrigger(interval);
+            trigger.OnTrigger += target;
+            return trigger;
+        }
+
         public void Update(float currentTime)
         {
             if (currentTime > this.LastTrigger + this.interval)
