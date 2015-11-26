@@ -152,6 +152,7 @@
     <Compile Include="Logic\Json\Matrix4x4Serializer.cs" />
     <Compile Include="Logic\Json\QuaternionSerializer.cs" />
     <Compile Include="Logic\Json\ResourceKeySerializer.cs" />
+    <Compile Include="Logic\Json\Vector2ConverterSmall.cs" />
     <Compile Include="Logic\Json\Vector3Serializer.cs" />
     <Compile Include="Logic\PriorityQueue.cs" />
     <Compile Include="Logic\PriorityQueueNode.cs" />
