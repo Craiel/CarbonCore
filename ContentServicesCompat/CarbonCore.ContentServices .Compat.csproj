@@ -118,6 +118,10 @@
     <Compile Include="Data\FileEntryKey.cs" />
     <Compile Include="Data\JsonDatabase.cs" />
     <Compile Include="Data\JsonDatabaseTable.cs" />
+    <Compile Include="Data\Tiled\TiledMapData.cs" />
+    <Compile Include="Data\Tiled\TiledMapLayerData.cs" />
+    <Compile Include="Data\Tiled\TiledMapObjectData.cs" />
+    <Compile Include="Data\Tiled\TiledMapTileset.cs" />
     <Compile Include="IoC\IoC.cs" />
     <Compile Include="Logic\Attributes\DatabaseEntryJoinedElementAttribute.cs" />
     <Compile Include="Logic\Attributes\DatabaseEntryAttribute.cs" />
@@ -169,6 +173,9 @@
     <Compile Include="Logic\DataEntryLogic\SyncEntry.cs" />
     <Compile Include="Logic\DefaultCompressionProvider.cs" />
     <Compile Include="Logic\Enums\CompressionLevel.cs" />
+    <Compile Include="Logic\Enums\TiledMapLayerType.cs" />
+    <Compile Include="Logic\Enums\TiledMapOrientation.cs" />
+    <Compile Include="Logic\Enums\TiledMapRenderOrder.cs" />
     <Compile Include="Logic\FileEntry.cs" />
     <Compile Include="Logic\FileEntryData.cs" />
     <Compile Include="Logic\FileEntryPackInfo.cs" />
