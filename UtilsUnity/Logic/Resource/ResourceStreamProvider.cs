@@ -8,7 +8,7 @@
     using CarbonCore.Utils.Unity.Data;
 
     // Made to load resources from Application.streamingAssetsPath and other WWW accessible places
-    public class ResourceStreamProvider
+    public class ResourceStreamProvider : UnitySingleton<ResourceStreamProvider>
     {
         private const int DefaultRequestPoolSize = 30;
 
