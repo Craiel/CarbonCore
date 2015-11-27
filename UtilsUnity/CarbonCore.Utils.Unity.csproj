@@ -119,6 +119,7 @@
     <Compile Include="Data\ResourceKey.cs" />
     <Compile Include="Data\ResourceReference.cs" />
     <Compile Include="Data\WeakReference.cs" />
+    <Compile Include="EnumExtensions.cs" />
     <Compile Include="IoC\IoC.cs" />
     <Compile Include="Logic\BackgroundTask.cs" />
     <Compile Include="Logic\BehaviorTree\BehaviorTree.cs" />
