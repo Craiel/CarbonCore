@@ -118,6 +118,7 @@
     <Compile Include="Data\RefCountedWeakReference.cs" />
     <Compile Include="Data\ResourceKey.cs" />
     <Compile Include="Data\ResourceReference.cs" />
+    <Compile Include="Data\Vector2US.cs" />
     <Compile Include="Data\WeakReference.cs" />
     <Compile Include="EnumExtensions.cs" />
     <Compile Include="IoC\IoC.cs" />
