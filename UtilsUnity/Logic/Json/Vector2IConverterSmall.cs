@@ -7,14 +7,14 @@
 
     using Newtonsoft.Json;
     
-    public class Vector2USConverterSmall : JsonConverter
+    public class Vector2IConverterSmall : JsonConverter
     {
         // ------------------------------------------------------------------- 
         // Public 
         // ------------------------------------------------------------------- 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            Vector2US typed = (Vector2US)value;
+            Vector2I typed = (Vector2I)value;
 
             writer.WriteStartArray();
             writer.WriteValue(typed.X);
@@ -27,15 +27,15 @@
         {
             // Start Array + First Value
             reader.Read();
-            ushort x = (ushort)Convert.ChangeType(reader.Value, typeof(ushort));
+            int x = (int)Convert.ChangeType(reader.Value, typeof(int));
 
             reader.Read();
-            ushort y = (ushort)Convert.ChangeType(reader.Value, typeof(ushort));
+            int y = (int)Convert.ChangeType(reader.Value, typeof(int));
 
             // End Array
             reader.Read();
 
-            return new Vector2US(x, y);
+            return new Vector2I(x, y);
         }
 
         public override bool CanRead
@@ -45,7 +45,7 @@
 
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(Vector2US);
+            return objectType == typeof(Vector2I);
         }
     }
 }

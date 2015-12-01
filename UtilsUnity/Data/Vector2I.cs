@@ -2,69 +2,71 @@
 {
     using System.Diagnostics;
 
+    using CarbonCore.Utils.Compat;
+
     using UnityEngine;
 
     [DebuggerDisplay("{X}x{Y}")]
-    public struct Vector2US
+    public struct Vector2I
     {
-        public static readonly Vector2US Zero = new Vector2US(0, 0);
+        public static readonly Vector2I Zero = new Vector2I(0, 0);
 
         // ------------------------------------------------------------------- 
         // Constructor
         // ------------------------------------------------------------------- 
-        public Vector2US(ushort x, ushort y)
+        public Vector2I(int x, int y)
             : this()
         {
             this.X = x;
             this.Y = y;
         }
 
-        public Vector2US(Vector2 vector)
-            : this((ushort)vector.x, (ushort)vector.y)
+        public Vector2I(Vector2 vector)
+            : this((int)vector.x, (int)vector.y)
         {
         }
 
         // ------------------------------------------------------------------- 
         // Public 
         // ------------------------------------------------------------------- 
-        public ushort X { get; }
+        public int X { get; private set; }
 
-        public ushort Y { get; }
+        public int Y { get; private set; }
 
-        public static bool operator ==(Vector2US x, Vector2US y)
+        public static bool operator ==(Vector2I x, Vector2I y)
         {
             return x.Equals(y);
         }
 
-        public static bool operator !=(Vector2US x, Vector2US y)
+        public static bool operator !=(Vector2I x, Vector2I y)
         {
             return !x.Equals(y);
         }
 
-        public static Vector2 operator -(Vector2US x, Vector2US y)
+        public static Vector2I operator -(Vector2I x, Vector2I y)
         {
-            return new Vector2(x.X - y.X, x.Y - y.Y);
+            return new Vector2I(x.X - y.X, x.Y - y.Y);
         }
 
-        public static Vector2 operator +(Vector2US x, Vector2US y)
+        public static Vector2I operator +(Vector2I x, Vector2I y)
         {
-            return new Vector2(x.X + y.X, x.Y + y.Y);
+            return new Vector2I(x.X + y.X, x.Y + y.Y);
         }
 
         public override bool Equals(object obj)
         {
-            var typed = (Vector2US)obj;
+            var typed = (Vector2I)obj;
             return typed.X == this.X && typed.Y == this.Y;
         }
 
         public override int GetHashCode()
         {
-            return this.X ^ this.Y;
+            return HashUtils.GetSimpleCombinedHashCode(this.X, this.Y);
         }
 
         public override string ToString()
         {
-            return $"{this.X}x{this.Y}";
+            return string.Format("{0}x{1}", this.X, this.Y);
         }
 
         public Vector2 ToVector2()

@@ -118,7 +118,7 @@
     <Compile Include="Data\RefCountedWeakReference.cs" />
     <Compile Include="Data\ResourceKey.cs" />
     <Compile Include="Data\ResourceReference.cs" />
-    <Compile Include="Data\Vector2US.cs" />
+    <Compile Include="Data\Vector2I.cs" />
     <Compile Include="Data\WeakReference.cs" />
     <Compile Include="EnumExtensions.cs" />
     <Compile Include="IoC\IoC.cs" />
@@ -155,7 +155,7 @@
     <Compile Include="Logic\Json\QuaternionSerializer.cs" />
     <Compile Include="Logic\Json\ResourceKeySerializer.cs" />
     <Compile Include="Logic\Json\Vector2ConverterSmall.cs" />
-    <Compile Include="Logic\Json\Vector2USConverterSmall.cs" />
+    <Compile Include="Logic\Json\Vector2IConverterSmall.cs" />
     <Compile Include="Logic\Json\Vector3Serializer.cs" />
     <Compile Include="Logic\PriorityQueue.cs" />
     <Compile Include="Logic\PriorityQueueNode.cs" />
@@ -183,6 +183,7 @@
     <Compile Include="Logic\Scene\SceneObjectContainer.cs" />
     <Compile Include="Logic\Scene\SceneObjectController.cs" />
     <Compile Include="Logic\Scene\SceneObjectRoot.cs" />
+    <Compile Include="TextureExtensions.cs" />
     <Compile Include="UnityConstants.cs" />
     <Compile Include="Logic\UnitySingletonBehavior.cs" />
     <Compile Include="Logic\UnitySingleton.cs" />
