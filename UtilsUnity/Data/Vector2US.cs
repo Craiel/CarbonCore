@@ -13,6 +13,7 @@
         // Constructor
         // ------------------------------------------------------------------- 
         public Vector2US(ushort x, ushort y)
+            : this()
         {
             this.X = x;
             this.Y = y;
