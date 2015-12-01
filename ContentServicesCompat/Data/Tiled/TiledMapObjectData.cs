@@ -5,6 +5,9 @@
     [JsonObject(MemberSerialization.OptIn)]
     public class TiledMapObjectData
     {
+        // -------------------------------------------------------------------
+        // Public
+        // -------------------------------------------------------------------
         [JsonProperty("id")]
         public ushort Id { get; set; }
 

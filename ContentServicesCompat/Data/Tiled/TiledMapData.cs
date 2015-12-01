@@ -9,6 +9,9 @@
     [JsonObject(MemberSerialization.OptIn)]
     public class TiledMapData
     {
+        // -------------------------------------------------------------------
+        // Public
+        // -------------------------------------------------------------------
         [JsonProperty("version")]
         public ushort Version { get; set; }
 

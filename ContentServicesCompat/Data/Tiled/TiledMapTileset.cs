@@ -5,6 +5,9 @@
     [JsonObject(MemberSerialization.OptIn)]
     public class TiledMapTileset
     {
+        // -------------------------------------------------------------------
+        // Public
+        // -------------------------------------------------------------------
         [JsonProperty("firstgid")]
         public ushort FirstGID { get; set; }
 

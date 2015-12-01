@@ -9,6 +9,9 @@
     [JsonObject(MemberSerialization.OptIn)]
     public class TiledMapLayerData
     {
+        // -------------------------------------------------------------------
+        // Public
+        // -------------------------------------------------------------------
         [JsonProperty("name")]
         public string Name { get; set; }
 

@@ -144,9 +144,11 @@
     <Compile Include="Logic\BufferedData\Commands\BufferCommandWriteSharedInstance.cs" />
     <Compile Include="Logic\BufferedData\DataSnapshot.cs" />
     <Compile Include="Logic\EngineComponent.cs" />
+    <Compile Include="Logic\Enums\AnchorPoint.cs" />
     <Compile Include="Logic\Enums\BehaviorTreeCompositeMode.cs" />
     <Compile Include="Logic\Enums\BehaviorTreeDecoratorMode.cs" />
     <Compile Include="Logic\Enums\BehaviorTreeStatus.cs" />
+    <Compile Include="Logic\Enums\Orientation.cs" />
     <Compile Include="Logic\Enums\ResourceLoadMode.cs" />
     <Compile Include="Logic\IntervalTrigger.cs" />
     <Compile Include="Logic\Json\BoundsSerializer.cs" />
@@ -157,6 +159,10 @@
     <Compile Include="Logic\Json\Vector2ConverterSmall.cs" />
     <Compile Include="Logic\Json\Vector2IConverterSmall.cs" />
     <Compile Include="Logic\Json\Vector3Serializer.cs" />
+    <Compile Include="Logic\MeshGeneration\AnchorUtils.cs" />
+    <Compile Include="Logic\MeshGeneration\CustomPlane.cs" />
+    <Compile Include="Logic\MeshGeneration\PlaneGeneration.cs" />
+    <Compile Include="Logic\MeshGeneration\PlaneOptions.cs" />
     <Compile Include="Logic\PriorityQueue.cs" />
     <Compile Include="Logic\PriorityQueueNode.cs" />
     <Compile Include="Logic\Resource\BundleLoadRequest.cs" />
