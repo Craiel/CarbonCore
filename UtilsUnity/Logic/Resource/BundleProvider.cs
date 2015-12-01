@@ -67,6 +67,20 @@
             this.currentPendingLoads.Enqueue(key);
         }
 
+        public void RegisterLoadedBundle(BundleKey key, AssetBundle bundle)
+        {
+            if (this.bundles.ContainsKey(key))
+            {
+                this.bundles[key] = bundle;
+            }
+            else
+            {
+                this.bundles.Add(key, bundle);
+            }
+
+            ResourceLoader.RegisterBundle(key, bundle);
+        }
+
         public void RegisterLazyBundle(BundleKey key, CarbonFile file)
         {
             if (this.bundles.ContainsKey(key))
@@ -100,7 +114,7 @@
         {
             if (!this.bundles.ContainsKey(key))
             {
-                Diagnostic.Error("Bundle was not registered, can not load immediate!");
+                Diagnostic.Error("Bundle was not registered, can not load immediate: {0}", key);
                 return false;
             }
 
