@@ -1,5 +1,6 @@
 ﻿namespace CarbonCore.Utils.Unity.Data
 {
+    using System;
     using System.Diagnostics;
 
     using CarbonCore.Utils.Compat;
@@ -32,6 +33,14 @@
         public int X { get; private set; }
 
         public int Y { get; private set; }
+
+        public float Magnitude
+        {
+            get
+            {
+                return (float)Math.Sqrt((this.X * this.X) + (this.Y * this.Y));
+            }
+        }
 
         public static bool operator ==(Vector2I x, Vector2I y)
         {
