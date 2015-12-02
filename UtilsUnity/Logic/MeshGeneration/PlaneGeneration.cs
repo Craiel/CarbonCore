@@ -14,7 +14,7 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public static CustomPlane CreateMeshObject(PlaneOptions options = null, bool addCollider = false)
+        public static CustomPlane CreateMeshObject(PlaneOptions options = null, bool addCollider = false, GameObject customObject = null)
         {
             if (options == null)
             {
@@ -22,20 +22,20 @@
                 options = PlaneOptions.Default;
             }
 
-            GameObject result = new GameObject(options.Name);
-
-            MeshFilter meshFilter = result.AddComponent<MeshFilter>();
-            result.AddComponent<MeshRenderer>();
+            GameObject result = customObject ?? new GameObject(options.Name);
+            
+            MeshFilter meshFilter = result.GetOrAddComponent<MeshFilter>();
+            result.GetOrAddComponent<MeshRenderer>();
 
             meshFilter.sharedMesh = CreateMesh(options);
             meshFilter.sharedMesh.RecalculateBounds();
 
             if (addCollider)
             {
-                result.AddComponent(typeof(BoxCollider));
+                result.GetOrAddComponent<BoxCollider>();
             }
 
-            return result.AddComponent<CustomPlane>();
+            return result.GetOrAddComponent<CustomPlane>();
         }
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "Reviewed. Suppression is OK here.")]

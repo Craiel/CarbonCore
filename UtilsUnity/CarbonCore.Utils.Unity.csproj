@@ -121,6 +121,7 @@
     <Compile Include="Data\Vector2I.cs" />
     <Compile Include="Data\WeakReference.cs" />
     <Compile Include="EnumExtensions.cs" />
+    <Compile Include="GameObjectExtensions.cs" />
     <Compile Include="IoC\IoC.cs" />
     <Compile Include="Logic\BackgroundTask.cs" />
     <Compile Include="Logic\BehaviorTree\BehaviorTree.cs" />
