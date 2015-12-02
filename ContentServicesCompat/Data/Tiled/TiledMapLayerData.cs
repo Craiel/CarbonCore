@@ -25,7 +25,7 @@
         public ushort Opacity { get; set; }
 
         [JsonProperty("visible")]
-        public bool Visibile { get; set; }
+        public bool Visible { get; set; }
 
         [JsonProperty("type")]
         public string TypeValue { get; set; }
