@@ -106,6 +106,7 @@
     <Compile Include="Contracts\BufferedData\IBufferedDataset.cs" />
     <Compile Include="Contracts\BufferedData\IBufferedDataSetInternal.cs" />
     <Compile Include="Contracts\BufferedData\IBufferedDatasetReadOnly.cs" />
+    <Compile Include="Contracts\IDelayedLoadedObject.cs" />
     <Compile Include="Contracts\IEngineComponent.cs" />
     <Compile Include="Contracts\IPriorityQueue.cs" />
     <Compile Include="Contracts\IRefCountedObject.cs" />
@@ -144,6 +145,7 @@
     <Compile Include="Logic\BufferedData\Commands\BufferCommandWriteDiscreteInstance.cs" />
     <Compile Include="Logic\BufferedData\Commands\BufferCommandWriteSharedInstance.cs" />
     <Compile Include="Logic\BufferedData\DataSnapshot.cs" />
+    <Compile Include="Logic\DelayedLoadedObject.cs" />
     <Compile Include="Logic\EngineComponent.cs" />
     <Compile Include="Logic\Enums\AnchorPoint.cs" />
     <Compile Include="Logic\Enums\BehaviorTreeCompositeMode.cs" />

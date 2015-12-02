@@ -41,7 +41,7 @@
 
         [JsonProperty("y")]
         public ushort PositionY { get; set; }
-
+        
         public TiledMapLayerType Type
         {
             get
