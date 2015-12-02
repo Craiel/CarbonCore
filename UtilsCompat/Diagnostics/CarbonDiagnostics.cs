@@ -27,7 +27,7 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public void RegisterMetric<TN>(int id)
+        public virtual void RegisterMetric<TN>(int id)
             where TN : IMetric
         {
             lock (this.metricProviders)
@@ -43,7 +43,7 @@
             }
         }
 
-        public TN GetFullMetric<TN>(int id) where TN : IMetric
+        public virtual TN GetFullMetric<TN>(int id) where TN : IMetric
         {
             lock (this.metricProviders)
             {
@@ -57,7 +57,7 @@
             }
         }
 
-        public void UnregisterMetric(int id)
+        public virtual void UnregisterMetric(int id)
         {
             lock (this.metricProviders)
             {
@@ -70,7 +70,7 @@
             }
         }
 
-        public void RegisterMetricContext(int id)
+        public virtual void RegisterMetricContext(int id)
         {
             lock (this.metricProviders)
             {
@@ -85,7 +85,7 @@
             }
         }
 
-        public void UnregisterMetricContext(int id)
+        public virtual void UnregisterMetricContext(int id)
         {
             lock (this.metricProviders)
             {
@@ -93,13 +93,13 @@
             }
         }
 
-        public IMetricProvider GetMetricProvider(int id)
+        public virtual IMetricProvider GetMetricProvider(int id)
         {
             // ReSharper disable once InconsistentlySynchronizedField
             return this.metricProviders[id];
         }
-        
-        public void RegisterLogContext(int id, string name)
+
+        public virtual void RegisterLogContext(int id, string name)
         {
             lock (this.contextLogs)
             {
@@ -107,7 +107,7 @@
             }
         }
 
-        public void UnregisterLogContext(int id)
+        public virtual void UnregisterLogContext(int id)
         {
             lock (this.contextLogs)
             {
@@ -115,10 +115,37 @@
             }
         }
 
-        public ILog GetLogContext(int id)
+        public virtual ILog GetLogContext(int id)
         {
             // ReSharper disable once InconsistentlySynchronizedField
             return this.contextLogs[id];
+        }
+
+        // -------------------------------------------------------------------
+        // Protected
+        // -------------------------------------------------------------------
+        protected IDictionary<int, Type> Metrics
+        {
+            get
+            {
+                return this.metrics;
+            }
+        }
+
+        protected IDictionary<int, T> ContextLogs
+        {
+            get
+            {
+                return this.contextLogs;
+            }
+        }
+
+        protected IDictionary<int, TM> MetricProviders
+        {
+            get
+            {
+                return this.metricProviders;
+            }
         }
     }
 }
