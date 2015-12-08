@@ -159,6 +159,7 @@
     <Compile Include="Json\JsonDictionaryConverter.cs" />
     <Compile Include="Json\JsonExtensions.cs" />
     <Compile Include="MathUtils\BitOperations.cs" />
+    <Compile Include="MathUtils\FloatExtensions.cs" />
     <Compile Include="Network\CoreTcpClient.cs" />
     <Compile Include="Network\CoreTcpData.cs" />
     <Compile Include="Network\CoreTcpServer.cs" />

@@ -10,6 +10,7 @@
     using CarbonCore.Utils.Compat.IO;
 
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Bson;
 
     public static class JsonExtensions
     {

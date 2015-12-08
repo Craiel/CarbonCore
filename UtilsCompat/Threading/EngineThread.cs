@@ -117,7 +117,7 @@
             this.internalThread = null;
         }
 
-        public void Start()
+        public void Start(Func<ThreadStart, Thread> manualThreadCreation = null)
         {
             if (this.IsThreadRunning || this.IsThreadFinished)
             {
@@ -127,7 +127,18 @@
             this.IsThreadRunning = true;
             this.isRunning = true;
             this.HadErrors = false;
-            this.internalThread = new Thread(this.ThreadMain) { Name = this.ThreadName, IsBackground = true };
+
+            if (manualThreadCreation != null)
+            {
+                this.internalThread = manualThreadCreation(this.ThreadMain);
+            }
+            else
+            {
+                this.internalThread = new Thread(this.ThreadMain);
+            }
+
+            this.internalThread.Name = this.ThreadName;
+            this.internalThread.IsBackground = true;
             this.internalThread.Start();
 
             if (this.MuteTrace)

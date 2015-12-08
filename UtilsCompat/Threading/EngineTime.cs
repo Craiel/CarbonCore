@@ -8,7 +8,7 @@
 
         private long lastUpdateTicks;
 
-        private long ticksSineLastFrame;
+        private long ticksSinceLastFrame;
         
         // -------------------------------------------------------------------
         // Constructor
@@ -22,6 +22,12 @@
         public EngineTime()
         {
             this.Reset();
+        }
+
+        public EngineTime(double time)
+            : this()
+        {
+            this.Ticks = (long)(time * Stopwatch.Frequency);
         }
 
         public EngineTime(long frame, float speed, long ticks, long fixedTicks, long ticksLostToPause)
@@ -106,7 +112,7 @@
 
             this.Speed = 1.0f;
 
-            this.ticksSineLastFrame = 0;
+            this.ticksSinceLastFrame = 0;
         }
 
         public void Update()
@@ -124,8 +130,8 @@
 
             this.Frame++;
 
-            this.FrameDeltaTicks = this.ticksSineLastFrame;
-            this.ticksSineLastFrame = 0;
+            this.FrameDeltaTicks = this.ticksSinceLastFrame;
+            this.ticksSinceLastFrame = 0;
 
             this.FrameDeltaTime = (double)this.FrameDeltaTicks / Stopwatch.Frequency;
         }
@@ -180,7 +186,7 @@
             {
                 this.Ticks += deltaTicks;
                 this.DeltaTicks = deltaTicks;
-                this.ticksSineLastFrame += deltaTicks;
+                this.ticksSinceLastFrame += deltaTicks;
             }
 
             // Recalculate the time values

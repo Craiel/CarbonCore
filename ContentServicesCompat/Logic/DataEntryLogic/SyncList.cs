@@ -113,6 +113,12 @@
 
         public void Clear()
         {
+            if (this.Value.Count <= 0)
+            {
+                // Avoid triggering change state if not needed
+                return;
+            }
+
             this.Value.Clear();
             this.IsChanged = true;
         }
