@@ -30,7 +30,7 @@
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\CarbonCore.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
@@ -65,6 +65,10 @@
     <ProjectReference Include="..\..\ToolFramework\CarbonCore.ToolFramework.csproj">
       <Project>{E4643DF2-D2DB-4E99-AB4B-D8CE4FD94D81}</Project>
       <Name>CarbonCore.ToolFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ToolFramework\Console\CarbonCore.ToolFramework.Console.csproj">
+      <Project>{1ff6d0da-b801-4956-a015-ce04fc7fb93f}</Project>
+      <Name>CarbonCore.ToolFramework.Console</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Utils\CarbonCore.Utils.csproj">
       <Project>{E05836D9-0BB3-4BFA-89E6-F5ED40A9D93C}</Project>

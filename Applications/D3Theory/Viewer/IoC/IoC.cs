@@ -3,12 +3,12 @@
     using CarbonCore.Applications.D3Theory.Viewer;
     using CarbonCore.Applications.D3Theory.Viewer.Contracts;
     using CarbonCore.Applications.D3Theory.Viewer.ViewModel;
-    using CarbonCore.ToolFramework.IoC;
+    using CarbonCore.ToolFramework.Windows.IoC;
     using CarbonCore.Utils.Edge.IoC;
     using CarbonCore.Utils.IoC;
 
     [DependsOnModule(typeof(UtilsEdgeModule))]
-    [DependsOnModule(typeof(ToolFrameworkModule))]
+    [DependsOnModule(typeof(ToolFrameworkWindowsModule))]
     public class D3TheoryViewerModule : CarbonQuickModule
     {
         public D3TheoryViewerModule()

@@ -6,6 +6,7 @@
     using System.Reflection;
     using System.Threading;
 
+    using CarbonCore.ToolFramework.Console.Logic;
     using CarbonCore.ToolFramework.Logic;
     using CarbonCore.Utils.Contracts.IoC;
     using CarbonCore.Utils.Diagnostics;

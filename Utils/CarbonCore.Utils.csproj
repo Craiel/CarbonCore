@@ -166,8 +166,8 @@
     <Compile Include="Network\JsonNetServer.cs" />
     <Compile Include="Network\JsonNetUtils.cs" />
     <Compile Include="Network\NetworkUtils.cs" />
-    <Compile Include="Network\Packages\JsonNetPackagePayload.cs" />
-    <Compile Include="Network\Packages\JsonNetPackagePing.cs" />
+    <Compile Include="Network\Package\JsonNetPackagePayload.cs" />
+    <Compile Include="Network\Package\JsonNetPackagePing.cs" />
     <Compile Include="ProcessorSettings.cs" />
     <Compile Include="ProcessorUtils.cs" />
     <Compile Include="StringExtensions.cs" />

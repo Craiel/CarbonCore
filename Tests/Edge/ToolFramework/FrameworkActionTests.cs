@@ -1,13 +1,14 @@
 ﻿namespace CarbonCore.Tests.Edge.ToolFramework
 {
-    using CarbonCore.Tests.Edge.Contracts;
+    using System.Threading;
+    
     using CarbonCore.Tests.Edge.IoC;
     using CarbonCore.Utils.Contracts.IoC;
     using CarbonCore.Utils.Edge.IoC;
 
     using NUnit.Framework;
 
-    [TestFixture, RequiresSTA]
+    [TestFixture, Apartment(ApartmentState.STA)]
     public class FrameworkActionTests
     {
         private ICarbonContainer container;

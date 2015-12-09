@@ -1,7 +1,7 @@
 ﻿namespace CarbonCore.Tests.Edge.ToolFramework
 {
     using CarbonCore.Tests.Edge.Contracts;
-    using CarbonCore.ToolFramework.ViewModel;
+    using CarbonCore.ToolFramework.Windows.ViewModel;
 
     public class FrameworkTestMainViewModel : BaseViewModel, IFrameworkTestMainViewModel
     {

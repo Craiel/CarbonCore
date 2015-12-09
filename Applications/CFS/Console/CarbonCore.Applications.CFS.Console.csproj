@@ -54,6 +54,14 @@
       <Project>{06d0ca41-40b7-4c49-a230-5dd1540d9767}</Project>
       <Name>CarbonCore.CFS</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\ToolFramework\CarbonCore.ToolFramework.csproj">
+      <Project>{e4643df2-d2db-4e99-ab4b-d8ce4fd94d81}</Project>
+      <Name>CarbonCore.ToolFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\ToolFramework\Console\CarbonCore.ToolFramework.Console.csproj">
+      <Project>{1ff6d0da-b801-4956-a015-ce04fc7fb93f}</Project>
+      <Name>CarbonCore.ToolFramework.Console</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

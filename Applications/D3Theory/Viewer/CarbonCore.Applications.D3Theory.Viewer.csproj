@@ -84,9 +84,17 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Modules\D3Theory\CarbonCore.Modules.D3Theory.csproj">
+      <Project>{c630f5c6-75e4-40c1-9343-44b7eb05b67c}</Project>
+      <Name>CarbonCore.Modules.D3Theory</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\ToolFramework\CarbonCore.ToolFramework.csproj">
       <Project>{E4643DF2-D2DB-4E99-AB4B-D8CE4FD94D81}</Project>
       <Name>CarbonCore.ToolFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\ToolFramework\Windows\CarbonCore.ToolFramework.Windows.csproj">
+      <Project>{5f12fa78-59fc-4bf5-8312-0131e0350a63}</Project>
+      <Name>CarbonCore.ToolFramework.Windows</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Utils\CarbonCore.Utils.csproj">
       <Project>{E05836D9-0BB3-4BFA-89E6-F5ED40A9D93C}</Project>
@@ -95,10 +103,6 @@
     <ProjectReference Include="..\..\..\Utils\Edge\CarbonCore.Utils.Edge.csproj">
       <Project>{a46b19fc-eb4a-4bda-97e1-5b522fb4cc6b}</Project>
       <Name>CarbonCore.Utils.Edge</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CarbonCore.Modules.D3Theory.csproj">
-      <Project>{c630f5c6-75e4-40c1-9343-44b7eb05b67c}</Project>
-      <Name>CarbonCore.Modules.D3Theory</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

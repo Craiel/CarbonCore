@@ -1,6 +1,6 @@
 ﻿namespace CarbonCore.Tests.Edge.Contracts
 {
-    using CarbonCore.ToolFramework.Contracts.ViewModels;
+    using CarbonCore.ToolFramework.Windows.Contracts.ViewModels;
 
     public interface IFrameworkTestMainViewModel : IBaseViewModel
     {

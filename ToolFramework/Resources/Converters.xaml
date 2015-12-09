@@ -1,9 +1,0 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:converters="clr-namespace:CarbonCore.ToolFramework.Logic.Converters">
-
-    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-    
-    <converters:TraceEventTypeToColorConverter x:Key="TraceEventTypeToColorConverter"/>
-
-</ResourceDictionary>

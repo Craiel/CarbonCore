@@ -1,7 +1,7 @@
-﻿using CarbonCore.ToolFramework.Contracts;
-
-namespace CarbonCore.Applications.MCSync.Contracts
+﻿namespace CarbonCore.Applications.MCSync.Contracts
 {
+    using CarbonCore.ToolFramework.Console.Contracts;
+
     public interface IMain : IConsoleApplicationBase
     {
     }

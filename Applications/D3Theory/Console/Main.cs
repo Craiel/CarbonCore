@@ -8,7 +8,7 @@
     using CarbonCore.Modules.D3Theory.Data;
     using CarbonCore.Modules.D3Theory.Logic;
     using CarbonCore.Modules.D3Theory.Logic.Modules;
-    using CarbonCore.ToolFramework.Logic;
+    using CarbonCore.ToolFramework.Console.Logic;
     using CarbonCore.Utils;
     using CarbonCore.Utils.Contracts.IoC;
     using CarbonCore.Utils.Edge.CommandLine.Contracts;

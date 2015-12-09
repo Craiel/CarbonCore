@@ -2,7 +2,6 @@
 {
     using System;
     using System.Threading;
-    using System.Windows.Threading;
 
     public enum ToolActionLevel
     {
@@ -27,8 +26,6 @@
         string ProgressMessage { get; set; }
 
         IToolActionResult Result { get; set; }
-        
-        Dispatcher Dispatcher { get; set; }
         
         void Execute(CancellationToken token);
     }

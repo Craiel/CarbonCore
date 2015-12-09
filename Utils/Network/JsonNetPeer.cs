@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     
     using CarbonCore.Utils.Contracts.Network;
-    using CarbonCore.Utils.Network.Packages;
+    using CarbonCore.Utils.Network.Package;
 
     public class JsonNetPeer : IJsonNetPeer
     {

@@ -7,8 +7,8 @@
 
     using CarbonCore.Tests.Edge.Contracts;
     using CarbonCore.ToolFramework.Contracts;
-    using CarbonCore.ToolFramework.Logic;
     using CarbonCore.ToolFramework.Logic.Actions;
+    using CarbonCore.ToolFramework.Windows.Logic;
     using CarbonCore.Utils.Contracts.IoC;
 
     using NUnit.Framework;
@@ -70,7 +70,8 @@
 
             // Create one dispatched action that will run after the others
             action = RelayToolAction.Create(this.TestAction2);
-            action.Dispatcher = Application.Current.Dispatcher;
+            Assert.Fail("Dispatcher is currently not implemented!");
+            //action.Dispatcher = Application.Current.Dispatcher;
             action.Order = 10;
             target.Add(action);
         }
@@ -115,7 +116,8 @@
         private void TestAction2(IToolAction action, CancellationToken cancellationToken)
         {
             System.Diagnostics.Debug.WriteLine(Thread.CurrentThread.ManagedThreadId + " TestAction2");
-            Assert.AreEqual(action.Dispatcher, Application.Current.Dispatcher, "Dispatched test must be in the main dispatcher");
+            Assert.Fail("Dispatcher is currently not implemented!");
+            //Assert.AreEqual(action.Dispatcher, Application.Current.Dispatcher, "Dispatched test must be in the main dispatcher");
             Assert.AreEqual(10, this.cyclesTested.Count);
             
             action.ProgressMax = TestCycles;

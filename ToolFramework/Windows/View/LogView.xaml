@@ -1,0 +1,72 @@
+﻿<UserControl x:Class="CarbonCore.ToolFramework.View.LogView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/CarbonCore.ToolFramework.Windows;component/Resources/Converters.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Orientation="Horizontal">
+            <Button Style="{DynamicResource AccentedSquareButtonStyle}" Width="120" Margin="4"
+                    Command="{Binding Path=CommandToggleError}">
+                <TextBlock>
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{} {0} Errors">
+                            <Binding Path="ErrorCount"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+            </Button>
+            <Button Style="{DynamicResource AccentedSquareButtonStyle}" Width="120" Margin="4"
+                    Command="{Binding Path=CommandToggleWarning}">
+                <TextBlock>
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{} {0} Warnings">
+                            <Binding Path="WarningCount"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+            </Button>
+            <Button Style="{DynamicResource AccentedSquareButtonStyle}" Width="120" Margin="4"
+                    Command="{Binding Path=CommandToggleInfo}">
+                <TextBlock>
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{} {0} Messages">
+                            <Binding Path="InfoCount"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+            </Button>
+        </StackPanel>
+        
+        <ListView Grid.Row="1" ItemsSource="{Binding Path=FilteredEntries}" Margin="4">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Path=Time}" Margin="4" Foreground="{Binding Path=Type, Converter={StaticResource TraceEventTypeToColorConverter}}"/>
+                        <TextBlock Margin="4" Foreground="{Binding Path=Type, Converter={StaticResource TraceEventTypeToColorConverter}}">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}[{0}]">
+                                    <Binding Path="Type"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                        <TextBlock Text="{Binding Path=Message}" Margin="4" Foreground="{Binding Path=Type, Converter={StaticResource TraceEventTypeToColorConverter}}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</UserControl>

@@ -2,7 +2,6 @@
 {
     using System;
     using System.Threading;
-    using System.Windows.Threading;
 
     using CarbonCore.ToolFramework.Contracts;
 
@@ -24,9 +23,7 @@
         public string ProgressMessage { get; set; }
 
         public IToolActionResult Result { get; set; }
-
-        public Dispatcher Dispatcher { get; set; }
-
+        
         public bool IsRunning { get; protected set; }
 
         public abstract void Execute(CancellationToken token);

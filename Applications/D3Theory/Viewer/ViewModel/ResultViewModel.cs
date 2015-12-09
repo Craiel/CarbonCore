@@ -7,7 +7,7 @@
     using CarbonCore.Applications.D3Theory.Viewer.Contracts;
     using CarbonCore.Applications.D3Theory.Viewer.Logic;
     using CarbonCore.Modules.D3Theory.Data;
-    using CarbonCore.ToolFramework.ViewModel;
+    using CarbonCore.ToolFramework.Windows.ViewModel;
     using CarbonCore.Utils.Contracts.IoC;
 
     public class ResultViewModel : BaseViewModel, IResultViewModel

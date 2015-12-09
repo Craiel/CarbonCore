@@ -5,7 +5,7 @@
     using System.IO;
 
     using CarbonCore.Utils.Contracts.Network;
-    using CarbonCore.Utils.Network.Packages;
+    using CarbonCore.Utils.Network.Package;
 
     using Newtonsoft.Json;
     using Newtonsoft.Json.Bson;

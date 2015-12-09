@@ -5,7 +5,7 @@
     using System.Diagnostics;
 
     using CarbonCore.Applications.CrystalBuild.Logic;
-    using CarbonCore.ToolFramework.Logic;
+    using CarbonCore.ToolFramework.Console.Logic;
     using CarbonCore.Utils;
     using CarbonCore.Utils.Contracts.IoC;
     using CarbonCore.Utils.Diagnostics;

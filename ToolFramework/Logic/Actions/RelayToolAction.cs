@@ -29,7 +29,7 @@
         public override void Execute(CancellationToken token)
         {
             this.IsRunning = true;
-            Task.Factory.StartNew(() => this.DoExecute(token));
+            Task.Factory.StartNew(() => this.DoExecute(token), token);
         }
 
         // -------------------------------------------------------------------
@@ -37,15 +37,8 @@
         // -------------------------------------------------------------------
         private void DoExecute(CancellationToken token)
         {
-            if (this.Dispatcher != null)
-            {
-                this.Dispatcher.Invoke(() => this.action(this, token));
-            }
-            else
-            {
-                var task = Task.Factory.StartNew(() => this.action(this, token));
-                Task.WaitAny(task);
-            }
+            var task = Task.Factory.StartNew(() => this.action(this, token), token);
+            Task.WaitAny(task);
 
             this.IsRunning = false;
         }

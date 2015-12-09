@@ -5,7 +5,7 @@
 
     using CarbonCore.Applications.D3Theory.Viewer.Logic;
     using CarbonCore.Modules.D3Theory.Data;
-    using CarbonCore.ToolFramework.Contracts.ViewModels;
+    using CarbonCore.ToolFramework.Windows.Contracts.ViewModels;
 
     public interface ISampleViewModel : IBaseViewModel
     {

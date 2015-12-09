@@ -1,26 +1,16 @@
 ﻿namespace CarbonCore.ToolFramework.IoC
 {
     using CarbonCore.ToolFramework.Contracts;
-    using CarbonCore.ToolFramework.Contracts.ViewModels;
     using CarbonCore.ToolFramework.Logic;
-    using CarbonCore.ToolFramework.ViewModel;
     using CarbonCore.Utils.Edge.IoC;
-    using CarbonCore.Utils.Edge.WPF.IoC;
     using CarbonCore.Utils.IoC;
 
     [DependsOnModule(typeof(UtilsEdgeModule))]
-    [DependsOnModule(typeof(UtilsWPFModule))]
     public class ToolFrameworkModule : CarbonQuickModule
     {
         public ToolFrameworkModule()
         {
             this.For<IToolActionResult>().Use<ToolActionResult>();
-
-            this.For<IToolActionViewModel>().Use<ToolActionViewModel>();
-            this.For<IToolActionDialogViewModel>().Use<ToolActionDialogViewModel>();
-
-            this.For<ILogViewModel>().Use<LogViewModel>();
-            this.For<ILogEntryViewModel>().Use<LogEntryViewModel>();
         }
     }
 }

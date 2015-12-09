@@ -1,6 +1,6 @@
 ﻿namespace CarbonCore.Applications.MCSync.IoC
 {
-    using CarbonCore.ToolFramework.IoC;
+    using CarbonCore.ToolFramework.Console.IoC;
     using CarbonCore.Utils.Edge.CommandLine.IoC;
     using CarbonCore.Utils.Edge.IoC;
     using CarbonCore.Utils.IoC;
@@ -9,7 +9,7 @@
 
     [DependsOnModule(typeof(UtilsEdgeModule))]
     [DependsOnModule(typeof(UtilsCommandLineModule))]
-    [DependsOnModule(typeof(ToolFrameworkModule))]
+    [DependsOnModule(typeof(ToolFrameworkConsoleModule))]
     public class MCSyncModule : CarbonQuickModule
     {
         public MCSyncModule()

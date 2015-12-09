@@ -6,7 +6,7 @@
     using CarbonCore.Utils.Contracts.IoC;
     using CarbonCore.Utils.Contracts.Network;
     using CarbonCore.Utils.Edge.IoC;
-    using CarbonCore.Utils.Network.Packages;
+    using CarbonCore.Utils.Network.Package;
 
     using NUnit.Framework;
 

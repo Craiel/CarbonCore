@@ -4,8 +4,9 @@
 
     using CarbonCore.Applications.D3Theory.Viewer.Contracts;
     using CarbonCore.Applications.D3Theory.Viewer.View;
-    using CarbonCore.ToolFramework.Contracts.ViewModels;
     using CarbonCore.ToolFramework.Logic;
+    using CarbonCore.ToolFramework.Windows.Contracts.ViewModels;
+    using CarbonCore.ToolFramework.Windows.Logic;
     using CarbonCore.Utils.Contracts.IoC;
 
     public class D3ViewerMain : WindowApplicationBase, ID3ViewerMain
