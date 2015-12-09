@@ -116,6 +116,21 @@
             return new Vector2I(v1.X + v2.X, v1.Y + v2.Y);
         }
 
+        public static Vector2I operator -(Vector2I v1, Vector2I v2)
+        {
+            return new Vector2I(v1.X - v2.X, v1.Y - v2.Y);
+        }
+
+        public static Vector2I operator *(Vector2I v1, int s)
+        {
+            return new Vector2I(v1.X * s, v1.Y * s);
+        }
+
+        public static Vector2I operator /(Vector2I v1, int s)
+        {
+            return new Vector2I(v1.X / s, v1.Y / s);
+        }
+
         public override string ToString()
         {
             return string.Format("{0}x{1}", this.X, this.Y);

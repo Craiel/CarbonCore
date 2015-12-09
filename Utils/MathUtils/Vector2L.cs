@@ -118,10 +118,17 @@
 
         public static Vector2L operator -(Vector2L v1, Vector2L v2)
         {
-            var vt = new Vector2L(v1);
-            vt.X -= v2.X;
-            vt.Y -= v2.Y;
-            return vt;
+            return new Vector2L(v1.X - v2.X, v1.Y - v2.Y);
+        }
+
+        public static Vector2L operator *(Vector2L v1, long s)
+        {
+            return new Vector2L(v1.X * s, v1.Y * s);
+        }
+
+        public static Vector2L operator /(Vector2L v1, long s)
+        {
+            return new Vector2L(v1.X / s, v1.Y / s);
         }
 
         public override string ToString()

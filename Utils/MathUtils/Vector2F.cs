@@ -116,34 +116,22 @@
 
         public static Vector2F operator +(Vector2F v1, Vector2F v2)
         {
-            var vt = new Vector2F(v1);
-            vt.X += v2.X;
-            vt.Y += v2.Y;
-            return vt;
+            return new Vector2F(v1.X + v2.X, v1.Y + v2.Y);
         }
 
         public static Vector2F operator -(Vector2F v1, Vector2F v2)
         {
-            var vt = new Vector2F(v1);
-            vt.X -= v2.X;
-            vt.Y -= v2.Y;
-            return vt;
+            return new Vector2F(v1.X - v2.X, v1.Y - v2.Y);
         }
 
         public static Vector2F operator *(Vector2F v1, float s)
         {
-            var vt = new Vector2F(v1);
-            vt.X *= s;
-            vt.Y *= s;
-            return vt;
+            return new Vector2F(v1.X * s, v1.Y * s);
         }
 
         public static Vector2F operator /(Vector2F v1, float s)
         {
-            var vt = new Vector2F(v1);
-            vt.X /= s;
-            vt.Y /= s;
-            return vt;
+            return new Vector2F(v1.X / s, v1.Y / s);
         }
 
         public static bool operator >(Vector2F v1, Vector2F v2)

@@ -130,6 +130,16 @@
             return new Vector2S((short)(v1.X - v2.X), (short)(v2.Y - v2.Y));
         }
 
+        public static Vector2S operator *(Vector2S v1, short s)
+        {
+            return new Vector2S((short)(v1.X * s), (short)(v1.Y * s));
+        }
+
+        public static Vector2S operator /(Vector2S v1, short s)
+        {
+            return new Vector2S((short)(v1.X / s), (short)(v1.Y / s));
+        }
+
         public override string ToString()
         {
             return string.Format("{0}x{1}", this.X, this.Y);
