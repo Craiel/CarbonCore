@@ -1,6 +1,6 @@
-﻿namespace CarbonCore.Tests
+﻿namespace CarbonCore.Tests.Compat
 {
-    using CarbonCore.Utils.Compat.Diagnostics;
+    using CarbonCore.Utils.Diagnostics;
 
     using NUnit.Framework;
 

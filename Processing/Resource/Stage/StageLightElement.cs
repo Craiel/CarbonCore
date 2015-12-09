@@ -1,6 +1,6 @@
 ﻿namespace CarbonCore.Processing.Resource.Stage
 {
-    using CarbonCore.UtilsDX;
+    using CarbonCore.Utils.Edge.DirectX;
 
     using SharpDX;
 

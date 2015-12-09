@@ -1,7 +1,7 @@
 ﻿namespace CarbonCore.ToolFramework.ViewModel
 {
     using CarbonCore.ToolFramework.Contracts.ViewModels;
-    using CarbonCore.Utils.Compat.Contracts.IoC;
+    using CarbonCore.Utils.Contracts.IoC;
 
     public abstract class ModuleViewModel : BaseViewModel, IModuleViewModel
     {

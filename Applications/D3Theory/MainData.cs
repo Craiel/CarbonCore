@@ -3,8 +3,8 @@
     using System;
     using System.Collections.Generic;
 
-    using CarbonCore.Utils.Compat.IO;
-    using CarbonCore.Utils.Compat.Json;
+    using CarbonCore.Utils.IO;
+    using CarbonCore.Utils.Json;
 
     using D3Theory.Contracts;
     using D3Theory.Data;

@@ -4,7 +4,7 @@
     using System.Text;
 
     using CarbonCore.Processing.Processors.Excel;
-    using CarbonCore.Utils.Compat;
+    using CarbonCore.Utils;
 
     public class ExcelFormatterJava : ExcelFormatter
     {

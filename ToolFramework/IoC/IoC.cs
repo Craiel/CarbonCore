@@ -4,9 +4,9 @@
     using CarbonCore.ToolFramework.Contracts.ViewModels;
     using CarbonCore.ToolFramework.Logic;
     using CarbonCore.ToolFramework.ViewModel;
-    using CarbonCore.Utils.Compat.IoC;
     using CarbonCore.Utils.IoC;
-    using CarbonCore.UtilsWPF.IoC;
+    using CarbonCore.Utils.IoC;
+    using CarbonCore.Utils.Edge.WPF.IoC;
 
     [DependsOnModule(typeof(UtilsModule))]
     [DependsOnModule(typeof(UtilsWPFModule))]

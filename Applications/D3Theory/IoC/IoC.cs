@@ -1,6 +1,6 @@
 ﻿namespace D3Theory.IoC
 {
-    using CarbonCore.Utils.Compat.IoC;
+    using CarbonCore.Utils.IoC;
     using CarbonCore.Utils.IoC;
 
     using D3Theory.Contracts;

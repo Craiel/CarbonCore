@@ -1,6 +1,6 @@
 ﻿namespace CarbonCore.Processing.Resource.Model
 {
-    using CarbonCore.UtilsDX;
+    using CarbonCore.Utils.Edge.DirectX;
 
     using SharpDX;
 

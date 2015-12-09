@@ -15,28 +15,28 @@
     <WarningLevel>4</WarningLevel>
     <TargetFrameworkProfile />
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+  <PropertyGroup>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>..\..\..\CarbonCore.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>..\..\Release\D3Theory\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -87,14 +87,6 @@
     <ProjectReference Include="..\..\..\ToolFramework\CarbonCore.ToolFramework.csproj">
       <Project>{E4643DF2-D2DB-4E99-AB4B-D8CE4FD94D81}</Project>
       <Name>CarbonCore.ToolFramework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\UtilsCompat\CarbonCore.Utils.Compat.csproj">
-      <Project>{B823CDCE-5ED4-4030-AB35-44DAF233D4C0}</Project>
-      <Name>CarbonCore.Utils.Compat</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\UtilsWPF\CarbonCore.UtilsWPF.csproj">
-      <Project>{75ff83f3-c123-4982-91f7-09d0f8a66536}</Project>
-      <Name>CarbonCore.UtilsWPF</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Utils\CarbonCore.Utils.csproj">
       <Project>{E05836D9-0BB3-4BFA-89E6-F5ED40A9D93C}</Project>

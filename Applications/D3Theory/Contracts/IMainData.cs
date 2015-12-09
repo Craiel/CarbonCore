@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    using CarbonCore.Utils.Compat.IO;
+    using CarbonCore.Utils.IO;
 
     using D3Theory.Data;
 

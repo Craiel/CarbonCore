@@ -16,23 +16,22 @@
   <PropertyGroup>
     <StartupObject>CarbonCore.Applications.CrystalBuild.Entry</StartupObject>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>..\..\CarbonCore.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
-    <NoWarn>IDE0001</NoWarn>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>..\Release\CrystalBuild\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
@@ -126,14 +125,6 @@
     <ProjectReference Include="..\..\ToolFramework\CarbonCore.ToolFramework.csproj">
       <Project>{E4643DF2-D2DB-4E99-AB4B-D8CE4FD94D81}</Project>
       <Name>CarbonCore.ToolFramework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\UtilsCommandLine\CarbonCore.UtilsCommandLine.csproj">
-      <Project>{E99C6721-99A5-4DC3-BD9D-DC88F65D217A}</Project>
-      <Name>CarbonCore.UtilsCommandLine</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\UtilsCompat\CarbonCore.Utils.Compat.csproj">
-      <Project>{B823CDCE-5ED4-4030-AB35-44DAF233D4C0}</Project>
-      <Name>CarbonCore.Utils.Compat</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Utils\CarbonCore.Utils.csproj">
       <Project>{E05836D9-0BB3-4BFA-89E6-F5ED40A9D93C}</Project>

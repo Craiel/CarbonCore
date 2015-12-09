@@ -5,7 +5,7 @@
     using System.Windows.Controls;
 
     using CarbonCore.ToolFramework.ViewModel;
-    using CarbonCore.Utils.Compat.Contracts.IoC;
+    using CarbonCore.Utils.Contracts.IoC;
 
     using D3Theory.Data;
     using D3Theory.Viewer.Contracts;

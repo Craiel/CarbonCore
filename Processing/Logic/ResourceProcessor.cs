@@ -8,7 +8,7 @@
     using CarbonCore.Processing.Resource.Stage;
     using CarbonCore.Processing.Source.Collada;
     using CarbonCore.Processing.Source.Xcd;
-    using CarbonCore.Utils.Compat.IO;
+    using CarbonCore.Utils.IO;
 
     public delegate string ReferenceResolveDelegate(string reference);
 
@@ -32,7 +32,7 @@
 
         public RawResource ProcessRaw(CarbonDirectory path)
         {
-            return Utils.Diagnostics.Internal.NotImplemented<RawResource>();
+            return Utils.Edge.Diagnostics.Internal.NotImplemented<RawResource>();
         }
 
         public RawResource ProcessRaw(CarbonFile file)

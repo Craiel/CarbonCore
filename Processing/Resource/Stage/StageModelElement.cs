@@ -3,7 +3,7 @@
     using System.Collections.Generic;
 
     using CarbonCore.Protocol.Resource;
-    using CarbonCore.UtilsDX;
+    using CarbonCore.Utils.Edge.DirectX;
 
     using SharpDX;
 

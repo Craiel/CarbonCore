@@ -6,8 +6,8 @@
     using System.Text.RegularExpressions;
 
     using CarbonCore.Utils;
-    using CarbonCore.Utils.Compat.I18N;
-    using CarbonCore.Utils.Compat.IO;
+    using CarbonCore.Utils.I18N;
+    using CarbonCore.Utils.IO;
 
     using CrystalBuild.Contracts.Processors;
 

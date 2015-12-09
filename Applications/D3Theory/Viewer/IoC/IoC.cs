@@ -1,7 +1,7 @@
 ﻿namespace D3Theory.Viewer.IoC
 {
     using CarbonCore.ToolFramework.IoC;
-    using CarbonCore.Utils.Compat.IoC;
+    using CarbonCore.Utils.IoC;
     using CarbonCore.Utils.IoC;
 
     using D3Theory.Viewer.Contracts;

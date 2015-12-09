@@ -1,9 +1,9 @@
 ﻿namespace CarbonCore.Applications.MCSync.IoC
 {
     using CarbonCore.ToolFramework.IoC;
-    using CarbonCore.Utils.Compat.IoC;
     using CarbonCore.Utils.IoC;
-    using CarbonCore.UtilsCommandLine.IoC;
+    using CarbonCore.Utils.IoC;
+    using CarbonCore.Utils.Edge.CommandLine.IoC;
 
     using MCSync.Contracts;
 

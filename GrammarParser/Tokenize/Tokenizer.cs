@@ -8,7 +8,7 @@
 
     using CarbonCore.GrammarParser.Contracts;
     using CarbonCore.GrammarParser.Terms;
-    using CarbonCore.Utils.Compat.Diagnostics;
+    using CarbonCore.Utils.Diagnostics;
 
     public class Tokenizer : ITokenizer<Token>
     {

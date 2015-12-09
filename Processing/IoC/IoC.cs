@@ -2,7 +2,7 @@
 {
     using CarbonCore.Processing.Contracts;
     using CarbonCore.Processing.Logic;
-    using CarbonCore.Utils.Compat.IoC;
+    using CarbonCore.Utils.IoC;
 
     public class CarbonProcessingModule : CarbonQuickModule
     {

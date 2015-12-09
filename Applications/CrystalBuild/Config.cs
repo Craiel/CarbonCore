@@ -1,8 +1,8 @@
 ﻿namespace CarbonCore.Applications.CrystalBuild
 {
-    using CarbonCore.Utils.Compat;
-    using CarbonCore.Utils.Compat.IO;
-    using CarbonCore.Utils.Compat.Json;
+    using CarbonCore.Utils;
+    using CarbonCore.Utils.IO;
+    using CarbonCore.Utils.Json;
 
     using CrystalBuild.Contracts;
 

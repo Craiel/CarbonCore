@@ -141,7 +141,7 @@
 
         public override int GetHashCode()
         {
-            return Tuple.Create(this.Top, this.Left, this.Bottom, this.Right).GetHashCode();
+            return HashUtils.GetSimpleCombinedHashCode(this.Top, this.Left, this.Bottom, this.Right);
         }
     }
 }

@@ -186,7 +186,7 @@
 
         public override int GetHashCode()
         {
-            return Tuple.Create(this.X, this.Y).GetHashCode();
+            return HashUtils.GetSimpleCombinedHashCode(this.X, this.Y);
         }
 
         public float Dot(Vector2F v)

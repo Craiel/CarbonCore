@@ -11,7 +11,7 @@
     using CarbonCore.ToolFramework.Logic.Actions;
     using CarbonCore.ToolFramework.View;
     using CarbonCore.Utils;
-    using CarbonCore.Utils.Compat.Contracts.IoC;
+    using CarbonCore.Utils.Contracts.IoC;
 
     public abstract class WindowApplicationBase : IWindowApplicationBase
     {

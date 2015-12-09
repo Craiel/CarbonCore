@@ -4,7 +4,7 @@
 
     using CarbonCore.ToolFramework.Contracts;
     using CarbonCore.ToolFramework.Contracts.ViewModels;
-    using CarbonCore.Utils.Compat.Contracts.IoC;
+    using CarbonCore.Utils.Contracts.IoC;
 
     public partial class ToolActionDialog
     {

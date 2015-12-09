@@ -13,48 +13,29 @@
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>..\CarbonCore.ruleset</CodeAnalysisRuleSet>
-    <NoWarn>IDE0001</NoWarn>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac">
-      <HintPath>..\External\Autofac\3.1.1\Autofac.dll</HintPath>
-    </Reference>
-    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\External\log4net\1.2.13\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="MahApps.Metro, Version=1.1.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\External\MahApps.Metro\9b0d1f0\MahApps.Metro.dll</HintPath>
-    </Reference>
-    <Reference Include="MahApps.Metro.Resources">
-      <HintPath>..\External\MahApps.Metro\9b0d1f0\MahApps.Metro.Resources.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\External\MahApps.Metro\9b0d1f0\System.Windows.Interactivity.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
@@ -108,18 +89,6 @@
     <ProjectReference Include="..\Resources\CarbonCore.Resources.csproj">
       <Project>{aab4906e-de39-4678-a155-14579cc7f4ec}</Project>
       <Name>CarbonCore.Resources</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\UtilsCommandLine\CarbonCore.UtilsCommandLine.csproj">
-      <Project>{E99C6721-99A5-4DC3-BD9D-DC88F65D217A}</Project>
-      <Name>CarbonCore.UtilsCommandLine</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\UtilsCompat\CarbonCore.Utils.Compat.csproj">
-      <Project>{B823CDCE-5ED4-4030-AB35-44DAF233D4C0}</Project>
-      <Name>CarbonCore.Utils.Compat</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\UtilsWPF\CarbonCore.UtilsWPF.csproj">
-      <Project>{75FF83F3-C123-4982-91F7-09D0F8A66536}</Project>
-      <Name>CarbonCore.UtilsWPF</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utils\CarbonCore.Utils.csproj">
       <Project>{E05836D9-0BB3-4BFA-89E6-F5ED40A9D93C}</Project>

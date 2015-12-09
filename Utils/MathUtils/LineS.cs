@@ -68,7 +68,7 @@
 
         public override int GetHashCode()
         {
-            return Tuple.Create(this.Start, this.End).GetHashCode();
+            return HashUtils.GetSimpleCombinedHashCode(this.Start, this.End);
         }
     }
 }

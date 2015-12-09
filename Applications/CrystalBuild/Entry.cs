@@ -1,6 +1,6 @@
 ﻿namespace CarbonCore.Applications.CrystalBuild
 {
-    using CarbonCore.Utils.Compat.Diagnostics;
+    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.IoC;
 
     using CrystalBuild.Contracts;

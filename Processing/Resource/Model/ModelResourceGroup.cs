@@ -6,7 +6,7 @@
 
     using CarbonCore.Processing.Resource;
     using CarbonCore.Protocol.Resource;
-    using CarbonCore.UtilsDX;
+    using CarbonCore.Utils.Edge.DirectX;
 
     using SharpDX;
 

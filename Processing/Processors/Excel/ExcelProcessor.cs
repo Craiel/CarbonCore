@@ -6,7 +6,7 @@
     using System.IO;
     using System.Linq;
 
-    using CarbonCore.Utils.Compat.IO;
+    using CarbonCore.Utils.IO;
 
     using NPOI.SS.UserModel;
     using NPOI.XSSF.UserModel;

@@ -1,6 +1,6 @@
 ﻿namespace CarbonCore.Applications.CrystalBuild
 {
-    using CarbonCore.Utils.Compat.IO;
+    using CarbonCore.Utils.IO;
 
     public static class Constants
     {

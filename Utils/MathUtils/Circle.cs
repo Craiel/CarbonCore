@@ -1,6 +1,5 @@
 ﻿namespace CarbonCore.Utils.MathUtils
 {
-    using System;
     using System.Diagnostics;
 
     using Newtonsoft.Json;
@@ -48,7 +47,7 @@
 
         public override int GetHashCode()
         {
-            return Tuple.Create(this.Position, this.Radius).GetHashCode();
+            return HashUtils.GetSimpleCombinedHashCode(this.Position, this.Radius);
         }
 
         public RectL GetBounds()

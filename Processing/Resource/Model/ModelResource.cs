@@ -4,7 +4,7 @@
     using System.IO;
 
     using CarbonCore.Processing.Resource;
-    using CarbonCore.UtilsDX;
+    using CarbonCore.Utils.Edge.DirectX;
 
     using SharpDX;
 

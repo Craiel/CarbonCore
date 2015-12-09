@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -9,73 +9,170 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CarbonCore.ContentServices</RootNamespace>
     <AssemblyName>CarbonCore.ContentServices</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>..\CarbonCore.ruleset</CodeAnalysisRuleSet>
-    <NoWarn>IDE0001</NoWarn>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Unity|AnyCPU'">
+    <OutputPath>..\bin\Unity\Debug\Editor\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;UNITY;UNITY_5</DefineConstants>
+    <Optimize>false</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnityRelease|AnyCPU'">
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Unity\Release\Editor\</OutputPath>
+    <DefineConstants>UNITY;UNITY_5</DefineConstants>
+  </PropertyGroup>
+  <Choose>
+    <When Condition=" '$(Configuration)'=='Unity' Or '$(Configuration)'=='UnityRelease' ">
+      <ItemGroup>
+        <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\External\Json.NET\Unity\UnityJasonNet.dll</HintPath>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\External\Json.NET\Json70r1\Net35\Newtonsoft.Json.dll</HintPath>
+        </Reference>
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
   <ItemGroup>
-    <Reference Include="Autofac">
-      <HintPath>..\External\Autofac\3.1.1\Autofac.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\External\Json.NET\Json70r1\Net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="JetBrains.Annotations, Version=9.2.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\External\packages\JetBrains.Annotations.9.2.0\lib\net20\JetBrains.Annotations.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.SQLite">
-      <HintPath>..\External\sqllite\1.0.93.0\System.Data.SQLite.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Contracts\ISqlLiteDatabaseService.cs" />
-    <Compile Include="Contracts\ISqlLiteFileServicePackProvider.cs" />
-    <Compile Include="Contracts\ISqlLiteFileServiceDiskProvider.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Contracts\ICompressionProvider.cs" />
+    <Compile Include="Contracts\IDatabaseEntry.cs" />
+    <Compile Include="Contracts\IDatabaseService.cs" />
+    <Compile Include="Contracts\IDatabaseServiceAction.cs" />
+    <Compile Include="Contracts\IDataConnector.cs" />
+    <Compile Include="Contracts\IDataEntry.cs" />
+    <Compile Include="Contracts\IFileService.cs" />
+    <Compile Include="Contracts\IFileServiceDiskProvider.cs" />
+    <Compile Include="Contracts\IFileServiceMemoryProvider.cs" />
+    <Compile Include="Contracts\IFileServicePackProvider.cs" />
+    <Compile Include="Contracts\IFileServiceProvider.cs" />
+    <Compile Include="Contracts\IJsonDatabaseService.cs" />
+    <Compile Include="Contracts\ISqlLiteConnector.cs" />
+    <Compile Include="Contracts\ISyncContent.cs" />
+    <Compile Include="Contracts\ISyncEntry.cs" />
+    <Compile Include="Data\FileEntryKey.cs" />
+    <Compile Include="Data\JsonDatabase.cs" />
+    <Compile Include="Data\JsonDatabaseTable.cs" />
+    <Compile Include="Data\Tiled\TiledMapData.cs" />
+    <Compile Include="Data\Tiled\TiledMapLayerData.cs" />
+    <Compile Include="Data\Tiled\TiledMapObjectData.cs" />
+    <Compile Include="Data\Tiled\TiledMapTileset.cs" />
     <Compile Include="IoC\IoC.cs" />
-    <Compile Include="Logic\SqlLiteDatabaseService.cs" />
-    <Compile Include="Logic\SqlLiteDatabaseServiceAction.cs" />
-    <Compile Include="Logic\SQLiteStatement.cs" />
-    <Compile Include="Logic\SqlLiteConnector.cs" />
-    <Compile Include="Logic\SqlLiteFileServicePackProvider.cs" />
-    <Compile Include="Logic\SqlLiteFileServiceDiskProvider.cs" />
-    <Compile Include="Logic\ZipStreamCompressionProvider.cs" />
+    <Compile Include="Logic\Attributes\DatabaseEntryJoinedElementAttribute.cs" />
+    <Compile Include="Logic\Attributes\DatabaseEntryAttribute.cs" />
+    <Compile Include="Logic\DatabaseEntryJoinedElementDescriptor.cs" />
+    <Compile Include="Logic\DatabaseEntryDescriptor.cs" />
+    <Compile Include="Logic\Attributes\DatabaseEntryElementAttribute.cs" />
+    <Compile Include="Logic\DatabaseEntryElementDescriptor.cs" />
+    <Compile Include="Logic\DatabaseQueryCriterion.cs" />
+    <Compile Include="Logic\DatabaseQueryOrder.cs" />
+    <Compile Include="Logic\DatabaseQuery.cs" />
+    <Compile Include="Logic\DatabaseEntry.cs" />
+    <Compile Include="Logic\Attributes\DataElementAttribute.cs" />
+    <Compile Include="Logic\DataEntryLogic\DataEntry.cs" />
+    <Compile Include="Logic\Attributes\DataEntryAttribute.cs" />
+    <Compile Include="Logic\DataEntryLogic\DataEntryDescriptor.cs" />
+    <Compile Include="Logic\DataEntryLogic\DataEntryDescriptors.cs" />
+    <Compile Include="Logic\DataEntryLogic\DataEntryElementSerializer.cs" />
+    <Compile Include="Logic\DataEntryLogic\DataEntrySerialization.cs" />
+    <Compile Include="Logic\DataEntryLogic\DataEntrySerializationDescriptor.cs" />
+    <Compile Include="Logic\DataEntryLogic\DataSerializationEntry.cs" />
+    <Compile Include="Logic\DataEntryLogic\NativeSerialization.cs" />
+    <Compile Include="Logic\DataEntryLogic\NativeSerialization.Dictionary.cs" />
+    <Compile Include="Logic\DataEntryLogic\NativeSerialization.List.cs" />
+    <Compile Include="Logic\DataEntryLogic\Serializers\ByteArraySerializer.cs" />
+    <Compile Include="Logic\DataEntryLogic\Serializers\BooleanSerializer.cs" />
+    <Compile Include="Logic\DataEntryLogic\CompactSerializers\DataEntrySerializer.cs" />
+    <Compile Include="Logic\DataEntryLogic\Serializers\DoubleSerializer.cs" />
+    <Compile Include="Logic\DataEntryLogic\Serializers\DoubleArraySerializer.cs" />
+    <Compile Include="Logic\DataEntryLogic\Serializers\Int64ArraySerializer.cs" />
+    <Compile Include="Logic\DataEntryLogic\Serializers\Int32ArraySerializer.cs" />
+    <Compile Include="Logic\DataEntryLogic\Serializers\FloatArraySerializer.cs" />
+    <Compile Include="Logic\DataEntryLogic\Serializers\FloatSerializer.cs" />
+    <Compile Include="Logic\DataEntryLogic\Serializers\Int64Serializer.cs" />
+    <Compile Include="Logic\DataEntryLogic\Serializers\Int32Serializer.cs" />
+    <Compile Include="Logic\DataEntryLogic\CompactSerializers\DictionarySerializer.cs" />
+    <Compile Include="Logic\DataEntryLogic\CompactSerializers\ListSerializer.cs" />
+    <Compile Include="Logic\DataEntryLogic\Serializers\StringSerializer.cs" />
+    <Compile Include="Logic\DataEntryLogic\SyncCascadeDictionary.cs" />
+    <Compile Include="Logic\DataEntryLogic\SyncCascadeReadOnly.cs" />
+    <Compile Include="Logic\DataEntryLogic\SyncCascadeKeyDictionary.cs" />
+    <Compile Include="Logic\DataEntryLogic\SyncCascadeValueDictionary.cs" />
+    <Compile Include="Logic\DataEntryLogic\SyncCascadeList.cs" />
+    <Compile Include="Logic\DataEntryLogic\SyncNull.cs" />
+    <Compile Include="Logic\DataEntryLogic\SyncObject.cs" />
+    <Compile Include="Logic\DataEntryLogic\SyncCascade.cs" />
+    <Compile Include="Logic\DataEntryLogic\SyncDictionary.cs" />
+    <Compile Include="Logic\DataEntryLogic\SyncList.cs" />
+    <Compile Include="Logic\DataEntryLogic\Sync.cs" />
+    <Compile Include="Logic\DataEntryLogic\SyncEntry.cs" />
+    <Compile Include="Logic\DefaultCompressionProvider.cs" />
+    <Compile Include="Logic\Enums\CompressionLevel.cs" />
+    <Compile Include="Logic\Enums\TiledMapLayerType.cs" />
+    <Compile Include="Logic\Enums\TiledMapOrientation.cs" />
+    <Compile Include="Logic\Enums\TiledMapRenderOrder.cs" />
+    <Compile Include="Logic\FileEntry.cs" />
+    <Compile Include="Logic\FileEntryData.cs" />
+    <Compile Include="Logic\FileEntryPackInfo.cs" />
+    <Compile Include="Logic\FileService.cs" />
+    <Compile Include="Logic\FileServiceDiskProvider.cs" />
+    <Compile Include="Logic\FileServiceMemoryProvider.cs" />
+    <Compile Include="Logic\FileServicePackProvider.cs" />
+    <Compile Include="Logic\FileServiceProvider.cs" />
+    <Compile Include="Logic\JsonDatabaseService.cs" />
+    <Compile Include="Logic\SqlConnectorCommand.cs" />
+    <Compile Include="Logic\SqlConnectorConnection.cs" />
+    <Compile Include="Logic\SqlConnectorTransaction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ContentServicesCompat\CarbonCore.ContentServices .Compat.csproj">
-      <Project>{890ff110-443f-4647-80b1-82d414cccd88}</Project>
-      <Name>CarbonCore.ContentServices .Compat</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\UtilsCompat\CarbonCore.Utils.Compat.csproj">
-      <Project>{B823CDCE-5ED4-4030-AB35-44DAF233D4C0}</Project>
-      <Name>CarbonCore.Utils.Compat</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Utils\CarbonCore.Utils.csproj">
-      <Project>{E05836D9-0BB3-4BFA-89E6-F5ED40A9D93C}</Project>
+      <Project>{e05836d9-0bb3-4bfa-89e6-f5ed40a9d93c}</Project>
       <Name>CarbonCore.Utils</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

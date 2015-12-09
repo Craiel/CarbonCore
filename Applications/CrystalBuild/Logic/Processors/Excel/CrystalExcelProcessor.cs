@@ -3,7 +3,7 @@
     using System.Collections.Generic;
 
     using CarbonCore.Processing.Processors.Excel;
-    using CarbonCore.Utils.Compat.IO;
+    using CarbonCore.Utils.IO;
 
     using CrystalBuild.Contracts.Processors;
     

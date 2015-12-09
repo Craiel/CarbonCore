@@ -1,8 +1,8 @@
 ﻿namespace D3Theory.Console.IoC
 {
-    using CarbonCore.Utils.Compat.IoC;
     using CarbonCore.Utils.IoC;
-    using CarbonCore.UtilsCommandLine.IoC;
+    using CarbonCore.Utils.IoC;
+    using CarbonCore.Utils.Edge.CommandLine.IoC;
 
     using D3Theory.Console;
     using D3Theory.Console.Contracts;

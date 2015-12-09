@@ -8,11 +8,11 @@
     using System.Windows.Input;
 
     using CarbonCore.ToolFramework.Contracts.ViewModels;
-    using CarbonCore.Utils.Compat.Contracts.IoC;
-    using CarbonCore.Utils.Compat.Diagnostics;
+    using CarbonCore.Utils.Contracts.IoC;
+    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.Diagnostics.TraceListeners;
-    using CarbonCore.UtilsWPF;
-    using CarbonCore.UtilsWPF.Collections;
+    using CarbonCore.Utils.Edge.WPF;
+    using CarbonCore.Utils.Edge.WPF.Collections;
 
     public class LogViewModel : BaseViewModel, ILogViewModel
     {

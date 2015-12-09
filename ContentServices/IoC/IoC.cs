@@ -1,24 +1,21 @@
-﻿namespace CarbonCore.ContentServices.IoC
+﻿namespace CarbonCore.ContentServices.Compat.IoC
 {
     using CarbonCore.ContentServices.Compat.Contracts;
-    using CarbonCore.ContentServices.Compat.IoC;
-    using CarbonCore.ContentServices.Contracts;
-    using CarbonCore.ContentServices.Logic;
-    using CarbonCore.Utils.Compat.IoC;
+    using CarbonCore.ContentServices.Compat.Logic;
     using CarbonCore.Utils.IoC;
 
-    [DependsOnModule(typeof(ContentServicesCompatModule))]
-    [DependsOnModule(typeof(UtilsModule))]
-    public class ContentServicesModule : CarbonQuickModule
+    [DependsOnModule(typeof(UtilsCompatModule))]
+    public class ContentServicesCompatModule : CarbonQuickModule
     {
-        public ContentServicesModule()
+        public ContentServicesCompatModule()
         {
-            this.For<ISqlLiteConnector>().Use<SqlLiteConnector>();
+            this.For<IFileService>().Use<FileService>();
 
-            this.For<ISqlLiteDatabaseService>().Use<SqlLiteDatabaseService>();
+            this.For<IJsonDatabaseService>().Use<JsonDatabaseService>();
 
-            this.For<ISqlLiteFileServiceDiskProvider>().Use<SqlLiteFileServiceDiskProvider>();
-            this.For<ISqlLiteFileServicePackProvider>().Use<SqlLiteFileServicePackProvider>();
+            this.For<IFileServiceMemoryProvider>().Use<FileServiceMemoryProvider>();
+            this.For<IFileServiceDiskProvider>().Use<FileServiceDiskProvider>();
+            this.For<IFileServicePackProvider>().Use<FileServicePackProvider>();
         }
     }
 }

@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0EC48D10-8E81-4B43-A7EE-F4BD83516CEA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CarbonCore.Utils.Unity</RootNamespace>
+    <AssemblyName>CarbonCore.Utils.Unity</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Unity|AnyCPU'">
+    <OutputPath>..\..\bin\Unity\Debug\Editor\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;UNITY;UNITY_5</DefineConstants>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>..\..\CarbonCore.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnityRelease|AnyCPU'">
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\bin\Unity\Release\Editor\</OutputPath>
+    <DefineConstants>UNITY;UNITY_5</DefineConstants>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>..\..\CarbonCore.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <Choose>
+    <When Condition=" '$(Configuration)'=='Unity' Or '$(Configuration)'=='UnityRelease' ">
+      <ItemGroup>
+        <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\External\Json.NET\Unity\UnityJasonNet.dll</HintPath>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\External\Json.NET\Json70r1\Net35\Newtonsoft.Json.dll</HintPath>
+        </Reference>
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine">
+      <HintPath>..\External\Unity\5.1.1f1\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Analytics">
+      <HintPath>..\External\Unity\5.1.1f1\UnityEngine.Analytics.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Networking">
+      <HintPath>..\External\Unity\5.1.1f1\UnityEngine.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>..\External\Unity\5.1.1f1\UnityEngine.UI.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Contracts\BehaviorTree\IBehaviorTree.cs" />
+    <Compile Include="Contracts\BehaviorTree\IBehaviorTreeCompositeNode.cs" />
+    <Compile Include="Contracts\BehaviorTree\IBehaviorTreeDecoratorNode.cs" />
+    <Compile Include="Contracts\BehaviorTree\IBehaviorTreeLeafNode.cs" />
+    <Compile Include="Contracts\BehaviorTree\IBehaviorTreeNode.cs" />
+    <Compile Include="Contracts\BufferedData\IBufferedData.cs" />
+    <Compile Include="Contracts\BufferedData\IBufferedDataCommand.cs" />
+    <Compile Include="Contracts\BufferedData\IBufferedDataPool.cs" />
+    <Compile Include="Contracts\BufferedData\IBufferedDataset.cs" />
+    <Compile Include="Contracts\BufferedData\IBufferedDataSetInternal.cs" />
+    <Compile Include="Contracts\BufferedData\IBufferedDatasetReadOnly.cs" />
+    <Compile Include="Contracts\IDelayedLoadedObject.cs" />
+    <Compile Include="Contracts\IEngineComponent.cs" />
+    <Compile Include="Contracts\IPriorityQueue.cs" />
+    <Compile Include="Contracts\IRefCountedObject.cs" />
+    <Compile Include="Contracts\IResourceRequest.cs" />
+    <Compile Include="Contracts\IScene.cs" />
+    <Compile Include="Contracts\TaskPool\ITask.cs" />
+    <Compile Include="Contracts\TaskPool\ITaskPool.cs" />
+    <Compile Include="Data\BundleKey.cs" />
+    <Compile Include="Data\EngineTimeSnapshot.cs" />
+    <Compile Include="Data\RefCountedWeakReference.cs" />
+    <Compile Include="Data\ResourceKey.cs" />
+    <Compile Include="Data\ResourceReference.cs" />
+    <Compile Include="Data\WeakReference.cs" />
+    <Compile Include="EnumExtensions.cs" />
+    <Compile Include="GameObjectExtensions.cs" />
+    <Compile Include="IoC\IoC.cs" />
+    <Compile Include="Logic\BackgroundTask.cs" />
+    <Compile Include="Logic\BehaviorTree\BehaviorTree.cs" />
+    <Compile Include="Logic\BehaviorTree\BehaviorTreeCompositeNode.cs" />
+    <Compile Include="Logic\BehaviorTree\BehaviorTreeContext.cs" />
+    <Compile Include="Logic\BehaviorTree\BehaviorTreeDecoratorNode.cs" />
+    <Compile Include="Logic\BehaviorTree\BehaviorTreeLeafNode.cs" />
+    <Compile Include="Logic\BehaviorTree\BehaviorTreeNode.cs" />
+    <Compile Include="Logic\BehaviorTree\Nodes\NodeIfFlagIsSet.cs" />
+    <Compile Include="Logic\BehaviorTree\Nodes\NodeSetFlag.cs" />
+    <Compile Include="Logic\BufferedData\BufferedData.cs" />
+    <Compile Include="Logic\BufferedData\BufferedDataCommandQueue.cs" />
+    <Compile Include="Logic\BufferedData\BufferedDataPendingCommand.cs" />
+    <Compile Include="Logic\BufferedData\BufferedDataPool.cs" />
+    <Compile Include="Logic\BufferedData\BufferedDataPoolSettings.cs" />
+    <Compile Include="Logic\BufferedData\BufferedDataset.cs" />
+    <Compile Include="Logic\BufferedData\Commands\BufferCommandDeleteSharedInstance.cs" />
+    <Compile Include="Logic\BufferedData\Commands\BufferCommandReset.cs" />
+    <Compile Include="Logic\BufferedData\Commands\BufferCommandResetEvent.cs" />
+    <Compile Include="Logic\BufferedData\Commands\BufferCommandWriteDiscreteInstance.cs" />
+    <Compile Include="Logic\BufferedData\Commands\BufferCommandWriteSharedInstance.cs" />
+    <Compile Include="Logic\BufferedData\DataSnapshot.cs" />
+    <Compile Include="Logic\DelayedLoadedObject.cs" />
+    <Compile Include="Logic\EngineComponent.cs" />
+    <Compile Include="Logic\Enums\AnchorPoint.cs" />
+    <Compile Include="Logic\Enums\BehaviorTreeCompositeMode.cs" />
+    <Compile Include="Logic\Enums\BehaviorTreeDecoratorMode.cs" />
+    <Compile Include="Logic\Enums\BehaviorTreeStatus.cs" />
+    <Compile Include="Logic\Enums\DelayedLoadedObjectPhase.cs" />
+    <Compile Include="Logic\Enums\Orientation.cs" />
+    <Compile Include="Logic\Enums\ResourceLoadMode.cs" />
+    <Compile Include="Logic\IntervalTrigger.cs" />
+    <Compile Include="Logic\Json\BoundsSerializer.cs" />
+    <Compile Include="Logic\Json\BundleKeySerializer.cs" />
+    <Compile Include="Logic\Json\Matrix4x4Serializer.cs" />
+    <Compile Include="Logic\Json\QuaternionSerializer.cs" />
+    <Compile Include="Logic\Json\ResourceKeySerializer.cs" />
+    <Compile Include="Logic\Json\Vector2ConverterSmall.cs" />
+    <Compile Include="Logic\Json\Vector2IConverterSmall.cs" />
+    <Compile Include="Logic\Json\Vector3Serializer.cs" />
+    <Compile Include="Logic\MeshGeneration\AnchorUtils.cs" />
+    <Compile Include="Logic\MeshGeneration\CustomPlane.cs" />
+    <Compile Include="Logic\MeshGeneration\PlaneGeneration.cs" />
+    <Compile Include="Logic\MeshGeneration\PlaneOptions.cs" />
+    <Compile Include="Logic\PriorityQueue.cs" />
+    <Compile Include="Logic\PriorityQueueNode.cs" />
+    <Compile Include="Logic\Resource\BundleLoadRequest.cs" />
+    <Compile Include="Logic\Resource\BundleProvider.cs" />
+    <Compile Include="Logic\Resource\ResourceLoader.cs" />
+    <Compile Include="Logic\Resource\ResourceStreamRequest.cs" />
+    <Compile Include="Logic\Resource\ResourceLoadRequest.cs" />
+    <Compile Include="Logic\Resource\ResourceRequestPool.cs" />
+    <Compile Include="Logic\Resource\ResourceMap.cs" />
+    <Compile Include="Logic\Resource\ResourceProvider.cs" />
+    <Compile Include="Logic\Resource\ResourceStreamProvider.cs" />
+    <Compile Include="Logic\Scene\BaseScene.cs" />
+    <Compile Include="Logic\TaskPoolLogic\Task.cs" />
+    <Compile Include="Logic\TaskPoolLogic\TaskPool.cs" />
+    <Compile Include="Logic\TaskPoolLogic\TaskPoolInstance.cs" />
+    <Compile Include="Logic\TaskPoolLogic\TaskStatus.cs" />
+    <Compile Include="Logic\UnityDebugTraceListener.cs" />
+    <Compile Include="Logic\Enums\SceneTransitionStep.cs" />
+    <Compile Include="Logic\Scene\SceneObjectCleanup.cs" />
+    <Compile Include="Logic\StringExtensions.cs" />
+    <Compile Include="Logic\Json\ColorConverter.cs" />
+    <Compile Include="Logic\Json\QuaternionConverterSmall.cs" />
+    <Compile Include="Logic\Json\Vector3ConverterSmall.cs" />
+    <Compile Include="Logic\Scene\SceneObjectContainer.cs" />
+    <Compile Include="Logic\Scene\SceneObjectController.cs" />
+    <Compile Include="Logic\Scene\SceneObjectRoot.cs" />
+    <Compile Include="TextureExtensions.cs" />
+    <Compile Include="UnityConstants.cs" />
+    <Compile Include="Logic\UnitySingletonBehavior.cs" />
+    <Compile Include="Logic\UnitySingleton.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ContentServicesCompat\CarbonCore.ContentServices .Compat.csproj">
+      <Project>{890ff110-443f-4647-80b1-82d414cccd88}</Project>
+      <Name>CarbonCore.ContentServices .Compat</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UtilsCompat\CarbonCore.Utils.Compat.csproj">
+      <Project>{b823cdce-5ed4-4030-ab35-44daf233d4c0}</Project>
+      <Name>CarbonCore.Utils.Compat</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

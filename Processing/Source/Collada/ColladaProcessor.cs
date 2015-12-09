@@ -11,9 +11,9 @@
     using CarbonCore.Processing.Source.Collada.Geometry;
     using CarbonCore.Processing.Source.Collada.Scene;
     using CarbonCore.Processing.Source.Generic.Data;
-    using CarbonCore.Utils.Compat;
-    using CarbonCore.Utils.Compat.IO;
-    using CarbonCore.UtilsDX;
+    using CarbonCore.Utils;
+    using CarbonCore.Utils.IO;
+    using CarbonCore.Utils.Edge.DirectX;
 
     using SharpDX;
 

@@ -161,7 +161,7 @@
 
         public override int GetHashCode()
         {
-            return Tuple.Create(this.X, this.Y).GetHashCode();
+            return HashUtils.GetSimpleCombinedHashCode(this.X, this.Y);
         }
 
         public Vector2S Min(Vector2S target)

@@ -10,7 +10,7 @@
 
     using CarbonCore.ToolFramework.Annotations;
     using CarbonCore.ToolFramework.Contracts.ViewModels;
-    using CarbonCore.UtilsWPF;
+    using CarbonCore.Utils.Edge.WPF;
 
     public abstract class BaseViewModel : IBaseViewModel
     {

@@ -3,9 +3,9 @@
 namespace CarbonCore.Applications.CrystalBuild.IoC
 {
     using CarbonCore.Applications.CrystalBuild.Logic.Processors.Excel;
-    using CarbonCore.Utils.Compat.IoC;
     using CarbonCore.Utils.IoC;
-    using CarbonCore.UtilsCommandLine.IoC;
+    using CarbonCore.Utils.IoC;
+    using CarbonCore.Utils.Edge.CommandLine.IoC;
 
     using CrystalBuild.Contracts;
     using CrystalBuild.Contracts.Processors;

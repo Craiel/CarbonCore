@@ -4,7 +4,7 @@
 
     using CarbonCore.ToolFramework.Contracts.ViewModels;
     using CarbonCore.ToolFramework.Logic;
-    using CarbonCore.Utils.Compat.Contracts.IoC;
+    using CarbonCore.Utils.Contracts.IoC;
 
     using D3Theory.Viewer.Contracts;
     using D3Theory.Viewer.View;

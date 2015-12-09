@@ -4,8 +4,8 @@
     using System.IO;
     using System.Text;
 
-    using CarbonCore.Utils.Compat.Contracts.IoC;
-    using CarbonCore.Utils.Compat.IO;
+    using CarbonCore.Utils.Contracts.IoC;
+    using CarbonCore.Utils.IO;
 
     using CrystalBuild.Contracts;
     using CrystalBuild.Contracts.Processors;

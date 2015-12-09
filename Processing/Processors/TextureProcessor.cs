@@ -5,7 +5,7 @@
     using System.Text;
 
     using CarbonCore.Processing.Resource;
-    using CarbonCore.Utils.Compat.IO;
+    using CarbonCore.Utils.IO;
 
     public enum TextureTargetFormat
     {
@@ -142,7 +142,7 @@
 
                 default:
                     {
-                        Utils.Diagnostics.Internal.NotImplemented("Compression format has no setting: " + options.Format);
+                        Utils.Edge.Diagnostics.Internal.NotImplemented("Compression format has no setting: " + options.Format);
                         break;
                     }
             }

@@ -6,7 +6,7 @@
     using System.Windows.Data;
     using System.Windows.Media;
 
-    using CarbonCore.UtilsWPF;
+    using CarbonCore.Utils.Edge.WPF;
 
     [ValueConversion(typeof(TraceEventType), typeof(Color))]
     public class TraceEventTypeToColorConverter : IValueConverter

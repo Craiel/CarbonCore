@@ -3,7 +3,7 @@
     using System;
 
     using CarbonCore.ToolFramework.Contracts;
-    using CarbonCore.Utils.Compat.Contracts.IoC;
+    using CarbonCore.Utils.Contracts.IoC;
 
     public class ToolActionRegion : IDisposable
     {

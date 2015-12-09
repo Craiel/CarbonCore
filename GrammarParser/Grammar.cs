@@ -113,7 +113,7 @@
 
                 default:
                     {
-                        Utils.Diagnostics.Internal.NotImplemented(term.Type.ToString());
+                        Utils.Edge.Diagnostics.Internal.NotImplemented(term.Type.ToString());
                         break;
                     }
             }

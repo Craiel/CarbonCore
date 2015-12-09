@@ -6,7 +6,7 @@
     using System.Linq;
     using System.Text;
 
-    using CarbonCore.Utils.Compat;
+    using CarbonCore.Utils;
 
     using Newtonsoft.Json;
 

@@ -3,7 +3,7 @@
     using System;
     using System.Diagnostics;
 
-    using CarbonCore.Utils.Compat.Diagnostics;
+    using CarbonCore.Utils.Diagnostics;
 
     public interface ILogEntryViewModel : IBaseViewModel
     {

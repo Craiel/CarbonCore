@@ -6,9 +6,9 @@
 
     using CarbonCore.ToolFramework.Contracts;
     using CarbonCore.Utils;
-    using CarbonCore.Utils.Compat.Contracts.IoC;
-    using CarbonCore.Utils.Compat.Diagnostics;
-    using CarbonCore.UtilsCommandLine.Contracts;
+    using CarbonCore.Utils.Contracts.IoC;
+    using CarbonCore.Utils.Diagnostics;
+    using CarbonCore.Utils.Edge.CommandLine.Contracts;
 
     public abstract class ConsoleApplicationBase : IConsoleApplicationBase
     {

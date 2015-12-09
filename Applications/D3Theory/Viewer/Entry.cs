@@ -2,7 +2,7 @@
 {
     using System;
 
-    using CarbonCore.Utils.Compat.Diagnostics;
+    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.IoC;
 
     using D3Theory.Viewer.Contracts;

@@ -2,10 +2,10 @@
 {
     using CarbonCore.GrammarParser.Contracts.Grammars;
     using CarbonCore.GrammarParser.Grammars;
-    using CarbonCore.Utils.Compat.IoC;
+    using CarbonCore.Utils.Edge.IoC;
     using CarbonCore.Utils.IoC;
 
-    [DependsOnModule(typeof(UtilsModule))]
+    [DependsOnModule(typeof(UtilsEdgeModule))]
     public class GrammarParserModule : CarbonQuickModule
     {
         public GrammarParserModule()
