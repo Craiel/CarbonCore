@@ -1,8 +1,8 @@
 ﻿namespace CarbonCore.Utils.Unity.Contracts.BufferedData
 {
     using System.Collections.Generic;
-
-    using CarbonCore.ContentServices.Compat.Contracts;
+    
+    using CarbonCore.ContentServices.Contracts;
     using CarbonCore.Utils.Unity.Contracts;
 
     public interface IBufferedDatasetReadOnly : IRefCountedObject

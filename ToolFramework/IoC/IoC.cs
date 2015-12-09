@@ -4,11 +4,12 @@
     using CarbonCore.ToolFramework.Contracts.ViewModels;
     using CarbonCore.ToolFramework.Logic;
     using CarbonCore.ToolFramework.ViewModel;
+    using CarbonCore.Utils.Edge.IoC;
     using CarbonCore.Utils.IoC;
     using CarbonCore.Utils.IoC;
     using CarbonCore.Utils.Edge.WPF.IoC;
 
-    [DependsOnModule(typeof(UtilsModule))]
+    [DependsOnModule(typeof(UtilsEdgeModule))]
     [DependsOnModule(typeof(UtilsWPFModule))]
     public class ToolFrameworkModule : CarbonQuickModule
     {

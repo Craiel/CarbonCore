@@ -201,7 +201,7 @@
 
             if (geometry.Mesh.Polygons != null && geometry.Mesh.PolyLists != null)
             {
-                Utils.Diagnostics.Internal.NotImplemented("Polygons and Polylists at the same time are untested!");
+                Utils.Edge.Diagnostic.Internal.NotImplemented("Polygons and Polylists at the same time are untested!");
             }
 
             currentSources = geometry.Mesh.Sources;

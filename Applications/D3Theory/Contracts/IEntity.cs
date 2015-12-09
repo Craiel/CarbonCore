@@ -1,8 +1,8 @@
-﻿namespace D3Theory.Contracts
+﻿namespace CarbonCore.Modules.D3Theory.Contracts
 {
     using System;
 
-    using D3Theory.Data;
+    using CarbonCore.Modules.D3Theory.Data;
 
     public interface IEntity : IDisposable
     {

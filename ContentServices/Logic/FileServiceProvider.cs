@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.ContentServices.Compat.Logic
+﻿namespace CarbonCore.ContentServices.Logic
 {
     using System;
     using System.Collections.Generic;
@@ -6,9 +6,9 @@
     using System.IO;
     using System.IO.Compression;
 
-    using CarbonCore.ContentServices.Compat.Contracts;
-    using CarbonCore.ContentServices.Compat.Data;
-    using CarbonCore.ContentServices.Compat.Logic.Enums;
+    using CarbonCore.ContentServices.Contracts;
+    using CarbonCore.ContentServices.Data;
+    using CarbonCore.ContentServices.Logic.Enums;
 
     public abstract class FileServiceProvider : IFileServiceProvider
     {

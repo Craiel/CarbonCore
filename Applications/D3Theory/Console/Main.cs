@@ -1,19 +1,18 @@
-﻿namespace D3Theory.Console
+﻿namespace CarbonCore.Applications.D3Theory.Console
 {
     using System.Collections.Generic;
     using System.IO;
 
+    using CarbonCore.Applications.D3Theory.Console.Contracts;
+    using CarbonCore.Modules.D3Theory.Contracts;
+    using CarbonCore.Modules.D3Theory.Data;
+    using CarbonCore.Modules.D3Theory.Logic;
+    using CarbonCore.Modules.D3Theory.Logic.Modules;
     using CarbonCore.Utils;
     using CarbonCore.Utils.Contracts.IoC;
+    using CarbonCore.Utils.Edge.CommandLine.Contracts;
     using CarbonCore.Utils.IO;
     using CarbonCore.Utils.Json;
-    using CarbonCore.Utils.Edge.CommandLine.Contracts;
-
-    using D3Theory.Console.Contracts;
-    using D3Theory.Contracts;
-    using D3Theory.Data;
-    using D3Theory.Logic;
-    using D3Theory.Logic.Modules;
 
     using Newtonsoft.Json;
 

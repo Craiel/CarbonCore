@@ -1,9 +1,9 @@
-﻿namespace CarbonCore.ContentServices.Compat.Logic
+﻿namespace CarbonCore.ContentServices.Logic
 {
     using System.Collections.Generic;
 
-    using CarbonCore.ContentServices.Compat.Contracts;
-    using CarbonCore.ContentServices.Compat.Logic.DataEntryLogic;
+    using CarbonCore.ContentServices.Contracts;
+    using CarbonCore.ContentServices.Logic.DataEntryLogic;
 
     public abstract class DatabaseEntry : DataEntry, IDatabaseEntry
     {

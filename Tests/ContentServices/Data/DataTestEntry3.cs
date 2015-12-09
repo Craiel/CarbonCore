@@ -1,6 +1,6 @@
-﻿namespace CarbonCore.Tests.Compat.ContentServices.Data
+﻿namespace CarbonCore.Tests.ContentServices.Data
 {
-    using CarbonCore.ContentServices.Compat.Logic.Attributes;
+    using CarbonCore.ContentServices.Logic.Attributes;
 
     [DataEntry(UseDefaultEquality = true)]
     public class DataTestEntry3 : DataTestEntry2

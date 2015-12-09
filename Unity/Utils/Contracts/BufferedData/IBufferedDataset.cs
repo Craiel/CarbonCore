@@ -1,6 +1,6 @@
 ﻿namespace CarbonCore.Utils.Unity.Contracts.BufferedData
 {
-    using CarbonCore.ContentServices.Compat.Contracts;
+    using CarbonCore.ContentServices.Contracts;
 
     public interface IBufferedDataset : IBufferedDatasetReadOnly
     {

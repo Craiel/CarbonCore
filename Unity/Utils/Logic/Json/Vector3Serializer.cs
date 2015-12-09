@@ -2,10 +2,9 @@
 {
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
-
-    using CarbonCore.ContentServices.Compat;
-    using CarbonCore.ContentServices.Compat.Logic.DataEntryLogic;
-    using CarbonCore.ContentServices.Compat.Logic.DataEntryLogic.Serializers;
+    
+    using CarbonCore.ContentServices.Logic.DataEntryLogic;
+    using CarbonCore.ContentServices.Logic.DataEntryLogic.Serializers;
 
     using UnityEngine;
 
@@ -44,7 +43,7 @@
         {
             if (source == null)
             {
-                target.WriteByte(Constants.SerializationNull);
+                target.WriteByte(ContentServices.Constants.SerializationNull);
                 return;
             }
 

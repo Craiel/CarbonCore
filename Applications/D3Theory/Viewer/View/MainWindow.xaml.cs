@@ -1,4 +1,4 @@
-﻿namespace D3Theory.Viewer.View
+﻿namespace CarbonCore.Applications.D3Theory.Viewer.View
 {
     public partial class MainWindow
     {

@@ -1,4 +1,4 @@
-﻿namespace D3Theory.Logic
+﻿namespace CarbonCore.Modules.D3Theory.Logic
 {
     public enum ExecuteSkillResult
     {

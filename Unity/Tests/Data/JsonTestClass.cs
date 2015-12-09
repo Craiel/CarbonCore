@@ -2,9 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
-
-    using CarbonCore.ContentServices.Compat.Logic.Attributes;
-    using CarbonCore.ContentServices.Compat.Logic.DataEntryLogic;
+    
+    using CarbonCore.ContentServices.Logic.Attributes;
+    using CarbonCore.ContentServices.Logic.DataEntryLogic;
     using CarbonCore.Utils.Json;
 
     using Newtonsoft.Json;

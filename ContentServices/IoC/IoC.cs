@@ -1,7 +1,7 @@
-﻿namespace CarbonCore.ContentServices.Compat.IoC
+﻿namespace CarbonCore.ContentServices.IoC
 {
-    using CarbonCore.ContentServices.Compat.Contracts;
-    using CarbonCore.ContentServices.Compat.Logic;
+    using CarbonCore.ContentServices.Contracts;
+    using CarbonCore.ContentServices.Logic;
     using CarbonCore.Utils.IoC;
 
     [DependsOnModule(typeof(UtilsCompatModule))]

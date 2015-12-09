@@ -1,8 +1,8 @@
-﻿namespace CarbonCore.ContentServices.Compat.Data.Tiled
+﻿namespace CarbonCore.ContentServices.Data.Tiled
 {
     using System;
 
-    using CarbonCore.ContentServices.Compat.Logic.Enums;
+    using CarbonCore.ContentServices.Logic.Enums;
 
     using Newtonsoft.Json;
 

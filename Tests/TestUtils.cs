@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Tests.Compat
+﻿namespace CarbonCore.Tests
 {
     using System;
     using System.Collections;
@@ -6,9 +6,9 @@
     using System.IO;
     using System.Linq;
     using System.Reflection;
-
-    using CarbonCore.ContentServices.Compat.Contracts;
-    using CarbonCore.ContentServices.Compat.Logic.DataEntryLogic;
+    
+    using CarbonCore.ContentServices.Contracts;
+    using CarbonCore.ContentServices.Logic.DataEntryLogic;
 
     using NUnit.Framework;
 

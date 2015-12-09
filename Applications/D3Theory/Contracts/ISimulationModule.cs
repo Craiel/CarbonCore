@@ -1,6 +1,6 @@
-﻿namespace D3Theory.Contracts
+﻿namespace CarbonCore.Modules.D3Theory.Contracts
 {
-    using D3Theory.Data;
+    using CarbonCore.Modules.D3Theory.Data;
 
     public interface ISimulationModule
     {

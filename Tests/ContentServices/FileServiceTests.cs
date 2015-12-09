@@ -1,13 +1,13 @@
-﻿namespace CarbonCore.Tests.Compat.ContentServices
+﻿namespace CarbonCore.Tests.ContentServices
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    using CarbonCore.ContentServices.Compat.Contracts;
-    using CarbonCore.ContentServices.Compat.Data;
-    using CarbonCore.ContentServices.Compat.IoC;
-    using CarbonCore.ContentServices.Compat.Logic;
+    
+    using CarbonCore.ContentServices.Contracts;
+    using CarbonCore.ContentServices.Data;
+    using CarbonCore.ContentServices.IoC;
+    using CarbonCore.ContentServices.Logic;
     using CarbonCore.Utils;
     using CarbonCore.Utils.Contracts.IoC;
     using CarbonCore.Utils.IO;
@@ -117,7 +117,7 @@
             {
                 using (var provider = this.container.Resolve<IFileServiceMemoryProvider>())
                 {
-                    provider.CompressionLevel = CarbonCore.ContentServices.Compat.Logic.Enums.CompressionLevel.Optimal;
+                    provider.CompressionLevel = CarbonCore.ContentServices.Logic.Enums.CompressionLevel.Optimal;
                     provider.Initialize();
 
                     service.AddProvider(provider);
@@ -137,7 +137,7 @@
             {
                 using (var provider = this.container.Resolve<IFileServiceDiskProvider>())
                 {
-                    provider.CompressionLevel = CarbonCore.ContentServices.Compat.Logic.Enums.CompressionLevel.Optimal;
+                    provider.CompressionLevel = CarbonCore.ContentServices.Logic.Enums.CompressionLevel.Optimal;
                     provider.Root = this.dataDirectory;
                     provider.Initialize();
 
@@ -158,7 +158,7 @@
             {
                 using (var provider = this.container.Resolve<IFileServicePackProvider>())
                 {
-                    provider.CompressionLevel = CarbonCore.ContentServices.Compat.Logic.Enums.CompressionLevel.Optimal;
+                    provider.CompressionLevel = CarbonCore.ContentServices.Logic.Enums.CompressionLevel.Optimal;
                     provider.Root = this.dataDirectory;
                     provider.PackName = "FileServiceTests";
                     provider.Initialize();

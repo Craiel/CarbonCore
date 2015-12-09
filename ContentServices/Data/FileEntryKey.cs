@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.ContentServices.Compat.Data
+﻿namespace CarbonCore.ContentServices.Data
 {
     public struct FileEntryKey
     {

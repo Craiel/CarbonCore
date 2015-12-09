@@ -1,9 +1,9 @@
-﻿namespace CarbonCore.Tests.Compat.ContentServices.Data
+﻿namespace CarbonCore.Tests.ContentServices.Data
 {
     using System.Collections.Generic;
-
-    using CarbonCore.ContentServices.Compat.Logic;
-    using CarbonCore.ContentServices.Compat.Logic.Attributes;
+    
+    using CarbonCore.ContentServices.Logic;
+    using CarbonCore.ContentServices.Logic.Attributes;
 
     using Newtonsoft.Json;
 

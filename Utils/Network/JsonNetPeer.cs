@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-
+    
     using CarbonCore.Utils.Contracts.Network;
     using CarbonCore.Utils.Network.Packages;
 

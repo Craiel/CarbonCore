@@ -1,9 +1,9 @@
-﻿namespace CarbonCore.Tests.Compat.Utils
+﻿namespace CarbonCore.Tests.Utils
 {
     using System;
     using System.Collections.Generic;
 
-    using CarbonCore.Tests.Compat.Resources;
+    using CarbonCore.Tests.Resources;
     using CarbonCore.Utils;
     using CarbonCore.Utils.IO;
 

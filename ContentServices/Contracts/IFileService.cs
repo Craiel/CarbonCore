@@ -1,10 +1,10 @@
-﻿namespace CarbonCore.ContentServices.Compat.Contracts
+﻿namespace CarbonCore.ContentServices.Contracts
 {
     using System;
     using System.Collections.Generic;
 
-    using CarbonCore.ContentServices.Compat.Data;
-    using CarbonCore.ContentServices.Compat.Logic;
+    using CarbonCore.ContentServices.Data;
+    using CarbonCore.ContentServices.Logic;
 
     public interface IFileService : IDisposable
     {

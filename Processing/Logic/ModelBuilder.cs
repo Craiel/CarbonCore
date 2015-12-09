@@ -104,7 +104,7 @@
                         // N-gon
                         if (!cw)
                         {
-                            Utils.Edge.Diagnostics.Internal.NotImplemented("N-gon does not support rotation clockwise change currently");
+                            Utils.Edge.Diagnostic.Internal.NotImplemented("N-gon does not support rotation clockwise change currently");
                         }
 
                         for (int i = 0; i < this.pendingElements.Count; i++)

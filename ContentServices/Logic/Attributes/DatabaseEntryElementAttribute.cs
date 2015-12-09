@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.ContentServices.Compat.Logic.Attributes
+﻿namespace CarbonCore.ContentServices.Logic.Attributes
 {
     using System;
 

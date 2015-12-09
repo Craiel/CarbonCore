@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.ContentServices.Compat.Logic.DataEntryLogic.CompactSerializers
+﻿namespace CarbonCore.ContentServices.Logic.DataEntryLogic.CompactSerializers
 {
     using System;
     using System.Collections;

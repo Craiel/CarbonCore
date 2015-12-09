@@ -1,7 +1,7 @@
 ﻿namespace CarbonCore.Applications.MCSync
 {
-    using CarbonCore.ContentServices.Compat.Logic.Attributes;
-    using CarbonCore.ContentServices.Compat.Logic.DataEntryLogic;
+    using CarbonCore.ContentServices.Logic.Attributes;
+    using CarbonCore.ContentServices.Logic.DataEntryLogic;
 
     [DataEntry]
     public class SyncSettings : DataEntry

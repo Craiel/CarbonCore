@@ -1,10 +1,10 @@
-﻿namespace CarbonCore.ContentServices.Compat.Logic
+﻿namespace CarbonCore.ContentServices.Logic
 {
     using System;
     using System.Data;
     using System.Reflection;
 
-    using CarbonCore.ContentServices.Compat.Logic.Attributes;
+    using CarbonCore.ContentServices.Logic.Attributes;
     using CarbonCore.Utils;
     using CarbonCore.Utils.Database;
 

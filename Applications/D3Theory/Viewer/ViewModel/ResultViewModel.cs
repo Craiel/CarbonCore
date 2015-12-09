@@ -1,15 +1,14 @@
-﻿namespace D3Theory.Viewer.ViewModel
+﻿namespace CarbonCore.Applications.D3Theory.Viewer.ViewModel
 {
     using System;
     using System.Collections.ObjectModel;
     using System.Windows.Controls;
 
+    using CarbonCore.Applications.D3Theory.Viewer.Contracts;
+    using CarbonCore.Applications.D3Theory.Viewer.Logic;
+    using CarbonCore.Modules.D3Theory.Data;
     using CarbonCore.ToolFramework.ViewModel;
     using CarbonCore.Utils.Contracts.IoC;
-
-    using D3Theory.Data;
-    using D3Theory.Viewer.Contracts;
-    using D3Theory.Viewer.Logic;
 
     public class ResultViewModel : BaseViewModel, IResultViewModel
     {

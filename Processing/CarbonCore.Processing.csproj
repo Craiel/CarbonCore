@@ -171,6 +171,10 @@
       <Project>{a46b19fc-eb4a-4bda-97e1-5b522fb4cc6b}</Project>
       <Name>CarbonCore.Utils.Edge</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Utils\Edge\DirectX\CarbonCore.Utils.Edge.DirectX.csproj">
+      <Project>{c3e6c35a-fe50-481b-9b6a-559dfdffb52e}</Project>
+      <Name>CarbonCore.Utils.Edge.DirectX</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

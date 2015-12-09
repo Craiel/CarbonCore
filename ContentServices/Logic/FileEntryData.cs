@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.ContentServices.Compat.Logic
+﻿namespace CarbonCore.ContentServices.Logic
 {
     public class FileEntryData
     {

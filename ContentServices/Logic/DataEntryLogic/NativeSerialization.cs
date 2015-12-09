@@ -1,10 +1,10 @@
-﻿namespace CarbonCore.ContentServices.Compat.Logic.DataEntryLogic
+﻿namespace CarbonCore.ContentServices.Logic.DataEntryLogic
 {
     using System;
     using System.IO;
 
-    using CarbonCore.ContentServices.Compat.Contracts;
-    using CarbonCore.ContentServices.Compat.Logic.DataEntryLogic.Serializers;
+    using CarbonCore.ContentServices.Contracts;
+    using CarbonCore.ContentServices.Logic.DataEntryLogic.Serializers;
 
     public delegate void SerializationCallbackDelegate<in T>(Stream target, T value);
 

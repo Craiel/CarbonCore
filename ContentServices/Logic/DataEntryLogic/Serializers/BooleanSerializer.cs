@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.ContentServices.Compat.Logic.DataEntryLogic.Serializers
+﻿namespace CarbonCore.ContentServices.Logic.DataEntryLogic.Serializers
 {
     using System.IO;
 

@@ -7,6 +7,7 @@
     using CarbonCore.Applications.CrystalBuild.Logic;
     using CarbonCore.Utils;
     using CarbonCore.Utils.Contracts.IoC;
+    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.I18N;
     using CarbonCore.Utils.IO;
     using CarbonCore.Utils.Edge.CommandLine.Contracts;
@@ -85,7 +86,7 @@
                 }
                 else
                 {
-                    Trace.TraceWarning("No resources to register!");
+                    Diagnostic.Warning("No resources to register!");
                 }
             }
 
@@ -99,7 +100,7 @@
                 }
                 else
                 {
-                    Trace.TraceWarning("No data found to build!");
+                    Diagnostic.Warning("No data found to build!");
                 }
             }
 
@@ -113,7 +114,7 @@
                 }
                 else
                 {
-                    Trace.TraceWarning("No templates found to build!");
+                    Diagnostic.Warning("No templates found to build!");
                 }
             }
 
@@ -139,7 +140,7 @@
 
                     if (mainFile == null)
                     {
-                        Trace.TraceError(
+                        Diagnostic.Error(
                             "Could not find entry point: {0} ({1} files)",
                             this.config.Current.SourceMain,
                             files.Count);
@@ -183,7 +184,7 @@
                 }
                 else
                 {
-                    Trace.TraceWarning("No source files found to build!");
+                    Diagnostic.Warning("No source files found to build!");
                 }
             }
 
@@ -197,7 +198,7 @@
                 }
                 else
                 {
-                    Trace.TraceWarning("No templates found to build!");
+                    Diagnostic.Warning("No templates found to build!");
                 }
             }
 
@@ -211,7 +212,7 @@
                 }
                 else
                 {
-                    Trace.TraceWarning("No content files found to copy!");
+                    Diagnostic.Warning("No content files found to copy!");
                 }
             }
 
@@ -219,7 +220,7 @@
             {
                 if (cache.ImageUseCount[key] <= 0)
                 {
-                    Trace.TraceWarning("Unused image: {0}", key);
+                    Diagnostic.Warning("Unused image: {0}", key);
                 }
             }
         }

@@ -1,5 +1,6 @@
 ﻿namespace CarbonCore.GrammarParser
 {
+    using System;
     using System.Collections.Generic;
 
     using CarbonCore.GrammarParser.Contracts;
@@ -113,8 +114,7 @@
 
                 default:
                     {
-                        Utils.Edge.Diagnostics.Internal.NotImplemented(term.Type.ToString());
-                        break;
+                        throw new NotImplementedException(term.Type.ToString());
                     }
             }
         }

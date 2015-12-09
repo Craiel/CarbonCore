@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.ContentServices.Compat.Logic.Enums
+﻿namespace CarbonCore.ContentServices.Logic.Enums
 {
     public enum TiledMapOrientation
     {

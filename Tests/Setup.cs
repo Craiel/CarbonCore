@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Tests.Compat
+﻿namespace CarbonCore.Tests
 {
     using CarbonCore.Utils.Diagnostics;
 
@@ -7,7 +7,7 @@
     [SetUpFixture]
     public class Setup
     {
-        [SetUp]
+        [OneTimeSetUp]
         public void SetUp()
         {
             Diagnostic.RegisterThread("Test Main");

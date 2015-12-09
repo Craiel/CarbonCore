@@ -9,10 +9,10 @@
     using System.Linq;
     using System.Threading;
 
-    using CarbonCore.ContentServices.Edge.Compat.Contracts;
-    using CarbonCore.ContentServices.Edge.Compat.Logic;
-    using CarbonCore.ContentServices.Edge.Compat.Logic.Attributes;
+    using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.Edge.Contracts;
+    using CarbonCore.ContentServices.Logic;
+    using CarbonCore.ContentServices.Logic.Attributes;
     using CarbonCore.Utils;
     using CarbonCore.Utils.Contracts;
     using CarbonCore.Utils.Contracts.IoC;
@@ -233,7 +233,7 @@
         {
             using (DbCommand command = this.connector.CreateCommand())
             {
-                command.CommandText = string.Format(Compat.Constants.StatementTableInfo, tableName);
+                command.CommandText = string.Format(ContentServices.Constants.StatementTableInfo, tableName);
                 IList<object[]> info = new List<object[]>();
                 using (DbDataReader reader = command.ExecuteReader(CommandBehavior.Default))
                 {
@@ -285,7 +285,7 @@
                 string properties = DatabaseUtils.GetDatabaseTypeString(element.DatabaseType);
                 if (element == descriptor.PrimaryKey)
                 {
-                    properties = string.Format("{0} {1} {2}", properties, Compat.Constants.StatementPrimaryKey, Compat.Constants.StatementNotNull);
+                    properties = string.Format("{0} {1} {2}", properties, ContentServices.Constants.StatementPrimaryKey, ContentServices.Constants.StatementNotNull);
                 }
 
                 statement.What(element.Name, properties);
@@ -325,7 +325,7 @@
                         tableType = string.Concat(tableType, this.connector.NotNullStatement);
                     }
 
-                    tableTypeOptions = Compat.Constants.StatementPrimaryKey;
+                    tableTypeOptions = ContentServices.Constants.StatementPrimaryKey;
                 }
 
                 // If we still assume to be consistent check more details
@@ -828,7 +828,7 @@
             {
                 using (DbCommand command = this.connector.CreateCommand())
                 {
-                    command.CommandText = Compat.Constants.StatementRollback;
+                    command.CommandText = ContentServices.Constants.StatementRollback;
                     command.ExecuteNonQuery();
                 }
 

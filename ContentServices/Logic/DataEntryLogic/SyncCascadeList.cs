@@ -1,10 +1,10 @@
-﻿namespace CarbonCore.ContentServices.Compat.Logic.DataEntryLogic
+﻿namespace CarbonCore.ContentServices.Logic.DataEntryLogic
 {
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
 
-    using CarbonCore.ContentServices.Compat.Contracts;
+    using CarbonCore.ContentServices.Contracts;
 
     [DebuggerDisplay("{Value}")]
     public class SyncCascadeList<T, TN> : SyncList<T, TN>

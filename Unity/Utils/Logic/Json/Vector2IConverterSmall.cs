@@ -3,7 +3,7 @@
     using System;
     using System.Diagnostics.CodeAnalysis;
 
-    using CarbonCore.Utils.Unity.Data;
+    using CarbonCore.Utils.MathUtils;
 
     using Newtonsoft.Json;
     

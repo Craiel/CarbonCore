@@ -3,17 +3,15 @@
     using System;
     using System.IO;
     using System.IO.Compression;
-
-    using CarbonCore.ContentServices.Edge.Compat.Contracts;
-
-    using CompressionLevel = CarbonCore.ContentServices.Edge.Compat.Logic.Enums.CompressionLevel;
+    
+    using CarbonCore.ContentServices.Contracts;
 
     public class ZipStreamCompressionProvider : ICompressionProvider
     {
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public void Compress(Stream source, Stream target, CompressionLevel level)
+        public void Compress(Stream source, Stream target, ContentServices.Logic.Enums.CompressionLevel level)
         {
             using (var zipStream = new GZipStream(target, this.GetZipStreamLevel(level), true))
             {
@@ -35,21 +33,21 @@
         // -------------------------------------------------------------------
         // Private
         // -------------------------------------------------------------------
-        private System.IO.Compression.CompressionLevel GetZipStreamLevel(CompressionLevel level)
+        private System.IO.Compression.CompressionLevel GetZipStreamLevel(ContentServices.Logic.Enums.CompressionLevel level)
         {
             switch (level)
             {
-                case CompressionLevel.Optimal:
+                case ContentServices.Logic.Enums.CompressionLevel.Optimal:
                     {
                         return System.IO.Compression.CompressionLevel.Optimal;
                     }
 
-                case CompressionLevel.Fastest:
+                case ContentServices.Logic.Enums.CompressionLevel.Fastest:
                     {
                         return System.IO.Compression.CompressionLevel.Fastest;
                     }
 
-                case CompressionLevel.NoCompression:
+                case ContentServices.Logic.Enums.CompressionLevel.NoCompression:
                     {
                         return System.IO.Compression.CompressionLevel.NoCompression;
                     }

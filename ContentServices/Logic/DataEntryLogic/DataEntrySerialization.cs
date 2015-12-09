@@ -1,10 +1,10 @@
-﻿namespace CarbonCore.ContentServices.Compat.Logic.DataEntryLogic
+﻿namespace CarbonCore.ContentServices.Logic.DataEntryLogic
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
 
-    using CarbonCore.ContentServices.Compat.Contracts;
+    using CarbonCore.ContentServices.Contracts;
     using CarbonCore.Utils.Diagnostics;
 
     using JetBrains.Annotations;

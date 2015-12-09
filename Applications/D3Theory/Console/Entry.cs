@@ -1,11 +1,10 @@
-﻿namespace D3Theory.Console
+﻿namespace CarbonCore.Applications.D3Theory.Console
 {
+    using CarbonCore.Applications.D3Theory.Console.Contracts;
+    using CarbonCore.Applications.D3Theory.Console.IoC;
     using CarbonCore.Utils.Diagnostics;
-    using CarbonCore.Utils.IoC;
+    using CarbonCore.Utils.Edge.IoC;
 
-    using D3Theory.Console.Contracts;
-    using D3Theory.Console.IoC;
-    
     public static class Entry
     {
         // -------------------------------------------------------------------

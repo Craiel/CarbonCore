@@ -1,12 +1,12 @@
-﻿namespace CarbonCore.Tests.Compat.ContentServices
+﻿namespace CarbonCore.Tests.ContentServices
 {
     using System.Collections.Generic;
     using System.IO;
-
-    using CarbonCore.ContentServices.Compat.Contracts;
-    using CarbonCore.ContentServices.Compat.Logic.DataEntryLogic;
-    using CarbonCore.ContentServices.Compat.Logic.DataEntryLogic.Serializers;
-    using CarbonCore.Tests.Compat.ContentServices.Data;
+    
+    using CarbonCore.ContentServices.Contracts;
+    using CarbonCore.ContentServices.Logic.DataEntryLogic;
+    using CarbonCore.ContentServices.Logic.DataEntryLogic.Serializers;
+    using CarbonCore.Tests.ContentServices.Data;
     using CarbonCore.Utils;
 
     using NUnit.Framework;

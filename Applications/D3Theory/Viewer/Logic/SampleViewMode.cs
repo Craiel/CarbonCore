@@ -1,4 +1,4 @@
-﻿namespace D3Theory.Viewer.Logic
+﻿namespace CarbonCore.Applications.D3Theory.Viewer.Logic
 {
     public enum SampleViewMode
     {

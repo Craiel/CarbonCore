@@ -1,7 +1,7 @@
-﻿namespace CarbonCore.Tests.Compat.ContentServices.Data
+﻿namespace CarbonCore.Tests.ContentServices.Data
 {
-    using CarbonCore.ContentServices.Compat.Logic.Attributes;
-    using CarbonCore.ContentServices.Compat.Logic.DataEntryLogic;
+    using CarbonCore.ContentServices.Logic.Attributes;
+    using CarbonCore.ContentServices.Logic.DataEntryLogic;
 
     public class HashTestData : DataEntry
     {

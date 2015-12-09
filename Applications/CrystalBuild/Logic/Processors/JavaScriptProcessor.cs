@@ -4,8 +4,8 @@
     using System.Collections.Generic;
     using System.Text;
     using System.Text.RegularExpressions;
-
-    using CarbonCore.Utils;
+    
+    using CarbonCore.Utils.Edge;
     using CarbonCore.Utils.I18N;
     using CarbonCore.Utils.IO;
 

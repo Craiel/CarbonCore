@@ -1,13 +1,12 @@
-﻿namespace D3Theory.Viewer.Contracts
+﻿namespace CarbonCore.Applications.D3Theory.Viewer.Contracts
 {
     using System;
     using System.Collections.ObjectModel;
     using System.Windows.Controls;
 
+    using CarbonCore.Applications.D3Theory.Viewer.Logic;
+    using CarbonCore.Modules.D3Theory.Data;
     using CarbonCore.ToolFramework.Contracts.ViewModels;
-
-    using D3Theory.Data;
-    using D3Theory.Viewer.Logic;
 
     public interface IResultViewModel : IBaseViewModel
     {

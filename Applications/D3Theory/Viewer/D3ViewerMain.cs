@@ -1,13 +1,12 @@
-﻿namespace D3Theory.Viewer
+﻿namespace CarbonCore.Applications.D3Theory.Viewer
 {
     using System.Windows;
 
+    using CarbonCore.Applications.D3Theory.Viewer.Contracts;
+    using CarbonCore.Applications.D3Theory.Viewer.View;
     using CarbonCore.ToolFramework.Contracts.ViewModels;
     using CarbonCore.ToolFramework.Logic;
     using CarbonCore.Utils.Contracts.IoC;
-
-    using D3Theory.Viewer.Contracts;
-    using D3Theory.Viewer.View;
 
     public class D3ViewerMain : WindowApplicationBase, ID3ViewerMain
     {

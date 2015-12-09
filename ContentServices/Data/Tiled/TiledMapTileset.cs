@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.ContentServices.Compat.Data.Tiled
+﻿namespace CarbonCore.ContentServices.Data.Tiled
 {
     using Newtonsoft.Json;
 

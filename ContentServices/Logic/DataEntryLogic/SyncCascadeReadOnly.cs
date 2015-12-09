@@ -1,9 +1,9 @@
-﻿namespace CarbonCore.ContentServices.Compat.Logic.DataEntryLogic
+﻿namespace CarbonCore.ContentServices.Logic.DataEntryLogic
 {
     using System;
     using System.Diagnostics;
 
-    using CarbonCore.ContentServices.Compat.Contracts;
+    using CarbonCore.ContentServices.Contracts;
 
     [DebuggerDisplay("{Value}")]
     public class SyncCascadeReadOnly<T>

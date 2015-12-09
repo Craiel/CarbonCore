@@ -1,10 +1,10 @@
-﻿namespace CarbonCore.Tests.Compat.ContentServices
+﻿namespace CarbonCore.Tests.ContentServices
 {
     using System;
     using System.Linq;
 
-    using CarbonCore.ContentServices.Compat.Logic.DataEntryLogic;
-    using CarbonCore.Tests.Compat.ContentServices.Data;
+    using CarbonCore.ContentServices.Logic.DataEntryLogic;
+    using CarbonCore.Tests.ContentServices.Data;
     using CarbonCore.Utils.Diagnostics;
 
     using NUnit.Framework;

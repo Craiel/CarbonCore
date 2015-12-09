@@ -1,12 +1,11 @@
-﻿namespace D3Theory.Viewer
+﻿namespace CarbonCore.Applications.D3Theory.Viewer
 {
     using System;
 
+    using CarbonCore.Applications.D3Theory.Viewer.Contracts;
+    using CarbonCore.Applications.D3Theory.Viewer.IoC;
     using CarbonCore.Utils.Diagnostics;
-    using CarbonCore.Utils.IoC;
-
-    using D3Theory.Viewer.Contracts;
-    using D3Theory.Viewer.IoC;
+    using CarbonCore.Utils.Edge.IoC;
 
     public static class Entry
     {

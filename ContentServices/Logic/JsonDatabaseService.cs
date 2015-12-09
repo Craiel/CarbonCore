@@ -1,10 +1,10 @@
-﻿namespace CarbonCore.ContentServices.Compat.Logic
+﻿namespace CarbonCore.ContentServices.Logic
 {
     using System.Collections.Generic;
     using System.Linq;
 
-    using CarbonCore.ContentServices.Compat.Contracts;
-    using CarbonCore.ContentServices.Compat.Data;
+    using CarbonCore.ContentServices.Contracts;
+    using CarbonCore.ContentServices.Data;
     using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.IO;
     using CarbonCore.Utils.Json;

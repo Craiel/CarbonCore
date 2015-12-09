@@ -1,4 +1,4 @@
-﻿namespace D3Theory.Console.Contracts
+﻿namespace CarbonCore.Applications.D3Theory.Console.Contracts
 {
     public interface IMain
     {

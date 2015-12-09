@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Tests.Compat.Resources
+﻿namespace CarbonCore.Tests.Resources
 {
     public static class Static
     {

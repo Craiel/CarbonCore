@@ -1,10 +1,10 @@
-﻿namespace CarbonCore.Tests.Compat.ContentServices.Data
+﻿namespace CarbonCore.Tests.ContentServices.Data
 {
     using System;
     using System.IO;
-
-    using CarbonCore.ContentServices.Compat.Logic.DataEntryLogic;
-    using CarbonCore.ContentServices.Compat.Logic.DataEntryLogic.Serializers;
+    
+    using CarbonCore.ContentServices.Logic.DataEntryLogic;
+    using CarbonCore.ContentServices.Logic.DataEntryLogic.Serializers;
     using CarbonCore.Utils;
 
     public class SyncTestEntry2 : SyncEntry

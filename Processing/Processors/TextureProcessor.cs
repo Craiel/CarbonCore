@@ -142,7 +142,7 @@
 
                 default:
                     {
-                        Utils.Edge.Diagnostics.Internal.NotImplemented("Compression format has no setting: " + options.Format);
+                        Utils.Edge.Diagnostic.Internal.NotImplemented("Compression format has no setting: " + options.Format);
                         break;
                     }
             }

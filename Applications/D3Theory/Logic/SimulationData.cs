@@ -1,11 +1,11 @@
-﻿namespace D3Theory.Logic
+﻿namespace CarbonCore.Modules.D3Theory.Logic
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    using D3Theory.Contracts;
-    using D3Theory.Data;
+    using CarbonCore.Modules.D3Theory.Contracts;
+    using CarbonCore.Modules.D3Theory.Data;
 
     public class SimulationData : ISimulationData
     {

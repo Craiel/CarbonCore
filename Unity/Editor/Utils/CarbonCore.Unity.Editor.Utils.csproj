@@ -44,12 +44,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.Core" />
-    <Reference Include="UnityEditor, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\External\Unity\5.1.1f1\UnityEditor.dll</HintPath>
+    <Reference Include="UnityEditor">
+      <HintPath>..\..\..\External\Unity\5.2.2f1\UnityEditor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>..\External\Unity\5.1.1f1\UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\External\Unity\5.2.2f1\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -81,6 +80,10 @@
     <Compile Include="GUI\Splitter.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>del $(TargetDir)UnityEngine.*
+del $(TargetDir)UnityEditor.*</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

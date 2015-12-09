@@ -1,9 +1,9 @@
-﻿namespace CarbonCore.ContentServices.Compat.Logic
+﻿namespace CarbonCore.ContentServices.Logic
 {
     using System.IO;
 
-    using CarbonCore.ContentServices.Compat.Contracts;
-    using CarbonCore.ContentServices.Compat.Logic.Enums;
+    using CarbonCore.ContentServices.Contracts;
+    using CarbonCore.ContentServices.Logic.Enums;
 
     public class DefaultCompressionProvider : ICompressionProvider
     {

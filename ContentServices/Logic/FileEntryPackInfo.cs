@@ -1,6 +1,6 @@
-﻿namespace CarbonCore.ContentServices.Compat.Logic
+﻿namespace CarbonCore.ContentServices.Logic
 {
-    using CarbonCore.ContentServices.Compat.Logic.Attributes;
+    using CarbonCore.ContentServices.Logic.Attributes;
 
     [DatabaseEntry("FileTablePackInfo")]
     public class FileEntryPackInfo : DatabaseEntry

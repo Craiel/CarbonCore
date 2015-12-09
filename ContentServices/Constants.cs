@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.ContentServices.Compat
+﻿namespace CarbonCore.ContentServices
 {
     public static class Constants
     {

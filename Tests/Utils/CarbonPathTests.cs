@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Tests.Compat.Utils
+﻿namespace CarbonCore.Tests.Utils
 {
     using CarbonCore.Utils;
     using CarbonCore.Utils.IO;

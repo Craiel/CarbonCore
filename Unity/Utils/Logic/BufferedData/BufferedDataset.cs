@@ -4,8 +4,8 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
-
-    using CarbonCore.ContentServices.Compat.Contracts;
+    
+    using CarbonCore.ContentServices.Contracts;
     using CarbonCore.Utils.Contracts.IoC;
     using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.Unity.Contracts.BufferedData;

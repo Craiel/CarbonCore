@@ -1,13 +1,12 @@
-﻿namespace D3Theory
+﻿namespace CarbonCore.Modules.D3Theory
 {
     using System;
     using System.Collections.Generic;
 
+    using CarbonCore.Modules.D3Theory.Contracts;
+    using CarbonCore.Modules.D3Theory.Data;
     using CarbonCore.Utils.IO;
     using CarbonCore.Utils.Json;
-
-    using D3Theory.Contracts;
-    using D3Theory.Data;
 
     using Newtonsoft.Json;
 

@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.ContentServices.Compat.Logic.DataEntryLogic
+﻿namespace CarbonCore.ContentServices.Logic.DataEntryLogic
 {
     using System;
     using System.Collections;

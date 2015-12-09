@@ -37,7 +37,7 @@
 
                     default:
                         {
-                            Utils.Diagnostics.Internal.NotImplemented("Unsupported property type: " + property.Type);
+                            Utils.Edge.Diagnostic.Internal.NotImplemented("Unsupported property type: " + property.Type);
                             break;
                         }
                 }

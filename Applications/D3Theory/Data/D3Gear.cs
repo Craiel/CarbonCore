@@ -1,4 +1,4 @@
-﻿namespace D3Theory.Data
+﻿namespace CarbonCore.Modules.D3Theory.Data
 {
     using System.Collections.Generic;
     using System.ComponentModel;

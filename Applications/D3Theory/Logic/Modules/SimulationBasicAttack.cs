@@ -1,7 +1,7 @@
-﻿namespace D3Theory.Logic.Modules
+﻿namespace CarbonCore.Modules.D3Theory.Logic.Modules
 {
-    using D3Theory.Contracts;
-    using D3Theory.Data;
+    using CarbonCore.Modules.D3Theory.Contracts;
+    using CarbonCore.Modules.D3Theory.Data;
 
     public class SimulationBasicAttack : ISimulationModule
     {

@@ -30,14 +30,14 @@
     <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Unity|AnyCPU'">
-    <OutputPath>..\..\bin\Unity\Debug\Editor\</OutputPath>
+    <OutputPath>..\..\bin\Unity\Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG;UNITY;UNITY_5</DefineConstants>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>..\..\CarbonCore.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnityRelease|AnyCPU'">
     <Optimize>true</Optimize>
-    <OutputPath>..\..\bin\Unity\Release\Editor\</OutputPath>
+    <OutputPath>..\..\bin\Unity\Release\</OutputPath>
     <DefineConstants>UNITY;UNITY_5</DefineConstants>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>..\..\CarbonCore.ruleset</CodeAnalysisRuleSet>
@@ -47,7 +47,7 @@
       <ItemGroup>
         <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
           <SpecificVersion>False</SpecificVersion>
-          <HintPath>..\External\Json.NET\Unity\UnityJasonNet.dll</HintPath>
+          <HintPath>..\..\External\Json.NET\Unity\UnityJasonNet.dll</HintPath>
         </Reference>
       </ItemGroup>
     </When>
@@ -55,7 +55,7 @@
       <ItemGroup>
         <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
           <SpecificVersion>False</SpecificVersion>
-          <HintPath>..\External\Json.NET\Json70r1\Net35\Newtonsoft.Json.dll</HintPath>
+          <HintPath>..\..\External\Json.NET\Json70r1\Net35\Newtonsoft.Json.dll</HintPath>
         </Reference>
       </ItemGroup>
     </Otherwise>
@@ -66,16 +66,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
-      <HintPath>..\External\Unity\5.1.1f1\UnityEngine.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.Analytics">
-      <HintPath>..\External\Unity\5.1.1f1\UnityEngine.Analytics.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.Networking">
-      <HintPath>..\External\Unity\5.1.1f1\UnityEngine.Networking.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>..\External\Unity\5.1.1f1\UnityEngine.UI.dll</HintPath>
+      <HintPath>..\..\External\Unity\5.2.2f1\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -204,17 +195,19 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ContentServicesCompat\CarbonCore.ContentServices .Compat.csproj">
-      <Project>{890ff110-443f-4647-80b1-82d414cccd88}</Project>
-      <Name>CarbonCore.ContentServices .Compat</Name>
+    <ProjectReference Include="..\..\ContentServices\CarbonCore.ContentServices.csproj">
+      <Project>{5d3507bd-d8dd-4255-a262-8e360e936f10}</Project>
+      <Name>CarbonCore.ContentServices</Name>
     </ProjectReference>
-    <ProjectReference Include="..\UtilsCompat\CarbonCore.Utils.Compat.csproj">
-      <Project>{b823cdce-5ed4-4030-ab35-44daf233d4c0}</Project>
-      <Name>CarbonCore.Utils.Compat</Name>
+    <ProjectReference Include="..\..\Utils\CarbonCore.Utils.csproj">
+      <Project>{e05836d9-0bb3-4bfa-89e6-f5ed40a9d93c}</Project>
+      <Name>CarbonCore.Utils</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>del $(TargetDir)UnityEngine.dll</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

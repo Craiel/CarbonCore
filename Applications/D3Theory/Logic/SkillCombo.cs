@@ -1,6 +1,6 @@
-﻿namespace D3Theory.Logic
+﻿namespace CarbonCore.Modules.D3Theory.Logic
 {
-    using D3Theory.Data;
+    using CarbonCore.Modules.D3Theory.Data;
 
     public class SkillCombo
     {

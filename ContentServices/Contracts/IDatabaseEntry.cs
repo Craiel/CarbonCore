@@ -1,6 +1,6 @@
-﻿namespace CarbonCore.ContentServices.Compat.Contracts
+﻿namespace CarbonCore.ContentServices.Contracts
 {
-    using CarbonCore.ContentServices.Compat.Logic;
+    using CarbonCore.ContentServices.Logic;
 
     public interface IDatabaseEntry : IDataEntry
     {

@@ -260,7 +260,7 @@
 
                 default:
                     {
-                        return Utils.Diagnostics.Internal.NotImplemented<Quaternion>("Unknown rotation mode: " + type);
+                        return Utils.Edge.Diagnostic.Internal.NotImplemented<Quaternion>("Unknown rotation mode: " + type);
                     }
             }
         }
@@ -330,7 +330,7 @@
 
                     default:
                         {
-                            return Utils.Diagnostics.Internal.NotImplemented<StagePropertyElement[]>();
+                            return Utils.Edge.Diagnostic.Internal.NotImplemented<StagePropertyElement[]>();
                         }
                 }
             }

@@ -86,7 +86,7 @@
 
                 default:
                     {
-                        return Diagnostics.Internal.NotImplemented<HashFileName>();
+                        return Diagnostic.Internal.NotImplemented<HashFileName>();
                     }
             }
         }

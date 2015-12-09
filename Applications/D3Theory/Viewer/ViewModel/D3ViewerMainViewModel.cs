@@ -1,9 +1,8 @@
-﻿namespace D3Theory.Viewer.ViewModel
+﻿namespace CarbonCore.Applications.D3Theory.Viewer.ViewModel
 {
+    using CarbonCore.Applications.D3Theory.Viewer.Contracts;
     using CarbonCore.ToolFramework.ViewModel;
     using CarbonCore.Utils.Contracts.IoC;
-
-    using D3Theory.Viewer.Contracts;
 
     public class D3ViewerMainViewModel : BaseViewModel, ID3ViewerMainViewModel
     {

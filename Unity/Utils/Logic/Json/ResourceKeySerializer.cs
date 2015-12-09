@@ -4,10 +4,9 @@
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Reflection;
-
-    using CarbonCore.ContentServices.Compat;
-    using CarbonCore.ContentServices.Compat.Logic.DataEntryLogic;
-    using CarbonCore.ContentServices.Compat.Logic.DataEntryLogic.Serializers;
+    
+    using CarbonCore.ContentServices.Logic.DataEntryLogic;
+    using CarbonCore.ContentServices.Logic.DataEntryLogic.Serializers;
     using CarbonCore.Utils.Unity.Data;
 
     [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1121:UseBuiltInTypeAlias", Justification = "Reviewed. Suppression is OK here.")]
@@ -47,7 +46,7 @@
         {
             if (source == null)
             {
-                target.WriteByte(Constants.SerializationNull);
+                target.WriteByte(ContentServices.Constants.SerializationNull);
                 return;
             }
 

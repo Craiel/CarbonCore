@@ -1,6 +1,6 @@
 ﻿namespace CarbonCore.Utils.Unity.Logic.BufferedData.Commands
 {
-    using CarbonCore.ContentServices.Compat.Contracts;
+    using CarbonCore.ContentServices.Contracts;
     using CarbonCore.Utils.Unity.Contracts.BufferedData;
 
     public class BufferCommandWriteSharedInstance : IBufferedDataCommand

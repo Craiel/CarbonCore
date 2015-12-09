@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.ContentServices.Compat.Contracts
+﻿namespace CarbonCore.ContentServices.Contracts
 {
     public interface IDataEntry
     {

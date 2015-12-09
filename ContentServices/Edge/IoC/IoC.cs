@@ -1,9 +1,9 @@
 ﻿namespace CarbonCore.ContentServices.Edge.IoC
 {
-    using CarbonCore.ContentServices.Compat.Contracts;
-    using CarbonCore.ContentServices.Compat.IoC;
+    using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.Edge.Contracts;
     using CarbonCore.ContentServices.Edge.Logic;
+    using CarbonCore.ContentServices.IoC;
     using CarbonCore.Utils.Edge.IoC;
     using CarbonCore.Utils.IoC;
     

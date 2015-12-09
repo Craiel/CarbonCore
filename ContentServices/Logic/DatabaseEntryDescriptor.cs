@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.ContentServices.Compat.Logic
+﻿namespace CarbonCore.ContentServices.Logic
 {
     using System;
     using System.Collections.Generic;
@@ -6,8 +6,8 @@
     using System.Linq;
     using System.Reflection;
 
-    using CarbonCore.ContentServices.Compat.Contracts;
-    using CarbonCore.ContentServices.Compat.Logic.Attributes;
+    using CarbonCore.ContentServices.Contracts;
+    using CarbonCore.ContentServices.Logic.Attributes;
     using CarbonCore.Utils;
 
     public class DatabaseEntryDescriptor

@@ -38,7 +38,7 @@
 
                 default:
                     {
-                        return Utils.Diagnostics.Internal.NotImplemented<DataTemplate>();
+                        return Utils.Edge.Diagnostic.Internal.NotImplemented<DataTemplate>();
                     }
             }
         }

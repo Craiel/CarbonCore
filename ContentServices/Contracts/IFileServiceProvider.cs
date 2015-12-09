@@ -1,11 +1,11 @@
-﻿namespace CarbonCore.ContentServices.Compat.Contracts
+﻿namespace CarbonCore.ContentServices.Contracts
 {
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
 
-    using CarbonCore.ContentServices.Compat.Data;
-    using CarbonCore.ContentServices.Compat.Logic.Enums;
+    using CarbonCore.ContentServices.Data;
+    using CarbonCore.ContentServices.Logic.Enums;
 
     public interface IFileServiceProvider : IDisposable
     {

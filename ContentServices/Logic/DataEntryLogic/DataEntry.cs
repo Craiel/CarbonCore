@@ -1,10 +1,10 @@
-﻿namespace CarbonCore.ContentServices.Compat.Logic.DataEntryLogic
+﻿namespace CarbonCore.ContentServices.Logic.DataEntryLogic
 {
     using System;
     using System.Runtime.Serialization;
 
-    using CarbonCore.ContentServices.Compat.Contracts;
-    using CarbonCore.ContentServices.Compat.Logic.Attributes;
+    using CarbonCore.ContentServices.Contracts;
+    using CarbonCore.ContentServices.Logic.Attributes;
     using CarbonCore.Utils;
 
     using Newtonsoft.Json;
