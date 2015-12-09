@@ -7,7 +7,7 @@
     [SetUpFixture]
     public class Setup
     {
-        [SetUp]
+        [OneTimeSetUp]
         public void SetUp()
         {
             Diagnostic.RegisterThread("Test Main");
