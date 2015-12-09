@@ -1,13 +1,13 @@
-﻿namespace CarbonCore.Tests.IoC
+﻿namespace CarbonCore.Tests.Edge.IoC
 {
-    using CarbonCore.Tests.Contracts;
-    using CarbonCore.Tests.ToolFramework;
+    using CarbonCore.Tests.Edge.Contracts;
+    using CarbonCore.Tests.Edge.ToolFramework;
     using CarbonCore.ToolFramework.IoC;
-    using CarbonCore.Utils.Compat.IoC;
+    using CarbonCore.Utils.Edge.IoC;
+    using CarbonCore.Utils.Edge.WPF.IoC;
     using CarbonCore.Utils.IoC;
-    using CarbonCore.UtilsWPF.IoC;
 
-    [DependsOnModule(typeof(UtilsModule))]
+    [DependsOnModule(typeof(UtilsEdgeModule))]
     [DependsOnModule(typeof(UtilsWPFModule))]
     [DependsOnModule(typeof(ToolFrameworkModule))]
     public class ToolFrameworkTestModule : CarbonQuickModule

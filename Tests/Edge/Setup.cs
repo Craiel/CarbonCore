@@ -1,6 +1,6 @@
-﻿namespace CarbonCore.Tests
+﻿namespace CarbonCore.Tests.Edge
 {
-    using CarbonCore.Utils.Compat.Diagnostics;
+    using CarbonCore.Utils.Diagnostics;
 
     using NUnit.Framework;
 

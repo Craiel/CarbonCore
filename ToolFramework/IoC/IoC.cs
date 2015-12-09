@@ -5,9 +5,8 @@
     using CarbonCore.ToolFramework.Logic;
     using CarbonCore.ToolFramework.ViewModel;
     using CarbonCore.Utils.Edge.IoC;
-    using CarbonCore.Utils.IoC;
-    using CarbonCore.Utils.IoC;
     using CarbonCore.Utils.Edge.WPF.IoC;
+    using CarbonCore.Utils.IoC;
 
     [DependsOnModule(typeof(UtilsEdgeModule))]
     [DependsOnModule(typeof(UtilsWPFModule))]

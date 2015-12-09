@@ -1,9 +1,9 @@
-﻿namespace CarbonCore.Tests.ToolFramework
+﻿namespace CarbonCore.Tests.Edge.ToolFramework
 {
-    using CarbonCore.Tests.Contracts;
-    using CarbonCore.Tests.IoC;
-    using CarbonCore.Utils.Compat.Contracts.IoC;
-    using CarbonCore.Utils.IoC;
+    using CarbonCore.Tests.Edge.Contracts;
+    using CarbonCore.Tests.Edge.IoC;
+    using CarbonCore.Utils.Contracts.IoC;
+    using CarbonCore.Utils.Edge.IoC;
 
     using NUnit.Framework;
 

@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Tests.Contracts
+﻿namespace CarbonCore.Tests.Edge.Contracts
 {
     using CarbonCore.ToolFramework.Contracts.ViewModels;
 

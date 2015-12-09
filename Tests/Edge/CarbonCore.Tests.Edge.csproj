@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{322F5DB2-87ED-41EC-9A8B-AA14E1F9ACD3}</ProjectGuid>
+    <ProjectGuid>{D9170744-4BB2-48ED-A604-9774E3CC16AC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CarbonCore.Tests.Edge</RootNamespace>
@@ -13,28 +13,22 @@
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>..\CarbonCore.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Unity|x64'">
-    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnityRelease|x64'">
     <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <Choose>
@@ -56,27 +50,21 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Reference Include="Autofac, Version=3.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\External\Autofac\3.1.1\Autofac.dll</HintPath>
+    <Reference Include="MahApps.Metro, Version=1.1.2.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MahApps.Metro.1.1.2.0\lib\net45\MahApps.Metro.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="MahApps.Metro">
-      <HintPath>..\External\MahApps.Metro\9b0d1f0\MahApps.Metro.dll</HintPath>
-    </Reference>
-    <Reference Include="MahApps.Metro.Resources">
-      <HintPath>..\External\MahApps.Metro\9b0d1f0\MahApps.Metro.Resources.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\External\NUnit\2.6.3\framework\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=3.0.5813.39031, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NUnit.3.0.1\lib\net45\nunit.framework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.SQLite, Version=1.0.93.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\External\sqllite\1.0.93.0\System.Data.SQLite.dll</HintPath>
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MahApps.Metro.1.1.2.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
@@ -102,37 +90,37 @@
     <Compile Include="Utils\DatabaseTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ContentServicesCompat\CarbonCore.ContentServices .Compat.csproj">
-      <Project>{890FF110-443F-4647-80B1-82D414CCCD88}</Project>
-      <Name>CarbonCore.ContentServices .Compat</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ContentServices\CarbonCore.ContentServices.csproj">
+    <ProjectReference Include="..\..\ContentServices\CarbonCore.ContentServices.csproj">
       <Project>{5D3507BD-D8DD-4255-A262-8E360E936F10}</Project>
       <Name>CarbonCore.ContentServices</Name>
     </ProjectReference>
-    <ProjectReference Include="..\GrammarParser\CarbonCore.GrammarParser.csproj">
+    <ProjectReference Include="..\..\ContentServices\Edge\CarbonCore.ContentServices.Edge.csproj">
+      <Project>{6e591d1d-592e-4872-8ca1-504a43de009b}</Project>
+      <Name>CarbonCore.ContentServices.Edge</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\GrammarParser\CarbonCore.GrammarParser.csproj">
       <Project>{50C22F18-89F6-48F3-A29F-CA25FDADDB90}</Project>
       <Name>CarbonCore.GrammarParser</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TestsCompat\CarbonCore.Tests.Compat.csproj">
-      <Project>{fbebe858-e55b-4823-8374-70e8e584f333}</Project>
-      <Name>CarbonCore.Tests.Compat</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ToolFramework\CarbonCore.ToolFramework.csproj">
+    <ProjectReference Include="..\..\ToolFramework\CarbonCore.ToolFramework.csproj">
       <Project>{e4643df2-d2db-4e99-ab4b-d8ce4fd94d81}</Project>
       <Name>CarbonCore.ToolFramework</Name>
     </ProjectReference>
-    <ProjectReference Include="..\UtilsCompat\CarbonCore.Utils.Compat.csproj">
-      <Project>{B823CDCE-5ED4-4030-AB35-44DAF233D4C0}</Project>
-      <Name>CarbonCore.Utils.Compat</Name>
+    <ProjectReference Include="..\..\Utils\Edge\CarbonCore.Utils.Edge.csproj">
+      <Project>{a46b19fc-eb4a-4bda-97e1-5b522fb4cc6b}</Project>
+      <Name>CarbonCore.Utils.Edge</Name>
     </ProjectReference>
-    <ProjectReference Include="..\UtilsWPF\CarbonCore.UtilsWPF.csproj">
+    <ProjectReference Include="..\..\Utils\Edge\WPF\CarbonCore.Utils.Edge.WPF.csproj">
       <Project>{75FF83F3-C123-4982-91F7-09D0F8A66536}</Project>
       <Name>CarbonCore.UtilsWPF</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Utils\CarbonCore.Utils.csproj">
+    <ProjectReference Include="..\..\Utils\CarbonCore.Utils.csproj">
       <Project>{e05836d9-0bb3-4bfa-89e6-f5ed40a9d93c}</Project>
       <Name>CarbonCore.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CarbonCore.Tests.csproj">
+      <Project>{322f5db2-87ed-41ec-9a8b-aa14e1f9acd3}</Project>
+      <Name>CarbonCore.Tests</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -143,6 +131,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

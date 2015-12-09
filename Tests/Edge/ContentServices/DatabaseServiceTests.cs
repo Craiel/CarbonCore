@@ -1,16 +1,16 @@
-﻿namespace CarbonCore.Tests.ContentServices
+﻿namespace CarbonCore.Tests.Edge.ContentServices
 {
     using System;
     using System.Collections.Generic;
     using System.Globalization;
-
-    using CarbonCore.ContentServices.Compat.Contracts;
+    
     using CarbonCore.ContentServices.Contracts;
-    using CarbonCore.ContentServices.IoC;
-    using CarbonCore.Tests.Compat.ContentServices.Data;
-    using CarbonCore.Utils.Compat.Contracts.IoC;
-    using CarbonCore.Utils.Compat.IO;
-    using CarbonCore.Utils.IoC;
+    using CarbonCore.ContentServices.Edge.Contracts;
+    using CarbonCore.ContentServices.Edge.IoC;
+    using CarbonCore.Tests.ContentServices.Data;
+    using CarbonCore.Utils.Contracts.IoC;
+    using CarbonCore.Utils.Edge.IoC;
+    using CarbonCore.Utils.IO;
 
     using NUnit.Framework;
 

@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Tests.Grammar
+﻿namespace CarbonCore.Tests.Edge.Grammar
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -7,8 +7,8 @@
     using CarbonCore.GrammarParser.Contracts.Grammars;
     using CarbonCore.GrammarParser.IoC;
     using CarbonCore.GrammarParser.Tokenize;
-    using CarbonCore.Utils.Compat.Contracts.IoC;
-    using CarbonCore.Utils.IoC;
+    using CarbonCore.Utils.Contracts.IoC;
+    using CarbonCore.Utils.Edge.IoC;
 
     using NUnit.Framework;
 

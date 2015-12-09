@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Tests.Utils
+﻿namespace CarbonCore.Tests.Edge.Utils
 {
     using CarbonCore.Utils.MathUtils;
 

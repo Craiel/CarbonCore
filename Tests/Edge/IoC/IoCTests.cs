@@ -1,8 +1,8 @@
-﻿namespace CarbonCore.Tests.IoC
+﻿namespace CarbonCore.Tests.Edge.IoC
 {
-    using CarbonCore.Tests.Contracts;
-    using CarbonCore.Utils.Compat.Contracts.IoC;
-    using CarbonCore.Utils.Compat.IoC;
+    using CarbonCore.Tests.Edge.Contracts;
+    using CarbonCore.Utils.Contracts.IoC;
+    using CarbonCore.Utils.Edge.IoC;
     using CarbonCore.Utils.IoC;
 
     using NUnit.Framework;

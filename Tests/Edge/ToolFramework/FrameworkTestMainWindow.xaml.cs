@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Tests.ToolFramework
+﻿namespace CarbonCore.Tests.Edge.ToolFramework
 {
     using System.Windows;
 

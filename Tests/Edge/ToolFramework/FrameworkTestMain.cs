@@ -1,15 +1,15 @@
-﻿namespace CarbonCore.Tests.ToolFramework
+﻿namespace CarbonCore.Tests.Edge.ToolFramework
 {
     using System;
     using System.Collections.Generic;
     using System.Threading;
     using System.Windows;
 
-    using CarbonCore.Tests.Contracts;
+    using CarbonCore.Tests.Edge.Contracts;
     using CarbonCore.ToolFramework.Contracts;
     using CarbonCore.ToolFramework.Logic;
     using CarbonCore.ToolFramework.Logic.Actions;
-    using CarbonCore.Utils.Compat.Contracts.IoC;
+    using CarbonCore.Utils.Contracts.IoC;
 
     using NUnit.Framework;
 

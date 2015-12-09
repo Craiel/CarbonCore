@@ -1,12 +1,12 @@
-﻿namespace CarbonCore.Tests.Utils
+﻿namespace CarbonCore.Tests.Edge.Utils
 {
     using System.Net;
     using System.Threading;
     
-    using CarbonCore.Utils.Compat.Contracts.IoC;
-    using CarbonCore.Utils.Compat.Contracts.Network;
-    using CarbonCore.Utils.Compat.Network.Packages;
-    using CarbonCore.Utils.IoC;
+    using CarbonCore.Utils.Contracts.IoC;
+    using CarbonCore.Utils.Contracts.Network;
+    using CarbonCore.Utils.Edge.IoC;
+    using CarbonCore.Utils.Network.Packages;
 
     using NUnit.Framework;
 
@@ -32,7 +32,7 @@
         [SetUp]
         public void Setup()
         {
-            this.container = CarbonContainerAutofacBuilder.Build<UtilsModule>();
+            this.container = CarbonContainerAutofacBuilder.Build<UtilsEdgeModule>();
         }
 
         [TearDown]
