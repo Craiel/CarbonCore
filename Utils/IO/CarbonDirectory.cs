@@ -18,13 +18,13 @@
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
-        public CarbonDirectory(string path)
+        public CarbonDirectory(string path, bool assertFileExistence)
             : base(path)
         {
             if (!string.IsNullOrEmpty(path))
             {
                 // Check if we are creating from a File
-                if (File.Exists(path))
+                if (assertFileExistence && File.Exists(path))
                 {
                     throw new InvalidOperationException("File with the same name exists: " + path);
                 }
@@ -51,7 +51,12 @@
         }
 
         public CarbonDirectory(CarbonFile file)
-            : this(file.DirectoryName)
+            : this(file.DirectoryName, true)
+        {
+        }
+
+        public CarbonDirectory(string path)
+            : this(path, true)
         {
         }
 
@@ -260,7 +265,7 @@
                 var result = new CarbonDirectoryResult
                                  {
                                      Absolute = new CarbonDirectory(subDirectories[i]),
-                                     Relative = new CarbonDirectory(relative)
+                                     Relative = new CarbonDirectory(relative, assertFileExistence: false)
                                  };
                 results[i] = result;
             }
