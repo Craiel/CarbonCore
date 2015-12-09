@@ -9,6 +9,8 @@
     [DebuggerDisplay("Vector2S<{X},{Y}>")]
     public struct Vector2S
     {
+        public static readonly Vector2S Zero = new Vector2S(0, 0);
+
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
