@@ -14,7 +14,7 @@
         public static void Main(string[] args)
         {
             var container = CarbonContainerAutofacBuilder.Build<CrystalBuildModule>();
-            container.Resolve<IMain>().Build();
+            container.Resolve<IMain>().Start();
 
             Profiler.TraceProfilerStatistics();
         }

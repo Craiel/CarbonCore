@@ -13,7 +13,7 @@
         public static void Main(string[] args)
         {
             var container = CarbonContainerAutofacBuilder.Build<D3TheoryConsoleModule>();
-            container.Resolve<IMain>().Simulate();
+            container.Resolve<IMain>().Start();
 
             Profiler.TraceProfilerStatistics();
         }

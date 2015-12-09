@@ -5,6 +5,7 @@
     using System.Diagnostics;
 
     using CarbonCore.Applications.CrystalBuild.Logic;
+    using CarbonCore.ToolFramework.Logic;
     using CarbonCore.Utils;
     using CarbonCore.Utils.Contracts.IoC;
     using CarbonCore.Utils.Diagnostics;
@@ -14,12 +15,11 @@
 
     using CrystalBuild.Contracts;
     
-    public class Main : IMain
+    public class Main : ConsoleApplicationBase, IMain
     {
         // --compilation_level ADVANCED_OPTIMIZATIONS
         public const string ClosureCompilerCommand = @"-jar ""{0}compiler.jar""  --js ""{1}"" --js_output_file {2} --language_in=ECMASCRIPT5 --externs ""{3}""";
-
-        private readonly ICommandLineArguments arguments;
+        
         private readonly IConfig config;
         private readonly IBuildLogic logic;
 
@@ -34,25 +34,28 @@
         // Constructor
         // -------------------------------------------------------------------
         public Main(IFactory factory)
+            : base(factory)
         {
             this.config = factory.Resolve<IConfig>();
             this.logic = factory.Resolve<IBuildLogic>();
-
-            this.arguments = factory.Resolve<ICommandLineArguments>();
-            this.RegisterCommandLineArguments();
         }
 
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public void Build()
+        public override string Name => "CrystalBuild";
+
+        // -------------------------------------------------------------------
+        // Protected
+        // -------------------------------------------------------------------
+        protected override void StartFinished()
         {
             // Set the default locale to english
             Localization.CurrentCulture = LocaleConstants.LocaleEnglishUS;
 
-            if (!this.arguments.ParseCommandLineArguments() || this.configFileName == null)
+            if (this.configFileName == null)
             {
-                this.arguments.PrintArgumentUse();
+                this.Arguments.PrintArgumentUse();
                 return;
             }
 
@@ -65,6 +68,25 @@
             this.DoBuildProject();
 
             Localization.SaveDictionaries();
+        }
+
+        protected override bool RegisterCommandLineArguments()
+        {
+            ICommandLineSwitchDefinition definition = this.Arguments.Define("p", "projectFile", x => this.configFileName = new CarbonFile(x));
+            definition.RequireArgument = true;
+            definition.Description = "The project file to compile";
+
+            definition = this.Arguments.Define("d", "debug", x => this.useDebug = true);
+            definition.Description = "Build with debug info enabled";
+
+            definition = this.Arguments.Define("c", "closure", x => this.useClosure = true);
+            definition.Description = "Run closure on the target script file";
+
+            definition = this.Arguments.Define("l", "language", x => this.targetLanguage = x);
+            definition.RequireArgument = true;
+            definition.Description = "Set the language to build (en, fr, de ...)";
+
+            return true;
         }
 
         // -------------------------------------------------------------------
@@ -223,23 +245,6 @@
                     Diagnostic.Warning("Unused image: {0}", key);
                 }
             }
-        }
-        
-        private void RegisterCommandLineArguments()
-        {
-            ICommandLineSwitchDefinition definition = this.arguments.Define("p", "projectFile", x => this.configFileName = new CarbonFile(x));
-            definition.RequireArgument = true;
-            definition.Description = "The project file to compile";
-
-            definition = this.arguments.Define("d", "debug", x => this.useDebug = true);
-            definition.Description = "Build with debug info enabled";
-
-            definition = this.arguments.Define("c", "closure", x => this.useClosure = true);
-            definition.Description = "Run closure on the target script file";
-
-            definition = this.arguments.Define("l", "language", x => this.targetLanguage = x);
-            definition.RequireArgument = true;
-            definition.Description = "Set the language to build (en, fr, de ...)";
         }
     }
 }

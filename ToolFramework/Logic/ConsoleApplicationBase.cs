@@ -90,7 +90,6 @@
         {
             if (!this.Arguments.ParseCommandLineArguments())
             {
-                this.Arguments.PrintArgumentUse();
                 return false;
             }
 

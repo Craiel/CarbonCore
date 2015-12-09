@@ -27,7 +27,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\Release\D3Theory\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -56,6 +56,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\ToolFramework\CarbonCore.ToolFramework.csproj">
+      <Project>{e4643df2-d2db-4e99-ab4b-d8ce4fd94d81}</Project>
+      <Name>CarbonCore.ToolFramework</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Utils\CarbonCore.Utils.csproj">
       <Project>{E05836D9-0BB3-4BFA-89E6-F5ED40A9D93C}</Project>
       <Name>CarbonCore.Utils</Name>

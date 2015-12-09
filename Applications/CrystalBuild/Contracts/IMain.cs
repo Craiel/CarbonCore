@@ -1,7 +1,8 @@
 ﻿namespace CarbonCore.Applications.CrystalBuild.Contracts
 {
-    public interface IMain
+    using CarbonCore.ToolFramework.Contracts;
+
+    public interface IMain : IConsoleApplicationBase
     {
-        void Build();
     }
 }

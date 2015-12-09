@@ -8,6 +8,7 @@
     using CarbonCore.Modules.D3Theory.Data;
     using CarbonCore.Modules.D3Theory.Logic;
     using CarbonCore.Modules.D3Theory.Logic.Modules;
+    using CarbonCore.ToolFramework.Logic;
     using CarbonCore.Utils;
     using CarbonCore.Utils.Contracts.IoC;
     using CarbonCore.Utils.Edge.CommandLine.Contracts;
@@ -16,7 +17,7 @@
 
     using Newtonsoft.Json;
 
-    public class Main : IMain
+    public class Main : ConsoleApplicationBase, IMain
     {
         private const string DefaultDataDirectory = "Data";
         private const string DefaultSimulationFile = "default";
@@ -26,9 +27,7 @@
         private const string ExtensionResultTable = ".csv";
 
         private readonly IMainData data;
-
-        private readonly ICommandLineArguments arguments;
-
+        
         private readonly IList<Simulation> simulations;
         private readonly IList<CarbonFile> simulationFiles;
 
@@ -41,26 +40,28 @@
         // Constructor
         // -------------------------------------------------------------------
         public Main(IFactory factory)
+            : base(factory)
         {
             this.data = factory.Resolve<IMainData>();
             this.simulations = new List<Simulation>();
             this.simulationFiles = new List<CarbonFile>();
-
-            this.arguments = factory.Resolve<ICommandLineArguments>();
             
-            this.RegisterCommandLineArguments();
-
             this.dataPath = new CarbonDirectory(string.Empty);
         }
 
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public void Simulate()
+        public override string Name => "D3Theory.Console";
+
+        // -------------------------------------------------------------------
+        // Protected
+        // -------------------------------------------------------------------
+        protected override void StartFinished()
         {
-            if (!this.arguments.ParseCommandLineArguments())
+            if (this.simulationFiles.Count <= 0)
             {
-                this.arguments.PrintArgumentUse();
+                this.Arguments.PrintArgumentUse();
                 return;
             }
 
@@ -83,7 +84,7 @@
                 this.simulations.Add(defaultSimulation);
                 JsonExtensions.SaveToFile(defaultSimulation.File, defaultSimulation, false, Formatting.Indented);
             }
-            
+
             this.data.Load(this.dataPath);
 
             foreach (Simulation simulation in this.simulations)
@@ -124,26 +125,28 @@
             this.data.Save(this.dataPath);
         }
 
-        // -------------------------------------------------------------------
-        // Private
-        // -------------------------------------------------------------------
-        private void RegisterCommandLineArguments()
+        protected override bool RegisterCommandLineArguments()
         {
-            ICommandLineSwitchDefinition definition = this.arguments.Define("d", "dataPath", x => this.dataPath = new CarbonDirectory(x));
+            ICommandLineSwitchDefinition definition = this.Arguments.Define("d", "dataPath", x => this.dataPath = new CarbonDirectory(x));
             definition.Description = "The path where the data is located";
 
-            definition = this.arguments.Define("s", "simulationFile", x => this.simulationFiles.Add(new CarbonFile(x)));
+            definition = this.Arguments.Define("s", "simulationFile", x => this.simulationFiles.Add(new CarbonFile(x)));
             definition.RequireArgument = true;
             definition.AllowMultiple = true;
             definition.Description = "The simulation to run";
 
-            definition = this.arguments.Define("r", "randomValues", x => this.randomValues = true);
+            definition = this.Arguments.Define("r", "randomValues", x => this.randomValues = true);
             definition.Description = "Uses a seeded random instead of fixed giving different results every run";
 
-            definition = this.arguments.Define("t", "saveTable", x => this.saveAsTable = true);
+            definition = this.Arguments.Define("t", "saveTable", x => this.saveAsTable = true);
             definition.Description = "Save as table in text format instead of Json report";
+
+            return true;
         }
 
+        // -------------------------------------------------------------------
+        // Private
+        // -------------------------------------------------------------------
         private SimulationStats Simulate(Simulation simulation)
         {
             System.Diagnostics.Trace.TraceInformation("Starting simulation for " + simulation.Class);
