@@ -43,6 +43,24 @@
             }
         }
 
+        [JsonIgnore]
+        public float LengthQ
+        {
+            get
+            {
+                return (this.X * this.X) + (this.Y * this.Y);
+            }
+        }
+
+        [JsonIgnore]
+        public float Magnitude
+        {
+            get
+            {
+                return (float)Math.Sqrt(this.LengthQ);
+            }
+        }
+
         public short this[int i]
         {
             get

@@ -80,7 +80,7 @@
                 {
                     gradient = new Vector2F((float)(Random.NextDouble() * 2) - 1.0f, (float)(Random.NextDouble() * 2) - 1.0f);
                 }
-                while (gradient.Length >= 1.0f);
+                while (gradient.Magnitude >= 1.0f);
 
                 gradiants[i] = gradient.Normalized;
             }

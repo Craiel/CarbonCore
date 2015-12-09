@@ -96,7 +96,7 @@ namespace CarbonCore.Tests.Edge.Utils
         public void Length()
         {
             var v1 = new Vector2F(2, 2);
-            Assert.AreEqual(2.8284, v1.Length, 0.0001);
+            Assert.AreEqual(2.8284, v1.Magnitude, 0.0001);
         }
 
         [Test]

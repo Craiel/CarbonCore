@@ -34,6 +34,33 @@
         public int X { get; set; }
         public int Y { get; set; }
 
+        [JsonIgnore]
+        public bool IsZero
+        {
+            get
+            {
+                return this.X == 0 && this.Y == 0;
+            }
+        }
+
+        [JsonIgnore]
+        public float LengthQ
+        {
+            get
+            {
+                return (this.X * this.X) + (this.Y * this.Y);
+            }
+        }
+
+        [JsonIgnore]
+        public float Magnitude
+        {
+            get
+            {
+                return (float)Math.Sqrt(this.LengthQ);
+            }
+        }
+
         public int this[int i]
         {
             get

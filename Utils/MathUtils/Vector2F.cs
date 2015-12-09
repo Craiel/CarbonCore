@@ -44,7 +44,7 @@
         }
 
         [JsonIgnore]
-        public float Length
+        public float Magnitude
         {
             get
             {
@@ -57,7 +57,7 @@
         {
             get
             {
-                return this / this.Length;
+                return this / this.Magnitude;
             }
         }
 
@@ -186,7 +186,7 @@
 
         public float DistanceTo(Vector2F v)
         {
-            return Math.Abs((v - this).Length);
+            return Math.Abs((v - this).Magnitude);
         }
 
         public Vector2F DirectionTo(Vector2F v)
