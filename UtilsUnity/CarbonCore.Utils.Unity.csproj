@@ -151,6 +151,7 @@
     <Compile Include="Logic\Enums\BehaviorTreeCompositeMode.cs" />
     <Compile Include="Logic\Enums\BehaviorTreeDecoratorMode.cs" />
     <Compile Include="Logic\Enums\BehaviorTreeStatus.cs" />
+    <Compile Include="Logic\Enums\DelayedLoadedObjectPhase.cs" />
     <Compile Include="Logic\Enums\Orientation.cs" />
     <Compile Include="Logic\Enums\ResourceLoadMode.cs" />
     <Compile Include="Logic\IntervalTrigger.cs" />
