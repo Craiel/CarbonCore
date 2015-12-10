@@ -33,11 +33,11 @@
     <OutputPath>..\..\..\bin\Unity\Debug\Editor\</OutputPath>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>..\..\..\CarbonCore.ruleset</CodeAnalysisRuleSet>
-    <DefineConstants>TRACE;DEBUG;UNITY;UNITY_5;UNITY_EDITOR</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;UNITY; UNITY_5; UNITY_EDITOR</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnityRelease|AnyCPU'">
     <OutputPath>..\..\..\bin\Unity\Release\Editor\</OutputPath>
-    <DefineConstants>UNITY;UNITY_5;UNITY_EDITOR</DefineConstants>
+    <DefineConstants>UNITY; UNITY_5; UNITY_EDITOR</DefineConstants>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>..\..\..\CarbonCore.ruleset</CodeAnalysisRuleSet>
     <Optimize>true</Optimize>
