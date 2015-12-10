@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{E05836D9-0BB3-4BFA-89E6-F5ED40A9D93C}</ProjectGuid>
+    <ProjectGuid>{B823CDCE-5ED4-4030-AB35-44DAF233D4C0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CarbonCore.Utils</RootNamespace>
@@ -31,7 +31,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Unity|AnyCPU'">
     <OutputPath>..\bin\Unity\Debug\Editor\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;UNITY;UNITY_5</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;UNITY; UNITY_5</DefineConstants>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -51,7 +51,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnityRelease|AnyCPU'">
     <Optimize>true</Optimize>
     <OutputPath>..\bin\Unity\Release\Editor\</OutputPath>
-    <DefineConstants>UNITY;UNITY_5</DefineConstants>
+    <DefineConstants>UNITY; UNITY_5</DefineConstants>
   </PropertyGroup>
   <Choose>
     <When Condition=" '$(Configuration)'=='Unity' Or '$(Configuration)'=='UnityRelease' ">

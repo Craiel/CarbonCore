@@ -31,14 +31,14 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Unity|AnyCPU'">
     <OutputPath>..\..\bin\Unity\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;UNITY;UNITY_5</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;UNITY; UNITY_5</DefineConstants>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>..\..\CarbonCore.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnityRelease|AnyCPU'">
     <Optimize>true</Optimize>
     <OutputPath>..\..\bin\Unity\Release\</OutputPath>
-    <DefineConstants>UNITY;UNITY_5</DefineConstants>
+    <DefineConstants>UNITY; UNITY_5</DefineConstants>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>..\..\CarbonCore.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
