@@ -1,7 +1,7 @@
 @echo off
 
-set MSBUILD="C:\Windows\Microsoft.NET\Framework64\v4.0.30319\"
+set MSBUILD="C:\Program Files (x86)\MSBuild\14.0\Bin"
 
 cls
-%MSBUILD%\msbuild.exe "CarbonCore.sln" /p:configuration=release 
+%MSBUILD%\msbuild.exe "CarbonCore.sln" /p:configuration=release
 pause
