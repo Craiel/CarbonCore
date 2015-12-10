@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{890FF110-443F-4647-80B1-82D414CCCD88}</ProjectGuid>
+    <ProjectGuid>{5D3507BD-D8DD-4255-A262-8E360E936F10}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CarbonCore.ContentServices</RootNamespace>
