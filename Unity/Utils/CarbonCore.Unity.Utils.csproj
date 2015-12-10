@@ -127,6 +127,7 @@
     <Compile Include="Logic\Enums\BehaviorTreeStatus.cs" />
     <Compile Include="Logic\Enums\DelayedLoadedObjectPhase.cs" />
     <Compile Include="Logic\Enums\Orientation.cs" />
+    <Compile Include="Logic\Enums\ResourceLoadFlags.cs" />
     <Compile Include="Logic\Enums\ResourceLoadMode.cs" />
     <Compile Include="Logic\IntervalTrigger.cs" />
     <Compile Include="Logic\Json\BoundsSerializer.cs" />
@@ -145,6 +146,7 @@
     <Compile Include="Logic\PriorityQueueNode.cs" />
     <Compile Include="Logic\Resource\BundleLoadRequest.cs" />
     <Compile Include="Logic\Resource\BundleProvider.cs" />
+    <Compile Include="Logic\Resource\ResourceLoadInfo.cs" />
     <Compile Include="Logic\Resource\ResourceLoader.cs" />
     <Compile Include="Logic\Resource\ResourceStreamRequest.cs" />
     <Compile Include="Logic\Resource\ResourceLoadRequest.cs" />

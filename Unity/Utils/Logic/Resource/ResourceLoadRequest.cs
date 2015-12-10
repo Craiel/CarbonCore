@@ -6,7 +6,6 @@
     using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.Diagnostics.Metrics;
     using CarbonCore.Utils.Unity.Contracts;
-    using CarbonCore.Utils.Unity.Data;
     using CarbonCore.Utils.Unity.Logic.Enums;
 
     using UnityEngine;
@@ -20,30 +19,30 @@
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
-        public ResourceLoadRequest(ResourceKey key, ResourceRequest internalRequest)
-            : this(key)
+        public ResourceLoadRequest(ResourceLoadInfo info, ResourceRequest internalRequest)
+            : this(info)
         {
             this.resourceRequest = internalRequest;
             this.Mode = ResourceLoadMode.Internal;
         }
 
-        public ResourceLoadRequest(ResourceKey key, AssetBundleRequest internalRequest)
-            : this(key)
+        public ResourceLoadRequest(ResourceLoadInfo info, AssetBundleRequest internalRequest)
+            : this(info)
         {
             this.bundleRequest = internalRequest;
             this.Mode = ResourceLoadMode.Bundle;
         }
 
-        public ResourceLoadRequest(ResourceKey key, UnityEngine.Object[] assets)
-            : this(key)
+        public ResourceLoadRequest(ResourceLoadInfo info, UnityEngine.Object[] assets)
+            : this(info)
         {
             this.assets = assets;
             this.Mode = ResourceLoadMode.Assigned;
         }
 
-        protected ResourceLoadRequest(ResourceKey key)
+        protected ResourceLoadRequest(ResourceLoadInfo info)
         {
-            this.Key = key;
+            this.Info = info;
 
             this.Metric = Diagnostic.BeginTimeMeasure();
         }
@@ -51,10 +50,10 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public ResourceKey Key { get; private set; }
+        public ResourceLoadInfo Info { get; private set; }
 
         public ResourceLoadMode Mode { get; private set; }
-
+        
         public MetricTime Metric { get; private set; }
 
         public bool IsDone

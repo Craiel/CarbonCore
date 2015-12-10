@@ -27,36 +27,39 @@
         {
             get
             {
-                if (instance == null)
-                {
-                    instance = FindObjectOfType<T>();
-
-                    if (instance == null)
-                    {
-                        GameObject gameObject = new GameObject(typeof(T).Name);
-
-                        try
-                        {
-                            instance = gameObject.AddComponent<T>();
-                        }
-                        catch (Exception e)
-                        {
-                            Diagnostic.Error("Error trying to add Singleton Component {0}: {1}", typeof(T), e);
-                            return null;
-                        }
-                        
-                        if (instance == null)
-                        {
-                            Diagnostic.Error("Adding Component of type {0} returned null", typeof(T));
-                            return null;
-                        }
-
-                        DontDestroyOnLoad(gameObject);
-                    }
-                }
-
                 return instance;
             }
+        }
+
+        public static void Instantiate()
+        {
+            instance = FindObjectOfType<T>();
+
+            if (instance == null)
+            {
+                GameObject gameObject = new GameObject(typeof(T).Name);
+
+                try
+                {
+                    instance = gameObject.AddComponent<T>();
+                }
+                catch (Exception e)
+                {
+                    Diagnostic.Error("Error trying to add Singleton Component {0}: {1}", typeof(T), e);
+                }
+
+                if (instance == null)
+                {
+                    Diagnostic.Error("Adding Component of type {0} returned null", typeof(T));
+                }
+
+                DontDestroyOnLoad(gameObject);
+            }
+        }
+
+        public static void Dispose()
+        {
+            instance.DisposeSingleton();
         }
 
         public virtual void Awake()

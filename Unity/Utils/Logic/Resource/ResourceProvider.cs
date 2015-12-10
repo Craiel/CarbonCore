@@ -8,9 +8,10 @@
     using CarbonCore.Utils.Diagnostics.Metrics;
     using CarbonCore.Utils.Unity.Data;
     using CarbonCore.Utils.Unity.Logic;
+    using CarbonCore.Utils.Unity.Logic.Enums;
 
-    public delegate void OnResourceLoadingDelegate(ResourceKey key);
-    public delegate void OnResourceLoadedDelegate(ResourceKey key, long loadTime);
+    public delegate void OnResourceLoadingDelegate(ResourceLoadInfo info);
+    public delegate void OnResourceLoadedDelegate(ResourceLoadInfo info, long loadTime);
 
     public class ResourceProvider : UnitySingleton<ResourceProvider>
     {
@@ -22,9 +23,7 @@
 
         private readonly IDictionary<ResourceKey, int> referenceCount;
         
-        private readonly Queue<ResourceKey> currentPendingLoads;
-        private readonly IList<ResourceKey> instantiateOnLoad;
-        private readonly IList<ResourceKey> forceSyncLoad;
+        private readonly Queue<ResourceLoadInfo> currentPendingLoads;
         private readonly IList<UnityEngine.Object> pendingInstantiations;
 
         private readonly ResourceRequestPool<ResourceLoadRequest> requestPool;
@@ -39,9 +38,7 @@
             this.resourceMap = new ResourceMap<UnityEngine.Object>();
             this.referenceCount = new Dictionary<ResourceKey, int>();
 
-            this.currentPendingLoads = new Queue<ResourceKey>();
-            this.instantiateOnLoad = new List<ResourceKey>();
-            this.forceSyncLoad = new List<ResourceKey>();
+            this.currentPendingLoads = new Queue<ResourceLoadInfo>();
             this.pendingInstantiations = new List<UnityEngine.Object>();
 
             this.requestPool = new ResourceRequestPool<ResourceLoadRequest>(DefaultRequestPoolSize);
@@ -108,23 +105,18 @@
             this.resourceMap.RegisterResource(key, resource);
         }
 
-        public void RegisterResource(ResourceKey key, bool instantiateOnload = false, bool forceSyncLoad = false)
+        public void RegisterResource(ResourceKey key, ResourceLoadFlags flags = ResourceLoadFlags.None)
         {
             this.resourceMap.RegisterResource(key);
 
             lock (this.currentPendingLoads)
             {
-                this.currentPendingLoads.Enqueue(key);
-
-                if (forceSyncLoad)
+                if (!this.EnableInstantiation)
                 {
-                    this.forceSyncLoad.Add(key);
+                    flags &= ~ResourceLoadFlags.Instantiate;
                 }
 
-                if (this.EnableInstantiation && instantiateOnload)
-                {
-                    this.instantiateOnLoad.Add(key);
-                }
+                this.currentPendingLoads.Enqueue(new ResourceLoadInfo(key, flags));
             }
         }
 
@@ -144,7 +136,7 @@
                     BundleProvider.Instance.LoadBundleImmediate(key.Bundle.Value);
                 }
 
-                this.DoLoadImmediate(key);
+                this.DoLoadImmediate(new ResourceLoadInfo(key, ResourceLoadFlags.None));
                 data = this.resourceMap.GetData(key);
                 if (data == null)
                 {
@@ -201,11 +193,11 @@
                     UnityEngine.Object[] results = request.GetAssets();
                     if (results != null && results.Length == 1)
                     {
-                        this.FinalizeLoadResource(request.Key, results[0], request.Metric);
+                        this.FinalizeLoadResource(request.Info, results[0], request.Metric);
                     }
                     else
                     {
-                        Diagnostic.Warning("Load of {0} returned unexpected result, got {1}", request.Key, results);
+                        Diagnostic.Warning("Load of {0} returned unexpected result, got {1}", request, results);
                     }
                 }
             }
@@ -213,19 +205,18 @@
             int consecutiveSyncCalls = 0;
             while (this.currentPendingLoads.Count > 0 && this.requestPool.HasFreeSlot())
             {
-                ResourceKey key = this.currentPendingLoads.Dequeue();
+                ResourceLoadInfo info = this.currentPendingLoads.Dequeue();
 
-                if (this.resourceMap.HasData(key))
+                if (this.resourceMap.HasData(info.Key))
                 {
                     // This resource was already loaded, continue
                     return true;
                 }
 
-                if (this.forceSyncLoad.Contains(key))
+                if ((info.Flags & ResourceLoadFlags.Sync) != 0)
                 {
                     // This resource is a forced sync load
-                    this.DoLoadImmediate(key);
-                    this.forceSyncLoad.Remove(key);
+                    this.DoLoadImmediate(info);
                     consecutiveSyncCalls++;
 
                     if (consecutiveSyncCalls > MaxConsecutiveSyncCallsInAsync)
@@ -239,10 +230,10 @@
 
                 if (this.ResourceLoading != null)
                 {
-                    this.ResourceLoading(key);
+                    this.ResourceLoading(info);
                 }
 
-                this.requestPool.AddRequest(ResourceLoader.Load(key));
+                this.requestPool.AddRequest(ResourceLoader.Load(info));
             }
 
             this.CleanupPendingInstantiations();
@@ -261,15 +252,13 @@
             int resourceCount = this.currentPendingLoads.Count;
             while (this.currentPendingLoads.Count > 0)
             {
-                ResourceKey key = this.currentPendingLoads.Dequeue();
-                if (!this.resourceMap.HasData(key))
+                ResourceLoadInfo info = this.currentPendingLoads.Dequeue();
+                if (!this.resourceMap.HasData(info.Key))
                 {
-                    this.DoLoadImmediate(key);
+                    this.DoLoadImmediate(info);
                 }
             }
-
-            this.forceSyncLoad.Clear();
-
+            
             Diagnostic.TakeTimeMeasure(totalTime);
             Diagnostic.Info("Immediate! Loaded {0} resources in {1}ms", resourceCount, Diagnostic.GetTimeInMS(totalTime.Total));
         }
@@ -291,18 +280,18 @@
             return reference;
         }
 
-        private void DoLoadImmediate(ResourceKey key)
+        private void DoLoadImmediate(ResourceLoadInfo info)
         {
             if (this.ResourceLoading != null)
             {
-                this.ResourceLoading(key);
+                this.ResourceLoading(info);
             }
 
             MetricTime resourceTime = Diagnostic.BeginTimeMeasure();
-            UnityEngine.Object result = ResourceLoader.LoadImmediate(key);
+            UnityEngine.Object result = ResourceLoader.LoadImmediate(info.Key);
             Diagnostic.TakeTimeMeasure(resourceTime);
 
-            this.FinalizeLoadResource(key, result, resourceTime);
+            this.FinalizeLoadResource(info, result, resourceTime);
         }
 
         private void IncreaseResourceRefCount(ResourceKey key)
@@ -329,27 +318,27 @@
             }
         }
 
-        private void FinalizeLoadResource(ResourceKey key, UnityEngine.Object data, MetricTime elapsedTime)
+        private void FinalizeLoadResource(ResourceLoadInfo info, UnityEngine.Object data, MetricTime elapsedTime)
         {
             if (data == null)
             {
-                Diagnostic.Warning("Loading {0} returned null data", key);
+                Diagnostic.Warning("Loading {0} returned null data", info.Key);
                 return;
             }
 
             if (this.EnableHistory)
             {
-                if (this.history.ContainsKey(key))
+                if (this.history.ContainsKey(info.Key))
                 {
-                    this.history[key] += elapsedTime.Total;
+                    this.history[info.Key] += elapsedTime.Total;
                 }
                 else
                 {
-                    this.history.Add(key, elapsedTime.Total);
+                    this.history.Add(info.Key, elapsedTime.Total);
                 }
             }
 
-            if (this.EnableInstantiation && this.instantiateOnLoad.Contains(key) && data is UnityEngine.GameObject)
+            if ((info.Flags & ResourceLoadFlags.Instantiate) != 0 && data is UnityEngine.GameObject)
             {
                 try
                 {
@@ -358,18 +347,16 @@
                 }
                 catch (Exception e)
                 {
-                    Diagnostic.Error("Failed to instantiate resource {0} on load: {1}", key, e);
+                    Diagnostic.Error("Failed to instantiate resource {0} on load: {1}", info.Key, e);
                 }
-                
-                this.instantiateOnLoad.Remove(key);
             }
 
-            this.resourceMap.SetData(key, data);
+            this.resourceMap.SetData(info.Key, data);
 
             this.ResourcesLoaded++;
             if (this.ResourceLoaded != null)
             {
-                this.ResourceLoaded(key, elapsedTime.Total);
+                this.ResourceLoaded(info, elapsedTime.Total);
             }
         }
 

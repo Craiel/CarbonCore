@@ -4,6 +4,7 @@
 
     using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.Unity.Data;
+    using CarbonCore.Utils.Unity.Logic.Enums;
 
     using UnityEngine;
 
@@ -56,24 +57,24 @@
             }
         }
 
-        public static ResourceLoadRequest Load(ResourceKey key, bool useCache = true, bool allowCaching = false)
+        public static ResourceLoadRequest Load(ResourceLoadInfo info, bool useCache = true)
         {
-            if (useCache && Cache.ContainsKey(key))
+            if (useCache && Cache.ContainsKey(info.Key))
             {
-                return new ResourceLoadRequest(key, new[] { Cache[key] });
+                return new ResourceLoadRequest(info, new[] { Cache[info.Key] });
             }
 
-            if (key.Bundle != null)
+            if (info.Key.Bundle != null)
             {
-                AssetBundle bundle = Bundles[key.Bundle.Value];
+                AssetBundle bundle = Bundles[info.Key.Bundle.Value];
 
-                AssetBundleRequest request = bundle.LoadAssetAsync(key.Path, key.Type);
-                return new ResourceLoadRequest(key, request);
+                AssetBundleRequest request = bundle.LoadAssetAsync(info.Key.Path, info.Key.Type);
+                return new ResourceLoadRequest(info, request);
             }
             else
             {
-                ResourceRequest request = Resources.LoadAsync(key.Path, key.Type);
-                return new ResourceLoadRequest(key, request);
+                ResourceRequest request = Resources.LoadAsync(info.Key.Path, info.Key.Type);
+                return new ResourceLoadRequest(info, request);
             }
         }
 
@@ -95,7 +96,7 @@
         }
 
         // Note: Use this only when we can not do an async loading, avoid if possible
-        public static T LoadImmediate<T>(ResourceKey key, bool useCache = true)
+        public static T LoadImmediate<T>(ResourceKey key, ResourceLoadFlags flags, bool useCache = true)
             where T : UnityEngine.Object
         {
             return LoadImmediate(key, useCache) as T;
