@@ -125,7 +125,7 @@
             this.resourceMap.UnregisterResource(key);
         }
 
-        public ResourceReference<T> AcquireOrLoadResource<T>(ResourceKey key)
+        public ResourceReference<T> AcquireOrLoadResource<T>(ResourceKey key, ResourceLoadFlags flags = ResourceLoadFlags.None)
             where T : UnityEngine.Object
         {
             UnityEngine.Object data = this.resourceMap.GetData(key);
@@ -136,7 +136,7 @@
                     BundleProvider.Instance.LoadBundleImmediate(key.Bundle.Value);
                 }
 
-                this.DoLoadImmediate(new ResourceLoadInfo(key, ResourceLoadFlags.None));
+                this.DoLoadImmediate(new ResourceLoadInfo(key, flags));
                 data = this.resourceMap.GetData(key);
                 if (data == null)
                 {

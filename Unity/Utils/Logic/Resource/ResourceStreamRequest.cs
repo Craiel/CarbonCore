@@ -3,7 +3,6 @@
     using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.Diagnostics.Metrics;
     using CarbonCore.Utils.Unity.Contracts;
-    using CarbonCore.Utils.Unity.Data;
 
     using UnityEngine;
 
@@ -14,19 +13,19 @@
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
-        public ResourceStreamRequest(ResourceKey key)
+        public ResourceStreamRequest(ResourceLoadInfo info)
         {
-            this.Key = key;
+            this.Info = info;
 
             this.Metric = Diagnostic.BeginTimeMeasure();
 
-            this.stream = new WWW(key.Path);
+            this.stream = new WWW(info.Key.Path);
         }
 
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public ResourceKey Key { get; private set; }
+        public ResourceLoadInfo Info { get; private set; }
         
         public MetricTime Metric { get; private set; }
 

@@ -6,6 +6,7 @@
     using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.Diagnostics.Metrics;
     using CarbonCore.Utils.Unity.Data;
+    using CarbonCore.Utils.Unity.Logic.Enums;
 
     // Made to load resources from Application.streamingAssetsPath and other WWW accessible places
     public class ResourceStreamProvider : UnitySingleton<ResourceStreamProvider>
@@ -18,8 +19,7 @@
 
         private readonly ResourceMap<byte[]> resourceMap;
 
-        private readonly Queue<ResourceKey> currentPendingLoads;
-        private readonly IList<ResourceKey> forceSyncLoad;
+        private readonly Queue<ResourceLoadInfo> currentPendingLoads;
 
         private readonly ResourceRequestPool<ResourceStreamRequest> requestPool;
 
@@ -32,8 +32,7 @@
         {
             this.resourceMap = new ResourceMap<byte[]>();
 
-            this.currentPendingLoads = new Queue<ResourceKey>();
-            this.forceSyncLoad = new List<ResourceKey>();
+            this.currentPendingLoads = new Queue<ResourceLoadInfo>();
 
             this.requestPool = new ResourceRequestPool<ResourceStreamRequest>(DefaultRequestPoolSize);
 
@@ -63,18 +62,13 @@
             return this.history;
         }
 
-        public void RegisterResource(ResourceKey key, bool instantiateOnload = false, bool forceSyncLoad = false)
+        public void RegisterResource(ResourceKey key, ResourceLoadFlags flags = ResourceLoadFlags.None)
         {
             this.resourceMap.RegisterResource(key);
 
             lock (this.currentPendingLoads)
             {
-                this.currentPendingLoads.Enqueue(key);
-
-                if (forceSyncLoad)
-                {
-                    this.forceSyncLoad.Add(key);
-                }
+                this.currentPendingLoads.Enqueue(new ResourceLoadInfo(key, flags));
             }
         }
 
@@ -83,7 +77,7 @@
             this.resourceMap.UnregisterResource(key);
         }
 
-        public byte[] AcquireOrLoadResource(ResourceKey key)
+        public byte[] AcquireOrLoadResource(ResourceKey key, ResourceLoadFlags flags = ResourceLoadFlags.None)
         {
             byte[] data = this.resourceMap.GetData(key);
             if (data == null)
@@ -94,7 +88,7 @@
                     return null;
                 }
 
-                this.DoLoadImmediate(key);
+                this.DoLoadImmediate(new ResourceLoadInfo(key, flags));
                 data = this.resourceMap.GetData(key);
                 if (data == null)
                 {
@@ -160,11 +154,11 @@
                     byte[] result = request.GetData();
                     if (result != null)
                     {
-                        this.FinalizeLoadResource(request.Key, result, request.Metric);
+                        this.FinalizeLoadResource(request.Info, result, request.Metric);
                     }
                     else
                     {
-                        Diagnostic.Warning("Load of {0} returned unexpected no data", request.Key);
+                        Diagnostic.Warning("Load of {0} returned unexpected no data", request.Info.Key);
                     }
                 }
             }
@@ -172,19 +166,18 @@
             int consecutiveSyncCalls = 0;
             while (this.currentPendingLoads.Count > 0 && this.requestPool.HasFreeSlot())
             {
-                ResourceKey key = this.currentPendingLoads.Dequeue();
+                ResourceLoadInfo info = this.currentPendingLoads.Dequeue();
 
-                if (this.resourceMap.HasData(key))
+                if (this.resourceMap.HasData(info.Key))
                 {
                     // This resource was already loaded, continue
                     return true;
                 }
 
-                if (this.forceSyncLoad.Contains(key))
+                if ((info.Flags & ResourceLoadFlags.Sync) != 0)
                 {
                     // This resource is a forced sync load
-                    this.DoLoadImmediate(key);
-                    this.forceSyncLoad.Remove(key);
+                    this.DoLoadImmediate(info);
                     consecutiveSyncCalls++;
 
                     if (consecutiveSyncCalls > MaxConsecutiveSyncCallsInAsync)
@@ -198,10 +191,10 @@
 
                 if (this.ResourceLoading != null)
                 {
-                    this.ResourceLoading(key);
+                    this.ResourceLoading(info);
                 }
 
-                this.requestPool.AddRequest(new ResourceStreamRequest(key));
+                this.requestPool.AddRequest(new ResourceStreamRequest(info));
             }
             
             return this.currentPendingLoads.Count > 0 || this.requestPool.HasPendingRequests();
@@ -218,15 +211,13 @@
             int resourceCount = this.currentPendingLoads.Count;
             while (this.currentPendingLoads.Count > 0)
             {
-                ResourceKey key = this.currentPendingLoads.Dequeue();
-                if (!this.resourceMap.HasData(key))
+                ResourceLoadInfo info = this.currentPendingLoads.Dequeue();
+                if (!this.resourceMap.HasData(info.Key))
                 {
-                    this.DoLoadImmediate(key);
+                    this.DoLoadImmediate(info);
                 }
             }
-
-            this.forceSyncLoad.Clear();
-
+            
             Diagnostic.TakeTimeMeasure(totalTime);
             Diagnostic.Info("Immediate! Loaded {0} resources in {1}ms", resourceCount, Diagnostic.GetTimeInMS(totalTime.Total));
         }
@@ -234,57 +225,57 @@
         // -------------------------------------------------------------------
         // Private
         // -------------------------------------------------------------------
-        private void DoLoadImmediate(ResourceKey key)
+        private void DoLoadImmediate(ResourceLoadInfo info)
         {
             if (this.ResourceLoading != null)
             {
-                this.ResourceLoading(key);
+                this.ResourceLoading(info);
             }
 
             MetricTime resourceTime = Diagnostic.BeginTimeMeasure();
-            var request = new ResourceStreamRequest(key);
+            var request = new ResourceStreamRequest(info);
             float time = UnityEngine.Time.time;
             while (!request.IsDone)
             {
                 Thread.Sleep(2);
                 if (UnityEngine.Time.time > time + DefaultReadTimeout)
                 {
-                    Diagnostic.Error("Timeout while reading {0}", key);
+                    Diagnostic.Error("Timeout while reading {0}", info.Key);
                     return;
                 }
             }
             
             Diagnostic.TakeTimeMeasure(resourceTime);
 
-            this.FinalizeLoadResource(key, request.GetData(), resourceTime);
+            this.FinalizeLoadResource(info, request.GetData(), resourceTime);
         }
-        
-        private void FinalizeLoadResource(ResourceKey key, byte[] data, MetricTime elapsedTime)
+
+        private void FinalizeLoadResource(ResourceLoadInfo info, byte[] data, MetricTime elapsedTime)
         {
             if (data == null)
             {
-                Diagnostic.Warning("Loading {0} returned null data", key);
+                Diagnostic.Warning("Loading {0} returned null data", info.Key);
                 return;
             }
 
             if (this.EnableHistory)
             {
-                if (this.history.ContainsKey(key))
+                if (this.history.ContainsKey(info.Key))
                 {
-                    this.history[key] += elapsedTime.Total;
+                    this.history[info.Key] += elapsedTime.Total;
                 }
                 else
                 {
-                    this.history.Add(key, elapsedTime.Total);
+                    this.history.Add(info.Key, elapsedTime.Total);
                 }
             }
-            
-            this.resourceMap.SetData(key, data);
+
+            this.resourceMap.SetData(info.Key, data);
 
             this.ResourcesLoaded++;
             if (this.ResourceLoaded != null)
             {
-                this.ResourceLoaded(key, elapsedTime.Total);
+                this.ResourceLoaded(info, elapsedTime.Total);
             }
         }
 
