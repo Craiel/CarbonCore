@@ -96,7 +96,7 @@
         }
 
         // Note: Use this only when we can not do an async loading, avoid if possible
-        public static T LoadImmediate<T>(ResourceKey key, ResourceLoadFlags flags, bool useCache = true)
+        public static T LoadImmediate<T>(ResourceKey key, bool useCache = true)
             where T : UnityEngine.Object
         {
             return LoadImmediate(key, useCache) as T;
