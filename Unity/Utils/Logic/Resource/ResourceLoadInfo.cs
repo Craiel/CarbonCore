@@ -9,6 +9,7 @@
         // Constructor
         // -------------------------------------------------------------------
         public ResourceLoadInfo(ResourceKey key, ResourceLoadFlags flags)
+            : this()
         {
             this.Key = key;
             this.Flags = flags;
