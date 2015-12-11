@@ -70,9 +70,10 @@
 
         private T DoGet<T>(object key)
         {
-            if (this.variables.ContainsKey(key))
+            object result;
+            if (this.variables.TryGetValue(key, out result))
             {
-                return (T)this.variables[key];
+                return (T)result;
             }
 
             return default(T);

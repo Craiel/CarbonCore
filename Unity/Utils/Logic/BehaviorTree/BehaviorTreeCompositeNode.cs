@@ -51,13 +51,40 @@
         {
             Diagnostic.Assert(this.Children != null, "Empty Composite node in Tree");
 
-            this.Status = this.ProcessChildren(context);
+            if (this.IsRandom)
+            {
+                // Random is slower so we have a specific function for it
+                this.Status = this.ProcessChildrenRandom(context);
+            }
+            else
+            {
+                this.Status = this.ProcessChildren(context);
+            }
         }
 
         // -------------------------------------------------------------------
         // Private
         // -------------------------------------------------------------------
         private BehaviorTreeStatus ProcessChildren(BehaviorTreeContext context)
+        {
+            // the default status depends on the mode we are trying to go for
+            BehaviorTreeStatus resultStatus = this.Mode == BehaviorTreeCompositeMode.Selector
+                                                  ? BehaviorTreeStatus.Failed
+                                                  : BehaviorTreeStatus.Succeeded;
+
+            for (var i = 0; i < this.Children.Count; i++)
+            {
+                BehaviorTreeStatus? nodeStatus = this.ExecuteNode(context, this.Children[i]);
+                if (nodeStatus != null)
+                {
+                    return nodeStatus.Value;
+                }
+            }
+
+            return resultStatus;
+        }
+
+        private BehaviorTreeStatus ProcessChildrenRandom(BehaviorTreeContext context)
         {
             // the default status depends on the mode we are trying to go for
             BehaviorTreeStatus resultStatus = this.Mode == BehaviorTreeCompositeMode.Selector
@@ -76,53 +103,56 @@
                 IBehaviorTreeNode node = nodes[index];
                 nodes.RemoveAt(index);
 
-                node.OnEnter(context);
-                node.Execute(context);
-                node.OnExit(context);
-
-                /*if (node.GetType() != typeof(BehaviorTreeCompositeNode))
+                BehaviorTreeStatus? nodeStatus = this.ExecuteNode(context, node);
+                if (nodeStatus != null)
                 {
-                    Diagnostic.Info(
-                        "BT.Execute: {0} -> {1}",
-                        node.GetType().Name,
-                        node.Status);
-                }*/
-
-                // In sequence all nodes have to succeed
-                switch (this.Mode)
-                {
-                    case BehaviorTreeCompositeMode.Sequence:
-                        {
-                            if (node.Status == BehaviorTreeStatus.Failed
-                                || node.Status == BehaviorTreeStatus.Running)
-                            {
-                                // All nodes have to succeed for sequence
-                                return node.Status;
-                            }
-
-                            break;
-                        }
-
-                    case BehaviorTreeCompositeMode.Selector:
-                        {
-                            // Any node needs to succeed for a selector to be valid
-                            if (node.Status == BehaviorTreeStatus.Succeeded)
-                            {
-                                return node.Status;
-                            }
-
-                            // Try the next node
-                            break;
-                        }
-
-                    default:
-                        {
-                            throw new NotImplementedException(this.Mode.ToString());
-                        }
+                    return nodeStatus.Value;
                 }
             }
 
             return resultStatus;
+        }
+
+        private BehaviorTreeStatus? ExecuteNode(BehaviorTreeContext context, IBehaviorTreeNode node)
+        {
+            node.OnEnter(context);
+            node.Execute(context);
+            node.OnExit(context);
+
+            // In sequence all nodes have to succeed
+            switch (this.Mode)
+            {
+                case BehaviorTreeCompositeMode.Sequence:
+                    {
+                        if (node.Status == BehaviorTreeStatus.Failed
+                            || node.Status == BehaviorTreeStatus.Running)
+                        {
+                            // All nodes have to succeed for sequence
+                            return node.Status;
+                        }
+
+                        break;
+                    }
+
+                case BehaviorTreeCompositeMode.Selector:
+                    {
+                        // Any node needs to succeed for a selector to be valid
+                        if (node.Status == BehaviorTreeStatus.Succeeded)
+                        {
+                            return node.Status;
+                        }
+
+                        // Try the next node
+                        break;
+                    }
+
+                default:
+                    {
+                        throw new NotImplementedException(this.Mode.ToString());
+                    }
+            }
+
+            return null;
         }
     }
 }

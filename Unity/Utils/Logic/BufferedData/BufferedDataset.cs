@@ -188,12 +188,10 @@
             BufferedDataSetInstances source;
             if (key != null)
             {
-                if (!this.keyToInstanceLookup.ContainsKey(key))
+                if (!this.keyToInstanceLookup.TryGetValue(key, out source))
                 {
                     return null;
                 }
-
-                source = this.keyToInstanceLookup[key];
             }
             else
             {
@@ -201,12 +199,13 @@
             }
 
             // Now we try to find the instances of the given type
-            if (!source.ContainsKey(type))
+            IList<IDataEntry> result;
+            if (source.TryGetValue(type, out result))
             {
-                return null;
+                return result;
             }
 
-            return source[type];
+            return null;
         }
 
         private void DoSetInstanceKey(IDataEntry instance, object key)
