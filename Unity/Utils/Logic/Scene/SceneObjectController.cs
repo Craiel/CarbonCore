@@ -19,7 +19,6 @@
         // Constructor
         // -------------------------------------------------------------------
         public SceneObjectController()
-            : base(RootName)
         {
             this.containers = new Dictionary<T, SceneObjectContainer>();
         }
@@ -57,7 +56,7 @@
         {
             if (this.rootContainer == null)
             {
-                this.rootContainer = new SceneObjectContainer(null, this.Name);
+                this.rootContainer = new SceneObjectContainer(null, RootName);
 
                 // Attach the cleanup script
                 var cleanup = this.rootContainer.GameObject.AddComponent<SceneObjectCleanup>();

@@ -89,7 +89,10 @@
         {
             lock (this.metricProviders)
             {
-                this.metricProviders.Remove(id);
+                if (this.metricProviders.ContainsKey(id))
+                {
+                    this.metricProviders.Remove(id);
+                }
             }
         }
 
@@ -111,7 +114,10 @@
         {
             lock (this.contextLogs)
             {
-                this.contextLogs.Remove(id);
+                if (this.contextLogs.ContainsKey(id))
+                {
+                    this.contextLogs.Remove(id);
+                }
             }
         }
 

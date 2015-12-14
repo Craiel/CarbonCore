@@ -87,8 +87,10 @@
     <Compile Include="Contracts\IRefCountedObject.cs" />
     <Compile Include="Contracts\IResourceRequest.cs" />
     <Compile Include="Contracts\IScene.cs" />
+    <Compile Include="Contracts\IUnitySingletonBehavior.cs" />
     <Compile Include="Contracts\TaskPool\ITask.cs" />
     <Compile Include="Contracts\TaskPool\ITaskPool.cs" />
+    <Compile Include="Contracts\IUnitySingleton.cs" />
     <Compile Include="Data\BundleKey.cs" />
     <Compile Include="Data\EngineTimeSnapshot.cs" />
     <Compile Include="Data\RefCountedWeakReference.cs" />
@@ -119,7 +121,9 @@
     <Compile Include="Logic\BufferedData\Commands\BufferCommandWriteDiscreteInstance.cs" />
     <Compile Include="Logic\BufferedData\Commands\BufferCommandWriteSharedInstance.cs" />
     <Compile Include="Logic\BufferedData\DataSnapshot.cs" />
+    <Compile Include="Logic\DefaultEngineLog.cs" />
     <Compile Include="Logic\DelayedLoadedObject.cs" />
+    <Compile Include="Logic\CarbonEngine.cs" />
     <Compile Include="Logic\EngineComponent.cs" />
     <Compile Include="Logic\Enums\AnchorPoint.cs" />
     <Compile Include="Logic\Enums\BehaviorTreeCompositeMode.cs" />

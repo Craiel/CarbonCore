@@ -3,11 +3,12 @@
     using System;
 
     using CarbonCore.Utils.Diagnostics;
+    using CarbonCore.Utils.Unity.Contracts;
     using CarbonCore.Utils.Unity.Logic.Scene;
 
     using UnityEngine;
 
-    public abstract class UnitySingletonBehavior<T> : MonoBehaviour
+    public abstract class UnitySingletonBehavior<T> : MonoBehaviour, IUnitySingletonBehavior
         where T : UnitySingletonBehavior<T>
     {
         private static T instance;
@@ -31,8 +32,15 @@
             }
         }
 
-        public static void InstantiateSingleton()
+        public bool IsInitialized { get; protected set; }
+
+        public static void Instantiate()
         {
+            if (Instance != null)
+            {
+                return;
+            }
+
             instance = FindObjectOfType<T>();
             
             if (instance == null)
@@ -57,9 +65,20 @@
             }
         }
 
-        public static void Dispose()
+        public static void InstantiateAndInitialize()
         {
-            instance.DisposeSingleton();
+            if (Instance != null && Instance.IsInitialized)
+            {
+                return;
+            }
+
+            Instantiate();
+            Instance.Initialize();
+        }
+
+        public static void Destroy()
+        {
+            instance.DestroySingleton();
         }
 
         public virtual void Awake()
@@ -69,6 +88,11 @@
                 Diagnostic.Error("Duplicate Instance of {0} found, destroying!", this.GetType());
                 DestroyImmediate(this.gameObject);
             }
+        }
+
+        public virtual void Initialize()
+        {
+            this.IsInitialized = true;
         }
 
         // -------------------------------------------------------------------
@@ -84,9 +108,9 @@
             return root;
         }
         
-        protected void DisposeSingleton()
+        protected void DestroySingleton()
         {
-            Diagnostic.Info("Disposing Singleton MonoBehavior {0}", this.name);
+            Diagnostic.Info("Destroying Singleton MonoBehavior {0}", this.name);
 
             this.OnSingletonDestroying();
 
