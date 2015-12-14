@@ -31,10 +31,10 @@
             }
         }
 
-        public static void Instantiate()
+        public static void InstantiateSingleton()
         {
             instance = FindObjectOfType<T>();
-
+            
             if (instance == null)
             {
                 GameObject gameObject = new GameObject(typeof(T).Name);
