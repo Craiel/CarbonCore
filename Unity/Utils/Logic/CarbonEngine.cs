@@ -29,6 +29,7 @@
 
             ResourceProvider.InstantiateAndInitialize();
             BundleProvider.InstantiateAndInitialize();
+            ResourceStreamProvider.InstantiateAndInitialize();
         }
 
         public void InitializeLog<T>()
