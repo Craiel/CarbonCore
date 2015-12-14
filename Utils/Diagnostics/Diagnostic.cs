@@ -149,6 +149,8 @@
 
             instance.UnregisterMetricContext(threadId);
             instance.UnregisterLogContext(threadId);
+
+            Info("Unregistered Thread {0}", threadId);
         }
 
         public static bool GetMute(int managedThreadId)
