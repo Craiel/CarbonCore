@@ -17,39 +17,39 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public void Set<T>(T value)
+        public virtual void Set<T>(T value)
         {
             string key = typeof(T).FullName;
             this.DoSet(key, value);
         }
 
-        public void Set<T>(int key, T value)
+        public virtual void Set<T>(int key, T value)
         {
             this.DoSet(key, value);
         }
 
-        public void Set<T>(string key, T value)
+        public virtual void Set<T>(string key, T value)
         {
             this.DoSet(key, value);
         }
 
-        public T Get<T>()
+        public virtual T Get<T>()
         {
             string key = typeof(T).FullName;
             return this.DoGet<T>(key);
         }
 
-        public T Get<T>(int key)
+        public virtual T Get<T>(int key)
         {
             return this.DoGet<T>(key);
         }
 
-        public T Get<T>(string key)
+        public virtual T Get<T>(string key)
         {
             return this.DoGet<T>(key);
         }
 
-        public void Clear()
+        public virtual void Clear()
         {
             this.variables.Clear();
         }

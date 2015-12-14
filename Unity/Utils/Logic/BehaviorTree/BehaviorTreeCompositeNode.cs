@@ -49,8 +49,6 @@
 
         public override void Execute(BehaviorTreeContext context)
         {
-            Diagnostic.Assert(this.Children != null, "Empty Composite node in Tree");
-
             if (this.IsRandom)
             {
                 // Random is slower so we have a specific function for it

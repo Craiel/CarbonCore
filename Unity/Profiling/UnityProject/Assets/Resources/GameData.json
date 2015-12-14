@@ -1,0 +1,35 @@
+﻿{
+    Abilities: [
+        {
+            id: "BaseAttack",
+            multiplier: 1,
+            cooldown: 0.1,
+        },
+        {
+            id: "TestAbility",
+            multiplier: 2,
+            cooldown: 5,
+        }
+    ],
+    XP: {
+            key: "XP",
+            BasePerLevel: 100,
+            Base: 100,
+            BaseEnemy: 20,
+            EnemyLevelMultiplier: 5,
+            MaxLevel: 100,
+            RandomMin: 0.9,
+            RandomMax: 1.1
+    },
+    Combat: {
+            key: "Combat",
+            PlayerMainStatPerLevel: 4,
+            PlayerStaminaPerLevel: 20,
+            EnemyMainStatPerLevel: 6,
+            EnemyStaminaPerLevel: 2,
+            EnemyMainStatScale: 0.5,
+            EnemyStaminaScale: 0.4,
+            HealthPerStamina: 10,
+            DamagePerMainStat: 2
+    }
+}

@@ -4,7 +4,6 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
-    using System.Text.RegularExpressions;
     
     public abstract class CarbonPath
     {
@@ -14,10 +13,7 @@
         //public static readonly string DirectorySeparatorOptionalRegexSegment = string.Format(@"[\{0}\{1}]*", DirectorySeparator, DirectorySeparatorAlternative);
         public static readonly string DirectorySeparatorMandatoryRegexSegment = string.Format(@"[\{0}\{1}]+", DirectorySeparator, DirectorySeparatorAlternative);
         public static readonly string DirectoryRegex = string.Concat(string.Format("(^|{0})", DirectorySeparatorMandatoryRegexSegment), "{0}", DirectorySeparatorMandatoryRegexSegment);
-
-        // Note: this is win32 specific and might have to be adjusted for other platforms
-        private static readonly Regex Win32AbsolutePathRegex = new Regex(@"^([a-z]):[\\\/]+(.*)$", RegexOptions.IgnoreCase);
-
+        
         private string path;
 
         private DriveInfo drive;
@@ -161,11 +157,11 @@
                 }
                 else
                 {
-                    this.IsRelative = !Win32AbsolutePathRegex.IsMatch(this.path);
+                    this.IsRelative = System.IO.Path.IsPathRooted(this.path);
                 }
             }
         }
-
+        
         protected DriveInfo Drive
         {
             get
