@@ -27,7 +27,7 @@
 
         public override void Execute(BehaviorTreeContext context)
         {
-            context.Set(this.Key, this.Value);
+            context.SetVariable(this.Key, this.Value);
             this.Status = BehaviorTreeStatus.Succeeded;
         }
     }

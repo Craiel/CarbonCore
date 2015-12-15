@@ -24,7 +24,7 @@
 
         public override void Execute(BehaviorTreeContext context)
         {
-            if (context.Get<bool>(this.Key))
+            if (context.GetVariable<bool>(this.Key))
             {
                 this.Status = BehaviorTreeStatus.Succeeded;
                 return;
