@@ -132,8 +132,6 @@
             string threadContextName = string.Format("({0}) {1}", threadId, name);
             instance.RegisterMetricContext(threadId);
             instance.RegisterLogContext(threadId, threadContextName);
-
-            Info("Registered Thread {0}", threadContextName);
         }
 
         public static void UnregisterThread()
@@ -149,8 +147,6 @@
 
             instance.UnregisterMetricContext(threadId);
             instance.UnregisterLogContext(threadId);
-
-            Info("Unregistered Thread {0}", threadId);
         }
 
         public static bool GetMute(int managedThreadId)
