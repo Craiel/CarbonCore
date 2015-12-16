@@ -1,6 +1,5 @@
 ﻿namespace Assets.Scripts.Tests.BehaviorTree
 {
-    using System.Collections;
     using System.Collections.Generic;
 
     using Assets.Scripts.Game;
@@ -29,17 +28,13 @@
 
         private static void PrepareContext(BehaviorTreeContext context)
         {
-            IList<int> list = new List<int>();
-            for (var i = 0; i < 100; i++)
-            {
-                list.Add(i);
-            }
-
             context.Clear();
             context.Set("Some Random String");
             context.Set(GameSystem.Instance);
             context.Set(1);
-            context.Set(list);
+            context.SetVariable(1, "First");
+            context.SetVariable("second", true);
+            context.Set(new List<int>());
         }
     }
 }

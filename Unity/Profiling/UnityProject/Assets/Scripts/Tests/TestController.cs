@@ -11,12 +11,15 @@
 
     public class TestController : UnitySingletonBehavior<TestController>
     {
+        private float lastInterval;
+
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
         public TestController()
         {
-            this.TestSampleCount = 100;
+            this.TestSampleCount = 10;
+            this.TestInterval = 1.0f;
         }
 
         // -------------------------------------------------------------------
@@ -24,6 +27,9 @@
         // -------------------------------------------------------------------
         [SerializeField]
         public int TestSampleCount;
+
+        [SerializeField]
+        public float TestInterval;
 
         public bool EnableGeneralTests { get; set; }
 
@@ -38,6 +44,12 @@
 
         public void Update()
         {
+            if (Time.time < this.lastInterval + this.TestInterval)
+            {
+                return;
+            }
+
+            this.lastInterval = Time.time;
             for (var i = 0; i < this.TestSampleCount; i++)
             {
                 this.DoRunTests();
