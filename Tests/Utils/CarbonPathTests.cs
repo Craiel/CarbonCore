@@ -34,8 +34,12 @@
             Assert.AreEqual("OneMore", extended.DirectoryNameWithoutPath);
             Assert.AreEqual(stringInitialized, extended.GetParent());
 
-            long freeSpace = current.GetFreeSpace();
-            Assert.Greater(freeSpace, 0, "GetFreeSpace must return non-zero value");
+            long freeSpace = extended.GetFreeSpace();
+            Assert.AreEqual(0, freeSpace, "GetFreeSpace should return 0 for relative paths");
+
+            CarbonDirectory absolute = current.ToAbsolute<CarbonDirectory>();
+            freeSpace = absolute.GetFreeSpace();
+            Assert.Greater(freeSpace, 0, "GetFreeSpace must return non-zero value for absolute paths");
 
             CarbonDirectory parentTest = new CarbonDirectory(@"FirstPath//SamePath\\SamePath//SamePath\\Something_SamePath//EndPath");
             int iterations = 0;

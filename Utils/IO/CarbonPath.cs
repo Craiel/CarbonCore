@@ -121,6 +121,12 @@
             return (T)Activator.CreateInstance(typeof(T), absolutePath);
         }
 
+        public T ToAbsolute<T>() where T : CarbonPath
+        {
+            string absolutePath = System.IO.Path.GetFullPath(this.GetPath());
+            return (T)Activator.CreateInstance(typeof(T), absolutePath);
+        }
+
         public bool Contains(string pattern, bool ignoreCase = false)
         {
             if (ignoreCase)
@@ -157,7 +163,7 @@
                 }
                 else
                 {
-                    this.IsRelative = System.IO.Path.IsPathRooted(this.path);
+                    this.IsRelative = !System.IO.Path.IsPathRooted(this.path);
                 }
             }
         }
