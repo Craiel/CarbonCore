@@ -9,9 +9,10 @@
         {
             get
             {
-                if (this.ContainsKey(key))
+                TN value;
+                if (this.TryGetValue(key, out value))
                 {
-                    return base[key];
+                    return value;
                 }
 
                 return default(TN);
@@ -32,9 +33,10 @@
         {
             get
             {
-                if (this.ContainsValue(key))
+                T value;
+                if (this.TryGetKey(key, out value))
                 {
-                    return base[key];
+                    return value;
                 }
 
                 return default(T);

@@ -35,12 +35,10 @@
 
         protected override void DoLoad(FileEntryKey key, out byte[] data)
         {
-            if (!this.files.ContainsKey(key))
+            if (!this.files.TryGetValue(key, out data))
             {
                 throw new ArgumentException("File does not exist: " + key);
             }
-
-            data = this.files[key];
         }
 
         protected override void DoSave(FileEntryKey key, byte[] data)
@@ -61,12 +59,13 @@
 
         protected override void DoDelete(FileEntryKey key)
         {
-            if (!this.files.ContainsKey(key))
+            FileEntry entry;
+            if (!this.fileEntries.TryGetValue(key, out entry))
             {
                 throw new ArgumentException("File does not exist: " + key);
             }
 
-            this.fileEntries[key].IsDeleted = true;
+            entry.IsDeleted = true;
         }
 
         protected override int DoCleanup()

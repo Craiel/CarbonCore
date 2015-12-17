@@ -145,9 +145,10 @@
             }
 
             // Process includes first
-            if (style.Content.ContainsKey(IncludeKey))
+            IList<string> includes;
+            if (style.Content.TryGetValue(IncludeKey, out includes))
             {
-                foreach (string value in style.Content[IncludeKey])
+                foreach (string value in includes)
                 {
                     CssStyle includedStyle = this.LocateStyle(value);
                     if (includedStyle == null)
@@ -228,12 +229,15 @@
 
             public void AddContent(string key, string value)
             {
-                if (!this.Content.ContainsKey(key))
+                IList<string> content;
+                if (this.Content.TryGetValue(key, out content))
                 {
-                    this.Content.Add(key, new List<string>());
+                    content.Add(value);
+                    return;
                 }
 
-                this.Content[key].Add(value);
+                content = new List<string> { value };
+                this.Content.Add(key, content);
             }
         }
     }

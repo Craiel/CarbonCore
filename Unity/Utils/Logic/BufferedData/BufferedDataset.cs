@@ -130,9 +130,11 @@
                 {
                     IDataEntry clonedEntry = entry.Clone();
                     clone.AddInstance(clonedEntry);
-                    if (this.instanceToKeyLookup.ContainsKey(entry))
+
+                    object instanceKey;
+                    if (this.instanceToKeyLookup.TryGetValue(entry, out instanceKey))
                     {
-                        clone.SetInstanceKey(clonedEntry, this.instanceToKeyLookup[entry]);
+                        clone.SetInstanceKey(clonedEntry, instanceKey);
                     }
                 }
             }
@@ -173,12 +175,12 @@
             this.instances[type].Remove(instance);
 
             // Check if this instance was associated with a key
-            if (this.instanceToKeyLookup.ContainsKey(instance))
+            object instanceKey;
+            if (this.instanceToKeyLookup.TryGetValue(instance, out instanceKey))
             {
                 // Unregister the key and the association
-                object key = this.instanceToKeyLookup[instance];
                 this.instanceToKeyLookup.Remove(instance);
-                this.keyToInstanceLookup[key][type].Remove(instance);
+                this.keyToInstanceLookup[instanceKey][type].Remove(instance);
             }
         }
 

@@ -59,9 +59,10 @@
 
         public static ResourceLoadRequest Load(ResourceLoadInfo info, bool useCache = true)
         {
-            if (useCache && Cache.ContainsKey(info.Key))
+            UnityEngine.Object cachedObject;
+            if (useCache && Cache.TryGetValue(info.Key, out cachedObject))
             {
-                return new ResourceLoadRequest(info, new[] { Cache[info.Key] });
+                return new ResourceLoadRequest(info, new[] { cachedObject });
             }
 
             if (info.Key.Bundle != null)

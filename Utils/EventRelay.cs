@@ -29,12 +29,14 @@
         {
             lock (this.subscribers)
             {
-                if (!this.subscribers.ContainsKey(type))
+                IList<object> list;
+                if (this.subscribers.TryGetValue(type, out list))
                 {
-                    this.subscribers.Add(type, new List<object>());
+                    list.Add(action);
+                    return;
                 }
 
-                this.subscribers[type].Add(action);
+                this.subscribers.Add(type, new List<object> { action });
             }
         }
 
@@ -47,17 +49,18 @@
         {
             lock (this.subscribers)
             {
-                if (!this.subscribers.ContainsKey(type))
+                IList<object> list;
+                if (!this.subscribers.TryGetValue(type, out list))
                 {
                     return;
                 }
 
-                if (!this.subscribers[type].Contains(action))
+                if (!list.Contains(action))
                 {
                     return;
                 }
 
-                this.subscribers[type].Remove(action);
+                list.Remove(action);
             }
         }
 
@@ -71,12 +74,13 @@
             IList<Action<T>> actionList = new List<Action<T>>();
             lock (this.subscribers)
             {
-                if (!this.subscribers.ContainsKey(type))
+                IList<object> list;
+                if (!this.subscribers.TryGetValue(type, out list))
                 {
                     return;
                 }
 
-                foreach (Action<T> action in this.subscribers[type])
+                foreach (Action<T> action in list)
                 {
                     actionList.Add(action);
                 }

@@ -47,13 +47,13 @@
         
         protected override string PostProcessData(string localData)
         {
-            if (this.data == null || !this.formatterTargetLookup.ContainsKey(this.Context.TargetPlatform))
+            IExcelFormatter formatter;
+            if (this.data == null 
+                || !this.formatterTargetLookup.TryGetValue(this.Context.TargetPlatform, out formatter))
             {
                 return null;
             }
-
-            IExcelFormatter formatter = this.formatterTargetLookup[this.Context.TargetPlatform];
-
+            
             return formatter.Format(this.data);
         }
     }

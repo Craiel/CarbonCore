@@ -46,9 +46,10 @@
                 Type key = pending.Pop();
                 System.Diagnostics.Debug.WriteLine(string.Format("[IoC] Initializing Module: {0}", key));
 
-                if (dependencies.ContainsKey(key))
+                int count;
+                if (dependencies.TryGetValue(key, out count))
                 {
-                    currentOrder = dependencies[key] - 1;
+                    currentOrder = count - 1;
                 }
                 else
                 {

@@ -52,12 +52,13 @@
         public void Unregister<T>() where T : IJsonNetPackage
         {
             Type type = typeof(T);
-            if (!this.packageIdDictionary.ContainsKey(type))
+            int packageId;
+            if (!this.packageIdDictionary.TryGetValue(type, out packageId))
             {
                 throw new ArgumentException("Type was not registered: " + type);
             }
 
-            this.packageDictionary.Remove(this.packageIdDictionary[type]);
+            this.packageDictionary.Remove(packageId);
             this.packageIdDictionary.Remove(type);
         }
 

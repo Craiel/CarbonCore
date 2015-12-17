@@ -40,9 +40,10 @@
         // -------------------------------------------------------------------
         public static DataEntryElementSerializer GetSerializer(Type type)
         {
-            if (Serializers.ContainsKey(type))
+            DataEntryElementSerializer serializer;
+            if (Serializers.TryGetValue(type, out serializer))
             {
-                return Serializers[type];
+                return serializer;
             }
 
             return null;
@@ -51,9 +52,10 @@
         public static DataEntryElementSerializer GetCompactSerializer(Type type)
         {
             // First check if we have a straight up serializer for this type
-            if (Serializers.ContainsKey(type))
+            DataEntryElementSerializer serializer = GetSerializer(type);
+            if (serializer != null)
             {
-                return Serializers[type];
+                return serializer;
             }
 
             if (typeof(IDataEntry).IsAssignableFrom(type))
@@ -97,12 +99,15 @@
         {
             lock (Descriptors)
             {
-                if (!SerializationDescriptors.ContainsKey(type))
+                DataEntrySerializationDescriptor descriptor;
+                if (SerializationDescriptors.TryGetValue(type, out descriptor))
                 {
-                    SerializationDescriptors.Add(type, new DataEntrySerializationDescriptor(type));
+                    return descriptor;
                 }
 
-                return SerializationDescriptors[type];
+                descriptor = new DataEntrySerializationDescriptor(type);
+                SerializationDescriptors.Add(type, descriptor);
+                return descriptor;
             }
         }
 

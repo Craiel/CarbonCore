@@ -31,12 +31,6 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public static void SetInstance<T>(T diagnosticInstance)
-            where T : ICarbonDiagnostics
-        {
-            instance = diagnosticInstance;
-        }
-
         public static bool EnableTimeStamp
         {
             get
@@ -48,6 +42,12 @@
             {
                 enableTimeStamp = value;
             }
+        }
+
+        public static void SetInstance<T>(T diagnosticInstance)
+            where T : ICarbonDiagnostics
+        {
+            instance = diagnosticInstance;
         }
 
         public static void RegisterMetric<T>(int id)
@@ -195,9 +195,10 @@
             if (enableTimeStamp)
             {
                 int threadId = Thread.CurrentThread.ManagedThreadId;
-                if (ThreadTimes.ContainsKey(threadId))
+                EngineTime time;
+                if (ThreadTimes.TryGetValue(threadId, out time))
                 {
-                    return string.Format("{0} {1}", ThreadTimes[threadId].Time, message);
+                    return string.Format("{0} {1}", time, message);
                 }
             }
 

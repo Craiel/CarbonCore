@@ -256,7 +256,11 @@
 
         protected void UpdateDrive()
         {
-            System.Diagnostics.Trace.Assert(!this.IsRelative);
+            if (this.IsRelative)
+            {
+                // Nothing to do for relative paths
+                return;
+            }
 
             string currentPath = this.GetPath();
             foreach (DriveInfo info in DriveInfo.GetDrives())

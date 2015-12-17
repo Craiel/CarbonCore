@@ -48,9 +48,10 @@
 
         public static JsonConverter FindConverter(Type type)
         {
-            if (GlobalConverterRegistration.ContainsKey(type))
+            Type targetType;
+            if (GlobalConverterRegistration.TryGetValue(type, out targetType))
             {
-                return (JsonConverter)Activator.CreateInstance(GlobalConverterRegistration[type], null);
+                return (JsonConverter)Activator.CreateInstance(targetType, null);
             }
 
             object[] converterAttributes = type.GetCustomAttributes(typeof(JsonConverterAttribute), true);

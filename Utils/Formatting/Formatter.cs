@@ -88,19 +88,21 @@
         private string GetFormattedValue(string rawKey, string parameter)
         {
             string key = rawKey.Trim().ToUpper();
-            if (this.dictionary.ContainsKey(key))
+            object value;
+
+            if (this.dictionary.TryGetValue(key, out value))
             {
-                return this.GetFormattedValue(key, parameter, this.dictionary[key]);
+                return this.GetFormattedValue(key, parameter, value);
             }
             
-            if (this.defaultDictionary.ContainsKey(key))
+            if (this.defaultDictionary.TryGetValue(key, out value))
             {
-                return this.GetFormattedValue(key, parameter, this.defaultDictionary[key]);
+                return this.GetFormattedValue(key, parameter, value);
             }
 
-            if (GlobalCustomDictionary.ContainsKey(key))
+            if (GlobalCustomDictionary.TryGetValue(key, out value))
             {
-                return this.GetFormattedValue(key, parameter, GlobalCustomDictionary[key]);
+                return this.GetFormattedValue(key, parameter, value);
             }
 
             return rawKey;

@@ -9,6 +9,8 @@
     // Taken in large parts from Essential Diagnostics Project
     public class ConsoleTraceListener : System.Diagnostics.ConsoleTraceListener
     {
+        private const string TemplatePropertyName = "template";
+
         private const string DefaultTemplate = "{DateTime:u}\t{Source}({ThreadId})\t{EventType}\t{Id}\t{Message}";
 
         private readonly IFormatter formatter;
@@ -58,7 +60,7 @@
         // -------------------------------------------------------------------
         protected override string[] GetSupportedAttributes()
         {
-            return new[] { "template", "Template" };
+            return new[] { TemplatePropertyName, "Template" };
         }
 
         // -------------------------------------------------------------------
@@ -74,10 +76,10 @@
             lock (this.Attributes)
             {
                 this.attributesProcessed = true;
-
-                if (this.Attributes.ContainsKey("template"))
+                
+                if (this.Attributes.ContainsKey(TemplatePropertyName))
                 {
-                    this.template = this.Attributes["template"];
+                    this.template = this.Attributes[TemplatePropertyName];
                     this.template = this.template.Replace("\\t", "\t"); // Gets escaped so we have to reverse this, can't see a better way atm
                 }
             }

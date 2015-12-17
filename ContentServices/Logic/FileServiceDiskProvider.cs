@@ -130,7 +130,8 @@
 
         protected override void DoDelete(FileEntryKey key)
         {
-            if (!this.files.ContainsKey(key))
+            FileEntry entry;
+            if (!this.files.TryGetValue(key, out entry))
             {
                 throw new InvalidOperationException(string.Format("Can not delete {0}, was not in the provider", key));
             }
@@ -139,7 +140,6 @@
             System.Diagnostics.Trace.Assert(file.Exists, "Entry to delete is not in the provider!");
 
             // First mark the file as deleted in the table
-            var entry = this.files[key];
             entry.IsDeleted = true;
             this.databaseService.Save(ref entry, true);
 

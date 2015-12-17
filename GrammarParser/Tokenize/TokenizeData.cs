@@ -72,12 +72,14 @@
                 TermKey term = this.Grammar.KeyTerms[i];
                 char key = term.Keyword[0];
 
-                if (!this.KeyCache.ContainsKey(key))
+                IList<TermKey> cache;
+                if (this.KeyCache.TryGetValue(key, out cache))
                 {
-                    this.KeyCache.Add(key, new List<TermKey>());
+                    this.KeyCache[key].Add(term);
+                    continue;
                 }
 
-                this.KeyCache[key].Add(term);
+                this.KeyCache.Add(key, new List<TermKey> { term });
             }
 
             for (int i = 0; i < this.Grammar.IdentifierKeyTerms.Count; i++)

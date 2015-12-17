@@ -75,13 +75,15 @@
         {
             string key = name.ToLowerInvariant();
 
-            if (!this.rootEntries.ContainsKey(key))
+            SceneObjectRoot root;
+            if (this.rootEntries.TryGetValue(key, out root))
             {
-                var child = new SceneObjectRoot(this, name);
-                this.rootEntries.Add(key, child);
+                return root;
             }
 
-            return this.rootEntries[key];
+            root = new SceneObjectRoot(this, name);
+            this.rootEntries.Add(key, root);
+            return root;
         }
 
         public SceneObjectRoot RegisterAsRoot(GameObject gameObject)

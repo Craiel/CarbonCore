@@ -150,27 +150,25 @@
 
         protected override void DoLoad(FileEntryKey key, out byte[] data)
         {
-            if (!this.packInfo.ContainsKey(key))
+            FileEntryPackInfo entry;
+            if (!this.packInfo.TryGetValue(key, out entry))
             {
                 throw new FileNotFoundException("Could not load file data: " + key);
             }
-
-            FileEntryPackInfo info = this.packInfo[key];
-            data = new byte[info.Size];
+            
+            data = new byte[entry.Size];
             lock (this.packStream)
             {
-                this.packStream.Seek(info.Offset, SeekOrigin.Begin);
-                this.packStream.Read(data, 0, (int)info.Size);
+                this.packStream.Seek(entry.Offset, SeekOrigin.Begin);
+                this.packStream.Read(data, 0, (int)entry.Size);
             }
         }
 
         protected override void DoSave(FileEntryKey key, byte[] data)
         {
-            FileEntryPackInfo info = null;
-            if (this.packInfo.ContainsKey(key))
+            FileEntryPackInfo info;
+            if (this.packInfo.TryGetValue(key, out info))
             {
-                info = this.packInfo[key];
-
                 // Check if the new data still fits into the region
                 if (info.Size + info.Padding < data.Length)
                 {
@@ -228,13 +226,14 @@
 
         protected override void DoDelete(FileEntryKey key)
         {
-            if (!this.files.ContainsKey(key))
+            FileEntry entry;
+            if (!this.files.TryGetValue(key, out entry))
             {
                 throw new InvalidOperationException(string.Format("Can not delete {0}, was not in the provider", key));
             }
 
-            this.databaseService.Delete<FileEntryPackInfo>(this.files[key].Id);
-            this.databaseService.Delete<FileEntry>(this.files[key].Id);
+            this.databaseService.Delete<FileEntryPackInfo>(entry.Id);
+            this.databaseService.Delete<FileEntry>(entry.Id);
             this.files.Remove(key);
         }
 

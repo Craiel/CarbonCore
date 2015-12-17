@@ -70,12 +70,13 @@
                 CheckDictionary(CurrentCulture);
             }
 
-            if (!Dictionaries[CurrentCulture].ContainsKey(key))
+            LocalizationStringDictionary dictionary = Dictionaries[CurrentCulture];
+            if (!dictionary.ContainsKey(key))
             {
-                Dictionaries[CurrentCulture].Add(key, key);
+                dictionary.Add(key, key);
             }
 
-            return Dictionaries[CurrentCulture][key];
+            return dictionary[key];
         }
 
         public static void SaveDictionaries()
@@ -99,13 +100,14 @@
         {
             System.Diagnostics.Trace.TraceWarning("Manual SetString called, prefer using the auto loaded dictionaries!");
             CheckDictionary(CurrentCulture);
-            if (!Dictionaries[CurrentCulture].ContainsKey(key))
+            LocalizationStringDictionary dictionary = Dictionaries[CurrentCulture];
+            if (!dictionary.ContainsKey(key))
             {
-                Dictionaries[CurrentCulture].Add(key, value);
+                dictionary.Add(key, value);
             }
             else
             {
-                Dictionaries[CurrentCulture][key] = value;
+                dictionary[key] = value;
             }
         }
 

@@ -57,12 +57,16 @@
         {
             lock (Descriptors)
             {
-                if (!Descriptors.ContainsKey(type))
+                DatabaseEntryDescriptor descriptor;
+                if (Descriptors.TryGetValue(type, out descriptor))
                 {
-                    Descriptors.Add(type, new DatabaseEntryDescriptor(type));
+                    return descriptor;
                 }
 
-                return Descriptors[type];
+                // Create a new descriptor, this type is not known yet
+                descriptor = new DatabaseEntryDescriptor(type);
+                Descriptors.Add(type, descriptor);
+                return descriptor;
             }
         }
 
@@ -96,9 +100,10 @@
 
         public DatabaseEntryElementDescriptor GetElementByName(string name)
         {
-            if (this.elementNameLookup.ContainsKey(name))
+            DatabaseEntryElementDescriptor descriptor;
+            if (this.elementNameLookup.TryGetValue(name, out descriptor))
             {
-                return this.elementNameLookup[name];
+                return descriptor;
             }
 
             return null;

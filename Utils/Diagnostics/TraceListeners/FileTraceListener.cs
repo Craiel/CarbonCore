@@ -13,6 +13,10 @@
     /// </summary>
     public class FileTraceListener : TraceListener
     {
+        private const string TemplatePropertyName = "template";
+        private const string RotateFilesPropertyName = "rotateFiles";
+        private const string MaxRotationPropertyName = "maxRotation";
+
         private const string DefaultFileNameTemplate = "{AssemblyName}-{DateTime:yyyy-MM-dd}.log";
         private const string DefaultTemplate = "{DateTime:u}\t{Source}({ThreadId})\t{EventType}\t{Id}\t{Message}";
 
@@ -116,7 +120,7 @@
         // -------------------------------------------------------------------
         protected override string[] GetSupportedAttributes()
         {
-            return new[] { "template", "Template", "rotateFiles", "RotateFiles", "maxRotation", "MaxRotation" };
+            return new[] { TemplatePropertyName, "Template", RotateFilesPropertyName, "RotateFiles", MaxRotationPropertyName, "MaxRotation" };
         }
 
         // -------------------------------------------------------------------
@@ -128,24 +132,24 @@
             {
                 this.attributesProcessed = true;
 
-                if (this.Attributes.ContainsKey("template"))
+                if (this.Attributes.ContainsKey(TemplatePropertyName))
                 {
-                    this.template = this.Attributes["template"];
+                    this.template = this.Attributes[TemplatePropertyName];
                     this.template = this.template.Replace("\\t", "\t"); // Gets escaped so we have to reverse this, can't see a better way atm
                 }
 
-                if (this.Attributes.ContainsKey("rotateFiles"))
+                if (this.Attributes.ContainsKey(RotateFilesPropertyName))
                 {
-                    bool rotateFiles = bool.Parse(this.Attributes["rotateFiles"]);
+                    bool rotateFiles = bool.Parse(this.Attributes[RotateFilesPropertyName]);
                     if (rotateFiles)
                     {
                         this.RotateFiles();
                     }
                 }
 
-                if (this.Attributes.ContainsKey("maxRotation"))
+                if (this.Attributes.ContainsKey(MaxRotationPropertyName))
                 {
-                    this.maxRotation = int.Parse(this.Attributes["maxRotation"]);
+                    this.maxRotation = int.Parse(this.Attributes[MaxRotationPropertyName]);
                 }
             }
         }

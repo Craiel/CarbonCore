@@ -197,14 +197,15 @@
                 key = char.ToLowerInvariant(key);
             }
 
-            if (!data.KeyCache.ContainsKey(key))
+            IList<TermKey> cache;
+            if (!data.KeyCache.TryGetValue(key, out cache))
             {
                 return false;
             }
             
             // Get rid of entries that can not match for length
             int maxLength = data.PendingContent.Length;
-            IList<TermKey> potentialMatches = data.KeyCache[key].Where(x => x.Keyword.Length <= maxLength).ToList();
+            IList<TermKey> potentialMatches = cache.Where(x => x.Keyword.Length <= maxLength).ToList();
 
             if (potentialMatches.Count <= 0)
             {

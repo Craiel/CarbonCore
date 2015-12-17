@@ -108,9 +108,10 @@
 
         public ICommandLineSwitch GetSwitch(string key)
         {
-            if (this.activeSwitchDictionary.ContainsKey(key))
+            ICommandLineSwitch commandSwitch;
+            if (this.activeSwitchDictionary.TryGetValue(key, out commandSwitch))
             {
-                return this.activeSwitchDictionary[key];
+                return commandSwitch;
             }
 
             return null;
@@ -237,13 +238,16 @@
 
         private ICommandLineSwitch RegisterSwitch(string contents)
         {
-            if (!this.activeSwitchDictionary.ContainsKey(contents))
+            ICommandLineSwitch commandSwitch;
+            if (this.activeSwitchDictionary.TryGetValue(contents, out commandSwitch))
             {
-                this.activeSwitchDictionary.Add(contents, new CommandLineSwitch { Switch = contents });
-                this.activeSwitches.Add(this.activeSwitchDictionary[contents]);
+                return commandSwitch;
             }
 
-            return this.activeSwitchDictionary[contents];
+            commandSwitch = new CommandLineSwitch { Switch = contents };
+            this.activeSwitchDictionary.Add(contents, commandSwitch);
+            this.activeSwitches.Add(this.activeSwitchDictionary[contents]);
+            return commandSwitch;
         }
 
         private void UpdateSwitchArguments(ICommandLineSwitch @switch, string argument)

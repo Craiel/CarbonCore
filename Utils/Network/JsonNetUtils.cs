@@ -60,12 +60,12 @@
             for (int i = 0; i < payload.PayloadIds.Count; i++)
             {
                 int id = payload.PayloadIds[i];
-                if (!packageIdDictionary.ContainsKey(id))
+                Type type;
+                if (!packageIdDictionary.TryGetValue(id, out type))
                 {
                     throw new InvalidDataException("Unknown package in Payload: {0}" + id);
                 }
-
-                Type type = packageIdDictionary[id];
+                
                 IJsonNetPackage package = DeSerializePackage(type, payload.Data[i]);
                 result.Add(package);
             }

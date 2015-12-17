@@ -103,7 +103,8 @@
 
         public bool HasData(ResourceKey key)
         {
-            return this.data.ContainsKey(key) && this.data[key] != null;
+            T result;
+            return this.data.TryGetValue(key, out result) && result != null;
         }
 
         public void SetData(ResourceKey key, T resourceData)

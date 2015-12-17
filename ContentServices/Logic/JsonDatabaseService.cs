@@ -175,18 +175,17 @@
 
         private IList<int> GetEntries(DatabaseEntryDescriptor descriptor, IList<object> keys)
         {
-            if (!this.database.Tables.ContainsKey(descriptor.TableName))
+            JsonDatabaseTable table;
+            if (!this.database.Tables.TryGetValue(descriptor.TableName, out table))
             {
                 return null;
             }
 
             if (keys == null)
             {
-                return new List<int>(this.database.Tables[descriptor.TableName].RowData.Keys);
+                return new List<int>(table.RowData.Keys);
             }
-
-            JsonDatabaseTable table = this.database.Tables[descriptor.TableName];
-
+            
             IList<int> intKeys = keys.Select(x => (int)x).ToList();
             IList<int> results = new List<int>();
             foreach (int key in table.RowData.Keys)

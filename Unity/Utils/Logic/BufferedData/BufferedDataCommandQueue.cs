@@ -29,9 +29,10 @@
         {
             lock (this.commands)
             {
-                if (this.commands.ContainsKey(id))
+                BufferedDataPendingCommand command;
+                if (this.commands.TryGetValue(id, out command))
                 {
-                    return this.commands[id];
+                    return command;
                 }
             }
 

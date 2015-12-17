@@ -57,35 +57,33 @@
         
         public FileEntryData Load(FileEntryKey key)
         {
-            if (!this.fileProviderLookup.ContainsKey(key))
+            IFileServiceProvider provider;
+            if (!this.fileProviderLookup.TryGetValue(key, out provider))
             {
                 throw new KeyNotFoundException(string.Format("File does not exist: {0}", key));
             }
 
             byte[] data;
-            this.fileProviderLookup[key].Load(key, out data);
+            provider.Load(key, out data);
             return new FileEntryData(data);
         }
 
         public void Save(FileEntryKey key, FileEntryData data, IFileServiceProvider targetProvider = null)
         {
             targetProvider = targetProvider ?? this.defaultProvider;
-            if (targetProvider == null && !this.fileProviderLookup.ContainsKey(key))
+            bool keyExists = this.fileProviderLookup.ContainsKey(key);
+
+            if (targetProvider == null && !keyExists)
             {
                 throw new InvalidOperationException("Target provider must be supplied or file must already exist");
             }
 
-            if (this.fileProviderLookup.ContainsKey(key))
+            if (keyExists)
             {
                 this.fileProviderLookup[key] = targetProvider;
             }
             else
             {
-                if (targetProvider == null)
-                {
-                    throw new InvalidOperationException(string.Format("Target provider must be supplied for new file {0}", key));
-                }
-
                 targetProvider.Save(key, data.ByteData);
                 this.fileProviderLookup.Add(key, targetProvider);
             }
@@ -93,20 +91,21 @@
 
         public void Update(FileEntryKey key, FileEntryData data, bool autoIncrementVersion = true)
         {
-            if (!this.fileProviderLookup.ContainsKey(key))
+            IFileServiceProvider provider;
+            if (!this.fileProviderLookup.TryGetValue(key, out provider))
             {
                 throw new InvalidOperationException(string.Format("Can not update entry {0}, not yet present in the service", key));
             }
 
-            this.fileProviderLookup[key].Save(key, data.ByteData);
+            provider.Save(key, data.ByteData);
 
             // Update modified
-            this.fileProviderLookup[key].SetModifiedDate(key, DateTime.Now);
+            provider.SetModifiedDate(key, DateTime.Now);
 
             // Update version if desired
             if (autoIncrementVersion)
             {
-                int currentVersion = this.fileProviderLookup[key].GetVersion(key);
+                int currentVersion = provider.GetVersion(key);
                 this.SetVersion(key, currentVersion + 1);
             }
         }
@@ -114,6 +113,7 @@
         public void Delete(FileEntryKey key)
         {
             System.Diagnostics.Trace.Assert(this.fileProviderLookup.ContainsKey(key));
+
             this.fileProviderLookup[key].Delete(key);
             this.fileProviderLookup.Remove(key);
         }
@@ -156,12 +156,13 @@
 
         public IFileServiceProvider GetProvider(FileEntryKey key)
         {
-            if (!this.fileProviderLookup.ContainsKey(key))
+            IFileServiceProvider provider;
+            if (!this.fileProviderLookup.TryGetValue(key, out provider))
             {
                 throw new KeyNotFoundException(string.Format("File does not exist: {0}", key));
             }
 
-            return this.fileProviderLookup[key];
+            return provider;
         }
 
         public IList<IFileServiceProvider> GetProviders()
@@ -171,71 +172,77 @@
 
         public void SetVersion(FileEntryKey key, int version)
         {
-            if (!this.fileProviderLookup.ContainsKey(key))
+            IFileServiceProvider provider;
+            if (!this.fileProviderLookup.TryGetValue(key, out provider))
             {
                 throw new InvalidDataException(string.Format("Entry {0} does not exist", key));
             }
 
             System.Diagnostics.Trace.TraceWarning("Warning! Changing version of {0} to {1}", key, version);
-            this.fileProviderLookup[key].SetVersion(key, version);
+            provider.SetVersion(key, version);
         }
 
         public int GetVersion(FileEntryKey key)
         {
-            if (!this.fileProviderLookup.ContainsKey(key))
+            IFileServiceProvider provider;
+            if (!this.fileProviderLookup.TryGetValue(key, out provider))
             {
                 throw new InvalidDataException(string.Format("Entry {0} does not exist", key));
             }
 
-            return this.fileProviderLookup[key].GetVersion(key);
+            return provider.GetVersion(key);
         }
 
         public void SetCreateDate(FileEntryKey key, DateTime date)
         {
-            if (!this.fileProviderLookup.ContainsKey(key))
+            IFileServiceProvider provider;
+            if (!this.fileProviderLookup.TryGetValue(key, out provider))
             {
                 throw new KeyNotFoundException(string.Format("File does not exist: {0}", key));
             }
 
             System.Diagnostics.Trace.TraceWarning("Warning! Changing create date of {0} to {1}", key, date);
-            this.fileProviderLookup[key].SetCreateDate(key, date);
+            provider.SetCreateDate(key, date);
         }
 
         public DateTime GetCreateDate(FileEntryKey key)
         {
-            if (!this.fileProviderLookup.ContainsKey(key))
+            IFileServiceProvider provider;
+            if (!this.fileProviderLookup.TryGetValue(key, out provider))
             {
                 throw new KeyNotFoundException(string.Format("File does not exist: {0}", key));
             }
 
-            return this.fileProviderLookup[key].GetCreateDate(key);
+            return provider.GetCreateDate(key);
         }
 
         public void SetModifiedDate(FileEntryKey key, DateTime date)
         {
-            if (!this.fileProviderLookup.ContainsKey(key))
+            IFileServiceProvider provider;
+            if (!this.fileProviderLookup.TryGetValue(key, out provider))
             {
                 throw new KeyNotFoundException(string.Format("File does not exist: {0}", key));
             }
 
-            DateTime createDate = this.fileProviderLookup[key].GetCreateDate(key);
+            DateTime createDate = provider.GetCreateDate(key);
             if (date < createDate)
             {
                 throw new ArgumentException("Modified date has to be equal or newer than Create date");
             }
 
             System.Diagnostics.Trace.TraceWarning("Warning! Changing modified date of {0} to {1}", key, date);
-            this.fileProviderLookup[key].SetModifiedDate(key, date);
+            provider.SetModifiedDate(key, date);
         }
 
         public DateTime GetModifiedDate(FileEntryKey key)
         {
-            if (!this.fileProviderLookup.ContainsKey(key))
+            IFileServiceProvider provider;
+            if (!this.fileProviderLookup.TryGetValue(key, out provider))
             {
                 throw new KeyNotFoundException(string.Format("File does not exist: {0}", key));
             }
 
-            return this.fileProviderLookup[key].GetModifiedDate(key);
+            return provider.GetModifiedDate(key);
         }
 
         public int Cleanup()
@@ -315,7 +322,8 @@
                 foreach (FileEntryKey key in files)
                 {
                     // Check if this provider's file / version is what we are using
-                    if (this.fileProviderLookup.ContainsKey(key) && this.fileProviderLookup[key] == provider)
+                    IFileServiceProvider currentProvider;
+                    if (this.fileProviderLookup.TryGetValue(key, out currentProvider) && currentProvider == provider)
                     {
                         // If so, Mix out that file
                         this.fileProviderLookup.Remove(key);

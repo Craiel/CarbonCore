@@ -87,16 +87,17 @@
         {
             PersistentContext.Assert(context.TargetType);
 
-            if (!this.bindings.ContainsKey(context.TargetType))
+            ICarbonQuickBinding binding;
+            if (!this.bindings.TryGetValue(context.TargetType, out binding))
             {
                 throw new InvalidOperationException("Could not resolve " + context.TargetType);
             }
 
             // Check if we have an instance for this binding
-            ICarbonQuickBinding binding = this.bindings[context.TargetType];
-            if (this.bindingInstances.ContainsKey(context.TargetType) && !binding.IsAlwaysUnique)
+            object bindingInstance;
+            if (!binding.IsAlwaysUnique && this.bindingInstances.TryGetValue(context.TargetType, out bindingInstance))
             {
-                return this.bindingInstances[context.TargetType];
+                return bindingInstance;
             }
 
             if (binding.Implementation == null)
@@ -136,18 +137,19 @@
             for (var i = 0; i < parameters.Length; i++)
             {
                 ParameterInfo parameter = parameters[i];
+                object value;
 
                 // Check if it's a custom parameter
-                if (context.CustomParameters.ContainsKey(parameter.Name))
+                if (context.CustomParameters.TryGetValue(parameter.Name, out value))
                 {
-                    resolvedParameters[i] = context.CustomParameters[parameter.Name];
+                    resolvedParameters[i] = value;
                     continue;
                 }
 
                 // Check if we already have an instance for this parameter
-                if (this.bindingInstances.ContainsKey(parameter.ParameterType))
+                if (this.bindingInstances.TryGetValue(parameter.ParameterType, out value))
                 {
-                    resolvedParameters[i] = this.bindingInstances[parameter.ParameterType];
+                    resolvedParameters[i] = value;
                     continue;
                 }
 
