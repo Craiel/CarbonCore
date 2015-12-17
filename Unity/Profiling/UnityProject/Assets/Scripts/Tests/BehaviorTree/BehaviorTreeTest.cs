@@ -12,13 +12,19 @@
 
         private static readonly BehaviorTreeContext Context;
 
+        // -------------------------------------------------------------------
+        // Constructor
+        // -------------------------------------------------------------------
         static BehaviorTreeTest()
         {
             Tree = new BehaviorTree { Root = TestTrees.DefaultTestTree() };
 
             Context = new BehaviorTreeContext();
         }
-        
+
+        // -------------------------------------------------------------------
+        // Public
+        // -------------------------------------------------------------------
         public static void Run()
         {
             PrepareContext(Context);

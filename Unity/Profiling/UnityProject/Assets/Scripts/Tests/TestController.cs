@@ -20,6 +20,9 @@
         {
             this.TestSampleCount = 10;
             this.TestInterval = 1.0f;
+
+            this.DictionaryEntryCount = 100;
+            this.DictionaryLookupsPerInterval = 10;
         }
 
         // -------------------------------------------------------------------
@@ -31,9 +34,20 @@
         [SerializeField]
         public float TestInterval;
 
+        [SerializeField]
+        public int DictionaryEntryCount;
+
+        [SerializeField]
+        public int DictionaryLookupsPerInterval;
+
+        [SerializeField]
+        public bool DictionaryRandomLookup;
+        
         public bool EnableGeneralTests { get; set; }
 
         public bool EnableBehaviorTreeTests { get; set; }
+
+        public bool EnableDictionaryTests { get; set; }
 
         public override void Awake()
         {
@@ -69,6 +83,11 @@
             if (this.EnableBehaviorTreeTests)
             {
                 BehaviorTreeTest.Run();
+            }
+
+            if (this.EnableDictionaryTests)
+            {
+                DictionaryTest.Run(this.DictionaryEntryCount, this.DictionaryLookupsPerInterval, this.DictionaryRandomLookup);
             }
         }
     }
