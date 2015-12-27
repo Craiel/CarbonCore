@@ -2,7 +2,7 @@
 {
     using System.IO;
 
-    using CarbonCore.Protocol.Resource;
+    using CarbonCore.Processing.Data;
     
     public class UserInterfaceResource : ProtocolResource
     {
@@ -16,7 +16,7 @@
 
         public override void Load(Stream source)
         {
-            UserInterface entry = UserInterface.ParseFrom(source);
+            /*UserInterface entry = UserInterface.ParseFrom(source);
 
             if (entry.Version != Version)
             {
@@ -26,12 +26,15 @@
             this.CsamlData = entry.Csaml;
 
             this.Script = new ScriptResource();
-            this.Script.Load(entry.Script);
+            this.Script.Load(entry.Script);*/
         }
 
         public override long Save(Stream target)
         {
-            if (this.CsamlData == null)
+            // TODO:
+            return 0;
+
+            /*if (this.CsamlData == null)
             {
                 throw new InvalidDataException("CsamlData was empty on Save");
             }
@@ -45,7 +48,7 @@
 
             UserInterface entry = builder.Build();
             entry.WriteTo(target);
-            return entry.SerializedSize;
+            return entry.SerializedSize;*/
         }
     }
 }

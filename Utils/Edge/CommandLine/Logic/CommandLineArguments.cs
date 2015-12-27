@@ -95,7 +95,14 @@
 
             for (int i = 1; i < args.Length; i++)
             {
-                builder.Append(args[i] + " ");
+                if (args[i].Contains(" "))
+                {
+                    builder.AppendFormat("{0}{1}{0} ", '"', args[i]);
+                }
+                else
+                {
+                    builder.AppendFormat("{0} ", args[i]);
+                }
             }
 
             return this.ParseArguments(builder.ToString().TrimEnd());

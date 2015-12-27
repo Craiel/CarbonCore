@@ -1,6 +1,6 @@
 ﻿namespace CarbonCore.Processing.Resource.Model
 {
-    using CarbonCore.Protocol.Resource;
+    using CarbonCore.Processing.Data;
     using CarbonCore.Utils.Edge.DirectX;
 
     using SharpDX;
@@ -61,7 +61,7 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public ModelMaterial.Types.ModelMaterialType Type { get; set; }
+        public ModelMaterialType Type { get; set; }
 
         public string Name { get; set; }
         public string DiffuseTexture { get; set; }
@@ -78,7 +78,7 @@
         public Vector4? ColorEmission { get; set; }
         public Vector4? ColorAmbient { get; set; }
 
-        public ModelMaterial.Builder GetBuilder()
+        /*public ModelMaterial.Builder GetBuilder()
         {
             var builder = new ModelMaterial.Builder
                               {
@@ -134,7 +134,7 @@
             }
 
             return builder;
-        }
+        }*/
 
         public ModelMaterialElement Clone()
         {

@@ -4,6 +4,8 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+
+    using CarbonCore.Processing.Data;
     using CarbonCore.Processing.Resource.Stage;
     using CarbonCore.Processing.Source.Generic.Data;
     using CarbonCore.Processing.Source.Xcd.Scene;
@@ -155,7 +157,7 @@
                 color = DataConversion.ToVector3(light.Color.Data)[0];
             }
 
-            var type = (Protocol.Resource.StageLight.Types.StageLightType)Enum.Parse(typeof(Protocol.Resource.StageLight.Types.StageLightType), light.Type);
+            var type = (StageLightType)Enum.Parse(typeof(StageLightType), light.Type);
             var element = new StageLightElement
             {
                 Id = light.Id,
@@ -295,10 +297,10 @@
             var elements = new StagePropertyElement[customProperties.Properties.Length];
             for (int i = 0; i < customProperties.Properties.Length; i++)
             {
-                var type = (Protocol.Resource.StageProperty.Types.StagePropertyType)Enum.Parse(typeof(Protocol.Resource.StageProperty.Types.StagePropertyType), customProperties.Properties[i].Type);
+                var type = (StagePropertyType)Enum.Parse(typeof(StagePropertyType), customProperties.Properties[i].Type);
                 switch (type)
                 {
-                    case Protocol.Resource.StageProperty.Types.StagePropertyType.String:
+                    case StagePropertyType.String:
                         {
                             elements[i] = new StagePropertyElementString
                                               {
@@ -308,7 +310,7 @@
                             break;
                         }
 
-                    case Protocol.Resource.StageProperty.Types.StagePropertyType.Float:
+                    case StagePropertyType.Float:
                         {
                             elements[i] = new StagePropertyElementFloat
                                               {
@@ -318,7 +320,7 @@
                             break;
                         }
 
-                    case Protocol.Resource.StageProperty.Types.StagePropertyType.Int:
+                    case StagePropertyType.Int:
                         {
                             elements[i] = new StagePropertyElementInt
                                               {

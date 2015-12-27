@@ -24,7 +24,7 @@
 
         private const string VersionIndicator = ".version";
         
-        private static readonly CarbonDirectory SyncRoot = new CarbonDirectory(Assembly.GetEntryAssembly().Location);
+        private static readonly CarbonDirectory SyncRoot = new CarbonFile(Assembly.GetEntryAssembly().Location).GetDirectory();
 
         private readonly IList<string> commonSyncObjects = new List<string> { "config", "mods" };
 
@@ -113,10 +113,7 @@
             
             Profiler.TraceProfilerStatistics();
         }
-
-        // -------------------------------------------------------------------
-        // Private
-        // -------------------------------------------------------------------
+        
         private bool CheckVersion()
         {
             SyncSettings defaults = new SyncSettings();
@@ -140,11 +137,13 @@
                 return false;
             }
 
+            Trace.TraceInformation("Checking Sync Version...");
             try
             {
                 SyncSettings source = JsonExtensions.LoadFromFile<SyncSettings>(sourceVersion, false);
                 SyncSettings target = JsonExtensions.LoadFromFile<SyncSettings>(targetVersion, false);
 
+                Trace.TraceInformation(" {0} -> {1}", target.Version, source.Version);
                 return source.Version == target.Version;
             }
             catch (Exception e)

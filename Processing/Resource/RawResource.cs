@@ -2,8 +2,6 @@
 {
     using System.IO;
     
-    using Google.ProtocolBuffers;
-
     public class RawResource : ProtocolResource
     {
         // -------------------------------------------------------------------
@@ -13,16 +11,19 @@
 
         public override void Load(Stream source)
         {
-            this.Data = Protocol.Resource.Raw.ParseFrom(source).Data.ToByteArray();
+            //this.Data = Protocol.Resource.Raw.ParseFrom(source).Data.ToByteArray();
         }
 
         public override long Save(Stream target)
         {
-            var builder = new Protocol.Resource.Raw.Builder();
+            // TODO:
+            return 0;
+
+            /*var builder = new Protocol.Resource.Raw.Builder();
             builder.SetData(ByteString.CopyFrom(this.Data));
             Protocol.Resource.Raw entry = builder.Build();
             entry.WriteTo(target);
-            return entry.SerializedSize;
+            return entry.SerializedSize;*/
         }
     }
 }

@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    using CarbonCore.Protocol.Resource;
+    using CarbonCore.Processing.Data;
     using CarbonCore.Utils.Edge.DirectX;
 
     using SharpDX;
@@ -66,7 +66,7 @@
 
         public IList<StageModelElement> Children { get; set; }
 
-        public StageModel.Builder GetBuilder()
+        /*public StageModel.Builder GetBuilder()
         {
             var builder = new StageModel.Builder { Id = this.Id };
 
@@ -98,6 +98,6 @@
             }
 
             return builder;
-        }
+        }*/
     }
 }

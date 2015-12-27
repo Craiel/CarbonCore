@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.IO;
 
+    using CarbonCore.Processing.Data;
     using CarbonCore.Processing.Resource;
     using CarbonCore.Utils.Edge.DirectX;
 
@@ -19,7 +20,7 @@
         {
         }
 
-        public ModelResource(Protocol.Resource.Model data)
+        public ModelResource(Model data)
             : this()
         {
             this.DoLoad(data);
@@ -42,19 +43,23 @@
 
         public override void Load(Stream source)
         {
-            Protocol.Resource.Model entry = Protocol.Resource.Model.ParseFrom(source);
-            this.DoLoad(entry);
+            // TODO
+            /*Model entry = Model.ParseFrom(source);
+            this.DoLoad(entry);*/
         }
 
         public override long Save(Stream target)
         {
-            Protocol.Resource.Model.Builder builder = this.GetBuilder();
+            /*Protocol.Resource.Model.Builder builder = this.GetBuilder();
             Protocol.Resource.Model entry = builder.Build();
             entry.WriteTo(target);
-            return entry.SerializedSize;
+            return entry.SerializedSize;*/
+
+            // TODO
+            return 0;
         }
 
-        public Protocol.Resource.Model.Builder GetBuilder()
+        /*public Protocol.Resource.Model.Builder GetBuilder()
         {
             var builder = new Protocol.Resource.Model.Builder
                               {
@@ -80,7 +85,7 @@
             }
 
             return builder;
-        }
+        }*/
 
         public void CalculateTangents()
         {
@@ -183,7 +188,7 @@
             }
         }
 
-        private void DoLoad(Protocol.Resource.Model entry)
+        private void DoLoad(Model entry)
         {
             if (entry.Version != Version)
             {
@@ -196,7 +201,7 @@
             if (entry.ElementsCount > 0)
             {
                 this.Elements = new List<ModelResourceElement>(entry.ElementsCount);
-                foreach (Protocol.Resource.ModelElement element in entry.ElementsList)
+                foreach (ModelElement element in entry.ElementsList)
                 {
                     this.Elements.Add(new ModelResourceElement(element));
                 }
@@ -205,7 +210,7 @@
             if (entry.MaterialsCount > 0)
             {
                 this.Materials = new List<ModelMaterialElement>(entry.MaterialsCount);
-                foreach (Protocol.Resource.ModelMaterial material in entry.MaterialsList)
+                foreach (ModelMaterial material in entry.MaterialsList)
                 {
                     this.Materials.Add(new ModelMaterialElement(material));
                 }

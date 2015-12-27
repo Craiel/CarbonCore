@@ -5,19 +5,18 @@
 
     public class CommandLineGrammar : Grammar, ICommandLineGrammar
     {
-        private static readonly int[][] RangeValidIdentStart = new[]
-                                                                   {
-                                                                       new[] { 0, 33 }, new[] { 35, 37 },
-                                                                       new[] { 39, 44 }, new[] { 46, 60 },
-                                                                       new[] { 62, 123 }, new[] { 125, 65510 }
-                                                                   };
+        private static readonly int[][] RangeValidIdentStart =
+            {
+                new[] { 0, 33 }, new[] { 35, 37 }, new[] { 39, 44 },
+                new[] { 46, 60 }, new[] { 62, 123 },
+                new[] { 125, 65510 }
+            };
 
-        private static readonly int[][] RangeValidIdent = new[]
-                                                              {
-                                                                  new[] { 0, 33 }, new[] { 35, 37 },
-                                                                  new[] { 39, 44 }, new[] { 46, 60 },
-                                                                  new[] { 62, 123 }, new[] { 125, 65510 }
-                                                              };
+        private static readonly int[][] RangeValidIdent =
+            {
+                new[] { 0, 33 }, new[] { 35, 37 }, new[] { 39, 44 },
+                new[] { 46, 60 }, new[] { 62, 123 }, new[] { 125, 65510 }
+            };
 
         // -------------------------------------------------------------------
         // Public

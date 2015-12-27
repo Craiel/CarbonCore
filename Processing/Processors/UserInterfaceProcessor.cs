@@ -6,8 +6,8 @@
     using System.Text.RegularExpressions;
     using System.Xml;
 
+    using CarbonCore.Processing.Data;
     using CarbonCore.Processing.Resource;
-    using CarbonCore.Protocol.Resource;
     using CarbonCore.Utils;
     using CarbonCore.Utils.IO;
     
@@ -82,7 +82,10 @@
             var document = new XmlDocument();
             document.LoadXml(data);
             
-            var builder = new Csaml.Builder();
+            // TODO:
+            return null;
+
+            /*var builder = new Csaml.Builder();
             builder.AddRangeNodes(BuildCsamlNodes(document.ChildNodes));
 
             if (builder.NodesCount != 1 || builder.NodesList[0].Type != CsamlNode.Types.CsamlNodeType.Page)
@@ -90,12 +93,12 @@
                 throw new InvalidDataException("Csaml must have exactly one root of type page!");
             }
 
-            return builder.Build();
+            return builder.Build();*/
         }
 
         private static IEnumerable<CsamlNode> BuildCsamlNodes(XmlNodeList nodes)
         {
-            IList<CsamlNode> processedNodes = new List<CsamlNode>();
+            /*IList<CsamlNode> processedNodes = new List<CsamlNode>();
             foreach (XmlNode node in nodes)
             {
                 var builder = new CsamlNode.Builder();
@@ -160,12 +163,15 @@
                 processedNodes.Add(builder.Build());
             }
 
-            return processedNodes;
+            return processedNodes;*/
+
+            // TODO
+            return null;
         }
 
         private static IEnumerable<CsamlAttribute> BuildCsamlAttribute(XmlAttributeCollection attributes)
         {
-            IList<CsamlAttribute> processedAttributes = new List<CsamlAttribute>();
+            /*IList<CsamlAttribute> processedAttributes = new List<CsamlAttribute>();
             foreach (XmlAttribute attribute in attributes)
             {
                 var builder = new CsamlAttribute.Builder();
@@ -272,10 +278,13 @@
                 processedAttributes.Add(builder.Build());
             }
 
-            return processedAttributes;
+            return processedAttributes;*/
+
+            // TODO
+            return null;
         }
 
-        private static void SetStringValue(string source, CsamlAttribute.Builder target)
+        /*private static void SetStringValue(string source, CsamlAttribute.Builder target)
         {
             target.ValueType = CsamlAttribute.Types.CsamlAttributeValueType.String;
             target.ValueString = source;
@@ -305,7 +314,7 @@
             {
                 throw new InvalidDataException(string.Format("Format for Attribute {0} was invalid ({1}): {2}", target.Type, enumType, source), e);
             }
-        }
+        }*/
 
         private static string CsamlFieldEvaluator(Match match)
         {

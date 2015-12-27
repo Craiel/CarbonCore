@@ -2,9 +2,7 @@
 {
     using System.IO;
 
-    using CarbonCore.Protocol.Resource;
-
-    using Google.ProtocolBuffers;
+    using CarbonCore.Processing.Data;
 
     public class CompiledShaderResource : ProtocolResource
     {
@@ -23,18 +21,21 @@
                 throw new InvalidDataException("Shader version is not correct: " + shaderData.Version);
             }
 
-            this.Data = shaderData.Data.ToByteArray();
-            this.Md5 = shaderData.MD5.ToByteArray();
+            this.Data = shaderData.Data;
+            this.Md5 = shaderData.MD5;
         }
 
         public override void Load(Stream source)
         {
-            this.Load(CompiledShader.ParseFrom(source));
+            //this.Load(CompiledShader.ParseFrom(source));
         }
 
         public CompiledShader Save()
         {
-            if (this.Data == null || this.Md5 == null)
+            // TODO:
+            return null;
+
+            /*if (this.Data == null || this.Md5 == null)
             {
                 throw new InvalidDataException("Shader data was empty or invalid on Save");
             }
@@ -46,14 +47,17 @@
                 MD5 = ByteString.CopyFrom(this.Md5),
             };
 
-            return builder.Build();
+            return builder.Build();*/
         }
 
         public override long Save(Stream target)
         {
-            CompiledShader entry = this.Save();
+            // TODO:
+            return 0;
+
+            /*CompiledShader entry = this.Save();
             entry.WriteTo(target);
-            return entry.SerializedSize;
+            return entry.SerializedSize;*/
         }
     }
 }

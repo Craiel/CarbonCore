@@ -3,6 +3,8 @@
     using System.Collections.Generic;
     using System.Linq;
 
+    using CarbonCore.Processing.Data;
+
     public abstract class StageElement
     {
         public string Id { get; set; }
@@ -10,26 +12,26 @@
         public IList<bool> LayerFlags { get; set; }
         public IList<StagePropertyElement> Properties { get; set; }
 
-        protected void LoadProperties(IList<Protocol.Resource.StageProperty> propertiesList)
+        protected void LoadProperties(IList<StageProperty> propertiesList)
         {
             this.Properties = new List<StagePropertyElement>();
-            foreach (Protocol.Resource.StageProperty property in propertiesList)
+            foreach (StageProperty property in propertiesList)
             {
                 switch (property.Type)
                 {
-                    case Protocol.Resource.StageProperty.Types.StagePropertyType.String:
+                    case StagePropertyType.String:
                         {
                             this.Properties.Add(new StagePropertyElementString(property));
                             break;   
                         }
 
-                    case Protocol.Resource.StageProperty.Types.StagePropertyType.Float:
+                    case StagePropertyType.Float:
                         {
                             this.Properties.Add(new StagePropertyElementFloat(property));
                             break;
                         }
 
-                    case Protocol.Resource.StageProperty.Types.StagePropertyType.Int:
+                    case StagePropertyType.Int:
                         {
                             this.Properties.Add(new StagePropertyElementInt(property));
                             break;
@@ -54,9 +56,12 @@
             }
         }
 
-        protected IEnumerable<Protocol.Resource.StageProperty> SaveProperties()
+        protected IEnumerable<StageProperty> SaveProperties()
         {
-            return this.Properties.Select(propertyElement => propertyElement.GetBuilder().Build()).ToList();
+            // TODO:
+            return null;
+
+            //return this.Properties.Select(propertyElement => propertyElement.GetBuilder().Build()).ToList();
         }
 
         protected int SaveLayerData()

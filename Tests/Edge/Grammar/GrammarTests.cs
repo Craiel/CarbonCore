@@ -34,19 +34,19 @@
         [Test]
         public void CommandLineGrammarTests()
         {
-            const string TestLine = "-first -second -parameterFirst=Test -parameterSecond=Test2 --doubleDash --doubleDashValue:testme | PipedIntoIgnore";
+            const string TestLine = "-first -second -parameterFirst=Test -parameterSecond=Test2 --doubleDash --doubleDashValue:testme -stringparam=\"This is a long string\" | PipedIntoIgnore";
 
-            var grammer = this.container.Resolve<ICommandLineGrammar>();
+            var grammar = this.container.Resolve<ICommandLineGrammar>();
             var tokenizer = new Tokenizer();
-            IList<Token> tokens = tokenizer.Tokenize(grammer, TestLine);
+            IList<Token> tokens = tokenizer.Tokenize(grammar, TestLine);
 
-            Assert.AreEqual(18, tokens.Count, "Tokens expected to be 18");
+            Assert.AreEqual(22, tokens.Count, "Tokens expected to be 18");
 
             int identifiers = tokens.Count(x => x.Term.Type == TermType.Identifier);
             int keys = tokens.Count(x => x.Term.Type == TermType.Key);
 
-            Assert.AreEqual(9, identifiers, "Expected 9 Identifiers");
-            Assert.AreEqual(9, keys, "Expected 9 Keys");
+            Assert.AreEqual(10, identifiers, "Expected 10 Identifiers");
+            Assert.AreEqual(11, keys, "Expected 11 Keys");
         }
 
         [Test]

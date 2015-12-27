@@ -1,5 +1,6 @@
 ﻿namespace CarbonCore.Processing.Resource.Stage
 {
+    using CarbonCore.Processing.Data;
     using CarbonCore.Utils.Edge.DirectX;
 
     using SharpDX;
@@ -13,7 +14,7 @@
         {
         }
 
-        public StageCameraElement(Protocol.Resource.StageCamera data)
+        public StageCameraElement(StageCamera data)
             : this()
         {
             System.Diagnostics.Debug.Assert(data.PositionCount == 3, "Position data has invalid count");
@@ -43,7 +44,7 @@
 
         public float FieldOfView { get; set; }
 
-        public Protocol.Resource.StageCamera.Builder GetBuilder()
+        /*public Protocol.Resource.StageCamera.Builder GetBuilder()
         {
             var builder = new Protocol.Resource.StageCamera.Builder { Id = this.Id, FieldOfView = this.FieldOfView };
 
@@ -61,6 +62,6 @@
             }
 
             return builder;
-        }
+        }*/
     }
 }

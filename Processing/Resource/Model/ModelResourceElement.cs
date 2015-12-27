@@ -1,5 +1,6 @@
 ﻿namespace CarbonCore.Processing.Resource.Model
 {
+    using CarbonCore.Processing.Data;
     using CarbonCore.Utils.Edge.DirectX;
 
     using SharpDX;
@@ -15,7 +16,7 @@
         {
         }
 
-        public ModelResourceElement(Protocol.Resource.ModelElement data)
+        public ModelResourceElement(ModelElement data)
             : this()
         {
             System.Diagnostics.Debug.Assert(data.PositionCount == 3, "Position data has invalid count");
@@ -49,7 +50,7 @@
         public Vector2? Texture { get; set; }
         public Vector4? Tangent { get; set; }
 
-        public Protocol.Resource.ModelElement.Builder GetBuilder()
+        /*public Protocol.Resource.ModelElement.Builder GetBuilder()
         {
             var builder = new Protocol.Resource.ModelElement.Builder();
 
@@ -71,6 +72,6 @@
             }
 
             return builder;
-        }
+        }*/
     }
 }

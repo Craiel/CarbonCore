@@ -4,8 +4,8 @@
     using System.IO;
     using System.Linq;
 
+    using CarbonCore.Processing.Data;
     using CarbonCore.Processing.Resource;
-    using CarbonCore.Protocol.Resource;
     using CarbonCore.Utils.Edge.DirectX;
 
     using SharpDX;
@@ -43,19 +43,23 @@
 
         public override void Load(Stream source)
         {
-            ModelGroup entry = ModelGroup.ParseFrom(source);
-            this.DoLoad(entry);
+            // TODO
+            /*ModelGroup entry = ModelGroup.ParseFrom(source);
+            this.DoLoad(entry);*/
         }
 
         public override long Save(Stream target)
         {
-            ModelGroup.Builder builder = this.GetBuilder();
+            /*ModelGroup.Builder builder = this.GetBuilder();
             ModelGroup entry = builder.Build();
             entry.WriteTo(target);
-            return entry.SerializedSize;
+            return entry.SerializedSize;*/
+
+            // TODO
+            return 0;
         }
 
-        public ModelGroup.Builder GetBuilder()
+        /*public ModelGroup.Builder GetBuilder()
         {
             var builder = new ModelGroup.Builder
                               {
@@ -95,7 +99,7 @@
             }
             
             return builder;
-        }
+        }*/
         
         // -------------------------------------------------------------------
         // Private
@@ -139,7 +143,7 @@
                 this.Transformations = new List<Matrix>(entry.TransformationsCount);
                 foreach (StoredMatrix storedMatrix in entry.TransformationsList)
                 {
-                    this.Transformations.Add(new Matrix(storedMatrix.DataList.ToArray()));
+                    this.Transformations.Add(new Matrix(storedMatrix.ToArray()));
                 }
             }
         }

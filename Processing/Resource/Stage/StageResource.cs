@@ -20,7 +20,7 @@
 
         public override void Load(Stream source)
         {
-            Protocol.Resource.Stage entry = Protocol.Resource.Stage.ParseFrom(source);
+            /*Protocol.Resource.Stage entry = Protocol.Resource.Stage.ParseFrom(source);
 
             if (entry.Version != Version)
             {
@@ -61,12 +61,15 @@
                 {
                     this.Models.Add(new StageModelElement(modelEntry));
                 }
-            }
+            }*/
         }
 
         public override long Save(Stream target)
         {
-            var builder = new Protocol.Resource.Stage.Builder { Version = Version };
+            //TODO:
+            return 0;
+
+            /*var builder = new Protocol.Resource.Stage.Builder { Version = Version };
             if (this.Cameras != null)
             {
                 foreach (StageCameraElement camera in this.Cameras)
@@ -101,7 +104,7 @@
 
             Protocol.Resource.Stage entry = builder.Build();
             entry.WriteTo(target);
-            return entry.SerializedSize;
+            return entry.SerializedSize;*/
         }
     }
 }

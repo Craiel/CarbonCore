@@ -1,5 +1,6 @@
 ﻿namespace CarbonCore.Processing.Resource.Stage
 {
+    using CarbonCore.Processing.Data;
     using CarbonCore.Utils.Edge.DirectX;
 
     using SharpDX;
@@ -13,7 +14,7 @@
         {
         }
 
-        public StageLightElement(Protocol.Resource.StageLight data)
+        public StageLightElement(StageLight data)
             : this()
         {
             this.Id = data.Id;
@@ -57,7 +58,7 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public Protocol.Resource.StageLight.Types.StageLightType Type { get; set; }
+        public StageLightType Type { get; set; }
 
         public Vector3? Location { get; set; }
         public Vector3? Direction { get; set; }
@@ -69,7 +70,7 @@
         public float SpotSize { get; set; }
         public float Angle { get; set; }
 
-        public Protocol.Resource.StageLight.Builder GetBuilder()
+        /*public Protocol.Resource.StageLight.Builder GetBuilder()
         {
             var builder = new Protocol.Resource.StageLight.Builder
                               {
@@ -108,6 +109,6 @@
             }
 
             return builder;
-        }
+        }*/
     }
 }

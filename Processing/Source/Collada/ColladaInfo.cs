@@ -4,11 +4,11 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
 
+    using CarbonCore.Processing.Data;
     using CarbonCore.Processing.Resource.Model;
     using CarbonCore.Processing.Source.Collada.Effect;
     using CarbonCore.Processing.Source.Collada.General;
     using CarbonCore.Processing.Source.Collada.Geometry;
-    using CarbonCore.Protocol.Resource;
     using CarbonCore.Utils.IO;
 
     public struct ColladaMeshInfo
@@ -113,7 +113,7 @@
         // -------------------------------------------------------------------
         private static void LoadEffectFromBlinn(EffectBlinn blinn, ref ModelMaterialElement target)
         {
-            target.Type = ModelMaterial.Types.ModelMaterialType.Blinn;
+            target.Type = ModelMaterialType.Blinn;
 
             target.Shinyness = blinn.Shininess.Float.Value;
             target.Refraction = blinn.IndexOfRefraction.Float.Value;
@@ -261,7 +261,7 @@
 
         private void LoadEffectFromPhong(EffectPhong phong, ref ModelMaterialElement target)
         {
-            target.Type = ModelMaterial.Types.ModelMaterialType.Blinn;
+            target.Type = ModelMaterialType.Blinn;
 
             if (phong.Shininess != null)
             {

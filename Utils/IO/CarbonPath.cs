@@ -7,6 +7,8 @@
     
     public abstract class CarbonPath
     {
+        public const char PathEscapeCharacter = '"';
+
         public static readonly string DirectorySeparator = System.IO.Path.DirectorySeparatorChar.ToString(CultureInfo.InvariantCulture);
         public static readonly string DirectorySeparatorAlternative = System.IO.Path.AltDirectorySeparatorChar.ToString(CultureInfo.InvariantCulture);
 
@@ -163,6 +165,12 @@
                 }
                 else
                 {
+                    // Check if the path is escaped, if so remove the escape
+                    if (this.path[0] == PathEscapeCharacter && this.path[this.path.Length - 1] == PathEscapeCharacter)
+                    {
+                        this.path = value.Trim(PathEscapeCharacter);
+                    }
+
                     this.IsRelative = !System.IO.Path.IsPathRooted(this.path);
                 }
             }
