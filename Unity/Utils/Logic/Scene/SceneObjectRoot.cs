@@ -10,10 +10,6 @@
 
     public class SceneObjectRoot
     {
-        private readonly IList<GameObject> children;
-
-        private readonly IDictionary<GameObject, float> childRegistrationTime;
-
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
@@ -23,9 +19,6 @@
             this.GameObject.transform.SetParent(parent.GameObject.transform);
 
             this.Persistent = persistent;
-
-            this.children = new List<GameObject>();
-            this.childRegistrationTime = new Dictionary<GameObject, float>();
         }
 
         public SceneObjectRoot(SceneObjectContainer parent, string name, bool persistent = false)
@@ -39,14 +32,6 @@
         public event Action OnDestroying;
         public event Action OnDestroyed;
 
-        public int ChildCount
-        {
-            get
-            {
-                return this.children.Count;
-            }
-        }
-
         public GameObject GameObject { get; private set; }
 
         public bool Persistent { get; set; }
@@ -58,8 +43,11 @@
                 this.OnDestroying();
             }
 
-            Object.Destroy(this.GameObject);
-            this.GameObject = null;
+            if (this.GameObject != null)
+            {
+                Object.Destroy(this.GameObject);
+                this.GameObject = null;
+            }
 
             if (this.OnDestroyed != null)
             {
@@ -70,40 +58,11 @@
         public void AddChild(GameObject entry, bool worldPositionStays = false)
         {
             entry.transform.SetParent(this.GameObject.transform, worldPositionStays);
-
-            if (!this.children.Contains(entry))
-            {
-                this.children.Add(entry);
-                this.childRegistrationTime.Add(entry, Time.time);
-            }
         }
 
         public void RemoveChild(GameObject entry)
         {
-            this.children.Remove(entry);
-            this.childRegistrationTime.Remove(entry);
-
             entry.transform.SetParent(null);
-        }
-
-        public float GetAge(GameObject entry)
-        {
-            return Time.time - this.childRegistrationTime[entry];
-        }
-
-        [SuppressMessage("ReSharper", "ExpressionIsAlwaysNull")]
-        public void Cleanup()
-        {
-            foreach (GameObject gameObject in new List<GameObject>(this.children))
-            {
-                if (gameObject != null)
-                {
-                    continue;
-                }
-
-                this.children.Remove(gameObject);
-                this.childRegistrationTime.Remove(gameObject);
-            }
         }
     }
 }

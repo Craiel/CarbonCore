@@ -47,27 +47,15 @@
         {
             foreach (string key in new List<string>(this.rootEntries.Keys))
             {
-                if (this.rootEntries[key].Persistent && !clearPersistentObjects)
+                SceneObjectRoot root = this.rootEntries[key];
+                if (root.Persistent && !clearPersistentObjects)
                 {
                     continue;
                 }
 
-                this.rootEntries[key].Destroy();
-                this.rootEntries.Remove(key);
-            }
-        }
+                root.Destroy();
 
-        public void Cleanup()
-        {
-            foreach (string key in new List<string>(this.rootEntries.Keys))
-            {
-                if (this.rootEntries[key].GameObject == null)
-                {
-                    this.rootEntries.Remove(key);
-                    continue;
-                }
-                
-                this.rootEntries[key].Cleanup();
+                rootEntries.Remove(key);
             }
         }
 
@@ -76,13 +64,13 @@
             string key = name.ToLowerInvariant();
 
             SceneObjectRoot root;
-            if (this.rootEntries.TryGetValue(key, out root))
+            if (!rootEntries.TryGetValue(key, out root) ||
+                root.GameObject == null)
             {
-                return root;
+                root = new SceneObjectRoot(this, name);
+                this.rootEntries[key] = root;
             }
 
-            root = new SceneObjectRoot(this, name);
-            this.rootEntries.Add(key, root);
             return root;
         }
 

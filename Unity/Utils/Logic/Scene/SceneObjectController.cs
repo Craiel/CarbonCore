@@ -57,10 +57,6 @@
             if (this.rootContainer == null)
             {
                 this.rootContainer = new SceneObjectContainer(null, RootName);
-
-                // Attach the cleanup script
-                var cleanup = this.rootContainer.GameObject.AddComponent<SceneObjectCleanup>();
-                cleanup.OnCleanup += this.OnCleanup;
             }
         }
         
@@ -71,14 +67,6 @@
             if (!this.containers.ContainsKey(category))
             {
                 this.containers[category] = new SceneObjectContainer(this.rootContainer, category.ToString(CultureInfo.InvariantCulture));
-            }
-        }
-
-        private void OnCleanup()
-        {
-            foreach (SceneObjectContainer container in this.containers.Values)
-            {
-                container.Cleanup();
             }
         }
     }
