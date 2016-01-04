@@ -88,6 +88,7 @@
     </Compile>
     <Compile Include="Setup.cs" />
     <Compile Include="TestUtils.cs" />
+    <Compile Include="Threading\SynchronizationBufferTests.cs" />
     <Compile Include="Utils\CarbonPathTests.cs" />
     <Compile Include="Utils\DiagnosticTests.cs" />
     <Compile Include="Utils\EngineThreadTests.cs" />
