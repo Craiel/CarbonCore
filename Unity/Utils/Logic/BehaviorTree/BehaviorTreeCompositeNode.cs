@@ -65,6 +65,12 @@
         // -------------------------------------------------------------------
         private BehaviorTreeStatus ProcessChildren(BehaviorTreeContext context)
         {
+            if (this.Children == null)
+            {
+                // No children, just succeed
+                return BehaviorTreeStatus.Succeeded;
+            }
+
             // the default status depends on the mode we are trying to go for
             BehaviorTreeStatus resultStatus = this.Mode == BehaviorTreeCompositeMode.Selector
                                                   ? BehaviorTreeStatus.Failed
@@ -84,6 +90,12 @@
 
         private BehaviorTreeStatus ProcessChildrenRandom(BehaviorTreeContext context)
         {
+            if (this.Children == null)
+            {
+                // No children, just succeed
+                return BehaviorTreeStatus.Succeeded;
+            }
+
             // the default status depends on the mode we are trying to go for
             BehaviorTreeStatus resultStatus = this.Mode == BehaviorTreeCompositeMode.Selector
                                                   ? BehaviorTreeStatus.Failed
