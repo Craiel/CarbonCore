@@ -227,7 +227,7 @@
                 return this.path;
             }
 
-            return other.GetUri(UriKind.Absolute).MakeRelativeUri(this.GetUri(UriKind.Absolute)).OriginalString;
+            return Uri.UnescapeDataString(other.GetUri(UriKind.Absolute).MakeRelativeUri(this.GetUri(UriKind.Absolute)).OriginalString);
         }
 
         protected string GetAbsolutePath(CarbonPath other)
@@ -237,7 +237,7 @@
                 return this.path;
             }
 
-            return new Uri(other.GetUri(UriKind.Absolute), this.path).AbsolutePath;
+            return Uri.UnescapeDataString(new Uri(other.GetUri(UriKind.Absolute), this.path).AbsolutePath);
         }
 
         protected string TrimStart(params string[] values)
