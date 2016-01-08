@@ -147,11 +147,7 @@
             // Command count first
             if (this.LatestCommand - this.CurrentCommand >= this.CommitCommandThreshold)
             {
-                if (UnityConstants.EnableVerboseLogging)
-                {
-                    Diagnostic.Info(this.GetType().Name + " Commit, Reason: Pending Commands");
-                }
-
+                // Commit, Reason: Pending Commands
                 return true;
             }
 
@@ -167,11 +163,7 @@
 
             if (elapsedFrames > this.CommitFrameMaxThreshold)
             {
-                if (UnityConstants.EnableVerboseLogging)
-                {
-                    Diagnostic.Info(this.GetType().Name + " Commit, Reason: Frame Time");
-                }
-
+                // Commit, Reason: Frame Time
                 return true;
             }
 
