@@ -151,7 +151,6 @@
     <Compile Include="Logic\Resource\BundleLoadRequest.cs" />
     <Compile Include="Logic\Resource\BundleProvider.cs" />
     <Compile Include="Logic\Resource\ResourceLoadInfo.cs" />
-    <Compile Include="Logic\Resource\ResourceLoader.cs" />
     <Compile Include="Logic\Resource\ResourceStreamRequest.cs" />
     <Compile Include="Logic\Resource\ResourceLoadRequest.cs" />
     <Compile Include="Logic\Resource\ResourceRequestPool.cs" />

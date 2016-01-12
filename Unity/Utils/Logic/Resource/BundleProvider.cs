@@ -77,8 +77,6 @@
             {
                 this.bundles.Add(key, bundle);
             }
-
-            ResourceLoader.RegisterBundle(key, bundle);
         }
 
         public void RegisterLazyBundle(BundleKey key, CarbonFile file)
@@ -90,6 +88,29 @@
             }
 
             this.DoRegisterBundle(key, file);
+        }
+
+        public void UnregisterBundle(BundleKey key)
+        {
+            if (!this.bundles.ContainsKey(key))
+            {
+                // Bundle is not registered
+                return;
+            }
+
+            this.bundles.Remove(key);
+            this.bundleFiles.Remove(key);
+        }
+
+        public AssetBundle GetBundle(BundleKey key)
+        {
+            AssetBundle result;
+            if (this.bundles.TryGetValue(key, out result))
+            {
+                return result;
+            }
+
+            return null;
         }
 
         public IDictionary<BundleKey, long> GetHistory()
@@ -201,7 +222,6 @@
                 this.history.Add(key, metric.Total);
             }
 
-            ResourceLoader.RegisterBundle(key, bundle);
             if (this.BundleLoaded != null)
             {
                 this.BundleLoaded(key, metric.Total);

@@ -10,6 +10,8 @@
     using CarbonCore.Utils.Unity.Logic;
     using CarbonCore.Utils.Unity.Logic.Enums;
 
+    using UnityEngine;
+
     public delegate void OnResourceLoadingDelegate(ResourceLoadInfo info);
     public delegate void OnResourceLoadedDelegate(ResourceLoadInfo info, long loadTime);
 
@@ -87,6 +89,25 @@
             return Instance.AcquireResource<T>(resources.First()).Data;
         }
 
+        public static UnityEngine.Object LoadImmediate(ResourceKey key)
+        {
+            if (key.Bundle != null)
+            {
+                AssetBundle bundle = BundleProvider.Instance.GetBundle(key.Bundle.Value);
+
+                return bundle.LoadAsset(key.Path, key.Type ?? typeof(UnityEngine.Object));
+            }
+
+            return Resources.Load(key.Path, key.Type ?? typeof(UnityEngine.Object));
+        }
+
+        // Note: Use this only when we can not do an async loading, avoid if possible
+        public static T LoadImmediate<T>(ResourceKey key)
+            where T : UnityEngine.Object
+        {
+            return LoadImmediate(key) as T;
+        }
+
         public IList<ResourceKey> AcquireResourcesByType<T>()
         {
             return this.resourceMap.GetKeysByType<T>();
@@ -105,9 +126,13 @@
             this.resourceMap.RegisterResource(key, resource);
         }
 
-        public void RegisterResource(ResourceKey key, ResourceLoadFlags flags = ResourceLoadFlags.None)
+        public void RegisterResource(ResourceKey key, ResourceLoadFlags flags = ResourceLoadFlags.Cache)
         {
-            this.resourceMap.RegisterResource(key);
+            if ((flags & ResourceLoadFlags.Cache) != 0)
+            {
+                // Cache the resource in the map
+                this.resourceMap.RegisterResource(key);
+            }
 
             lock (this.currentPendingLoads)
             {
@@ -125,7 +150,7 @@
             this.resourceMap.UnregisterResource(key);
         }
 
-        public ResourceReference<T> AcquireOrLoadResource<T>(ResourceKey key, ResourceLoadFlags flags = ResourceLoadFlags.None)
+        public ResourceReference<T> AcquireOrLoadResource<T>(ResourceKey key, ResourceLoadFlags flags = ResourceLoadFlags.Cache)
             where T : UnityEngine.Object
         {
             UnityEngine.Object data = this.resourceMap.GetData(key);
@@ -233,7 +258,7 @@
                     this.ResourceLoading(info);
                 }
 
-                this.requestPool.AddRequest(ResourceLoader.Load(info));
+                this.requestPool.AddRequest(DoLoad(info));
             }
 
             this.CleanupPendingInstantiations();
@@ -266,6 +291,22 @@
         // -------------------------------------------------------------------
         // Private
         // -------------------------------------------------------------------
+        private static ResourceLoadRequest DoLoad(ResourceLoadInfo info)
+        {
+            if (info.Key.Bundle != null)
+            {
+                AssetBundle bundle = BundleProvider.Instance.GetBundle(info.Key.Bundle.Value);
+
+                AssetBundleRequest request = bundle.LoadAssetAsync(info.Key.Path, info.Key.Type);
+                return new ResourceLoadRequest(info, request);
+            }
+            else
+            {
+                ResourceRequest request = Resources.LoadAsync(info.Key.Path, info.Key.Type);
+                return new ResourceLoadRequest(info, request);
+            }
+        }
+
         private ResourceReference<T> BuildReference<T>(ResourceKey key, UnityEngine.Object data)
             where T : UnityEngine.Object
         {
@@ -288,7 +329,7 @@
             }
 
             MetricTime resourceTime = Diagnostic.BeginTimeMeasure();
-            UnityEngine.Object result = ResourceLoader.LoadImmediate(info.Key);
+            UnityEngine.Object result = LoadImmediate(info.Key);
             Diagnostic.TakeTimeMeasure(resourceTime);
 
             this.FinalizeLoadResource(info, result, resourceTime);

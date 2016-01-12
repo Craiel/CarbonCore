@@ -62,9 +62,13 @@
             return this.history;
         }
 
-        public void RegisterResource(ResourceKey key, ResourceLoadFlags flags = ResourceLoadFlags.None)
+        public void RegisterResource(ResourceKey key, ResourceLoadFlags flags = ResourceLoadFlags.Cache)
         {
-            this.resourceMap.RegisterResource(key);
+            if ((flags & ResourceLoadFlags.Cache) != 0)
+            {
+                // Cache the resource in the map
+                this.resourceMap.RegisterResource(key);
+            }
 
             lock (this.currentPendingLoads)
             {
@@ -77,7 +81,7 @@
             this.resourceMap.UnregisterResource(key);
         }
 
-        public byte[] AcquireOrLoadResource(ResourceKey key, ResourceLoadFlags flags = ResourceLoadFlags.None)
+        public byte[] AcquireOrLoadResource(ResourceKey key, ResourceLoadFlags flags = ResourceLoadFlags.Cache)
         {
             byte[] data = this.resourceMap.GetData(key);
             if (data == null)
