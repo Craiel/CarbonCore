@@ -183,7 +183,7 @@
 
         public CarbonDirectory GetParent()
         {
-            string trimmedPath = this.TrimEnd(DirectorySeparator, DirectorySeparatorAlternative);
+            string trimmedPath = this.TrimEnd(DirectorySeparator, DirectorySeparatorAlternative, DirectorySeparatorUnity);
             var info = new DirectoryInfo(trimmedPath);
             if (info.Parent != null)
             {

@@ -11,9 +11,9 @@
 
         public static readonly string DirectorySeparator = System.IO.Path.DirectorySeparatorChar.ToString(CultureInfo.InvariantCulture);
         public static readonly string DirectorySeparatorAlternative = System.IO.Path.AltDirectorySeparatorChar.ToString(CultureInfo.InvariantCulture);
+        public static readonly string DirectorySeparatorUnity = "/";
 
-        //public static readonly string DirectorySeparatorOptionalRegexSegment = string.Format(@"[\{0}\{1}]*", DirectorySeparator, DirectorySeparatorAlternative);
-        public static readonly string DirectorySeparatorMandatoryRegexSegment = string.Format(@"[\{0}\{1}]+", DirectorySeparator, DirectorySeparatorAlternative);
+        public static readonly string DirectorySeparatorMandatoryRegexSegment = string.Format(@"[\{0}\{1}\{2}]+", DirectorySeparator, DirectorySeparatorAlternative, DirectorySeparatorUnity);
         public static readonly string DirectoryRegex = string.Concat(string.Format("(^|{0})", DirectorySeparatorMandatoryRegexSegment), "{0}", DirectorySeparatorMandatoryRegexSegment);
         
         private string path;
@@ -41,7 +41,9 @@
         {
             get
             {
-                return this.path.EndsWith(DirectorySeparator) || this.path.EndsWith(DirectorySeparatorAlternative);
+                return this.path.EndsWith(DirectorySeparator) 
+                    || this.path.EndsWith(DirectorySeparatorAlternative)
+                    || this.path.EndsWith(DirectorySeparatorUnity);
             }
         }
 
@@ -144,6 +146,51 @@
             return this.path;
         }
 
+        public string GetPathUsingDefaultSeparator()
+        {
+            return this.path.Replace(DirectorySeparatorAlternative, DirectorySeparator)
+                .Replace(DirectorySeparatorUnity, DirectorySeparator);
+        }
+
+        public string GetPathUsingAlternativeSeparator()
+        {
+            return this.path.Replace(DirectorySeparator, DirectorySeparatorAlternative)
+                .Replace(DirectorySeparatorUnity, DirectorySeparatorAlternative);
+        }
+
+        public string GetUnityPath()
+        {
+            return this.path.Replace(DirectorySeparator, DirectorySeparatorUnity)
+                .Replace(DirectorySeparatorAlternative, DirectorySeparatorUnity)
+                .TrimEnd(DirectorySeparatorUnity.ToCharArray());
+        }
+
+        public bool Contains(CarbonPath other, bool ignoreCase = false)
+        {
+            string uniformLocal = this.GetPathUsingDefaultSeparator();
+            string uniformOther = other.GetPathUsingDefaultSeparator();
+
+            if (ignoreCase)
+            {
+                return uniformLocal.ToLowerInvariant().Contains(uniformOther.ToLowerInvariant());
+            }
+
+            return uniformLocal.Contains(uniformOther);
+        }
+
+        public bool EndsWith(CarbonPath other, bool ignoreCase = false)
+        {
+            string uniformLocal = this.GetPathUsingDefaultSeparator();
+            string uniformOther = other.GetPathUsingDefaultSeparator();
+
+            if (ignoreCase)
+            {
+                return uniformLocal.EndsWith(uniformOther, StringComparison.OrdinalIgnoreCase);
+            }
+
+            return uniformLocal.EndsWith(uniformOther);
+        }
+
         // -------------------------------------------------------------------
         // Protected
         // -------------------------------------------------------------------
@@ -216,8 +263,10 @@
         {
             return first.EndsWith(DirectorySeparator) 
                 || first.EndsWith(DirectorySeparatorAlternative)
+                || first.EndsWith(DirectorySeparatorUnity)
                 || second.StartsWith(DirectorySeparator)
-                || second.StartsWith(DirectorySeparatorAlternative);
+                || second.StartsWith(DirectorySeparatorAlternative)
+                || second.StartsWith(DirectorySeparatorUnity);
         }
 
         protected string GetRelativePath(CarbonPath other)
