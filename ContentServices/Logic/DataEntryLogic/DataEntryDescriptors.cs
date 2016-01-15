@@ -86,12 +86,15 @@
         {
             lock (Descriptors)
             {
-                if (!Descriptors.ContainsKey(type))
+                DataEntryDescriptor entry;
+                if (Descriptors.TryGetValue(type, out entry))
                 {
-                    Descriptors.Add(type, new DataEntryDescriptor(type));
+                    return entry;
                 }
 
-                return Descriptors[type];
+                entry = new DataEntryDescriptor(type);
+                Descriptors.Add(type, entry);
+                return entry;
             }
         }
         

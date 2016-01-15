@@ -18,8 +18,6 @@
         {
             base.Initialize();
 
-            UnityDebugTraceListener.Setup();
-
             JsonExtensions.RegisterGlobalConverter<Vector3, Vector3ConverterSmall>();
             JsonExtensions.RegisterGlobalConverter<Quaternion, QuaternionConverterSmall>();
             JsonExtensions.RegisterGlobalConverter<Color, ColorConverter>();
@@ -32,9 +30,14 @@
             ResourceStreamProvider.InstantiateAndInitialize();
         }
 
-        public void InitializeLog<T>()
+        public void InitializeLog<T>(bool useDefaultTraceListener = false)
             where T : ILog
         {
+            if (useDefaultTraceListener)
+            {
+                UnityDebugTraceListener.Setup();
+            }
+
             Diagnostic.SetInstance(new CarbonDiagnostics<T, MetricProvider>());
 
             Diagnostic.UnregisterThread();
