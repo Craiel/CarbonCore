@@ -39,6 +39,14 @@
             return null;
         }
 
+        public void Clear()
+        {
+            lock (this.commands)
+            {
+                this.Trim(this.LatestId + 1);
+            }
+        }
+
         public long GetPlaybackCount(long startId)
         {
             long id = startId;

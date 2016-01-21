@@ -205,6 +205,7 @@
 
         public void Reset()
         {
+            this.commandQueue.Clear();
             this.CommandErrors = 0;
         }
 
