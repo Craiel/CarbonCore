@@ -31,6 +31,8 @@
         private readonly ResourceRequestPool<ResourceLoadRequest> requestPool;
         
         private readonly IDictionary<ResourceKey, long> history;
+
+        private readonly IDictionary<Type, ResourceKey> fallbackResources;
         
         // -------------------------------------------------------------------
         // Constructor
@@ -46,6 +48,8 @@
             this.requestPool = new ResourceRequestPool<ResourceLoadRequest>(DefaultRequestPoolSize);
             
             this.history = new Dictionary<ResourceKey, long>();
+
+            this.fallbackResources = new Dictionary<Type, ResourceKey>();
         }
 
         // -------------------------------------------------------------------
@@ -145,6 +149,18 @@
             }
         }
 
+        public void RegisterFallbackResource(ResourceKey key, ResourceLoadFlags flags = ResourceLoadFlags.Cache)
+        {
+            if (this.fallbackResources.ContainsKey(key.Type))
+            {
+                Diagnostic.Warning("Duplicate fallback resource registered for type {0}", key.Type);
+                return;
+            }
+
+            this.RegisterResource(key, flags);
+            this.fallbackResources.Add(key.Type, key);
+        }
+
         public void UnregisterResource(ResourceKey key)
         {
             this.resourceMap.UnregisterResource(key);
@@ -179,8 +195,12 @@
             UnityEngine.Object data = this.resourceMap.GetData(key);
             if (data == null)
             {
-                Diagnostic.Error("Resource was not loaded or registered: {0}", key);
-                return null;
+                data = this.AcquireFallbackResource<T>();
+                if (data == null)
+                {
+                    Diagnostic.Error("Resource was not loaded or registered: {0}", key);
+                    return null;
+                }
             }
 
             return this.BuildReference<T>(key, data);
@@ -379,11 +399,11 @@
                 }
             }
 
-            if ((info.Flags & ResourceLoadFlags.Instantiate) != 0 && data is UnityEngine.GameObject)
+            if ((info.Flags & ResourceLoadFlags.Instantiate) != 0 && data is GameObject)
             {
                 try
                 {
-                    var instance = UnityEngine.Object.Instantiate(data) as UnityEngine.GameObject;
+                    var instance = UnityEngine.Object.Instantiate(data) as GameObject;
                     this.pendingInstantiations.Add(instance);
                 }
                 catch (Exception e)
@@ -409,6 +429,17 @@
             }
 
             this.pendingInstantiations.Clear();
+        }
+
+        private UnityEngine.Object AcquireFallbackResource<T>()
+        {
+            ResourceKey fallbackKey;
+            if (this.fallbackResources.TryGetValue(typeof(T), out fallbackKey))
+            {
+                return this.resourceMap.GetData(fallbackKey);
+            }
+
+            return null;
         }
     }
 }
