@@ -2,6 +2,7 @@
 namespace CarbonCore.Utils.Unity.Logic.Scene
 {
     using System;
+    using System.Collections.Generic;
 
     using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.Unity.Contracts;
@@ -12,6 +13,8 @@ namespace CarbonCore.Utils.Unity.Logic.Scene
 
     public abstract class BaseScene : IScene
     {
+        private readonly IDictionary<string, AsyncOperation> additiveLoadLevelOperations;
+
         private AsyncOperation loadLevelOperation;
 
         // -------------------------------------------------------------------
@@ -21,7 +24,10 @@ namespace CarbonCore.Utils.Unity.Logic.Scene
         {
             this.Name = name;
             this.LevelName = levelName;
+            this.AdditiveLevelNames = new List<string>();
             this.UseAsyncLoading = true;
+
+            this.additiveLoadLevelOperations = new Dictionary<string, AsyncOperation>();
         }
 
         // -------------------------------------------------------------------
@@ -30,6 +36,8 @@ namespace CarbonCore.Utils.Unity.Logic.Scene
         public string Name { get; private set; }
 
         public string LevelName { get; private set; }
+
+        public IList<string> AdditiveLevelNames { get; private set; } 
 
         public bool HadErrors { get; private set; }
         
@@ -247,6 +255,26 @@ namespace CarbonCore.Utils.Unity.Logic.Scene
             if (!this.loadLevelOperation.isDone)
             {
                 return true;
+            }
+
+            foreach (string additiveLevelName in this.AdditiveLevelNames)
+            {
+                AsyncOperation operation;
+                if (this.additiveLoadLevelOperations.TryGetValue(additiveLevelName, out operation))
+                {
+                    if (!operation.isDone)
+                    {
+                        // At least one additive is still loading
+                        return true;
+                    }
+                }
+                else
+                {
+                    // Start the next additive async load
+                    operation = Application.LoadLevelAdditiveAsync(additiveLevelName);
+                    this.additiveLoadLevelOperations.Add(additiveLevelName, operation);
+                    return true;
+                }
             }
 
             return false;
