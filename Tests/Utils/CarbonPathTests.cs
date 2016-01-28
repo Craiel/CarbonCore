@@ -40,7 +40,11 @@
             CarbonDirectory absolute = current.ToAbsolute<CarbonDirectory>();
             freeSpace = absolute.GetFreeSpace();
             Assert.Greater(freeSpace, 0, "GetFreeSpace must return non-zero value for absolute paths");
+        }
 
+        [Test]
+        public void ParentTests()
+        {
             CarbonDirectory parentTest = new CarbonDirectory(@"FirstPath//SamePath\\SamePath//SamePath\\Something_SamePath//EndPath");
             int iterations = 0;
             while (parentTest != null)
@@ -56,6 +60,10 @@
             }
 
             Assert.AreEqual(5, iterations, "GetParent should have succeeded 5 times, got " + iterations);
+
+            parentTest = new CarbonDirectory(@"D:\Directory (5)\With spaces and (brackets)\");
+            var relative = parentTest.ToRelative<CarbonDirectory>(parentTest.GetParent());
+            Assert.NotNull(relative);
         }
 
         [Test]
