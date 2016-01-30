@@ -187,7 +187,7 @@
             var info = new DirectoryInfo(trimmedPath);
             if (info.Parent != null)
             {
-                var subDirRegex = new Regex(string.Format(DirectoryRegex, info.Parent.Name));
+                var subDirRegex = new Regex(string.Format(DirectoryRegex, Regex.Escape(info.Parent.Name)));
                 MatchCollection matches = subDirRegex.Matches(trimmedPath);
                 if (matches.Count <= 0)
                 {
