@@ -14,7 +14,7 @@
         private readonly IDictionary<string, IList<ResourceKey>> keyLookup;
         private readonly IDictionary<Type, IList<ResourceKey>> typeLookup;
 
-        private readonly IList<ResourceKey> resources;
+        private readonly HashSet<ResourceKey> resources;
 
         // -------------------------------------------------------------------
         // Constructor
@@ -24,7 +24,7 @@
             this.data = new Dictionary<ResourceKey, T>();
             this.keyLookup = new Dictionary<string, IList<ResourceKey>>();
             this.typeLookup = new Dictionary<Type, IList<ResourceKey>>();
-            this.resources = new List<ResourceKey>();
+            this.resources = new HashSet<ResourceKey>();
         }
 
         // -------------------------------------------------------------------
@@ -52,25 +52,26 @@
 
             // Register the string lookup
             string lookupKey = key.Path.Substring(0, KeyLookupLength).ToLowerInvariant();
-            if (!this.keyLookup.ContainsKey(lookupKey))
+            IList<ResourceKey> keyList;
+            if (!this.keyLookup.TryGetValue(lookupKey, out keyList))
             {
-                this.keyLookup.Add(lookupKey, new List<ResourceKey>());
+                keyList = new List<ResourceKey>();
+                this.keyLookup.Add(lookupKey, keyList);
             }
 
-            this.keyLookup[lookupKey].Add(key);
+            keyList.Add(key);
 
             // Register the type lookup
-            if (!this.typeLookup.ContainsKey(key.Type))
+            IList<ResourceKey> typeList;
+            if (!this.typeLookup.TryGetValue(key.Type, out typeList))
             {
-                this.typeLookup.Add(key.Type, new List<ResourceKey>());
+                typeList = new List<ResourceKey>();
+                this.typeLookup.Add(key.Type, typeList);
             }
 
-            this.typeLookup[key.Type].Add(key);
+            typeList.Add(key);
 
-            if (resourceData != null)
-            {
-                this.SetData(key, resourceData);
-            }
+            this.data.Add(key, resourceData);
         }
 
         public void UnregisterResource(ResourceKey key)
@@ -109,13 +110,13 @@
 
         public void SetData(ResourceKey key, T resourceData)
         {
-            if (this.data.ContainsKey(key))
+            if (this.resources.Contains(key))
             {
                 this.data[key] = resourceData;
             }
             else
             {
-                this.data.Add(key, resourceData);
+                this.RegisterResource(key, resourceData);
             }
         }
     }

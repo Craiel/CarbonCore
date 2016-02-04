@@ -28,6 +28,7 @@
             RegisterSerializer<float>(FloatSerializer.Instance);
             RegisterSerializer<double>(DoubleSerializer.Instance);
             RegisterSerializer<string>(StringSerializer.Instance);
+            RegisterSerializer<bool[]>(BooleanArraySerializer.Instance);
             RegisterSerializer<byte[]>(ByteArraySerializer.Instance);
             RegisterSerializer<float[]>(FloatArraySerializer.Instance);
             RegisterSerializer<double[]>(DoubleArraySerializer.Instance);
@@ -73,7 +74,7 @@
             {
                 return GetGenericCompactSerializer(type);
             }
-
+            
             throw new InvalidOperationException("Could not determine serializer for type " + type);
         }
 
