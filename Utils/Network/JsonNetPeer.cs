@@ -5,7 +5,7 @@
     
     using CarbonCore.Utils.Contracts.Network;
     using CarbonCore.Utils.Network.Package;
-
+    
     public class JsonNetPeer : IJsonNetPeer
     {
         private readonly IDictionary<int, Type> packageDictionary;

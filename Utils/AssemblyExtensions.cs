@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Reflection;
 
+    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.IO;
 
     public static class AssemblyExtensions
@@ -48,7 +49,7 @@
             Assembly[] assemblies = domain.GetAssemblies();
             if (assemblies.Length <= 0)
             {
-                System.Diagnostics.Trace.TraceWarning("Could not locate any assemblies in domain {0}", domain);
+                Diagnostic.Warning("Could not locate any assemblies in domain {0}", domain);
                 return null;
             }
 
@@ -127,11 +128,11 @@
             {
                 if (stream == null)
                 {
-                    System.Diagnostics.Trace.TraceError("Could not Open Resource Stream: {0}", resourcePath);
+                    Diagnostic.Error("Could not Open Resource Stream: {0}", resourcePath);
                     return null;
                 }
 
-                System.Diagnostics.Trace.Assert(stream != null);
+                Diagnostic.Assert(stream != null);
                 var data = new byte[stream.Length];
                 stream.Read(data, 0, data.Length);
                 return data;
@@ -145,7 +146,7 @@
             string[] resources = assembly.GetManifestResourceNames();
             if (resources.Length <= 0)
             {
-                System.Diagnostics.Trace.TraceWarning("No resource to load for {0}", assembly);
+                Diagnostic.Warning("No resource to load for {0}", assembly);
                 return null;
             }
 
@@ -176,7 +177,7 @@
         public static IList<CarbonFile> ExtractResources(this Assembly assembly, CarbonDirectory target, string path = null, bool replace = true)
         {
             CarbonDirectory location = assembly.GetDirectory();
-            System.Diagnostics.Trace.Assert(location.Exists);
+            Diagnostic.Assert(location.Exists);
 
 
             target.Create();

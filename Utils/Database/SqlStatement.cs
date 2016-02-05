@@ -8,6 +8,7 @@
     using System.Text;
 
     using CarbonCore.Utils.Contracts;
+    using CarbonCore.Utils.Diagnostics;
 
     public class SqlStatement : ISqlStatement
     {
@@ -59,7 +60,7 @@
 
         public static void PrepareCommand(IDbCommand command, IList<SqlStatement> statements)
         {
-            System.Diagnostics.Trace.Assert(statements.Count > 0);
+            Diagnostic.Assert(statements.Count > 0);
 
             var builder = new StringBuilder();
 
@@ -96,7 +97,7 @@
 
         public static void FinalizeCommand(IDbCommand command, IList<SqlStatement> statements)
         {
-            System.Diagnostics.Trace.Assert(statements.Count > 0);
+            Diagnostic.Assert(statements.Count > 0);
 
             var commandAppendix = new StringBuilder();
             foreach (SqlStatement statement in statements)
@@ -128,7 +129,7 @@
 
         public ISqlStatement What(string name, string properties = null)
         {
-            System.Diagnostics.Trace.Assert(!this.what.Contains(name));
+            Diagnostic.Assert(!this.what.Contains(name));
 
             this.what.Add(name);
             if (!string.IsNullOrEmpty(properties))
@@ -153,7 +154,7 @@
 
         public ISqlStatement With(string name, object value, string properties = null)
         {
-            System.Diagnostics.Trace.Assert(!this.values.ContainsKey(name));
+            Diagnostic.Assert(!this.values.ContainsKey(name));
 
             this.values.Add(name, value);
             if (!string.IsNullOrEmpty(properties))
@@ -338,7 +339,7 @@
         private string BuildDrop()
         {
             string tableName = this.GetFullTableName();
-            System.Diagnostics.Trace.Assert(!string.IsNullOrEmpty(tableName));
+            Diagnostic.Assert(!string.IsNullOrEmpty(tableName));
 
             return string.Format("DROP TABLE {0}", tableName);
         }
@@ -346,7 +347,7 @@
         private string BuildCreate()
         {
             string tableName = this.GetFullTableName();
-            System.Diagnostics.Trace.Assert(!string.IsNullOrEmpty(tableName));
+            Diagnostic.Assert(!string.IsNullOrEmpty(tableName));
 
             var builder = new StringBuilder();
             builder.AppendFormat("CREATE TABLE {0}", tableName);
@@ -354,7 +355,7 @@
             IList<string> whatSegments = new List<string>();
             foreach (string name in this.what)
             {
-                System.Diagnostics.Trace.Assert(this.whatProperties.ContainsKey(name));
+                Diagnostic.Assert(this.whatProperties.ContainsKey(name));
 
                 whatSegments.Add(string.Format("{0} {1}", name, this.whatProperties[name]));
             }
@@ -366,7 +367,7 @@
         private string BuildDelete(string suffix)
         {
             string tableName = this.GetFullTableName();
-            System.Diagnostics.Trace.Assert(!string.IsNullOrEmpty(tableName));
+            Diagnostic.Assert(!string.IsNullOrEmpty(tableName));
 
             var builder = new StringBuilder();
             builder.AppendFormat("DELETE FROM {0}", tableName);
@@ -398,7 +399,7 @@
         private string BuildInsert(string suffix)
         {
             string tableName = this.GetFullTableName();
-            System.Diagnostics.Trace.Assert(!string.IsNullOrEmpty(tableName));
+            Diagnostic.Assert(!string.IsNullOrEmpty(tableName));
 
             var builder = new StringBuilder();
             builder.AppendFormat("INSERT INTO {0}", tableName);
@@ -430,8 +431,8 @@
         private string BuildUpdate(string suffix)
         {
             string tableName = this.GetFullTableName();
-            System.Diagnostics.Trace.Assert(!string.IsNullOrEmpty(tableName));
-            System.Diagnostics.Trace.Assert(this.where.Count > 0);
+            Diagnostic.Assert(!string.IsNullOrEmpty(tableName));
+            Diagnostic.Assert(this.where.Count > 0);
 
             var builder = new StringBuilder();
             builder.AppendFormat("UPDATE {0}", tableName);
@@ -451,7 +452,7 @@
 
         private string BuildUse()
         {
-            System.Diagnostics.Trace.Assert(this.what.Count == 1, "Need to specify target for Use statement!");
+            Diagnostic.Assert(this.what.Count == 1, "Need to specify target for Use statement!");
 
             return string.Format("USE [{0}]", this.what[0]);
         }

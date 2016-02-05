@@ -34,6 +34,7 @@
     <DefineConstants>TRACE;DEBUG;UNITY; UNITY_5</DefineConstants>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>..\..\CarbonCore.ruleset</CodeAnalysisRuleSet>
+    <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnityRelease|AnyCPU'">
     <Optimize>true</Optimize>

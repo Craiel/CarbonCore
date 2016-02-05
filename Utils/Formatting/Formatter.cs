@@ -7,6 +7,7 @@
     using System.Threading;
 
     using CarbonCore.Utils.Contracts;
+    using CarbonCore.Utils.Diagnostics;
 
     // Formats a string using a dictionary approach
     public class Formatter : IFormatter
@@ -121,7 +122,7 @@
                 return ((FormatHandler)handlerValue).Evaluate(parameter);
             }
 
-            System.Diagnostics.Trace.TraceError("Unknown Handler ({0}) for GetFormatted Value of {1}", handlerType, key);
+            Diagnostic.Error("Unknown Handler ({0}) for GetFormatted Value of {1}", handlerType, key);
             return string.Empty;
         }
 

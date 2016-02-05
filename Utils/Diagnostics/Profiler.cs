@@ -54,7 +54,7 @@
             IList<ProfileStatistics> bla = new List<ProfileStatistics>(statistics).OrderBy(x => x.Name).ToList();
             foreach (ProfileStatistics statistic in bla)
             {
-                System.Diagnostics.Trace.TraceInformation(
+                Diagnostic.Info(
                     "Region Statistic - {0}: Count {1}, Total Time {2}, Average {3:f2}ms",
                     statistic.Name, 
                     statistic.Count, 

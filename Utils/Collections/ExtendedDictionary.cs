@@ -4,6 +4,7 @@
     using System.Collections.Generic;
 
     using CarbonCore.Utils.Contracts;
+    using CarbonCore.Utils.Diagnostics;
 
     public class ExtendedDictionary<T, TN> : IExtendedDictionary<T, TN>
     {
@@ -106,7 +107,7 @@
 
         public IEnumerator<KeyValuePair<TN, T>> GetReverseEnumerator()
         {
-            System.Diagnostics.Trace.Assert(this.innerReverse != null);
+            Diagnostic.Assert(this.innerReverse != null);
 
             return this.innerReverse.GetEnumerator();
         }
@@ -127,7 +128,7 @@
 
         public void Add(KeyValuePair<TN, T> item)
         {
-            System.Diagnostics.Trace.Assert(this.innerReverse != null);
+            Diagnostic.Assert(this.innerReverse != null);
 
             this.innerReverse.Add(item);
             this.inner.Add(item.Value, item.Key);
@@ -149,7 +150,7 @@
 
         public bool Contains(KeyValuePair<TN, T> item)
         {
-            System.Diagnostics.Trace.Assert(this.innerReverse != null);
+            Diagnostic.Assert(this.innerReverse != null);
 
             return this.innerReverse.Contains(item);
         }
@@ -161,7 +162,7 @@
 
         public void CopyTo(KeyValuePair<TN, T>[] array, int arrayIndex)
         {
-            System.Diagnostics.Trace.Assert(this.innerReverse != null);
+            Diagnostic.Assert(this.innerReverse != null);
 
             this.innerReverse.CopyTo(array, arrayIndex);
         }
@@ -181,7 +182,7 @@
 
         public bool Remove(KeyValuePair<TN, T> item)
         {
-            System.Diagnostics.Trace.Assert(this.innerReverse != null);
+            Diagnostic.Assert(this.innerReverse != null);
 
             if (!this.inner.Remove(item.Value))
             {
@@ -198,7 +199,7 @@
 
         public bool ContainsValue(TN value)
         {
-            System.Diagnostics.Trace.Assert(this.innerReverse != null);
+            Diagnostic.Assert(this.innerReverse != null);
 
             return this.innerReverse.ContainsKey(value);
         }
@@ -232,7 +233,7 @@
 
         public bool TryGetKey(TN value, out T key)
         {
-            System.Diagnostics.Trace.Assert(this.innerReverse != null);
+            Diagnostic.Assert(this.innerReverse != null);
 
             return this.innerReverse.TryGetValue(value, out key);
         }
