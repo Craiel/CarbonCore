@@ -10,7 +10,7 @@ namespace CarbonCore.Utils.Contracts
 
         void LogException(Exception exception);
 
-        void Assert(bool condition, string message);
+        void Assert(bool condition, string message, params object[] args);
 
         void Warning(string message, params object[] args);
 

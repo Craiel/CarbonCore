@@ -10,6 +10,7 @@
 
     using CarbonCore.ToolFramework.Annotations;
     using CarbonCore.ToolFramework.Windows.Contracts.ViewModels;
+    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.Edge.WPF;
 
     public abstract class BaseViewModel : IBaseViewModel
@@ -26,7 +27,7 @@
 
         public void Initialize()
         {
-            System.Diagnostics.Trace.Assert(
+            Diagnostic.Assert(
                 !this.IsInitialized,
                 string.Format("ViewModel {0} was already initialized", this.GetType()));
 
@@ -57,7 +58,7 @@
 
         protected void NotifyPropertyChangedExplicit(string propertyName)
         {
-            System.Diagnostics.Trace.Assert(!string.IsNullOrEmpty(propertyName), "Explicit notify must have value, call All instead!");
+            Diagnostic.Assert(!string.IsNullOrEmpty(propertyName), "Explicit notify must have value, call All instead!");
 
             if (this.PropertyChanged == null)
             {
@@ -187,7 +188,7 @@
 #if DEBUG
             System.Diagnostics.Debug.Assert(info != null, "Property missing", "Property {0} does not exist on {1}", this.GetType(), propertyName);
 #else
-            System.Diagnostics.Trace.TraceWarning("PropertyChanged on {0} with invalid property {1}", this.GetType(), propertyName);
+            Diagnostic.Warning("PropertyChanged on {0} with invalid property {1}", this.GetType(), propertyName);
 #endif
         }
     }

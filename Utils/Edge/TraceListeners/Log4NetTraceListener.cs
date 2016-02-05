@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Utils.Edge.Diagnostic.TraceListeners
+﻿namespace CarbonCore.Utils.Edge.TraceListeners
 {
     using System.Diagnostics;
     

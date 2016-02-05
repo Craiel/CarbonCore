@@ -4,7 +4,7 @@
     using System.Globalization;
     using System.Security.Cryptography;
     using System.Text;
-
+    
     public enum HashFileNameMethod
     {
         SHA1,
@@ -86,7 +86,7 @@
 
                 default:
                     {
-                        return Diagnostic.Internal.NotImplemented<HashFileName>();
+                        throw new NotImplementedException();
                     }
             }
         }

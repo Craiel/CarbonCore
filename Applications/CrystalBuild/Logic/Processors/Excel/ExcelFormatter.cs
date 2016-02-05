@@ -5,6 +5,7 @@
 
     using CarbonCore.Applications.CrystalBuild.Contracts.Processors;
     using CarbonCore.Processing.Processors.Excel;
+    using CarbonCore.Utils.Diagnostics;
 
     public abstract class ExcelFormatter : IExcelFormatter
     {
@@ -55,7 +56,7 @@
                 ExcelDataSheet sheet = data.Sheets[i];
                 if (sheet.Data == null || sheet.Data.Count <= 0)
                 {
-                    System.Diagnostics.Trace.TraceWarning(
+                    Diagnostic.Warning(
                         "Invalid or empty Excel Sheet Data in {0}.{1}",
                         data.FileName,
                         sheet.Name);
@@ -70,7 +71,7 @@
                 {
                     if (sheet.Columns == null || sheet.Columns.Count <= 0)
                     {
-                        System.Diagnostics.Trace.TraceWarning(
+                        Diagnostic.Warning(
                             "Invalid or empty columns for Sheet Data in {0}.{1}",
                             data.FileName,
                             sheet.Name);

@@ -85,7 +85,7 @@
             {
                 if (filter.Directory.IsNull || !filter.Directory.Exists)
                 {
-                    System.Diagnostics.Trace.TraceWarning("Specified directory is invalid: {0}", filter.Directory);
+                    Diagnostic.Warning("Specified directory is invalid: {0}", filter.Directory);
                     continue;
                 }
 
@@ -119,7 +119,7 @@
             {
                 if (filter.Directory.IsNull || !filter.Directory.Exists)
                 {
-                    System.Diagnostics.Trace.TraceWarning("Specified directory is invalid: {0}", filter.Directory);
+                    Diagnostic.Warning("Specified directory is invalid: {0}", filter.Directory);
                     continue;
                 }
 
@@ -148,7 +148,7 @@
 
         public static IList<CarbonDirectory> ReRootDirectories(CarbonDirectory root, IEnumerable<CarbonDirectory> directories)
         {
-            System.Diagnostics.Trace.Assert(root != null && !root.IsNull, "Re-root requires valid root directory");
+            Diagnostic.Assert(root != null && !root.IsNull, "Re-root requires valid root directory");
 
             IList<CarbonDirectory> results = new List<CarbonDirectory>();
             foreach (CarbonDirectory directory in directories)

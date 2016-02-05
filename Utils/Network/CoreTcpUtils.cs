@@ -4,6 +4,7 @@
     using System.Net.Sockets;
 
     using CarbonCore.Utils.Contracts.Network;
+    using CarbonCore.Utils.Diagnostics;
 
     public static class CoreTcpUtils
     {
@@ -79,15 +80,15 @@
                         if (instruction.TimeOut != null && instruction.LastReadTime + instruction.TimeOut > DateTime.Now.Ticks)
                         {
                             instruction.Data.State = TcpDataState.TimedOut;
-                            System.Diagnostics.Trace.TraceWarning("BaseTcpPeer Timed out: {0}", instruction.Client.EndPoint);
+                            Diagnostic.WarningUnmanaged("BaseTcpPeer Timed out: {0}", instruction.Client.EndPoint);
                         }
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
                 instruction.Data.State = TcpDataState.Disconnected;
-                System.Diagnostics.Trace.TraceWarning("BaseTcpPeer Disconnected: {0}", instruction.Client.EndPoint);
+                Diagnostic.WarningUnmanaged("BaseTcpPeer Disconnected {0}: {1}", instruction.Client.EndPoint, e);
             }
 
             instruction.Callback(instruction.Data);
@@ -138,7 +139,7 @@
             catch
             {
                 instruction.Data.State = TcpDataState.Disconnected;
-                System.Diagnostics.Trace.TraceWarning("BaseTcpPeer Disconnected: {0}", instruction.Client.EndPoint);
+                Diagnostic.WarningUnmanaged("BaseTcpPeer Disconnected: {0}", instruction.Client.EndPoint);
             }
 
             instruction.Callback(instruction.Data);

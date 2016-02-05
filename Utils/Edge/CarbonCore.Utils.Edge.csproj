@@ -60,9 +60,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyExtensions.cs" />
-    <Compile Include="Diagnostic\Internal.cs" />
-    <Compile Include="Diagnostic\TraceListeners\EventTraceListener.cs" />
-    <Compile Include="Diagnostic\TraceListeners\Log4NetTraceListener.cs" />
+    <Compile Include="TraceListeners\EventTraceListener.cs" />
+    <Compile Include="TraceListeners\Log4NetTraceListener.cs" />
     <Compile Include="HashFileName.cs" />
     <Compile Include="IoC\CarbonContainerAutofac.cs" />
     <Compile Include="IoC\CarbonContainerAutofacBuilder.cs" />

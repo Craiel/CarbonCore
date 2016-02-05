@@ -9,6 +9,7 @@
     using CarbonCore.Processing.Data;
     using CarbonCore.Processing.Resource;
     using CarbonCore.Utils;
+    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.IO;
     
     public struct UserInterfaceProcessingOptions
@@ -320,7 +321,7 @@
         {
             if (match.Captures.Count <= 0 || match.Groups.Count < 2)
             {
-                System.Diagnostics.Trace.TraceWarning("Could not evaluate Resource, no capture data");
+                Diagnostic.Warning("Could not evaluate Resource, no capture data");
                 return "ERROR";
             }
 
@@ -332,7 +333,7 @@
                     {
                         if (string.IsNullOrEmpty(fieldValue))
                         {
-                            System.Diagnostics.Trace.TraceWarning("Argument missing in resource Field");
+                            Diagnostic.Warning("Argument missing in resource Field");
                             return "ERROR";
                         }
 
@@ -340,7 +341,7 @@
                     }
             }
 
-            System.Diagnostics.Trace.TraceWarning("Unknown Field in Script: " + match.Captures[0].Value);
+            Diagnostic.Warning("Unknown Field in Script: " + match.Captures[0].Value);
             return "ERROR";
         }
     }

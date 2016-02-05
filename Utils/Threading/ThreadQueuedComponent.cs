@@ -4,6 +4,7 @@
     using System.Collections.Generic;
 
     using CarbonCore.Utils.Contracts;
+    using CarbonCore.Utils.Diagnostics;
 
     public abstract class ThreadQueuedComponent : IThreadQueueComponent
     {
@@ -94,17 +95,17 @@
 
             if (error > 0)
             {
-                System.Diagnostics.Trace.TraceError("{0} operations in {0} had errors!", error, this.GetType());
+                Diagnostic.Error("{0} operations in {0} had errors!", error, this.GetType());
             }
 
             if (slowError > 0)
             {
-                System.Diagnostics.Trace.TraceError("{0} operations in {0} took longer then expected!", slowError, this.GetType());
+                Diagnostic.Error("{0} operations in {0} took longer then expected!", slowError, this.GetType());
             }
 
             if (slowWarning > 0)
             {
-                System.Diagnostics.Trace.TraceError("Operation in {0} took more than 2 seconds to complete", slowWarning, this.GetType());
+                Diagnostic.Error("Operation in {0} took more than 2 seconds to complete", slowWarning, this.GetType());
             }
         }
     }

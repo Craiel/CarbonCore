@@ -113,7 +113,7 @@
 
         public T Load<T>(object key, bool loadFull = false) where T : IDatabaseEntry
         {
-            System.Diagnostics.Trace.Assert(key != null, "Single load must have key supplied");
+            Diagnostic.Assert(key != null, "Single load must have key supplied");
 
             DatabaseEntryDescriptor descriptor = DatabaseEntryDescriptor.GetDescriptor<T>();
             this.CheckTable(descriptor);
@@ -122,7 +122,7 @@
 
             if (results == null || results.Count <= 0)
             {
-                System.Diagnostics.Trace.TraceWarning("Load<T> returned no result for key {0} on {1}", key, descriptor.Type);
+                Diagnostic.Warning("Load<T> returned no result for key {0} on {1}", key, descriptor.Type);
                 return default(T);
             }
 
@@ -140,7 +140,7 @@
         
         public void Delete<T>(object key, bool async = false) where T : IDatabaseEntry
         {
-            System.Diagnostics.Trace.Assert(key != null, "Delete needs values, Drop table if you want to clear!");
+            Diagnostic.Assert(key != null, "Delete needs values, Drop table if you want to clear!");
 
             DatabaseEntryDescriptor descriptor = DatabaseEntryDescriptor.GetDescriptor<T>();
             this.CheckTable(descriptor);
@@ -352,7 +352,7 @@
 
             if (needRecreate)
             {
-                System.Diagnostics.Trace.TraceWarning("Table {0} needs to be re-created", tableName);
+                Diagnostic.Warning("Table {0} needs to be re-created", tableName);
 
                 SqlLiteDatabaseServiceAction action = this.CreateTable(descriptor);
                 this.ProcessPendingWrites(action);
@@ -363,7 +363,7 @@
 
         private SQLiteStatement BuildInsertStatement(DatabaseEntryDescriptor descriptor, IDatabaseEntry entry)
         {
-            System.Diagnostics.Trace.Assert(descriptor.PrimaryKey.Attribute.PrimaryKeyMode == PrimaryKeyMode.Autoincrement, "Primary key needs to be supplied unless AutoIncrement");
+            Diagnostic.Assert(descriptor.PrimaryKey.Attribute.PrimaryKeyMode == PrimaryKeyMode.Autoincrement, "Primary key needs to be supplied unless AutoIncrement");
 
             // Insert if we have no primary key and auto increment
             var statement = new SQLiteStatement(SqlStatementType.Insert);
@@ -383,7 +383,7 @@
             if (descriptor.PrimaryKey.Attribute.PrimaryKeyMode != PrimaryKeyMode.Autoincrement)
             {
                 // Assigning so we have to check if the entry exists, this is not optimal!
-                System.Diagnostics.Trace.TraceWarning("Performing looking for exist check on {0}", descriptor.Type);
+                Diagnostic.Warning("Performing looking for exist check on {0}", descriptor.Type);
                 bool needUpdate = this.DoCount(descriptor, new List<object> { primaryKeyValue }) == 1;
                 statement = needUpdate ? new SQLiteStatement(SqlStatementType.Update) : new SQLiteStatement(SqlStatementType.Insert);
             }
@@ -435,7 +435,7 @@
             foreach (DatabaseEntryJoinedElementDescriptor joinedElement in descriptor.JoinedElements)
             {
                 DatabaseEntryDescriptor joinedDescriptor = DatabaseEntryDescriptor.GetDescriptor(joinedElement.InternalType);
-                System.Diagnostics.Trace.Assert(joinedDescriptor != null, "Joined entry must have a valid Database Descriptor");
+                Diagnostic.Assert(joinedDescriptor != null, "Joined entry must have a valid Database Descriptor");
 
                 // Make sure to check the joined table, it may not be created yet
                 this.CheckTable(joinedDescriptor);
@@ -473,7 +473,7 @@
                 }
                 else
                 {
-                    System.Diagnostics.Trace.Assert(keys.Count < 1000, "More than a thousand entries might not be giving the proper result!");
+                    Diagnostic.Assert(keys.Count < 1000, "More than a thousand entries might not be giving the proper result!");
 
                     target.WhereConstraint(new SqlStatementConstraint(descriptor.PrimaryKey.Name, keys));
                 }
@@ -547,13 +547,13 @@
             }
 
             // Make sure we don't attempt this with more than a thousand for now
-            System.Diagnostics.Trace.Assert(primaryKeyMap.Count > 0, "Load full does not support more than a thousand entries right now, got " + results.Count);
+            Diagnostic.Assert(primaryKeyMap.Count > 0, "Load full does not support more than a thousand entries right now, got " + results.Count);
 
             // Process the joined properties
             foreach (DatabaseEntryJoinedElementDescriptor joinedElement in descriptor.JoinedElements)
             {
                 DatabaseEntryDescriptor joinedDescriptor = DatabaseEntryDescriptor.GetDescriptor(joinedElement.InternalType);
-                System.Diagnostics.Trace.Assert(joinedDescriptor != null, "Joined entry must have a valid Database Descriptor");
+                Diagnostic.Assert(joinedDescriptor != null, "Joined entry must have a valid Database Descriptor");
 
                 // Make sure to check the joined table, it may not be created yet
                 this.CheckTable(joinedDescriptor);
@@ -578,13 +578,13 @@
 
                 // Fetch the actual instances
                 IList<IDatabaseEntry> joinedEntries = this.DoLoad(joinedDescriptor, joinedPrimaryKeys, true);
-                System.Diagnostics.Trace.Assert(joinedEntries.Count == joinedPrimaryKeys.Count);
+                Diagnostic.Assert(joinedEntries.Count == joinedPrimaryKeys.Count);
 
                 // Set the classes to the loaded instances
                 foreach (IDatabaseEntry joinedEntry in joinedEntries)
                 {
                     object primaryKey = joinedElement.ForeignKeyProperty.GetValue(joinedEntry);
-                    System.Diagnostics.Trace.Assert(primaryKeyMap.ContainsKey(primaryKey));
+                    Diagnostic.Assert(primaryKeyMap.ContainsKey(primaryKey));
 
                     joinedElement.SetValue(primaryKeyMap[primaryKey], joinedEntry);
                 }
@@ -607,7 +607,7 @@
 
         private IEnumerable<object[]> DoLoadFields(DatabaseEntryDescriptor descriptor, IEnumerable<KeyValuePair<string, IList<object>>> whereConstraints, params string[] fieldNames)
         {
-            System.Diagnostics.Trace.Assert(fieldNames != null && fieldNames.Length > 0);
+            Diagnostic.Assert(fieldNames != null && fieldNames.Length > 0);
 
             var statement = new SQLiteStatement(SqlStatementType.Select);
             statement.Table(descriptor.TableName);
@@ -692,7 +692,7 @@
                 }
 
                 this.nextPrimaryKeyLookup[descriptor.TableName]++;
-                System.Diagnostics.Trace.TraceInformation(
+                Diagnostic.Info(
                     "Handing out primary key {0} for {1}",
                     this.nextPrimaryKeyLookup[descriptor.TableName],
                     descriptor.TableName);
@@ -721,6 +721,7 @@
 
         private void WriterThreadMain()
         {
+            Diagnostic.RegisterThread("SqlLite Writer");
             while (this.writerThreadActive || this.pendingActions.Count > 0)
             {
                 if (this.pendingActions.Count <= 0)
@@ -767,13 +768,15 @@
                     this.pendingActions.Dequeue();
                 }
             }
+
+            Diagnostic.UnregisterThread();
         }
 
         private void CommitAction(SqlLiteDatabaseServiceAction action)
         {
             try
             {
-                System.Diagnostics.Trace.TraceInformation("Executing: {0}", action.Statement);
+                Diagnostic.Info("Executing: {0}", action.Statement);
                 using (var profileRegion = new ProfileRegion("DBWrite") { Discard = true })
                 {
                     using (DbCommand command = this.connector.CreateCommand(action.Statement))

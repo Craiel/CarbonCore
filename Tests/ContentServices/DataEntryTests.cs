@@ -254,7 +254,7 @@
                 Diagnostic.TraceMeasure(metric, "DataEntry.JsonSerialization");
             }
 
-            System.Diagnostics.Trace.TraceInformation("JSON Serialized {0} data, average: {1}", totalData, totalData / cycles);
+            Diagnostic.Info("JSON Serialized {0} data, average: {1}", totalData, totalData / cycles);
 
             GC.Collect();
 
@@ -275,7 +275,7 @@
                 Diagnostic.TraceMeasure(metric, "DataEntry.CompactSerialization");
             }
 
-            System.Diagnostics.Trace.TraceInformation("Compact Serialized {0} data, average: {1}", totalData, totalData / cycles);
+            Diagnostic.Info("Compact Serialized {0} data, average: {1}", totalData, totalData / cycles);
 
             GC.Collect();
 
@@ -298,7 +298,7 @@
                 Diagnostic.TraceMeasure(metric, "DataEntry.SyncSerialization");
             }
 
-            System.Diagnostics.Trace.TraceInformation("Sync Serialized {0} data, average: {1}", totalData, totalData / cycles);
+            Diagnostic.Info("Sync Serialized {0} data, average: {1}", totalData, totalData / cycles);
 
             Profiler.TraceProfilerStatistics();
         }

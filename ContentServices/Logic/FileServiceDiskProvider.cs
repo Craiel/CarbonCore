@@ -7,6 +7,7 @@
     using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.Data;
     using CarbonCore.Utils.Contracts.IoC;
+    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.IO;
 
     public class FileServiceDiskProvider : FileServiceProvider, IFileServiceDiskProvider
@@ -87,7 +88,7 @@
             IList<FileEntry> entries = this.databaseService.Load<FileEntry>();
             foreach (FileEntry entry in entries)
             {
-                System.Diagnostics.Trace.Assert(!string.IsNullOrEmpty(entry.Hash));
+                Diagnostic.Assert(!string.IsNullOrEmpty(entry.Hash));
 
                 this.files.Add(new FileEntryKey(entry.Hash), entry);
             }
@@ -137,7 +138,7 @@
             }
 
             CarbonFile file = this.root.ToFile(key.Hash);
-            System.Diagnostics.Trace.Assert(file.Exists, "Entry to delete is not in the provider!");
+            Diagnostic.Assert(file.Exists, "Entry to delete is not in the provider!");
 
             // First mark the file as deleted in the table
             entry.IsDeleted = true;
@@ -172,14 +173,14 @@
             // Wait to have pending writes flushed before loading
             this.databaseService.WaitForAsyncActions();
 
-            System.Diagnostics.Trace.Assert(this.files.ContainsKey(key));
+            Diagnostic.Assert(this.files.ContainsKey(key));
 
             return this.files[key];
         }
 
         protected override void SaveEntry(FileEntryKey key, FileEntry entry)
         {
-            System.Diagnostics.Trace.Assert(this.files.ContainsKey(key));
+            Diagnostic.Assert(this.files.ContainsKey(key));
 
             if (this.files.ContainsKey(key))
             {

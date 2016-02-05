@@ -3,6 +3,7 @@
     using System.Collections.Generic;
 
     using CarbonCore.Processing.Processors.Excel;
+    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.IO;
 
     using CrystalBuild.Contracts.Processors;
@@ -34,7 +35,7 @@
         {
             if (!this.formatterTargetLookup.ContainsKey(this.Context.TargetPlatform))
             {
-                System.Diagnostics.Trace.TraceWarning("No Excel Formatter for target Platform {0}", this.Context.TargetPlatform);
+                Diagnostic.Warning("No Excel Formatter for target Platform {0}", this.Context.TargetPlatform);
                 return;
             }
 

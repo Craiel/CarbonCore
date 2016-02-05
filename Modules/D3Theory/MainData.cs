@@ -5,6 +5,7 @@
 
     using CarbonCore.Modules.D3Theory.Contracts;
     using CarbonCore.Modules.D3Theory.Data;
+    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.IO;
     using CarbonCore.Utils.Json;
 
@@ -49,7 +50,7 @@
                 }
             }
 
-            System.Diagnostics.Trace.TraceWarning("Could not load data from {0}, using defaults!", path);
+            Diagnostic.Warning("Could not load data from {0}, using defaults!", path);
             this.LoadFromDefaults();
         }
 
@@ -102,7 +103,7 @@
                 }
                 catch (Exception e)
                 {
-                    System.Diagnostics.Trace.TraceError("Could not load class definition from {0}: {1}", file, e);
+                    Diagnostic.Error("Could not load class definition from {0}: {1}", file, e);
                     return false;
                 }
             }

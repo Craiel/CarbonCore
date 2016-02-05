@@ -7,6 +7,8 @@
 
     using CarbonCore.Utils.Contracts.IoC;
     using CarbonCore.Utils.Contracts.Network;
+    using CarbonCore.Utils.Diagnostics;
+    using CarbonCore.Utils.Threading;
 
     public class CoreTcpServer : ICoreTcpServer
     {
@@ -104,7 +106,7 @@
                 this.ServerStarted();
             }
         }
-
+        
         public void Stop()
         {
             System.Diagnostics.Trace.Assert(this.acceptThread != null && this.acceptThread.IsAlive, "Can not stop server, was not started");
@@ -186,7 +188,7 @@
                 var baseTcpClient = this.CreateClient();
                 baseTcpClient.SetClient(client);
 
-                System.Diagnostics.Trace.TraceInformation("Client connected: {0}", client.Client.RemoteEndPoint);
+                Diagnostic.InfoUnmanaged("Client connected: {0}", client.Client.RemoteEndPoint);
 
                 if (this.ClientConnected != null)
                 {

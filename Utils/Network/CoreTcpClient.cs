@@ -5,6 +5,7 @@
     using System.Net.Sockets;
 
     using CarbonCore.Utils.Contracts.Network;
+    using CarbonCore.Utils.Diagnostics;
 
     public class CoreTcpClient : ICoreTcpClient
     {
@@ -66,7 +67,7 @@
 
         public NetworkStream GetStream()
         {
-            System.Diagnostics.Trace.Assert(this.IsConnected);
+            Diagnostic.AssertUnmanaged(this.IsConnected);
 
             if (this.client == null || !this.client.Connected)
             {
@@ -78,7 +79,7 @@
 
         public void Close()
         {
-            System.Diagnostics.Trace.Assert(this.IsConnected);
+            Diagnostic.Assert(this.IsConnected);
 
             this.client.Close();
         }
@@ -102,7 +103,7 @@
                 throw new ArgumentException("Can not send null or empty data");
             }
 
-            System.Diagnostics.Trace.Assert(this.IsConnected);
+            Diagnostic.AssertUnmanaged(this.IsConnected);
 
             CoreTcpUtils.InitiateClientWrite(this, data, this.OnSendCompleted);
         }

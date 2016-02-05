@@ -9,6 +9,7 @@
     
     using CarbonCore.ContentServices.Contracts;
     using CarbonCore.Utils.Contracts;
+    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.IO;
 
     public class SqlLiteConnector : ISqlLiteConnector
@@ -51,19 +52,19 @@
 
         public void SetFile(CarbonFile newFile)
         {
-            System.Diagnostics.Trace.Assert(this.connection == null, "SetFile must be called while disconnected!");
+            Diagnostic.Assert(this.connection == null, "SetFile must be called while disconnected!");
 
             this.file = newFile;
         }
 
         public bool Connect()
         {
-            System.Diagnostics.Trace.Assert(this.connection == null);
+            Diagnostic.Assert(this.connection == null);
 
             this.connection = this.factory.CreateConnection() as SQLiteConnection;
             if (this.connection == null)
             {
-                System.Diagnostics.Trace.TraceError("Could not create connection");
+                Diagnostic.Error("Could not create connection");
                 return false;
             }
             
@@ -84,12 +85,12 @@
 
         public DbCommand CreateCommand(ISqlStatement statement)
         {
-            System.Diagnostics.Trace.Assert(this.connection != null);
+            Diagnostic.Assert(this.connection != null);
 
             DbCommand command = this.connection.CreateCommand();
             if (statement != null)
             {
-                System.Diagnostics.Trace.TraceInformation("SQLite: {0}", statement);
+                Diagnostic.Info("SQLite: {0}", statement);
                 statement.IntoCommand(command);
             }
 
@@ -98,7 +99,7 @@
 
         public DbCommand CreateCommand(IList<ISqlStatement> statements)
         {
-            System.Diagnostics.Trace.Assert(this.connection != null && statements != null && statements.Count > 0);
+            Diagnostic.Assert(this.connection != null && statements != null && statements.Count > 0);
 
             DbCommand command = this.connection.CreateCommand();
             command.CommandText = string.Format("{0};", Constants.StatementBegin);

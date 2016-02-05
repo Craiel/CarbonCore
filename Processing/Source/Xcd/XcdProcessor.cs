@@ -9,6 +9,7 @@
     using CarbonCore.Processing.Resource.Stage;
     using CarbonCore.Processing.Source.Generic.Data;
     using CarbonCore.Processing.Source.Xcd.Scene;
+    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.IO;
     using CarbonCore.Utils.Edge.DirectX;
     using SharpDX;
@@ -251,7 +252,7 @@
 
                 case XcdRotationType.EulerXYZ:
                     {
-                        System.Diagnostics.Trace.TraceError("Rotation in EulerXYZ, not translating!");
+                        Diagnostic.Error("Rotation in EulerXYZ, not translating!");
                         return Quaternion.Identity;
                     }
 
@@ -262,7 +263,7 @@
 
                 default:
                     {
-                        return Utils.Edge.Diagnostic.Internal.NotImplemented<Quaternion>("Unknown rotation mode: " + type);
+                        throw new NotImplementedException("Unknown rotation mode: " + type);
                     }
             }
         }
@@ -332,7 +333,7 @@
 
                     default:
                         {
-                            return Utils.Edge.Diagnostic.Internal.NotImplemented<StagePropertyElement[]>();
+                            throw new NotImplementedException();
                         }
                 }
             }

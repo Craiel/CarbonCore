@@ -6,6 +6,7 @@
     using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.Logic.Attributes;
     using CarbonCore.Utils;
+    using CarbonCore.Utils.Diagnostics;
 
     public class DataEntrySerializationDescriptor
     {
@@ -14,7 +15,7 @@
         // -------------------------------------------------------------------
         public DataEntrySerializationDescriptor(Type type)
         {
-            System.Diagnostics.Trace.Assert(typeof(IDataEntry).IsAssignableFrom(type));
+            Diagnostic.Assert(typeof(IDataEntry).IsAssignableFrom(type));
 
             this.Type = type;
 

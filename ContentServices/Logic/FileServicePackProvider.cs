@@ -7,6 +7,7 @@
     using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.Data;
     using CarbonCore.Utils.Contracts.IoC;
+    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.IO;
 
     public class FileServicePackProvider : FileServiceProvider, IFileServicePackProvider
@@ -119,7 +120,7 @@
             // Initialize the pack file
             CarbonFile pack = this.root.ToFile(string.Format(PackFilePattern, this.packName));
             this.packStream = pack.OpenWrite(FileMode.Create);
-            System.Diagnostics.Trace.Assert(this.packStream != null);
+            Diagnostic.Assert(this.packStream != null);
 
             // Initialize the index db
             CarbonFile index = this.root.ToFile(string.Format(IndexFile, this.packName));
@@ -129,7 +130,7 @@
             IList<FileEntry> entries = this.databaseService.Load<FileEntry>();
             foreach (FileEntry entry in entries)
             {
-                System.Diagnostics.Trace.Assert(!string.IsNullOrEmpty(entry.Hash));
+                Diagnostic.Assert(!string.IsNullOrEmpty(entry.Hash));
 
                 this.files.Add(new FileEntryKey(entry.Hash), entry);
             }
@@ -138,7 +139,7 @@
             IList<FileEntryPackInfo> packInfoList = this.databaseService.Load<FileEntryPackInfo>();
             foreach (FileEntryPackInfo info in packInfoList)
             {
-                System.Diagnostics.Trace.Assert(!string.IsNullOrEmpty(info.Hash));
+                Diagnostic.Assert(!string.IsNullOrEmpty(info.Hash));
                 if (info.Offset > this.endOfFile)
                 {
                     this.endOfFile = info.Offset + info.Size + info.Padding;
@@ -262,14 +263,14 @@
             // Wait to have pending writes flushed before loading
             this.databaseService.WaitForAsyncActions();
 
-            System.Diagnostics.Trace.Assert(this.files.ContainsKey(key));
+            Diagnostic.Assert(this.files.ContainsKey(key));
 
             return this.files[key];
         }
 
         protected override void SaveEntry(FileEntryKey key, FileEntry entry)
         {
-            System.Diagnostics.Trace.Assert(this.files.ContainsKey(key));
+            Diagnostic.Assert(this.files.ContainsKey(key));
 
             if (this.files.ContainsKey(key))
             {

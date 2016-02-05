@@ -6,6 +6,7 @@
 
     using CarbonCore.Processing.Resource;
     using CarbonCore.Utils;
+    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.IO;
 
     public delegate string ResolveIncludeDelegate(string include);
@@ -30,7 +31,7 @@
                 throw new ArgumentException("Invalid Script Processing options");
             }
 
-            System.Diagnostics.Trace.TraceInformation("Processing script {0}", file);
+            Diagnostic.Info("Processing script {0}", file);
             currentOptions = options;
             try
             {
@@ -56,7 +57,7 @@
         {
             if (match.Captures.Count <= 0 || match.Groups.Count < 2)
             {
-                System.Diagnostics.Trace.TraceWarning("Could not evaluate Resource, no capture data");
+                Diagnostic.Warning("Could not evaluate Resource, no capture data");
                 return "ERROR";
             }
 
@@ -68,12 +69,12 @@
                     {
                         if (string.IsNullOrEmpty(fieldValue))
                         {
-                            System.Diagnostics.Trace.TraceWarning("Argument missing in resource Field");
+                            Diagnostic.Warning("Argument missing in resource Field");
                             return "ERROR";
                         }
 
                         string hash = HashUtils.BuildResourceHash(fieldValue);
-                        System.Diagnostics.Trace.TraceInformation(" Resource: {0} -> {1}", fieldValue, hash);
+                        Diagnostic.Info(" Resource: {0} -> {1}", fieldValue, hash);
                         return hash;
                     }
 
@@ -81,23 +82,23 @@
                     {
                         if (string.IsNullOrEmpty(fieldValue))
                         {
-                            System.Diagnostics.Trace.TraceWarning("Argument missing in include Field");
+                            Diagnostic.Warning("Argument missing in include Field");
                             return "ERROR";
                         }
 
                         if (currentOptions == null || currentOptions.Value.IncludeResolver == null)
                         {
-                            System.Diagnostics.Trace.TraceWarning("Include Resolver not present, can not resolve include field");
+                            Diagnostic.Warning("Include Resolver not present, can not resolve include field");
                             return "ERROR";
                         }
 
                         string include = currentOptions.Value.IncludeResolver(fieldValue);
-                        System.Diagnostics.Trace.TraceInformation(" Include: {0} -> {1}", fieldValue, include);
+                        Diagnostic.Info(" Include: {0} -> {1}", fieldValue, include);
                         return include;
                     }
             }
 
-            System.Diagnostics.Trace.TraceWarning("Unknown Field in Script: " + match.Captures[0].Value);
+            Diagnostic.Warning("Unknown Field in Script: " + match.Captures[0].Value);
             return "ERROR";
         }
     }

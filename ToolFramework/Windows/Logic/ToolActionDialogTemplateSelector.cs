@@ -38,7 +38,7 @@
 
                 default:
                     {
-                        return Utils.Edge.Diagnostic.Internal.NotImplemented<DataTemplate>();
+                        throw new NotImplementedException();
                     }
             }
         }

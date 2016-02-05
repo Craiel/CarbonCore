@@ -88,9 +88,19 @@
             GetThreadContext().Debug(PreformatMessage(message), args);
         }
 
+        public static void DebugUnmanaged(string message, params object[] args)
+        {
+            Trace.TraceInformation(message, args);
+        }
+
         public static void Warning(string message, params object[] args)
         {
             GetThreadContext().Warning(PreformatMessage(message), args);
+        }
+
+        public static void WarningUnmanaged(string message, params object[] args)
+        {
+            Trace.TraceWarning(message, args);
         }
 
         public static void Exception(Exception exception)
@@ -107,15 +117,35 @@
         {
             GetThreadContext().Error(PreformatMessage(message), args);
         }
-        
+
+        public static void ErrorUnmanaged(string message, params object[] args)
+        {
+            Trace.TraceError(message, args);
+        }
+
         public static void Info(string message, params object[] args)
         {
             GetThreadContext().Info(PreformatMessage(message), args);
         }
 
+        public static void InfoUnmanaged(string message, params object[] args)
+        {
+            Trace.TraceInformation(message, args);
+        }
+
         public static void Assert(bool condition, string message = null)
         {
-            GetThreadContext().Assert(condition, PreformatMessage(message ?? string.Empty));
+            Assert(condition, message ?? string.Empty, null);
+        }
+
+        public static void Assert(bool condition, string message, params object[] args)
+        {
+            GetThreadContext().Assert(condition, PreformatMessage(message), args);
+        }
+
+        public static void AssertUnmanaged(bool condition, string message = null)
+        {
+            Trace.Assert(condition, message ?? string.Empty);
         }
 
         public static void RegisterThread(string name, EngineTime time = null)

@@ -27,7 +27,7 @@
         public virtual bool Save(CarbonFile file = null)
         {
             CarbonFile targetFile = file ?? this.configFile;
-            System.Diagnostics.Trace.Assert(targetFile != null);
+            Diagnostic.Assert(targetFile != null);
 
             try
             {
@@ -37,7 +37,7 @@
             catch (Exception e)
             {
                 Diagnostic.Exception(e);
-                System.Diagnostics.Trace.TraceError("Could not save config to {0}", file);
+                Diagnostic.Error("Could not save config to {0}", file);
                 return false;
             }
         }
@@ -67,7 +67,7 @@
 
             if (this.Current == null)
             {
-                System.Diagnostics.Trace.TraceError("Config is invalid, resetting to default");
+                Diagnostic.Error("Config is invalid, resetting to default");
                 this.Current = this.GetDefault();
 
                 JsonExtensions.SaveToFile(file, this.Current, false, Formatting.Indented);

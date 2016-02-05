@@ -4,6 +4,8 @@
     using System.Data;
     using System.Threading;
 
+    using CarbonCore.Utils.Diagnostics;
+
     public class SqlConnectorConnection : IDisposable
     {
         private static int nextConnectionId = 1;
@@ -129,7 +131,7 @@
 
             if (this.activeTransaction == null || this.activeTransaction.IsDiposed)
             {
-                System.Diagnostics.Trace.TraceWarning("Creating command without active transaction!");
+                Diagnostic.Warning("Creating command without active transaction!");
             }
 
             this.activeCommand = new SqlConnectorCommand(this.connection.CreateCommand());

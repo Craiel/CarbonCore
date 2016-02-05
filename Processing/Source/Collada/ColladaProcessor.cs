@@ -12,6 +12,7 @@
     using CarbonCore.Processing.Source.Collada.Scene;
     using CarbonCore.Processing.Source.Generic.Data;
     using CarbonCore.Utils;
+    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.IO;
     using CarbonCore.Utils.Edge.DirectX;
 
@@ -125,7 +126,7 @@
                         ParseGeometry(i, colladaGeometry);
                         ModelResource part = TranslateGeometry(i, colladaGeometry.Name);
 
-                        System.Diagnostics.Trace.TraceWarning(
+                        Diagnostic.Warning(
                             "ColladaSource does not support materials yet! ({0})", source.Id);
 
                         parts.Add(part);
@@ -201,13 +202,13 @@
 
             if (geometry.Mesh.Polygons != null && geometry.Mesh.PolyLists != null)
             {
-                Utils.Edge.Diagnostic.Internal.NotImplemented("Polygons and Polylists at the same time are untested!");
+                throw new NotImplementedException("Polygons and Polylists at the same time are untested!");
             }
 
             currentSources = geometry.Mesh.Sources;
             if (geometry.Mesh.Polygons != null && geometry.Mesh.Polygons.Polygons != null)
             {
-                System.Diagnostics.Trace.Assert(geometry.Mesh.Polygons != null, "Must have polygons if we are not working with Poly Lists!");
+                Diagnostic.Assert(geometry.Mesh.Polygons != null, "Must have polygons if we are not working with Poly Lists!");
 
                 currentInputs = geometry.Mesh.Polygons.Inputs;
                 vertexInput = FindInput("VERTEX");
@@ -407,7 +408,7 @@
             uint element = 0;
             foreach (IntArrayType data in polygons)
             {
-                System.Diagnostics.Trace.Assert(data.Data.Length == (highestOffset + 1) * 3, "Polygon data must be vertex count 3 right now, otherwise we have to adjust the VertexCount array!");
+                Diagnostic.Assert(data.Data.Length == (highestOffset + 1) * 3, "Polygon data must be vertex count 3 right now, otherwise we have to adjust the VertexCount array!");
 
                 vertexCount[polygon++] = 3;
                 uint dataElementOffset = 0;

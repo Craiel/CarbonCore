@@ -1,5 +1,6 @@
 ﻿namespace CarbonCore.Processing.Resource.Stage
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -39,8 +40,7 @@
 
                     default:
                         {
-                            Utils.Edge.Diagnostic.Internal.NotImplemented("Unsupported property type: " + property.Type);
-                            break;
+                            throw new NotImplementedException("Unsupported property type: " + property.Type);
                         }
                 }
             }

@@ -5,6 +5,7 @@
     using System.Text;
 
     using CarbonCore.Utils.Contracts.IoC;
+    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.IO;
 
     using CrystalBuild.Contracts;
@@ -32,15 +33,15 @@
                 // Todo
             }
 
-            System.Diagnostics.Trace.TraceInformation("Building {0} {1} into {2}", sources.Count, "Sources", target);
+            Diagnostic.Info("Building {0} {1} into {2}", sources.Count, "Sources", target);
 
             var processor = this.factory.Resolve<IJavaScriptProcessor>();
-            System.Diagnostics.Trace.Assert(processor != null);
+            Diagnostic.Assert(processor != null);
 
             processor.SetContext(context);
             foreach (CarbonFileResult file in sources)
             {
-                System.Diagnostics.Trace.TraceInformation("  {0}", file.Absolute.FileName);
+                Diagnostic.Info("  {0}", file.Absolute.FileName);
                 processor.Process(file.Absolute);
             }
 
@@ -93,7 +94,7 @@
 
         public void CopyContents(IList<CarbonFileResult> sources, CarbonDirectory target)
         {
-            System.Diagnostics.Trace.TraceInformation("Copying {0} Content into {1}", sources.Count, target);
+            Diagnostic.Info("Copying {0} Content into {1}", sources.Count, target);
 
             foreach (CarbonFileResult source in sources)
             {
@@ -107,15 +108,15 @@
         private void DoBuildMultipleToOne<T>(string buildName, IList<CarbonFileResult> sources, CarbonFile target, ProcessingContext context, bool useTempFileForProcessing = false)
             where T : IContentProcessor
         {
-            System.Diagnostics.Trace.TraceInformation("Building {0} {1} into {2}", sources.Count, buildName, target);
+            Diagnostic.Info("Building {0} {1} into {2}", sources.Count, buildName, target);
 
             var processor = this.factory.Resolve(typeof(T)) as IContentProcessor;
-            System.Diagnostics.Trace.Assert(processor != null);
+            Diagnostic.Assert(processor != null);
 
             processor.SetContext(context);
             foreach (CarbonFileResult file in sources)
             {
-                System.Diagnostics.Trace.TraceInformation("  {0}", file.Absolute.FileName);
+                Diagnostic.Info("  {0}", file.Absolute.FileName);
                 if (useTempFileForProcessing)
                 {
                     CarbonFile tempFile = CarbonFile.GetTempFile();
@@ -150,15 +151,15 @@
         private void DoBuildMultiple<T>(string buildName, IList<CarbonFileResult> sources, ProcessingContext context)
             where T : IContentProcessor
         {
-            System.Diagnostics.Trace.TraceInformation("Building {0} files for {1}", sources.Count, buildName);
+            Diagnostic.Info("Building {0} files for {1}", sources.Count, buildName);
 
             var processor = this.factory.Resolve(typeof(T)) as IContentProcessor;
-            System.Diagnostics.Trace.Assert(processor != null);
+            Diagnostic.Assert(processor != null);
 
             processor.SetContext(context);
             foreach (CarbonFileResult file in sources)
             {
-                System.Diagnostics.Trace.TraceInformation("  {0}", file.Absolute.FileName);
+                Diagnostic.Info("  {0}", file.Absolute.FileName);
                 processor.Process(file.Absolute);
             }
             
@@ -167,21 +168,21 @@
 
         private void TraceProcessorResult(IContentProcessor processor, string name)
         {
-            System.Diagnostics.Trace.TraceInformation("");
-            System.Diagnostics.Trace.TraceInformation("Result for {0}", name);
-            System.Diagnostics.Trace.TraceInformation(" -------------------");
+            Diagnostic.Info("");
+            Diagnostic.Info("Result for {0}", name);
+            Diagnostic.Info(" -------------------");
             foreach (string warning in processor.Context.Warnings)
             {
-                System.Diagnostics.Trace.TraceWarning(" - WARNING: {0}", warning);
+                Diagnostic.Warning(" - WARNING: {0}", warning);
             }
 
             foreach (string error in processor.Context.Errors)
             {
-                System.Diagnostics.Trace.TraceError(" - ERROR: {0}", error);
+                Diagnostic.Error(" - ERROR: {0}", error);
             }
 
-            System.Diagnostics.Trace.TraceInformation("");
-            System.Diagnostics.Trace.TraceInformation("{0} Done with {1} Errors, {2} Warnings\n\n", name, processor.Context.Errors.Count, processor.Context.Warnings.Count);
+            Diagnostic.Info("");
+            Diagnostic.Info("{0} Done with {1} Errors, {2} Warnings\n\n", name, processor.Context.Errors.Count, processor.Context.Warnings.Count);
         }
     }
 }

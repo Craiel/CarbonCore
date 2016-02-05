@@ -11,6 +11,7 @@
     using CarbonCore.ToolFramework.Console.Logic;
     using CarbonCore.Utils;
     using CarbonCore.Utils.Contracts.IoC;
+    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.Edge.CommandLine.Contracts;
     using CarbonCore.Utils.IO;
     using CarbonCore.Utils.Json;
@@ -149,7 +150,7 @@
         // -------------------------------------------------------------------
         private SimulationStats Simulate(Simulation simulation)
         {
-            System.Diagnostics.Trace.TraceInformation("Starting simulation for " + simulation.Class);
+            Diagnostic.Info("Starting simulation for " + simulation.Class);
             
             // Create the struct and pass it to the logic
             ISimulationData simulationData = new SimulationData(this.data, simulation, this.randomValues);
@@ -175,7 +176,7 @@
                 SimulationSampleSet sampleSet = module.Simulate(simulationData);
                 if (sampleSet == null)
                 {
-                    System.Diagnostics.Trace.TraceWarning("No sample returned for {0}", module.Name);
+                    Diagnostic.Warning("No sample returned for {0}", module.Name);
                     continue;
                 }
 

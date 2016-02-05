@@ -9,6 +9,7 @@
     using CarbonCore.Processing.Source.Collada.Effect;
     using CarbonCore.Processing.Source.Collada.General;
     using CarbonCore.Processing.Source.Collada.Geometry;
+    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.IO;
 
     public struct ColladaMeshInfo
@@ -179,7 +180,7 @@
             {
                 if (string.IsNullOrEmpty(image.InitFrom.Source))
                 {
-                    System.Diagnostics.Trace.TraceError("Collada Image InitFrom value was null for " + image.Name);
+                    Diagnostic.Error("Collada Image InitFrom value was null for " + image.Name);
                     continue;
                 }
 
@@ -241,7 +242,7 @@
                     }
                     else
                     {
-                        System.Diagnostics.Trace.TraceWarning("Unhandled effect entry! Check source");
+                        Diagnostic.Warning("Unhandled effect entry! Check source");
                         continue;
                     }
 

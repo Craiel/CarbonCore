@@ -37,9 +37,19 @@
             Trace.WriteLine(formattedMessage);
         }
 
-        public void Assert(bool condition, string message = null)
+        public void Assert(bool condition, string message, params object[] args)
         {
-            Trace.Assert(condition, message ?? string.Empty);
+            if (string.IsNullOrEmpty(message))
+            {
+                message = string.Empty;
+            }
+
+            if (args != null && args.Length > 0)
+            {
+                message = string.Format(message, args);
+            }
+
+            Trace.Assert(condition, message);
         }
 
         public virtual void Warning(string message, params object[] args)

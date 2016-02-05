@@ -2,6 +2,8 @@
 {
     using System.Collections.Generic;
 
+    using CarbonCore.Utils.Diagnostics;
+
     // One-way synchronization buffer, Works only in single writer, singler reader environment
     public class SynchronizationBuffer<T> where T : class, new()
     {
@@ -61,7 +63,7 @@
         {
             lock (this)
             {
-                System.Diagnostics.Trace.Assert(this.bufferState[dataLock.Id] != State.Free, "Can't release free buffer");
+                Diagnostic.Assert(this.bufferState[dataLock.Id] != State.Free, "Can't release free buffer");
 
                 switch (this.bufferState[dataLock.Id])
                 {
@@ -93,7 +95,7 @@
                     }
                 }
 
-                System.Diagnostics.Trace.Assert(bestMatch != -1, "Can't aquire buffer");
+                Diagnostic.Assert(bestMatch != -1, "Can't aquire buffer");
 
                 this.bufferState[bestMatch] = operation;
                 return new SynchronizationDataLock<T>(this.buffer[bestMatch], bestMatch);

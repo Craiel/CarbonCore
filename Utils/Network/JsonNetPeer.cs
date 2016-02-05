@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     
     using CarbonCore.Utils.Contracts.Network;
+    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.Network.Package;
     
     public class JsonNetPeer : IJsonNetPeer
@@ -83,7 +84,7 @@
             }
 
             IJsonNetPackage package = JsonNetUtils.DeSerializePackage(this.packageDictionary[id], data);
-            System.Diagnostics.Trace.TraceInformation("Deserialized Package {0}", package.GetType());
+            Diagnostic.Info("Deserialized Package {0}", package.GetType());
         }
     }
 }

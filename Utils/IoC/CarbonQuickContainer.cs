@@ -5,6 +5,7 @@
     using System.Reflection;
 
     using CarbonCore.Utils.Contracts.IoC;
+    using CarbonCore.Utils.Diagnostics;
 
     public partial class CarbonQuickContainer : ICarbonContainer
     {
@@ -37,7 +38,7 @@
             IList<ICarbonQuickBinding> moduleBindings = module.GetQuickBindings();
             if (moduleBindings == null)
             {
-                System.Diagnostics.Trace.TraceWarning("Module {0} has no bindings", module.GetType().Name);
+                Diagnostic.Warning("Module {0} has no bindings", module.GetType().Name);
                 return;
             }
 
@@ -203,16 +204,16 @@
 
             if (binding.Instance != null)
             {
-                System.Diagnostics.Trace.Assert(binding.IsAlwaysUnique == false, "Binding can not be always unique with explicit instance");
+                Diagnostic.Assert(binding.IsAlwaysUnique == false, "Binding can not be always unique with explicit instance");
             }
 
             if (binding.IsSingleton)
             {
-                System.Diagnostics.Trace.Assert(!binding.IsAlwaysUnique, "Binding can not be singleton and always unique!");
+                Diagnostic.Assert(!binding.IsAlwaysUnique, "Binding can not be singleton and always unique!");
             }
 
             // Test to make sure we have either an instance or implementation
-            System.Diagnostics.Trace.Assert(binding.Implementation != null || binding.Instance != null);
+            Diagnostic.Assert(binding.Implementation != null || binding.Instance != null);
         }
     }
 }

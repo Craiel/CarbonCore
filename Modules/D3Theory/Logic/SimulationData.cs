@@ -6,6 +6,7 @@
 
     using CarbonCore.Modules.D3Theory.Contracts;
     using CarbonCore.Modules.D3Theory.Data;
+    using CarbonCore.Utils.Diagnostics;
 
     public class SimulationData : ISimulationData
     {
@@ -262,7 +263,7 @@
         {
             if (this.Class == null)
             {
-                System.Diagnostics.Trace.TraceError("Class not found: {0}", this.Simulation.Class);
+                Diagnostic.Error("Class not found: {0}", this.Simulation.Class);
                 return false;
             }
 

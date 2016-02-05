@@ -22,9 +22,7 @@
         private readonly Random random = new Random((int)DateTime.Now.Ticks);
 
         private readonly IList<int> cyclesTested;
-
-        private IFrameworkTestMainViewModel viewModel;
-
+        
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
@@ -71,9 +69,9 @@
             // Create one dispatched action that will run after the others
             action = RelayToolAction.Create(this.TestAction2);
             Assert.Fail("Dispatcher is currently not implemented!");
-            //action.Dispatcher = Application.Current.Dispatcher;
+            /*action.Dispatcher = Application.Current.Dispatcher;
             action.Order = 10;
-            target.Add(action);
+            target.Add(action);*/
         }
 
         protected override Window DoInitializeMainWindow()
@@ -117,7 +115,8 @@
         {
             System.Diagnostics.Debug.WriteLine(Thread.CurrentThread.ManagedThreadId + " TestAction2");
             Assert.Fail("Dispatcher is currently not implemented!");
-            //Assert.AreEqual(action.Dispatcher, Application.Current.Dispatcher, "Dispatched test must be in the main dispatcher");
+
+            /*Assert.AreEqual(action.Dispatcher, Application.Current.Dispatcher, "Dispatched test must be in the main dispatcher");
             Assert.AreEqual(10, this.cyclesTested.Count);
             
             action.ProgressMax = TestCycles;
@@ -139,7 +138,7 @@
                 this.cyclesTested.Add(TestCycles);
             }
 
-            System.Diagnostics.Debug.WriteLine(Thread.CurrentThread.ManagedThreadId + " TestAction2 - Done");
+            System.Diagnostics.Debug.WriteLine(Thread.CurrentThread.ManagedThreadId + " TestAction2 - Done");*/
         }
     }
 }

@@ -5,6 +5,7 @@
     using System.Threading;
 
     using CarbonCore.Utils;
+    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.IO;
     using CarbonCore.Utils.Json;
 
@@ -98,7 +99,7 @@
 
         public static void SetString(string key, string value)
         {
-            System.Diagnostics.Trace.TraceWarning("Manual SetString called, prefer using the auto loaded dictionaries!");
+            Diagnostic.Warning("Manual SetString called, prefer using the auto loaded dictionaries!");
             CheckDictionary(CurrentCulture);
             LocalizationStringDictionary dictionary = Dictionaries[CurrentCulture];
             if (!dictionary.ContainsKey(key))
@@ -124,11 +125,11 @@
 
             if (!source.Exists)
             {
-                System.Diagnostics.Trace.TraceWarning("Could not load dictionary for {0}, file not found: {1}", info.Name, source);
+                Diagnostic.Warning("Could not load dictionary for {0}, file not found: {1}", info.Name, source);
                 return;
             }
 
-            System.Diagnostics.Trace.TraceInformation("Loading Dictionary {0} ({1})", info.Name, source);
+            Diagnostic.Info("Loading Dictionary {0} ({1})", info.Name, source);
             Dictionaries[info] = JsonExtensions.LoadFromFile<LocalizationStringDictionary>(source, false);
         }
 

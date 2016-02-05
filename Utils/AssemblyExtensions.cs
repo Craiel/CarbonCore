@@ -198,7 +198,7 @@
                 using (var writer = targetFile.OpenCreate())
                 {
                     writer.Write(resources[file], 0, resources[file].Length);
-                    System.Diagnostics.Trace.TraceInformation("Extracted {0} ({1})", targetFile, targetFile.Size);
+                    Diagnostic.Info("Extracted {0} ({1})", targetFile, targetFile.Size);
                 }
             }
             

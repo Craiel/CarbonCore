@@ -138,7 +138,7 @@
             catch (Exception e)
             {
                 Diagnostic.Exception(e);
-                System.Diagnostics.Trace.TraceError("Failed to open Log File: {0}", this.file);
+                Diagnostic.Error("Failed to open Log File: {0}", this.file);
             }
         }
     }

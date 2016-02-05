@@ -6,6 +6,7 @@
     using System.IO;
     using System.Linq;
 
+    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.IO;
 
     using NPOI.SS.UserModel;
@@ -23,7 +24,7 @@
             using (FileStream stream = source.OpenRead())
             {
                 var workBook = new XSSFWorkbook(stream);
-                System.Diagnostics.Trace.TraceInformation("  - {0} Sheet(s)", workBook.NumberOfSheets);
+                Diagnostic.Info("  - {0} Sheet(s)", workBook.NumberOfSheets);
                 ExcelData data = new ExcelData { FileName = source.FileName };
 
                 for (var i = 0; i < workBook.NumberOfSheets; i++)
@@ -31,7 +32,7 @@
                     ISheet sheet = workBook.GetSheetAt(i);
                     if (sheet.PhysicalNumberOfRows <= 1)
                     {
-                        System.Diagnostics.Trace.TraceWarning("Sheet has insufficient rows: {0}", source.FileName);
+                        Diagnostic.Warning("Sheet has insufficient rows: {0}", source.FileName);
                         continue;
                     }
                     
@@ -170,7 +171,7 @@
 
                 if (primaryKeyCheck.Contains(key))
                 {
-                    System.Diagnostics.Trace.TraceWarning("Duplicate or invalid primary key data in sheet {0}: {1}", sheet.SheetName, key);
+                    Diagnostic.Warning("Duplicate or invalid primary key data in sheet {0}: {1}", sheet.SheetName, key);
                     continue;
                 }
 

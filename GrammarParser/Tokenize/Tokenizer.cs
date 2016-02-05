@@ -237,7 +237,7 @@
             
             if (potentialMatches.Count > 1)
             {
-                System.Diagnostics.Trace.TraceError("Conflicting keyword: " + data.PendingContent);
+                Diagnostic.Error("Conflicting keyword: " + data.PendingContent);
             }
             
             return false;

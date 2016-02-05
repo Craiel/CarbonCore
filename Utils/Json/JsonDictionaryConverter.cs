@@ -42,12 +42,12 @@
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            System.Diagnostics.Trace.Assert(reader.TokenType == JsonToken.StartArray);
+            Diagnostic.Assert(reader.TokenType == JsonToken.StartArray);
 
             var resultDictionary = Activator.CreateInstance(objectType, null);
 
             Type[] genericArguments = objectType.GetGenericArguments();
-            System.Diagnostics.Trace.Assert(genericArguments != null && genericArguments.Length == 2);
+            Diagnostic.Assert(genericArguments != null && genericArguments.Length == 2);
 
             Type keyType = objectType.GetGenericArguments()[0];
             Type valueType = objectType.GetGenericArguments()[1];

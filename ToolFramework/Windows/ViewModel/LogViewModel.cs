@@ -10,7 +10,7 @@
     using CarbonCore.ToolFramework.Windows.Contracts.ViewModels;
     using CarbonCore.Utils.Contracts.IoC;
     using CarbonCore.Utils.Diagnostics;
-    using CarbonCore.Utils.Edge.Diagnostic.TraceListeners;
+    using CarbonCore.Utils.Edge.TraceListeners;
     using CarbonCore.Utils.Edge.WPF;
     using CarbonCore.Utils.Edge.WPF.Collections;
 

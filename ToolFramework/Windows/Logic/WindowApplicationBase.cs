@@ -14,6 +14,7 @@
     using CarbonCore.ToolFramework.Windows.Contracts.ViewModels;
     using CarbonCore.Utils;
     using CarbonCore.Utils.Contracts.IoC;
+    using CarbonCore.Utils.Diagnostics;
 
     using ToolActionDialog = CarbonCore.ToolFramework.Windows.View.ToolActionDialog;
 
@@ -92,7 +93,7 @@
             }
             catch (Exception e)
             {
-                System.Diagnostics.Trace.TraceError("Unhandled exception in Application run: {0}", e);
+                Diagnostic.Error("Unhandled exception in Application run: {0}", e);
                 application.Shutdown(-1);
             }
         }
@@ -160,7 +161,7 @@
 
         protected virtual IBaseViewModel DoInitializeMainViewModel()
         {
-            System.Diagnostics.Trace.TraceWarning("Main Window Initialization is not implemented, Window will not have DataContext!");
+            Diagnostic.Warning("Main Window Initialization is not implemented, Window will not have DataContext!");
             return null;
         }
 

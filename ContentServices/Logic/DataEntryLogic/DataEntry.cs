@@ -6,6 +6,7 @@
     using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.Logic.Attributes;
     using CarbonCore.Utils;
+    using CarbonCore.Utils.Diagnostics;
 
     using Newtonsoft.Json;
 
@@ -36,11 +37,11 @@
         
         public virtual bool CopyFrom(IDataEntry source)
         {
-            System.Diagnostics.Trace.Assert(source != null);
+            Diagnostic.Assert(source != null);
 
             if (source.GetType() != this.GetType())
             {
-                System.Diagnostics.Trace.TraceError("Attempt to copy from different type, expected {0} but was {1}", this.GetType(), source.GetType());
+                Diagnostic.Error("Attempt to copy from different type, expected {0} but was {1}", this.GetType(), source.GetType());
                 return false;
             }
 

@@ -9,6 +9,7 @@
     using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.Data;
     using CarbonCore.ContentServices.Logic.Enums;
+    using CarbonCore.Utils.Diagnostics;
 
     public abstract class FileServiceProvider : IFileServiceProvider
     {
@@ -84,7 +85,7 @@
 
         public void Load(FileEntryKey key, out byte[] data)
         {
-            System.Diagnostics.Trace.Assert(this.IsInitialized);
+            Diagnostic.Assert(this.IsInitialized);
             if (this.compressionLevel != CompressionLevel.NoCompression)
             {
                 byte[] compressed;
@@ -103,7 +104,7 @@
 
         public void Save(FileEntryKey key, byte[] data)
         {
-            System.Diagnostics.Trace.Assert(this.IsInitialized);
+            Diagnostic.Assert(this.IsInitialized);
             if (this.compressionLevel != CompressionLevel.NoCompression)
             {
                 byte[] compressed;
@@ -122,7 +123,7 @@
 
         public void Delete(FileEntryKey key)
         {
-            System.Diagnostics.Trace.Assert(this.IsInitialized);
+            Diagnostic.Assert(this.IsInitialized);
             this.DoDelete(key);
             this.EntriesDeleted++;
         }
@@ -134,14 +135,14 @@
 
         public void Initialize()
         {
-            System.Diagnostics.Trace.Assert(!this.IsInitialized);
+            Diagnostic.Assert(!this.IsInitialized);
             this.DoInitialize();
             this.IsInitialized = true;
         }
 
         public IList<FileEntryKey> GetFiles(bool includeDeleted = false)
         {
-            System.Diagnostics.Trace.Assert(this.IsInitialized);
+            Diagnostic.Assert(this.IsInitialized);
 
             return this.DoGetFiles(includeDeleted);
         }

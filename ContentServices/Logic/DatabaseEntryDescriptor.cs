@@ -9,6 +9,7 @@
     using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.Logic.Attributes;
     using CarbonCore.Utils;
+    using CarbonCore.Utils.Diagnostics;
 
     public class DatabaseEntryDescriptor
     {
@@ -21,7 +22,7 @@
         // -------------------------------------------------------------------
         public DatabaseEntryDescriptor(Type targetType)
         {
-            System.Diagnostics.Trace.Assert(typeof(IDatabaseEntry).IsAssignableFrom(targetType));
+            Diagnostic.Assert(typeof(IDatabaseEntry).IsAssignableFrom(targetType));
 
             this.Type = targetType;
 
@@ -139,7 +140,7 @@
                 }
             }
 
-            System.Diagnostics.Trace.Assert(this.EntryAttribute != null, "The Main attribute is not defined");
+            Diagnostic.Assert(this.EntryAttribute != null, "The Main attribute is not defined");
             this.TableName = this.EntryAttribute.Table;
 
             PropertyInfo[] properties = this.Type.GetProperties();
@@ -184,7 +185,7 @@
 
             if (this.PrimaryKey == null)
             {
-                System.Diagnostics.Trace.TraceWarning("DatabaseEntry has no Primary key defined: {0}", this.Type);
+                Diagnostic.Warning("DatabaseEntry has no Primary key defined: {0}", this.Type);
             }
         }
     }

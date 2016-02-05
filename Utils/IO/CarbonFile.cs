@@ -157,7 +157,7 @@
         {
             using (FileStream stream = this.OpenRead())
             {
-                System.Diagnostics.Trace.Assert(stream.Length <= int.MaxValue);
+                Diagnostic.Assert(stream.Length <= int.MaxValue);
 
                 var length = (int)stream.Length;
                 var result = new byte[length];
@@ -252,7 +252,7 @@
             catch (Exception e)
             {
                 Diagnostic.Exception(e);
-                System.Diagnostics.Trace.TraceError("Failed to copy file {0} to {1}", this, target);
+                Diagnostic.Error("Failed to copy file {0} to {1}", this, target);
             }
 
             return false;

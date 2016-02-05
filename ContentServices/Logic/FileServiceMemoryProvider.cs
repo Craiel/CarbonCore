@@ -5,6 +5,7 @@
 
     using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.Data;
+    using CarbonCore.Utils.Diagnostics;
 
     public class FileServiceMemoryProvider : FileServiceProvider, IFileServiceMemoryProvider
     {
@@ -90,14 +91,14 @@
 
         protected override FileEntry LoadEntry(FileEntryKey key)
         {
-            System.Diagnostics.Trace.Assert(this.files.ContainsKey(key));
+            Diagnostic.Assert(this.files.ContainsKey(key));
 
             return this.fileEntries[key];
         }
 
         protected override void SaveEntry(FileEntryKey key, FileEntry entry)
         {
-            System.Diagnostics.Trace.Assert(this.files.ContainsKey(key));
+            Diagnostic.Assert(this.files.ContainsKey(key));
 
             this.fileEntries[key] = entry;
         }

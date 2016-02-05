@@ -7,6 +7,7 @@
     using CarbonCore.GrammarParser.Contracts.Grammars;
     using CarbonCore.GrammarParser.Grammars;
     using CarbonCore.GrammarParser.Tokenize;
+    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.Edge.CommandLine.Contracts;
 
     public class CommandLineArguments : ICommandLineArguments
@@ -145,10 +146,10 @@
 
         public void PrintArgumentUse()
         {
-            System.Diagnostics.Trace.TraceInformation("Argument use: ");
+            Diagnostic.Info("Argument use: ");
             foreach (ICommandLineSwitchDefinition definition in this.definitions)
             {
-                System.Diagnostics.Trace.TraceInformation(" {0} / {1} - {2} {3}", definition.Short, definition.Long, definition.Description, definition.RequireArgument ? "(required)" : string.Empty);
+                Diagnostic.Info(" {0} / {1} - {2} {3}", definition.Short, definition.Long, definition.Description, definition.RequireArgument ? "(required)" : string.Empty);
             }
         }
 
@@ -165,7 +166,7 @@
                 Token token = tokens[currentToken++];
                 if (token.Term == null || token.Term.Tag == null)
                 {
-                    System.Diagnostics.Trace.TraceError("Argument parsing failed for token {0}", token);
+                    Diagnostic.Error("Argument parsing failed for token {0}", token);
                     continue;
                 }
 
@@ -178,7 +179,7 @@
                         {
                             if (mode != TranslationMode.None && mode != TranslationMode.GotSwitch)
                             {
-                                System.Diagnostics.Trace.TraceError("Unexpected switch term: {0}", token);
+                                Diagnostic.Error("Unexpected switch term: {0}", token);
                                 return false;
                             }
 
@@ -191,7 +192,7 @@
                         {
                             if (mode != TranslationMode.GotSwitch)
                             {
-                                System.Diagnostics.Trace.TraceError("Unexpected argument assignment: {0}", token);
+                                Diagnostic.Error("Unexpected argument assignment: {0}", token);
                                 return false;
                             }
 
@@ -203,7 +204,7 @@
                         {
                             if (mode != TranslationMode.ExpectArgument && mode != TranslationMode.GotSwitch)
                             {
-                                System.Diagnostics.Trace.TraceError("Unexpected string: {0}", token);
+                                Diagnostic.Error("Unexpected string: {0}", token);
                                 return false;
                             }
 
@@ -228,7 +229,7 @@
                                 continue;
                             }
 
-                            System.Diagnostics.Trace.TraceError("Unexpected identifier: {0}", token);
+                            Diagnostic.Error("Unexpected identifier: {0}", token);
                             return false;
                         }
 
@@ -297,7 +298,7 @@
                 {
                     if (definition.Required)
                     {
-                        System.Diagnostics.Trace.TraceError("Required argument was not present: {0}", definition.Long ?? definition.Short);
+                        Diagnostic.Error("Required argument was not present: {0}", definition.Long ?? definition.Short);
                         return false;
                     }
 
@@ -317,13 +318,13 @@
 
                 if (arguments.Count > 1 && !definition.AllowMultiple)
                 {
-                    System.Diagnostics.Trace.TraceError("Argument does not allow multiple values: {0}", definition.Long ?? definition.Short);
+                    Diagnostic.Error("Argument does not allow multiple values: {0}", definition.Long ?? definition.Short);
                     return false;
                 }
 
                 if (arguments.Count <= 0 && definition.RequireArgument)
                 {
-                    System.Diagnostics.Trace.TraceError("Argument needs value: {0}", definition.Long ?? definition.Short);
+                    Diagnostic.Error("Argument needs value: {0}", definition.Long ?? definition.Short);
                     return false;
                 }
 

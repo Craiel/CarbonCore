@@ -3,6 +3,7 @@
     using System.Text;
 
     using CarbonCore.Utils;
+    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.IO;
 
     using CrystalBuild.Contracts.Processors;
@@ -26,13 +27,13 @@
 
         public void Process(CarbonFile source)
         {
-            System.Diagnostics.Trace.Assert(this.Context != null, "Context must be set!");
+            Diagnostic.Assert(this.Context != null, "Context must be set!");
             this.DoProcess(source);
         }
 
         public string GetData()
         {
-            System.Diagnostics.Trace.Assert(this.Context != null, "Context must be set!");
+            Diagnostic.Assert(this.Context != null, "Context must be set!");
 
             this.PreprocessData();
             return this.PostProcessData(this.builder.ToString());

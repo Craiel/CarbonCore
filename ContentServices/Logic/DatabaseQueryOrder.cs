@@ -1,5 +1,7 @@
 ﻿namespace CarbonCore.ContentServices.Logic
 {
+    using CarbonCore.Utils.Diagnostics;
+
     public class DatabaseQueryOrder
     {
         // -------------------------------------------------------------------
@@ -7,7 +9,7 @@
         // -------------------------------------------------------------------
         public DatabaseQueryOrder(string name)
         {
-            System.Diagnostics.Trace.Assert(!string.IsNullOrEmpty(name));
+            Diagnostic.Assert(!string.IsNullOrEmpty(name));
 
             this.Name = name;
         }
