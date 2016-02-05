@@ -62,6 +62,7 @@
     <Compile Include="Contracts\ViewModels\IToolActionDialogViewModel.cs" />
     <Compile Include="Contracts\ViewModels\IToolActionViewModel.cs" />
     <Compile Include="IoC\IoC.cs" />
+    <Compile Include="Logic\Actions\DispatcherToolAction.cs" />
     <Compile Include="Logic\Converters\TraceEventTypeToColorConverter.cs" />
     <Compile Include="Logic\ToolActionDialogTemplateSelector.cs" />
     <Compile Include="Logic\WindowApplicationBase.cs" />

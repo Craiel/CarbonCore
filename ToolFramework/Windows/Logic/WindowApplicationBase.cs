@@ -9,9 +9,9 @@
     using CarbonCore.ToolFramework.Contracts;
     using CarbonCore.ToolFramework.Logic;
     using CarbonCore.ToolFramework.Logic.Actions;
-    using CarbonCore.ToolFramework.View;
     using CarbonCore.ToolFramework.Windows.Contracts;
     using CarbonCore.ToolFramework.Windows.Contracts.ViewModels;
+    using CarbonCore.ToolFramework.Windows.Logic.Actions;
     using CarbonCore.Utils;
     using CarbonCore.Utils.Contracts.IoC;
     using CarbonCore.Utils.Diagnostics;
@@ -33,6 +33,8 @@
             log4net.Config.XmlConfigurator.Configure();
 
             this.Version = AssemblyExtensions.GetVersion(this.GetType());
+
+            Diagnostic.RegisterThread(this.GetType().Name);
         }
 
         // -------------------------------------------------------------------
@@ -64,16 +66,13 @@
 
             this.StartupInitializeCustomActions(startupActions);
 
-            IToolAction action = RelayToolAction.Create(this.StartupInitializeViewModel);
-            // TODO: action.Dispatcher = application.Dispatcher;
+            IToolAction action = DispatcherToolAction.Create(this.StartupInitializeViewModel);
             startupActions.Add(action);
 
-            action = RelayToolAction.Create(this.StartupInitializeWindow);
-            // TODO: action.Dispatcher = application.Dispatcher;
+            action = DispatcherToolAction.Create(this.StartupInitializeWindow);
             startupActions.Add(action);
 
-            IToolAction finalAction = RelayToolAction.Create(this.StartupFinalize);
-            // TODO: finalAction.Dispatcher = application.Dispatcher;
+            IToolAction finalAction = DispatcherToolAction.Create(this.StartupFinalize);
             finalAction.Order = int.MaxValue;
             startupActions.Add(finalAction);
 
@@ -81,7 +80,7 @@
             {
                 application.MainWindow = ToolActionDialog.CreateNew(this.factory, startupActions, ToolActionDisplayMode.Splash);
                 application.MainWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-                application.MainWindow.Title = string.Format("Preparing {0}...", this.Name);
+                application.MainWindow.Title = $"Preparing {this.Name}...";
                 if (applicationDispatcherRunning)
                 {
                     application.MainWindow.Show();
@@ -131,7 +130,7 @@
             // Used by inherited classes to add actions
         }
 
-        protected void StartupFinalize(IToolAction toolAction, CancellationToken cancellationToken)
+        protected void StartupFinalize(IToolAction toolAction)
         {
             using (new ToolActionRegion(this.factory, toolAction))
             {
@@ -168,7 +167,7 @@
         // -------------------------------------------------------------------
         // Private
         // -------------------------------------------------------------------
-        private void StartupInitializeViewModel(IToolAction toolAction, CancellationToken cancellationToken)
+        private void StartupInitializeViewModel(IToolAction toolAction)
         {
             this.MainViewModel = this.DoInitializeMainViewModel();
             if (this.MainWindow != null)
@@ -178,7 +177,7 @@
             }
         }
 
-        private void StartupInitializeWindow(IToolAction toolAction, CancellationToken cancellationToken)
+        private void StartupInitializeWindow(IToolAction toolAction)
         {
             using (new ToolActionRegion(this.factory, toolAction))
             {

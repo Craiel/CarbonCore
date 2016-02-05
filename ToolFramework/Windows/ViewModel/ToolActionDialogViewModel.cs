@@ -8,6 +8,7 @@
     using System.Threading.Tasks;
     using System.Windows.Input;
     using System.Windows.Media;
+    using System.Windows.Threading;
 
     using CarbonCore.Resources;
     using CarbonCore.ToolFramework.Contracts;
@@ -22,6 +23,8 @@
         private readonly ExtendedObservableCollection<IToolActionViewModel> activeActions;
 
         private readonly CancellationTokenSource cancellationTokenSource;
+
+        private readonly Dispatcher mainDispatcher;
 
         private ImageSource icon;
         private ImageSource image;
@@ -53,6 +56,8 @@
             // Set some defaults for our visuals
             this.icon = Static.IconPlaceholderUri.ToImageSource();
             this.mainProgressText = "Please wait...";
+
+            this.mainDispatcher = Dispatcher.CurrentDispatcher;
         }
 
         // -------------------------------------------------------------------
@@ -229,7 +234,7 @@
                 orderDictionary[action.Order].Add(action);
             }
 
-            // Execute the view models by order
+            // Execute the actions by order
             foreach (int i in orderDictionary.Keys.OrderBy(x => x))
             {
                 this.activeActions.Clear();

@@ -1,7 +1,7 @@
 ﻿<controls:MetroWindow x:Class="CarbonCore.ToolFramework.Windows.View.ToolActionDialog"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:logic="clr-namespace:CarbonCore.ToolFramework.Logic"
+        xmlns:logic="clr-namespace:CarbonCore.ToolFramework.Windows.Logic"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:logic1="clr-namespace:CarbonCore.ToolFramework.Windows.Logic"
         SizeToContent="WidthAndHeight"
@@ -11,7 +11,7 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/CarbonCore.ToolFramework;component/Resources/ToolActionDisplays.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/CarbonCore.ToolFramework.Windows;component/Resources/ToolActionDisplays.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <logic1:ToolActionDialogTemplateSelector x:Key="ToolActionDialogTemplateSelector"

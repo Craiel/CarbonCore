@@ -9,7 +9,7 @@
         public static void DoEvents(this Application application)
         {
             var frame = new DispatcherFrame(true);
-            application.Dispatcher.BeginInvoke(
+            application.Dispatcher.Invoke(
                 DispatcherPriority.Background, (SendOrPostCallback)delegate(object arg)
                     {
                         var f = arg as DispatcherFrame;

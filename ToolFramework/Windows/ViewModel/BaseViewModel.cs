@@ -58,7 +58,7 @@
 
         protected void NotifyPropertyChangedExplicit(string propertyName)
         {
-            Diagnostic.Assert(!string.IsNullOrEmpty(propertyName), "Explicit notify must have value, call All instead!");
+            Diagnostic.AssertUnmanaged(!string.IsNullOrEmpty(propertyName), "Explicit notify must have value, call All instead!");
 
             if (this.PropertyChanged == null)
             {
