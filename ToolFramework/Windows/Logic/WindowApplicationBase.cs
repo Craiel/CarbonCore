@@ -33,8 +33,6 @@
             log4net.Config.XmlConfigurator.Configure();
 
             this.Version = AssemblyExtensions.GetVersion(this.GetType());
-
-            Diagnostic.RegisterThread(this.GetType().Name);
         }
 
         // -------------------------------------------------------------------
@@ -50,6 +48,8 @@
 
         public virtual void Start()
         {
+            Diagnostic.RegisterThread(this.GetType().Name);
+
             Application application = Application.Current;
             bool applicationDispatcherRunning = true;
             if (application == null)
@@ -119,6 +119,8 @@
                 this.MainWindow.Closed -= this.OnMainWindowClosed;
                 this.MainWindow = null;
             }
+
+            Diagnostic.UnregisterThread();
         }
 
         protected virtual void StartupInitializeLogic(IToolAction toolAction, CancellationToken cancellationToken)
