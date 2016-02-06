@@ -21,12 +21,17 @@
 
         public bool IsMuted { get; set; }
 
-        public void Assert(bool condition, string message = null)
+        public void Assert(bool condition, string message, params object[] args)
         {
             if (message == null)
             {
                 UnityEngine.Assertions.Assert.IsTrue(condition);
                 return;
+            }
+
+            if (args != null && args.Length > 0)
+            {
+                message = string.Format(message, args);
             }
 
             UnityEngine.Assertions.Assert.IsTrue(condition, message);

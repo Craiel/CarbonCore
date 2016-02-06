@@ -43,24 +43,6 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>..\..\CarbonCore.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <Choose>
-    <When Condition=" '$(Configuration)'=='Unity' Or '$(Configuration)'=='UnityRelease' ">
-      <ItemGroup>
-        <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-          <SpecificVersion>False</SpecificVersion>
-          <HintPath>..\..\External\Json.NET\Unity\UnityJasonNet.dll</HintPath>
-        </Reference>
-      </ItemGroup>
-    </When>
-    <Otherwise>
-      <ItemGroup>
-        <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-          <SpecificVersion>False</SpecificVersion>
-          <HintPath>..\..\External\Json.NET\Json70r1\Net35\Newtonsoft.Json.dll</HintPath>
-        </Reference>
-      </ItemGroup>
-    </Otherwise>
-  </Choose>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -204,6 +186,10 @@
     <ProjectReference Include="..\..\ContentServices\CarbonCore.ContentServices.csproj">
       <Project>{5d3507bd-d8dd-4255-a262-8e360e936f10}</Project>
       <Name>CarbonCore.ContentServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\External\Newtonsoft.Json\Newtonsoft.Json.csproj">
+      <Project>{eeea67f9-9089-481d-a4dc-0966dec9fd7d}</Project>
+      <Name>Newtonsoft.Json</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Utils\CarbonCore.Utils.csproj">
       <Project>{e05836d9-0bb3-4bfa-89e6-f5ed40a9d93c}</Project>

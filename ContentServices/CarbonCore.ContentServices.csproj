@@ -46,24 +46,6 @@
     <OutputPath>..\bin\Unity\Release\Editor\</OutputPath>
     <DefineConstants>UNITY; UNITY_5</DefineConstants>
   </PropertyGroup>
-  <Choose>
-    <When Condition=" '$(Configuration)'=='Unity' Or '$(Configuration)'=='UnityRelease' ">
-      <ItemGroup>
-        <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-          <SpecificVersion>False</SpecificVersion>
-          <HintPath>..\External\Json.NET\Unity\UnityJasonNet.dll</HintPath>
-        </Reference>
-      </ItemGroup>
-    </When>
-    <Otherwise>
-      <ItemGroup>
-        <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-          <SpecificVersion>False</SpecificVersion>
-          <HintPath>..\External\Json.NET\Json70r1\Net35\Newtonsoft.Json.dll</HintPath>
-        </Reference>
-      </ItemGroup>
-    </Otherwise>
-  </Choose>
   <ItemGroup>
     <Reference Include="JetBrains.Annotations, Version=10.0.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\packages\JetBrains.Annotations.10.0.0\lib\net20\JetBrains.Annotations.dll</HintPath>
@@ -167,6 +149,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\External\Newtonsoft.Json\Newtonsoft.Json.csproj">
+      <Project>{eeea67f9-9089-481d-a4dc-0966dec9fd7d}</Project>
+      <Name>Newtonsoft.Json</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utils\CarbonCore.Utils.csproj">
       <Project>{e05836d9-0bb3-4bfa-89e6-f5ed40a9d93c}</Project>
       <Name>CarbonCore.Utils</Name>

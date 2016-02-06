@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.GrammarParser", "GrammarParser\CarbonCore.GrammarParser.csproj", "{50C22F18-89F6-48F3-A29F-CA25FDADDB90}"
 EndProject
@@ -80,6 +80,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MCSync", "MCSync", "{98104041-239A-4663-9555-D08462C82932}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.Applications.MCSync.Launcher", "Applications\MCSync\Launcher\CarbonCore.Applications.MCSync.Launcher.csproj", "{2D9CC1AF-14BC-44F8-9821-D6E0D7D6D882}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External", "External", "{E928C946-3E15-46DB-8F1F-26523482FEAC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newtonsoft.Json", "External\Newtonsoft.Json\Newtonsoft.Json.csproj", "{EEEA67F9-9089-481D-A4DC-0966DEC9FD7D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -265,6 +269,14 @@ Global
 		{2D9CC1AF-14BC-44F8-9821-D6E0D7D6D882}.Unity|Any CPU.Build.0 = Release|Any CPU
 		{2D9CC1AF-14BC-44F8-9821-D6E0D7D6D882}.UnityRelease|Any CPU.ActiveCfg = Release|Any CPU
 		{2D9CC1AF-14BC-44F8-9821-D6E0D7D6D882}.UnityRelease|Any CPU.Build.0 = Release|Any CPU
+		{EEEA67F9-9089-481D-A4DC-0966DEC9FD7D}.Debug|Any CPU.ActiveCfg = UnityRelease|Any CPU
+		{EEEA67F9-9089-481D-A4DC-0966DEC9FD7D}.Debug|Any CPU.Build.0 = UnityRelease|Any CPU
+		{EEEA67F9-9089-481D-A4DC-0966DEC9FD7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEEA67F9-9089-481D-A4DC-0966DEC9FD7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEEA67F9-9089-481D-A4DC-0966DEC9FD7D}.Unity|Any CPU.ActiveCfg = Unity|Any CPU
+		{EEEA67F9-9089-481D-A4DC-0966DEC9FD7D}.Unity|Any CPU.Build.0 = Unity|Any CPU
+		{EEEA67F9-9089-481D-A4DC-0966DEC9FD7D}.UnityRelease|Any CPU.ActiveCfg = UnityRelease|Any CPU
+		{EEEA67F9-9089-481D-A4DC-0966DEC9FD7D}.UnityRelease|Any CPU.Build.0 = UnityRelease|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -298,5 +310,6 @@ Global
 		{1FF6D0DA-B801-4956-A015-CE04FC7FB93F} = {BFF63B4F-00C5-4315-8D22-6312782CFBE6}
 		{98104041-239A-4663-9555-D08462C82932} = {7038249C-12AD-4560-BC2A-01FAD5D9B7BD}
 		{2D9CC1AF-14BC-44F8-9821-D6E0D7D6D882} = {98104041-239A-4663-9555-D08462C82932}
+		{EEEA67F9-9089-481D-A4DC-0966DEC9FD7D} = {E928C946-3E15-46DB-8F1F-26523482FEAC}
 	EndGlobalSection
 EndGlobal

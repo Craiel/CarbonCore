@@ -23,9 +23,7 @@
         {
             this.For<IMain>().Use<Main>();
             this.For<IConfig>().Use<Config>();
-
-            this.For<IBuildUtils>().Use<BuildUtils>();
-
+            
             this.For<IBuildLogic>().Use<BuildLogic>();
             this.For<IExcelProcessor>().Use<CrystalExcelProcessor>();
             this.For<ITemplateProcessor>().Use<TemplateProcessor>();

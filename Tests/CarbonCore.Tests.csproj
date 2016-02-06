@@ -40,24 +40,6 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <Choose>
-    <When Condition=" '$(Configuration)'=='Unity' Or '$(Configuration)'=='UnityRelease' ">
-      <ItemGroup>
-        <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-          <SpecificVersion>False</SpecificVersion>
-          <HintPath>..\External\Json.NET\Unity\UnityJasonNet.dll</HintPath>
-        </Reference>
-      </ItemGroup>
-    </When>
-    <Otherwise>
-      <ItemGroup>
-        <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-          <SpecificVersion>False</SpecificVersion>
-          <HintPath>..\External\Json.NET\Json70r1\Net35\Newtonsoft.Json.dll</HintPath>
-        </Reference>
-      </ItemGroup>
-    </Otherwise>
-  </Choose>
   <ItemGroup>
     <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
@@ -127,6 +109,10 @@
     <ProjectReference Include="..\ContentServices\CarbonCore.ContentServices.csproj">
       <Project>{5d3507bd-d8dd-4255-a262-8e360e936f10}</Project>
       <Name>CarbonCore.ContentServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\External\Newtonsoft.Json\Newtonsoft.Json.csproj">
+      <Project>{eeea67f9-9089-481d-a4dc-0966dec9fd7d}</Project>
+      <Name>Newtonsoft.Json</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utils\CarbonCore.Utils.csproj">
       <Project>{e05836d9-0bb3-4bfa-89e6-f5ed40a9d93c}</Project>

@@ -54,24 +54,6 @@
     <OutputPath>..\bin\Unity\Release\Editor\</OutputPath>
     <DefineConstants>UNITY; UNITY_5</DefineConstants>
   </PropertyGroup>
-  <Choose>
-    <When Condition=" '$(Configuration)'=='Unity' Or '$(Configuration)'=='UnityRelease' ">
-      <ItemGroup>
-        <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-          <SpecificVersion>False</SpecificVersion>
-          <HintPath>..\External\Json.NET\Unity\UnityJasonNet.dll</HintPath>
-        </Reference>
-      </ItemGroup>
-    </When>
-    <Otherwise>
-      <ItemGroup>
-        <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-          <SpecificVersion>False</SpecificVersion>
-          <HintPath>..\External\Json.NET\Json70r1\Net35\Newtonsoft.Json.dll</HintPath>
-        </Reference>
-      </ItemGroup>
-    </Otherwise>
-  </Choose>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -230,7 +212,12 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\External\Newtonsoft.Json\Newtonsoft.Json.csproj">
+      <Project>{eeea67f9-9089-481d-a4dc-0966dec9fd7d}</Project>
+      <Name>Newtonsoft.Json</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

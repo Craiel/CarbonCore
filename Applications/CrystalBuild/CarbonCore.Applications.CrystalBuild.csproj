@@ -45,7 +45,6 @@
     <Compile Include="Config.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Contracts\IBuildLogic.cs" />
-    <Compile Include="Contracts\IBuildUtils.cs" />
     <Compile Include="Contracts\IConfig.cs" />
     <Compile Include="Contracts\Processors\IContentProcessor.cs" />
     <Compile Include="Contracts\Processors\ICssProcessor.cs" />
@@ -57,7 +56,6 @@
     <Compile Include="Entry.cs" />
     <Compile Include="IoC\IoC.cs" />
     <Compile Include="Logic\BuildLogic.cs" />
-    <Compile Include="Logic\BuildUtils.cs" />
     <Compile Include="Logic\ProcessingCache.cs" />
     <Compile Include="Logic\ProcessingContext.cs" />
     <Compile Include="Logic\Processors\ContentProcessor.cs" />

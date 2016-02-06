@@ -37,9 +37,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\External\Json.NET\Json70r1\Net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
@@ -56,6 +53,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\External\Newtonsoft.Json\Newtonsoft.Json.csproj">
+      <Project>{eeea67f9-9089-481d-a4dc-0966dec9fd7d}</Project>
+      <Name>Newtonsoft.Json</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Modules\D3Theory\CarbonCore.Modules.D3Theory.csproj">
       <Project>{c630f5c6-75e4-40c1-9343-44b7eb05b67c}</Project>
       <Name>CarbonCore.Modules.D3Theory</Name>
