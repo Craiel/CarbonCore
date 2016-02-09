@@ -7,9 +7,9 @@
     using CarbonCore.Utils.Formatting;
     using CarbonCore.Utils.Network;
 
-    public class UtilsCompatModule : CarbonQuickModule
+    public class UtilsModule : CarbonQuickModule
     {
-        public UtilsCompatModule()
+        public UtilsModule()
         {
             this.For<IFactory>().Use<Factory>().Singleton();
             this.For<IEventRelay>().Use<EventRelay>().Singleton();

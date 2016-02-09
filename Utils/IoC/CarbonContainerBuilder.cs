@@ -18,7 +18,7 @@
             var container = new CarbonQuickContainer();
 
             // Scan the module for dependencies
-            IEnumerable<Type> dependencies = ScanModules(typeof(T), typeof(UtilsCompatModule));
+            IEnumerable<Type> dependencies = ScanModules(typeof(T), typeof(UtilsModule));
             foreach (Type moduleType in dependencies)
             {
                 container.RegisterModule((ICarbonQuickModule)Activator.CreateInstance(moduleType));

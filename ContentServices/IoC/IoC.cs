@@ -4,7 +4,7 @@
     using CarbonCore.ContentServices.Logic;
     using CarbonCore.Utils.IoC;
 
-    [DependsOnModule(typeof(UtilsCompatModule))]
+    [DependsOnModule(typeof(UtilsModule))]
     public class ContentServicesCompatModule : CarbonQuickModule
     {
         public ContentServicesCompatModule()

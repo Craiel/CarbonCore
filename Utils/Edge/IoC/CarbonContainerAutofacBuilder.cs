@@ -19,7 +19,7 @@
             // Scan the module for dependencies
             IEnumerable<Type> dependencies = CarbonContainerBuilder.ScanModules(
                 typeof(T),
-                typeof(UtilsCompatModule),
+                typeof(UtilsModule),
                 typeof(UtilsEdgeModule));
 
             var builder = new ContainerBuilder();

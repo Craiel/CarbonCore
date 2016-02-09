@@ -8,7 +8,7 @@
     using CarbonCore.Utils.Unity.Logic.BufferedData;
     using CarbonCore.Utils.Unity.Logic.TaskPoolLogic;
 
-    [DependsOnModule(typeof(UtilsCompatModule))]
+    [DependsOnModule(typeof(UtilsModule))]
     public class UtilsUnityModule : CarbonQuickModule
     {
         public UtilsUnityModule()
