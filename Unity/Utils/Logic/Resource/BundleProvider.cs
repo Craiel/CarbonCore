@@ -7,18 +7,21 @@
     using CarbonCore.Utils.Diagnostics.Metrics;
     using CarbonCore.Utils.IO;
     using CarbonCore.Utils.Unity.Data;
+    using CarbonCore.Utils.Unity.Logic.Enums;
 
     using UnityEngine;
 
-    public delegate void OnBundleLoadingDelegate(BundleKey key);
-    public delegate void OnBundleLoadedDelegate(BundleKey key, long loadTime);
+    public delegate void OnBundleLoadingDelegate(BundleLoadInfo key);
+    public delegate void OnBundleLoadedDelegate(BundleLoadInfo key, long loadTime);
 
     public class BundleProvider : UnitySingleton<BundleProvider>
     {
-        private readonly IDictionary<BundleKey, AssetBundle> bundles;
-        private readonly IDictionary<BundleKey, CarbonFile> bundleFiles;
+        private readonly IDictionary<BundleLoadInfo, AssetBundle> bundles;
+        private readonly IDictionary<BundleLoadInfo, CarbonFile> bundleFiles;
 
-        private readonly Queue<BundleKey> currentPendingLoads;
+        private readonly IDictionary<BundleKey, BundleLoadInfo> loadInfoMap;
+
+        private readonly Queue<BundleLoadInfo> currentPendingLoads;
 
         private readonly IDictionary<BundleKey, long> history;
 
@@ -27,10 +30,11 @@
         // -------------------------------------------------------------------
         public BundleProvider()
         {
-            this.bundles = new Dictionary<BundleKey, AssetBundle>();
-            this.bundleFiles = new Dictionary<BundleKey, CarbonFile>();
+            this.bundles = new Dictionary<BundleLoadInfo, AssetBundle>();
+            this.bundleFiles = new Dictionary<BundleLoadInfo, CarbonFile>();
+            this.loadInfoMap = new Dictionary<BundleKey, BundleLoadInfo>();
 
-            this.currentPendingLoads = new Queue<BundleKey>();
+            this.currentPendingLoads = new Queue<BundleLoadInfo>();
 
             this.history = new Dictionary<BundleKey, long>();
         }
@@ -55,57 +59,70 @@
 
         public BundleLoadRequest CurrentRequest { get; private set; }
 
-        public void RegisterBundle(BundleKey key, CarbonFile file)
+        public void RegisterBundle(BundleKey key, CarbonFile file, BundleLoadFlags flags = BundleLoadFlags.None)
         {
-            if (this.bundles.ContainsKey(key))
+            if (this.loadInfoMap.ContainsKey(key))
             {
                 // We already got this bundle, skip
                 return;
             }
 
-            this.DoRegisterBundle(key, file);
-            this.currentPendingLoads.Enqueue(key);
+            var info = new BundleLoadInfo(key, flags);
+            this.DoRegisterBundle(info, file);
+            this.currentPendingLoads.Enqueue(info);
         }
 
-        public void RegisterLoadedBundle(BundleKey key, AssetBundle bundle)
+        public void RegisterLoadedBundle(BundleKey key, AssetBundle bundle, BundleLoadFlags flags = BundleLoadFlags.None)
         {
-            if (this.bundles.ContainsKey(key))
+            BundleLoadInfo info;
+            if (!this.loadInfoMap.TryGetValue(key, out info))
             {
-                this.bundles[key] = bundle;
+                // Register the new entry
+                info = new BundleLoadInfo(key, flags);
+                this.DoRegisterBundle(info, null);
             }
-            else
-            {
-                this.bundles.Add(key, bundle);
-            }
+
+            // Update the bundle
+            this.bundles[info] = bundle;
         }
 
-        public void RegisterLazyBundle(BundleKey key, CarbonFile file)
+        public void RegisterLazyBundle(BundleKey key, CarbonFile file, BundleLoadFlags flags = BundleLoadFlags.None)
         {
-            if (this.bundles.ContainsKey(key))
+            if (this.loadInfoMap.ContainsKey(key))
             {
                 // We already got this bundle, skip
                 return;
             }
 
-            this.DoRegisterBundle(key, file);
+            var info = new BundleLoadInfo(key, flags);
+            this.DoRegisterBundle(info, file);
         }
 
         public void UnregisterBundle(BundleKey key)
         {
-            if (!this.bundles.ContainsKey(key))
+            BundleLoadInfo info;
+            if (!this.loadInfoMap.TryGetValue(key, out info))
             {
                 // Bundle is not registered
                 return;
             }
-
-            this.bundles.Remove(key);
-            this.bundleFiles.Remove(key);
+            
+            this.bundles.Remove(info);
+            this.bundleFiles.Remove(info);
+            this.loadInfoMap.Remove(key);
         }
 
         public AssetBundle GetBundle(BundleKey key)
         {
+            BundleLoadInfo info;
+            if (!this.loadInfoMap.TryGetValue(key, out info))
+            {
+                // Bundle is not registered
+                return null;
+            }
+
             AssetBundle result;
-            if (this.bundles.TryGetValue(key, out result))
+            if (this.bundles.TryGetValue(info, out result))
             {
                 return result;
             }
@@ -120,11 +137,11 @@
 
         public BundleKey? GetBundleKey(CarbonFile file)
         {
-            foreach (BundleKey key in this.bundles.Keys)
+            foreach (BundleLoadInfo info in this.bundles.Keys)
             {
-                if (key.Bundle.Equals(file.GetPath(), StringComparison.OrdinalIgnoreCase))
+                if (info.Key.Bundle.Equals(file.GetPath(), StringComparison.OrdinalIgnoreCase))
                 {
-                    return key;
+                    return info.Key;
                 }
             }
 
@@ -133,22 +150,14 @@
 
         public bool LoadBundleImmediate(BundleKey key)
         {
-            if (!this.bundles.ContainsKey(key))
+            BundleLoadInfo info;
+            if (!this.loadInfoMap.TryGetValue(key, out info))
             {
                 Diagnostic.Error("Bundle was not registered, can not load immediate: {0}", key);
                 return false;
             }
-
-            if (this.bundles[key] != null)
-            {
-                // Already loaded, nothing to do
-                return true;
-            }
-
-            var request = new BundleLoadRequest(key, this.bundleFiles[key]);
-            request.LoadImmediate();
-            this.FinalizeBundle(request);
-            return true;
+            
+            return this.DoLoadBundleImmediate(info);
         }
 
         public bool ContinueLoad()
@@ -168,20 +177,20 @@
 
             if (this.currentPendingLoads.Count > 0)
             {
-                BundleKey key = this.currentPendingLoads.Dequeue();
-                if (this.bundles[key] != null)
+                BundleLoadInfo info = this.currentPendingLoads.Dequeue();
+                if (this.bundles[info] != null)
                 {
                     // Skip this bundle, it was already loaded
                     return true;
                 }
 
-                CarbonFile file = this.bundleFiles[key];
+                CarbonFile file = this.bundleFiles[info];
 
-                this.CurrentRequest = new BundleLoadRequest(key, file);
+                this.CurrentRequest = new BundleLoadRequest(info, file);
                 
                 if (this.BundleLoading != null)
                 {
-                    this.BundleLoading(key);
+                    this.BundleLoading(info);
                 }
 
                 return true;
@@ -194,37 +203,52 @@
         {
             while (this.currentPendingLoads.Count > 0)
             {
-                BundleKey key = this.currentPendingLoads.Dequeue();
-                this.LoadBundleImmediate(key);
+                BundleLoadInfo info = this.currentPendingLoads.Dequeue();
+                this.DoLoadBundleImmediate(info);
             }
         }
 
         // -------------------------------------------------------------------
         // Private
         // -------------------------------------------------------------------
-        private void DoRegisterBundle(BundleKey key, CarbonFile file)
+        private bool DoLoadBundleImmediate(BundleLoadInfo info)
         {
-            this.bundles.Add(key, null);
-            this.bundleFiles.Add(key, file);
+            if (this.bundles[info] != null)
+            {
+                // Already loaded, nothing to do
+                return true;
+            }
+
+            var request = new BundleLoadRequest(info, this.bundleFiles[info]);
+            request.LoadImmediate();
+            this.FinalizeBundle(request);
+            return true;
+        }
+
+        private void DoRegisterBundle(BundleLoadInfo info, CarbonFile file)
+        {
+            this.bundles.Add(info, null);
+            this.bundleFiles.Add(info, file);
+
+            this.loadInfoMap.Add(info.Key, info);
         }
 
         private void FinalizeBundle(BundleLoadRequest request)
         {
-            BundleKey key = request.Key;
             AssetBundle bundle = request.GetBundle();
             MetricTime metric = request.Metric;
 
-            this.bundles[key] = bundle;
+            this.bundles[request.Info] = bundle;
             Diagnostic.TakeTimeMeasure(metric);
 
             if (this.EnableHistory)
             {
-                this.history.Add(key, metric.Total);
+                this.history.Add(request.Info.Key, metric.Total);
             }
 
             if (this.BundleLoaded != null)
             {
-                this.BundleLoaded(key, metric.Total);
+                this.BundleLoaded(request.Info, metric.Total);
             }
         }
     }
