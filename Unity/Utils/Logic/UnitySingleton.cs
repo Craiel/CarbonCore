@@ -51,10 +51,15 @@
             this.IsInitialized = true;
         }
 
-        // -------------------------------------------------------------------
-        // Protected
-        // -------------------------------------------------------------------
-        protected void DestroySingleton()
+        public static void DestroyInstance()
+        {
+            if (IsInstanceActive)
+            {
+                Instance.DestroySingleton();
+            }
+        }
+
+        public virtual void DestroySingleton()
         {
             Diagnostic.Info("Destroying Singleton {0}", this.GetType());
 
