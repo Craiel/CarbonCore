@@ -30,14 +30,14 @@
     <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Unity|AnyCPU'">
-    <OutputPath>..\..\..\bin\Unity\Debug\Editor\</OutputPath>
+    <OutputPath>bin\Unity\</OutputPath>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>..\..\..\CarbonCore.ruleset</CodeAnalysisRuleSet>
     <DefineConstants>TRACE;DEBUG;UNITY; UNITY_5; UNITY_EDITOR</DefineConstants>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnityRelease|AnyCPU'">
-    <OutputPath>..\..\..\bin\Unity\Release\Editor\</OutputPath>
+    <OutputPath>bin\UnityRelease\</OutputPath>
     <DefineConstants>UNITY; UNITY_5; UNITY_EDITOR</DefineConstants>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>..\..\..\CarbonCore.ruleset</CodeAnalysisRuleSet>

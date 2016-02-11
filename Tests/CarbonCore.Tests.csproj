@@ -29,17 +29,6 @@
     <DefineConstants>TRACE;DEBUG;UNITY; UNITY_5</DefineConstants>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnityRelease|AnyCPU'">
-    <OutputPath>bin\UnityRelease\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;UNITY</DefineConstants>
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\UnityRelease\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;UNITY; UNITY_5</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.framework, Version=3.0.5813.39033, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.3.0.1\lib\net20\nunit.framework.dll</HintPath>

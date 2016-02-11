@@ -12,7 +12,7 @@
         public void MemoryTest()
         {
             var instance = new CFSInstanceMemory();
-            Assert.AreEqual(0, instance.Files);
+            Assert.AreEqual(0, instance.Files.Count);
 
             instance.Dispose();
         }
@@ -24,7 +24,7 @@
             testFile.DeleteIfExists();
 
             var instance = new CFSInstanceFile(testFile);
-            Assert.AreEqual(0, instance.Files);
+            Assert.AreEqual(0, instance.Files.Count);
             Assert.IsTrue(testFile.Exists);
 
             instance.Dispose();
