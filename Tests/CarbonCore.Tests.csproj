@@ -51,6 +51,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CFS\CFSTestsGeneric.cs" />
     <Compile Include="ContentServices\DataEntryTests.cs" />
     <Compile Include="ContentServices\Data\DataTestData.cs" />
     <Compile Include="ContentServices\Data\DataTestEntry2.cs" />
@@ -106,6 +107,10 @@
     <EmbeddedResource Include="Resources\Todo.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CFS\CarbonCore.CFS.csproj">
+      <Project>{06d0ca41-40b7-4c49-a230-5dd1540d9767}</Project>
+      <Name>CarbonCore.CFS</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ContentServices\CarbonCore.ContentServices.csproj">
       <Project>{5d3507bd-d8dd-4255-a262-8e360e936f10}</Project>
       <Name>CarbonCore.ContentServices</Name>

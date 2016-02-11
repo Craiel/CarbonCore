@@ -4,6 +4,9 @@
 
     public static class ProcessorUtils
     {
+        // -------------------------------------------------------------------
+        // Public
+        // -------------------------------------------------------------------
         public static int GetAvailableProcessorCount(ProcessorSettings settings, int count)
         {
             // Determine how many processors we can use

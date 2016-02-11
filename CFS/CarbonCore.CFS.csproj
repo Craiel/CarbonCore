@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CarbonCore.CFS</RootNamespace>
     <AssemblyName>CarbonCore.CFS</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -40,6 +40,32 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CFSConstants.cs" />
+    <Compile Include="Contracts\ICFSFileTable.cs" />
+    <Compile Include="Data\CFSEntryData.cs" />
+    <Compile Include="Data\CFSFileTableData.cs" />
+    <Compile Include="Data\CFSHeaderData.cs" />
+    <Compile Include="Logic\CFSFileTable.cs" />
+    <Compile Include="Logic\CFSInstanceFile.cs" />
+    <Compile Include="Logic\CFSInstanceMemory.cs" />
+    <Compile Include="Contracts\ICFSEntry.cs" />
+    <Compile Include="Contracts\ICFSFilter.cs" />
+    <Compile Include="Contracts\ICFSInstance.cs" />
+    <Compile Include="Logic\CFSInstance.cs" />
+    <Compile Include="Logic\CFSReader.cs" />
+    <Compile Include="Logic\CFSWriter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ContentServices\CarbonCore.ContentServices.csproj">
+      <Project>{5d3507bd-d8dd-4255-a262-8e360e936f10}</Project>
+      <Name>CarbonCore.ContentServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utils\CarbonCore.Utils.csproj">
+      <Project>{e05836d9-0bb3-4bfa-89e6-f5ed40a9d93c}</Project>
+      <Name>CarbonCore.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -28,8 +28,10 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
+#pragma warning disable 0067
         public event JsonPackageHandler OnPackageReceived;
         public event JsonPackageHandler OnPackageSent;
+#pragma warning restore 0067
 
         public void Register<T>() where T : IJsonNetPackage
         {

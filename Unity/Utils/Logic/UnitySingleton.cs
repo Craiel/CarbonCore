@@ -54,7 +54,7 @@
         // -------------------------------------------------------------------
         // Protected
         // -------------------------------------------------------------------
-        protected void DestroySingleton()
+        protected virtual void DestroySingleton()
         {
             Diagnostic.Info("Destroying Singleton {0}", this.GetType());
 
