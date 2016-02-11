@@ -153,6 +153,14 @@
         public static void RegisterThread(string name, EngineTime time = null)
         {
             int threadId = Thread.CurrentThread.ManagedThreadId;
+
+            // This is potentially slow but we have to make sure
+            if (instance.HasLogContext(threadId))
+            {
+                Error("Thread {0} registered!", threadId);
+                return;
+            }
+
             if (time != null)
             {
                 lock (ThreadTimes)

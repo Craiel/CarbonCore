@@ -102,6 +102,14 @@
             return this.metricProviders[id];
         }
 
+        public virtual bool HasLogContext(int id)
+        {
+            lock (this.contextLogs)
+            {
+                return this.contextLogs.ContainsKey(id);
+            }
+        }
+
         public virtual void RegisterLogContext(int id, string name)
         {
             lock (this.contextLogs)
