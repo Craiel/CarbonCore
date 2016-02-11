@@ -7,7 +7,7 @@
 
     public static class ResourceUtils
     {
-        public static void ResourceToStream(DeviceContext context, Texture2D texture2D, ImageFileFormat format, Stream target)
+        public static void ResourceToStream(DeviceContext context, Texture2D texture2D/*, ImageFileFormat format*/, Stream target)
         {
             throw new NotImplementedException("This changed from 11 to 11.1 need to use something else");
 
@@ -20,7 +20,7 @@
              * And now my game now looks fabulous in Metro with all it's textures in place! :)*/
         }
 
-        public static T ResourceFromMemory<T>(Device graphics, byte[] data, ImageLoadInformation? loadInformation = null)
+        public static T ResourceFromMemory<T>(Device graphics, byte[] data/*, ImageLoadInformation? loadInformation = null*/)
         {
             throw new NotImplementedException("same thing as ResourceToStream");
         }
