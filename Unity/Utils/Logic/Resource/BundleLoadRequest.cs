@@ -5,7 +5,7 @@
     using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.Diagnostics.Metrics;
     using CarbonCore.Utils.IO;
-    using CarbonCore.Utils.Unity.Data;
+    using CarbonCore.Utils.Unity.Logic.Enums;
 
     using UnityEngine;
 
@@ -25,9 +25,9 @@
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
-        public BundleLoadRequest(BundleKey key, CarbonFile file)
+        public BundleLoadRequest(BundleLoadInfo info, CarbonFile file)
         {
-            this.Key = key;
+            this.Info = info;
             this.File = file;
             this.Metric = Diagnostic.BeginTimeMeasure();
         }
@@ -35,7 +35,7 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public BundleKey Key { get; private set; }
+        public BundleLoadInfo Info { get; private set; }
 
         public CarbonFile File { get; private set; }
 
@@ -43,20 +43,24 @@
 
         public void LoadImmediate()
         {
-            using (this.stream = this.File.OpenRead())
+            if ((this.Info.Flags & BundleLoadFlags.Uncompressed) != 0)
             {
-                this.data = new byte[this.stream.Length];
-                this.stream.Read(this.data, 0, this.data.Length);
+                this.LoadFromFileImmediate();
+                return;
             }
 
-            this.bundle = AssetBundle.CreateFromMemoryImmediate(this.data);
-
-            this.stream = null;
-            this.data = null;
+            this.LoadFromMemoryImmediate();
         }
 
         public bool ContinueLoading()
         {
+            if ((this.Info.Flags & BundleLoadFlags.Uncompressed) != 0)
+            {
+                // File is not async for now, just load sync
+                this.LoadFromFileImmediate();
+                return false;
+            }
+
             if (this.ContinueReadingFile())
             {
                 return true;
@@ -122,6 +126,25 @@
 
             this.fileLoaded = true;
             return false;
+        }
+
+        private void LoadFromFileImmediate()
+        {
+            this.bundle = AssetBundle.CreateFromFile(this.File.GetPath());
+        }
+
+        private void LoadFromMemoryImmediate()
+        {
+            using (this.stream = this.File.OpenRead())
+            {
+                this.data = new byte[this.stream.Length];
+                this.stream.Read(this.data, 0, this.data.Length);
+            }
+
+            this.bundle = AssetBundle.CreateFromMemoryImmediate(this.data);
+
+            this.stream = null;
+            this.data = null;
         }
     }
 }

@@ -80,6 +80,13 @@
     <Compile Include="GUI\LayoutRegion.cs" />
     <Compile Include="GUI\LayoutRegionSettings.cs" />
     <Compile Include="GUI\Splitter.cs" />
+    <Compile Include="UnityHotReloadGuard.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Utils\CarbonCore.Unity.Utils.csproj">
+      <Project>{0ec48d10-8e81-4b43-a7ee-f4bd83516cea}</Project>
+      <Name>CarbonCore.Unity.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

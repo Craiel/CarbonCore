@@ -16,6 +16,8 @@
         IMetricProvider GetMetricProvider(int id);
 
         // Logging
+        bool HasLogContext(int id);
+
         void RegisterLogContext(int id, string name);
 
         void UnregisterLogContext(int id);

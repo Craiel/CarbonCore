@@ -13,6 +13,8 @@
 
     public class Diagnostic
     {
+        private static readonly ILog FallbackLogContext = new TraceLog("Diagnostic.Fallback");
+
         private static readonly IDictionary<int, EngineTime> ThreadTimes = new Dictionary<int, EngineTime>();
 
         private static ICarbonDiagnostics instance;
@@ -151,6 +153,14 @@
         public static void RegisterThread(string name, EngineTime time = null)
         {
             int threadId = Thread.CurrentThread.ManagedThreadId;
+
+            // This is potentially slow but we have to make sure
+            if (instance.HasLogContext(threadId))
+            {
+                Error("Thread {0} registered!", threadId);
+                return;
+            }
+
             if (time != null)
             {
                 lock (ThreadTimes)
@@ -217,7 +227,14 @@
 
         private static ILog GetThreadContext()
         {
-            return instance.GetLogContext(Thread.CurrentThread.ManagedThreadId);
+            try
+            {
+                return instance.GetLogContext(Thread.CurrentThread.ManagedThreadId);
+            }
+            catch
+            {
+                return FallbackLogContext;
+            }
         }
 
         private static string PreformatMessage(string message)
