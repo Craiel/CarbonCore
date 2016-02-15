@@ -38,7 +38,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="UnityEngine">
-      <HintPath>$(SolutionDir)\External\Unity\5.2.2f1\UnityEngine.dll</HintPath>
+      <HintPath>..\External\Unity\5.2.2f1\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
