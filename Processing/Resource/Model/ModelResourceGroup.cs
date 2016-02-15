@@ -1,5 +1,6 @@
 ﻿namespace CarbonCore.Processing.Resource.Model
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -108,7 +109,7 @@
         {
             if (entry.Version != Version)
             {
-                throw new InvalidDataException("Model group version is not correct: " + entry.Version);
+                throw new InvalidOperationException("Model group version is not correct: " + entry.Version);
             }
 
             System.Diagnostics.Debug.Assert(entry.OffsetCount == 3, "Offset data has invalid count");

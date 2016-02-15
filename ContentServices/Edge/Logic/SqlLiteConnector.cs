@@ -8,6 +8,7 @@
     using System.Threading;
     
     using CarbonCore.ContentServices.Contracts;
+    using CarbonCore.ContentServices.Logic;
     using CarbonCore.Utils.Contracts;
     using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.IO;
@@ -83,11 +84,11 @@
             return this.OpenConnection();
         }
 
-        public DbCommand CreateCommand(ISqlStatement statement)
+        public IDbCommand CreateCommand(ISqlStatement statement)
         {
             Diagnostic.Assert(this.connection != null);
 
-            DbCommand command = this.connection.CreateCommand();
+            IDbCommand command = this.connection.CreateCommand();
             if (statement != null)
             {
                 Diagnostic.Info("SQLite: {0}", statement);
@@ -97,7 +98,7 @@
             return command;
         }
 
-        public DbCommand CreateCommand(IList<ISqlStatement> statements)
+        public IDbCommand CreateCommand(IList<ISqlStatement> statements)
         {
             Diagnostic.Assert(this.connection != null && statements != null && statements.Count > 0);
 
@@ -114,7 +115,7 @@
             return command;
         }
 
-        public DbTransaction BeginTransaction()
+        public IDbTransaction BeginTransaction()
         {
             return this.connection.BeginTransaction();
         }

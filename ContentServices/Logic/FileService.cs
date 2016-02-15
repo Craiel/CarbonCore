@@ -176,7 +176,7 @@
             IFileServiceProvider provider;
             if (!this.fileProviderLookup.TryGetValue(key, out provider))
             {
-                throw new InvalidDataException(string.Format("Entry {0} does not exist", key));
+                throw new InvalidOperationException(string.Format("Entry {0} does not exist", key));
             }
 
             Diagnostic.Warning("Warning! Changing version of {0} to {1}", key, version);
@@ -188,7 +188,7 @@
             IFileServiceProvider provider;
             if (!this.fileProviderLookup.TryGetValue(key, out provider))
             {
-                throw new InvalidDataException(string.Format("Entry {0} does not exist", key));
+                throw new InvalidOperationException(string.Format("Entry {0} does not exist", key));
             }
 
             return provider.GetVersion(key);

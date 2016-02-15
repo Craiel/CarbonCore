@@ -1,0 +1,5 @@
+.csproj
+Edge
+\bin\
+\obj\
+AssemblyInfo

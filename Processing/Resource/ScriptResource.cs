@@ -19,7 +19,7 @@
             
             /*if (scriptData.Version != Version)
             {
-                throw new InvalidDataException("Script version is not correct: " + scriptData.Version);
+                throw new InvalidOperationException("Script version is not correct: " + scriptData.Version);
             }
 
             this.Script = scriptData.ScriptData.ToStringUtf8();*/
@@ -37,7 +37,7 @@
 
             /*if (string.IsNullOrEmpty(this.Script))
             {
-                throw new InvalidDataException("Script was empty on Save");
+                throw new InvalidOperationException("Script was empty on Save");
             }
 
             var builder = new Protocol.Resource.Script.Builder

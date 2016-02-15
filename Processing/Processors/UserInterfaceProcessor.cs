@@ -56,7 +56,7 @@
             CarbonFile scriptFile = file.ToFile(".lua");
             if (!CarbonFile.FileExists(scriptFile))
             {
-                throw new InvalidDataException("Script file was not found for User Interface");
+                throw new InvalidOperationException("Script file was not found for User Interface");
             }
 
             var resource = new UserInterfaceResource();
@@ -91,7 +91,7 @@
 
             if (builder.NodesCount != 1 || builder.NodesList[0].Type != CsamlNode.Types.CsamlNodeType.Page)
             {
-                throw new InvalidDataException("Csaml must have exactly one root of type page!");
+                throw new InvalidOperationException("Csaml must have exactly one root of type page!");
             }
 
             return builder.Build();*/
@@ -272,7 +272,7 @@
 
                     default:
                         {
-                            throw new InvalidDataException("Unknown attribute Type: " + key);
+                            throw new InvalidOperationException("Unknown attribute Type: " + key);
                         }
                 }
 
@@ -300,7 +300,7 @@
             }
             catch (Exception e)
             {
-                throw new InvalidDataException(string.Format("Format for Attribute {0} was invalid (int): {1}", target.Type, source), e);
+                throw new InvalidOperationException(string.Format("Format for Attribute {0} was invalid (int): {1}", target.Type, source), e);
             }
         }
 
@@ -313,7 +313,7 @@
             }
             catch (Exception e)
             {
-                throw new InvalidDataException(string.Format("Format for Attribute {0} was invalid ({1}): {2}", target.Type, enumType, source), e);
+                throw new InvalidOperationException(string.Format("Format for Attribute {0} was invalid ({1}): {2}", target.Type, enumType, source), e);
             }
         }*/
 

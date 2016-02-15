@@ -1,7 +1,7 @@
 ﻿namespace CarbonCore.Utils.Network.Package
 {
+    using System;
     using System.Collections.Generic;
-    using System.IO;
     
     using CarbonCore.Utils.Contracts.Network;
 
@@ -36,7 +36,7 @@
             byte[] data = JsonNetUtils.SerializePackage(package);
             if (data == null || data.Length <= 0)
             {
-                throw new InvalidDataException("Package could not serialize correctly!");
+                throw new InvalidOperationException("Package could not serialize correctly!");
             }
 
             this.PayloadIds.Add(package.Id);

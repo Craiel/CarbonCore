@@ -76,7 +76,7 @@
             Type internalType;
             if (!TypeToDbType.TryGetValue(databaseType, out internalType))
             {
-                throw new InvalidDataException("Could not map db type for " + databaseType);
+                throw new InvalidOperationException("Could not map db type for " + databaseType);
             }
 
             return internalType.ConvertValue(source);

@@ -164,7 +164,7 @@
                 int bytesRead = stream.Read(result, 0, length);
                 if (bytesRead != length)
                 {
-                    throw new InvalidDataException(string.Format("Expected to read {0} bytes but got {1}", length, bytesRead));
+                    throw new InvalidOperationException(string.Format("Expected to read {0} bytes but got {1}", length, bytesRead));
                 }
 
                 return result;

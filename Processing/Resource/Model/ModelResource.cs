@@ -1,5 +1,6 @@
 ﻿namespace CarbonCore.Processing.Resource.Model
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
 
@@ -192,7 +193,7 @@
         {
             if (entry.Version != Version)
             {
-                throw new InvalidDataException("Model version is not correct: " + entry.Version);
+                throw new InvalidOperationException("Model version is not correct: " + entry.Version);
             }
 
             this.Name = entry.Name;

@@ -34,7 +34,7 @@
             
             if (results.Length > 1)
             {
-                throw new InvalidDataException("Expected only one attribute but found " + results.Length);
+                throw new InvalidOperationException("Expected only one attribute but found " + results.Length);
             }
 
             return results[0] as T;
@@ -82,7 +82,7 @@
                     return default(Type);
                 }
                 
-                throw new InvalidDataException("Target type is not nullable, source value is invalid");
+                throw new InvalidOperationException("Target type is not nullable, source value is invalid");
             }
 
             if (source.GetType() == type)

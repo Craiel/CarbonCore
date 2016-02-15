@@ -64,7 +64,7 @@
 
             if (this.pendingElements.Count < 3)
             {
-                throw new InvalidDataException("Polygon must have at least 3 vertices set!");
+                throw new InvalidOperationException("Polygon must have at least 3 vertices set!");
             }
 
             switch (this.pendingElements.Count)
@@ -146,7 +146,7 @@
             {
                 if (indices[i] >= this.pendingElements.Count)
                 {
-                    throw new InvalidDataException("Index outside of element range " + indices[i]);
+                    throw new InvalidOperationException("Index outside of element range " + indices[i]);
                 }
 
                 this.elementIndices.Add(indices[i]);

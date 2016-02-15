@@ -51,7 +51,7 @@
             byte indicator = (byte)source.ReadByte();
             if (indicator == Constants.SerializationNull)
             {
-                throw new InvalidDataException();
+                throw new InvalidOperationException();
             }
 
             if (indicator == 0)

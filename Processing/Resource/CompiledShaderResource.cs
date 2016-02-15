@@ -1,5 +1,6 @@
 ﻿namespace CarbonCore.Processing.Resource
 {
+    using System;
     using System.IO;
 
     using CarbonCore.Processing.Data;
@@ -18,7 +19,7 @@
         {
             if (shaderData.Version != Version)
             {
-                throw new InvalidDataException("Shader version is not correct: " + shaderData.Version);
+                throw new InvalidOperationException("Shader version is not correct: " + shaderData.Version);
             }
 
             this.Data = shaderData.Data;
@@ -37,7 +38,7 @@
 
             /*if (this.Data == null || this.Md5 == null)
             {
-                throw new InvalidDataException("Shader data was empty or invalid on Save");
+                throw new InvalidOperationException("Shader data was empty or invalid on Save");
             }
 
             var builder = new CompiledShader.Builder

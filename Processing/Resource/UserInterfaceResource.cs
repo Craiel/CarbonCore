@@ -20,7 +20,7 @@
 
             if (entry.Version != Version)
             {
-                throw new InvalidDataException("UserInterface version is not correct: " + entry.Version);
+                throw new InvalidOperationException("UserInterface version is not correct: " + entry.Version);
             }
 
             this.CsamlData = entry.Csaml;
@@ -36,7 +36,7 @@
 
             /*if (this.CsamlData == null)
             {
-                throw new InvalidDataException("CsamlData was empty on Save");
+                throw new InvalidOperationException("CsamlData was empty on Save");
             }
 
             var builder = new UserInterface.Builder

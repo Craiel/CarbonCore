@@ -94,7 +94,7 @@
             {
                 if (!string.IsNullOrEmpty(args.PropertyName))
                 {
-                    throw new InvalidDataException("NotifyProperty called with invalid arguments");
+                    throw new InvalidOperationException("NotifyProperty called with invalid arguments");
                 }
 
                 return this.PropertyChanging(this, args);

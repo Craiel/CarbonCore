@@ -3,9 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Data;
-    using System.Data.Common;
     using System.Data.SQLite;
-    using System.IO;
     using System.Linq;
     using System.Threading;
 
@@ -231,11 +229,11 @@
         // -------------------------------------------------------------------
         private IList<object[]> GetTableInfo(string tableName)
         {
-            using (DbCommand command = this.connector.CreateCommand())
+            using (IDbCommand command = this.connector.CreateCommand())
             {
                 command.CommandText = string.Format(ContentServices.Constants.StatementTableInfo, tableName);
                 IList<object[]> info = new List<object[]>();
-                using (DbDataReader reader = command.ExecuteReader(CommandBehavior.Default))
+                using (IDataReader reader = command.ExecuteReader(CommandBehavior.Default))
                 {
                     while (reader.Read())
                     {
@@ -262,9 +260,9 @@
             statement.What("name");
             statement.WhereConstraint(new SqlStatementConstraint("type", "table"));
 
-            using (DbCommand command = this.connector.CreateCommand(statement))
+            using (IDbCommand command = this.connector.CreateCommand(statement))
             {
-                using (DbDataReader reader = command.ExecuteReader())
+                using (IDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
@@ -412,7 +410,7 @@
             // Update the primary key if it's an insert statement into auto increment table
             if (descriptor.PrimaryKey.Attribute.PrimaryKeyMode != PrimaryKeyMode.Autoincrement && !hasPrimaryKey)
             {
-                throw new InvalidDataException("Entry needs to have primary key assigned");
+                throw new InvalidOperationException("Entry needs to have primary key assigned");
             }
 
             SQLiteStatement statement;
@@ -487,16 +485,15 @@
             this.BuildBaseWhereClause(statement, descriptor, keys);
             statement.What("count(*)");
 
-            using (DbCommand command = this.connector.CreateCommand(statement))
+            using (IDbCommand command = this.connector.CreateCommand(statement))
             {
-                using (DbDataReader reader = command.ExecuteReader())
+                using (IDataReader reader = command.ExecuteReader())
                 {
-                    if (!reader.HasRows)
+                    if (!reader.Read())
                     {
                         return 0;
                     }
 
-                    reader.Read();
                     return Convert.ToInt32(reader[0]);
                 }
             }
@@ -515,9 +512,9 @@
 
             IList<IDatabaseEntry> results = new List<IDatabaseEntry>();
 
-            using (DbCommand command = this.connector.CreateCommand(statement))
+            using (IDbCommand command = this.connector.CreateCommand(statement))
             {
-                using (DbDataReader reader = command.ExecuteReader())
+                using (IDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
@@ -633,9 +630,9 @@
 
             IList<object[]> results = new List<object[]>();
 
-            using (DbCommand command = this.connector.CreateCommand(statement))
+            using (IDbCommand command = this.connector.CreateCommand(statement))
             {
-                using (DbDataReader reader = command.ExecuteReader())
+                using (IDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
@@ -664,9 +661,9 @@
                     statement.What(string.Format("MAX({0})", descriptor.PrimaryKey.Name));
                     try
                     {
-                        using (DbCommand command = this.connector.CreateCommand(statement))
+                        using (IDbCommand command = this.connector.CreateCommand(statement))
                         {
-                            using (DbDataReader reader = command.ExecuteReader())
+                            using (IDataReader reader = command.ExecuteReader())
                             {
                                 while (reader.Read())
                                 {
@@ -779,7 +776,7 @@
                 Diagnostic.Info("Executing: {0}", action.Statement);
                 using (var profileRegion = new ProfileRegion("DBWrite") { Discard = true })
                 {
-                    using (DbCommand command = this.connector.CreateCommand(action.Statement))
+                    using (IDbCommand command = this.connector.CreateCommand(action.Statement))
                     {
                         action.Result = command.ExecuteNonQuery();
                     }
@@ -812,7 +809,7 @@
                         statements.Add(action.Statement);
                     }
 
-                    using (DbCommand command = this.connector.CreateCommand(statements))
+                    using (IDbCommand command = this.connector.CreateCommand(statements))
                     {
                         System.Diagnostics.Debug.WriteLine("  - {0}", command.CommandText);
                         int result = command.ExecuteNonQuery();
@@ -829,7 +826,7 @@
             }
             catch (SQLiteException e)
             {
-                using (DbCommand command = this.connector.CreateCommand())
+                using (IDbCommand command = this.connector.CreateCommand())
                 {
                     command.CommandText = ContentServices.Constants.StatementRollback;
                     command.ExecuteNonQuery();

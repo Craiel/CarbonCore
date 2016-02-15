@@ -1,6 +1,6 @@
 ﻿namespace CarbonCore.Utils.Edge.IoC
 {
-    using System.IO;
+    using System;
 
     using Autofac;
 
@@ -35,7 +35,7 @@
             {
                 if (binding.Interface == null || binding.Implementation == null)
                 {
-                    throw new InvalidDataException("QuickBinding is invalid, missing interface or implementation");
+                    throw new InvalidOperationException("QuickBinding is invalid, missing interface or implementation");
                 }
 
                 var registration = builder.RegisterType(binding.Implementation).As(binding.Interface);

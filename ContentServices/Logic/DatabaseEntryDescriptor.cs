@@ -161,13 +161,13 @@
                         {
                             if (this.PrimaryKey != null)
                             {
-                                throw new InvalidDataException(
+                                throw new InvalidOperationException(
                                     "Primary key was already defined, multiple is not supported yet!");
                             }
 
                             if (!info.PropertyType.IsNullable())
                             {
-                                throw new InvalidDataException(string.Format("Primary key type needs to be nullable: {0} on {1}", info.Name, this.Type));
+                                throw new InvalidOperationException(string.Format("Primary key type needs to be nullable: {0} on {1}", info.Name, this.Type));
                             }
 
                             this.PrimaryKey = element;

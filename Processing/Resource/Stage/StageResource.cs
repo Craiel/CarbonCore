@@ -24,7 +24,7 @@
 
             if (entry.Version != Version)
             {
-                throw new InvalidDataException("Stage version is not correct: " + entry.Version);
+                throw new InvalidOperationException("Stage version is not correct: " + entry.Version);
             }
 
             if (entry.ReferencesCount > 0)

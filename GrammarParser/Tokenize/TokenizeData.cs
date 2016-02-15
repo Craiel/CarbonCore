@@ -1,5 +1,6 @@
 ﻿namespace CarbonCore.GrammarParser.Tokenize
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
 
@@ -87,7 +88,7 @@
                 TermIdentifierKey term = this.Grammar.IdentifierKeyTerms[i];
                 if (this.IdentifierKeyCache.ContainsKey(term.Keyword))
                 {
-                    throw new InvalidDataException("Duplicate Identifier Key: " + term.Keyword);
+                    throw new InvalidOperationException("Duplicate Identifier Key: " + term.Keyword);
                 }
 
                 this.IdentifierKeyCache.Add(term.Keyword, term);

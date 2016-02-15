@@ -139,7 +139,7 @@
                 context.Enqueue((IDataEntry)value);
 
                 // Todo...
-                throw new InvalidDataException("Serialization entry without serializer!");
+                throw new InvalidOperationException("Serialization entry without serializer!");
             }
         }
 
@@ -176,7 +176,7 @@
                     continue;
                 }
 
-                throw new InvalidDataException("Deserialization entry without serializer!");
+                throw new InvalidOperationException("Deserialization entry without serializer!");
             }
         }
         

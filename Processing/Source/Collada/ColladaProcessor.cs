@@ -216,7 +216,7 @@
                 textureInput = FindInput("TEXCOORD");
                 if (!geometry.Mesh.Vertices.Id.Equals(vertexInput.Source.TrimStart('#')))
                 {
-                    throw new InvalidDataException("Vertex source does not match position source!");
+                    throw new InvalidOperationException("Vertex source does not match position source!");
                 }
 
                 LoadPolygonData(index, geometry.Mesh.Polygons.Polygons);
@@ -242,7 +242,7 @@
                 textureInput = FindInput("TEXCOORD");
                 if (!geometry.Mesh.Vertices.Id.Equals(vertexInput.Source.TrimStart('#')))
                 {
-                    throw new InvalidDataException("Vertex source does not match position source!");
+                    throw new InvalidOperationException("Vertex source does not match position source!");
                 }
 
                 vertexCount = geometry.Mesh.PolyLists[index].VertexCount.Data;
@@ -356,7 +356,7 @@
                 if (polygonData[index].ContainsKey((uint)input.Offset))
                 {
                     // Todo: This currently happens for normal map texture mapping, the same offset is defined twice with different material source
-                    // throw new InvalidDataException("Multiple inputs defined with the same offset");
+                    // throw new InvalidOperationException("Multiple inputs defined with the same offset");
                     continue;
                 }
 
@@ -397,7 +397,7 @@
                 if (polygonData[index].ContainsKey((uint)input.Offset))
                 {
                     // Todo: This currently happens for normal map texture mapping, the same offset is defined twice with different material source
-                    // throw new InvalidDataException("Multiple inputs defined with the same offset");
+                    // throw new InvalidOperationException("Multiple inputs defined with the same offset");
                     continue;
                 }
 
@@ -431,7 +431,7 @@
                 if (polygonData[index].ContainsKey((uint)input.Offset))
                 {
                     // Todo: This currently happens for normal map texture mapping, the same offset is defined twice with different material source
-                    // throw new InvalidDataException("Multiple inputs defined with the same offset");
+                    // throw new InvalidOperationException("Multiple inputs defined with the same offset");
                     continue;
                 }
 

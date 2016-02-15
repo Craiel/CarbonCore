@@ -1,5 +1,6 @@
 ﻿namespace CarbonCore.ContentServices.Logic.DataEntryLogic.Serializers
 {
+    using System;
     using System.IO;
 
     public class BooleanSerializer : DataEntryElementSerializer
@@ -38,7 +39,7 @@
             byte indicator = (byte)source.ReadByte();
             if (indicator == Constants.SerializationNull)
             {
-                throw new InvalidDataException();
+                throw new InvalidOperationException();
             }
 
             return indicator == 1;

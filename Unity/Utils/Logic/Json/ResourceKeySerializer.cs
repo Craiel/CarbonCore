@@ -58,7 +58,7 @@
             byte indicator = (byte)source.ReadByte();
             if (indicator == byte.MaxValue)
             {
-                throw new InvalidDataException();
+                throw new InvalidOperationException();
             }
 
             if (indicator == 0)

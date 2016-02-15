@@ -49,7 +49,7 @@
                 var resource = new StageResource();
                 if (stage.Scene == null)
                 {
-                    throw new InvalidDataException("XCD File contains no scene information!");
+                    throw new InvalidOperationException("XCD File contains no scene information!");
                 }
 
                 TranslateScene(stage.Scene);
@@ -237,7 +237,7 @@
         {
             if (data.Length != 5)
             {
-                throw new InvalidDataException("Rotation data is not in the expected format");
+                throw new InvalidOperationException("Rotation data is not in the expected format");
             }
 
             // Rotation is in floats 0-1 and in format wxyz so we re-order and convert

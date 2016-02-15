@@ -62,7 +62,7 @@
 
             if (converterAttributes.Length > 1)
             {
-                throw new InvalidDataException("More than one possible converter found");
+                throw new InvalidOperationException("More than one possible converter found");
             }
 
             return (JsonConverter)Activator.CreateInstance(((JsonConverterAttribute)converterAttributes[0]).ConverterType, null);

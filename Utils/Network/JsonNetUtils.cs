@@ -63,7 +63,7 @@
                 Type type;
                 if (!packageIdDictionary.TryGetValue(id, out type))
                 {
-                    throw new InvalidDataException("Unknown package in Payload: {0}" + id);
+                    throw new InvalidOperationException("Unknown package in Payload: {0}" + id);
                 }
                 
                 IJsonNetPackage package = DeSerializePackage(type, payload.Data[i]);

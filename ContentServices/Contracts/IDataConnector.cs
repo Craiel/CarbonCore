@@ -2,8 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Data.Common;
-
+    using System.Data;
+    
     using CarbonCore.Utils.Contracts;
 
     public interface IDataConnector : IDisposable
@@ -12,10 +12,10 @@
 
         bool Connect();
 
-        DbCommand CreateCommand(ISqlStatement statement = null);
-        DbCommand CreateCommand(IList<ISqlStatement> statements);
+        IDbCommand CreateCommand(ISqlStatement statement = null);
+        IDbCommand CreateCommand(IList<ISqlStatement> statements);
 
-        DbTransaction BeginTransaction();
+        IDbTransaction BeginTransaction();
 
         void Disconnect();
     }
