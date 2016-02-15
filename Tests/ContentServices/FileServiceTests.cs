@@ -10,6 +10,7 @@
     using CarbonCore.ContentServices.Logic;
     using CarbonCore.Utils;
     using CarbonCore.Utils.Contracts.IoC;
+    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.IO;
     using CarbonCore.Utils.IoC;
 
@@ -41,6 +42,8 @@
         [SetUp]
         public void Setup()
         {
+            Diagnostic.RegisterThread("FileServiceTestThread");
+
             this.container = CarbonContainerBuilder.BuildQuick<ContentServicesCompatModule>();
 
             this.dataDirectory = CarbonDirectory.GetTempDirectory();
@@ -73,6 +76,8 @@
             {
                 this.dataDirectory.Delete(true);
             }
+
+            Diagnostic.UnregisterThread();
         }
 
         [Test]
