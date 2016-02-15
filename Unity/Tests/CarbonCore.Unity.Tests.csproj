@@ -15,9 +15,10 @@
     </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Unity|AnyCPU'">
-    <OutputPath>bin\Unity\</OutputPath>
+    <OutputPath>$(SolutionDir)bin\$(Configuration)\$(ProjectName)</OutputPath>
+    <IntermediateOutputPath>$(SolutionDir)obj\$(Configuration)\$(ProjectName)</IntermediateOutputPath>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisRuleSet>..\..\CarbonCore.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>$(SolutionDir)\CarbonCore.ruleset</CodeAnalysisRuleSet>
     <DefineConstants>TRACE;DEBUG;UNITY; UNITY_5</DefineConstants>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
@@ -33,7 +34,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
-      <HintPath>..\..\External\Unity\5.2.2f1\UnityEngine.dll</HintPath>
+      <HintPath>$(SolutionDir)\External\Unity\5.2.2f1\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

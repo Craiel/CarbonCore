@@ -2,17 +2,16 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.IO.Compression;
     using System.Linq;
-
-    using CarbonCore.ContentServices.Compat.Logic;
+    
     using CarbonCore.ContentServices.Contracts;
-    using CarbonCore.ContentServices.IoC;
+    using CarbonCore.ContentServices.Data;
+    using CarbonCore.ContentServices.Edge.IoC;
     using CarbonCore.ContentServices.Logic;
-    using CarbonCore.Utils.Compat;
-    using CarbonCore.Utils.Compat.Contracts.IoC;
-    using CarbonCore.Utils.Compat.IO;
-    using CarbonCore.Utils.IoC;
+    using CarbonCore.Utils;
+    using CarbonCore.Utils.Contracts.IoC;
+    using CarbonCore.Utils.Edge.IoC;
+    using CarbonCore.Utils.IO;
 
     using NUnit.Framework;
 
@@ -51,7 +50,7 @@
 
             // Build the dictionary of eligible test files
             this.testFiles.Clear();
-            foreach (string file in Compat.Resources.Static.ResourceList)
+            foreach (string file in Resources.Static.ResourceList)
             {
                 if (!file.StartsWith(FileEntryFolder))
                 {
@@ -117,7 +116,7 @@
             {
                 using (var provider = this.container.Resolve<IFileServiceMemoryProvider>())
                 {
-                    provider.CompressionLevel = CompressionLevel.Optimal;
+                    provider.CompressionLevel = CarbonCore.ContentServices.Logic.Enums.CompressionLevel.Optimal;
                     provider.Initialize();
 
                     service.AddProvider(provider);
@@ -137,7 +136,7 @@
             {
                 using (var provider = this.container.Resolve<IFileServiceDiskProvider>())
                 {
-                    provider.CompressionLevel = CompressionLevel.Optimal;
+                    provider.CompressionLevel = CarbonCore.ContentServices.Logic.Enums.CompressionLevel.Optimal;
                     provider.Root = this.dataDirectory;
                     provider.Initialize();
 
@@ -158,7 +157,7 @@
             {
                 using (var provider = this.container.Resolve<IFileServicePackProvider>())
                 {
-                    provider.CompressionLevel = CompressionLevel.Optimal;
+                    provider.CompressionLevel = CarbonCore.ContentServices.Logic.Enums.CompressionLevel.Optimal;
                     provider.Root = this.dataDirectory;
                     provider.Initialize();
                     service.AddProvider(provider);
