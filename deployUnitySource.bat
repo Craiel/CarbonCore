@@ -21,6 +21,3 @@ xcopy %OPTIONS% %SOURCEDIR%ContentServices %TARGETDIR%ContentServices
 
 mkdir %TARGETDIR%CFS
 xcopy %OPTIONS% %SOURCEDIR%CFS %TARGETDIR%CFS
-
-mkdir %TARGETDIR%External
-xcopy %OPTIONS% %SOURCEDIR%packages\System.Data.SQLite.Core.1.0.99.0\lib\net20 %TARGETDIR%External
