@@ -30,15 +30,20 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public IList<ResourceKey> GetKeysByType<T>()
+        public IList<ResourceKey> GetKeysByType<TX>()
         {
-            if (this.typeLookup.ContainsKey(typeof(T)))
+            return this.GetKeysByType(typeof(TX));
+        }
+
+        public IList<ResourceKey> GetKeysByType(Type type)
+        {
+            if (this.typeLookup.ContainsKey(type))
             {
-                return this.typeLookup[typeof(T)];
+                return this.typeLookup[type];
             }
 
             return null;
-        }
+        } 
 
         public void RegisterResource(ResourceKey key, T resourceData = null)
         {
