@@ -4,10 +4,10 @@
     using System.Collections.Generic;
     using System.Linq;
     
-    using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.Data;
-    using CarbonCore.ContentServices.IoC;
-    using CarbonCore.ContentServices.Logic;
+    using CarbonCore.ContentServices.Sql.Contracts;
+    using CarbonCore.ContentServices.Sql.IoC;
+    using CarbonCore.ContentServices.Sql.Logic;
     using CarbonCore.Utils;
     using CarbonCore.Utils.Contracts.IoC;
     using CarbonCore.Utils.Diagnostics;
@@ -44,7 +44,7 @@
         {
             Diagnostic.RegisterThread("FileServiceTestThread");
 
-            this.container = CarbonContainerBuilder.BuildQuick<ContentServicesCompatModule>();
+            this.container = CarbonContainerBuilder.BuildQuick<ContentServicesSqlModule>();
 
             this.dataDirectory = CarbonDirectory.GetTempDirectory();
 

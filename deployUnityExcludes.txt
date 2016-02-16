@@ -3,3 +3,4 @@ Edge
 \bin\
 \obj\
 AssemblyInfo
+ContentServices\Sql\

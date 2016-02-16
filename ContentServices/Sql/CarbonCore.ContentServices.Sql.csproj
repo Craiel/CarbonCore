@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{18B053C8-43B1-4ADB-81B7-F7CD2095E2A6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CarbonCore.ContentServices.Sql</RootNamespace>
+    <AssemblyName>CarbonCore.ContentServices.Sql</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>$(SolutionDir)bin\$(Configuration)\$(ProjectName)</OutputPath>
+    <IntermediateOutputPath>$(SolutionDir)obj\$(Configuration)\$(ProjectName)</IntermediateOutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>$(SolutionDir)\CarbonCore.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>$(SolutionDir)bin\$(Configuration)\$(ProjectName)</OutputPath>
+    <IntermediateOutputPath>$(SolutionDir)obj\$(Configuration)\$(ProjectName)</IntermediateOutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>$(SolutionDir)\CarbonCore.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="JetBrains.Annotations, Version=10.0.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\JetBrains.Annotations.10.0.0\lib\net20\JetBrains.Annotations.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Contracts\IDatabaseEntry.cs" />
+    <Compile Include="Contracts\IDatabaseService.cs" />
+    <Compile Include="Contracts\IDatabaseServiceAction.cs" />
+    <Compile Include="Contracts\IDataConnector.cs" />
+    <Compile Include="Contracts\IFileService.cs" />
+    <Compile Include="Contracts\IFileServiceDiskProvider.cs" />
+    <Compile Include="Contracts\IFileServiceMemoryProvider.cs" />
+    <Compile Include="Contracts\IFileServicePackProvider.cs" />
+    <Compile Include="Contracts\IFileServiceProvider.cs" />
+    <Compile Include="Contracts\IJsonDatabaseService.cs" />
+    <Compile Include="Contracts\ISqlLiteConnector.cs" />
+    <Compile Include="Data\JsonDatabase.cs" />
+    <Compile Include="Data\JsonDatabaseTable.cs" />
+    <Compile Include="IoC\IoC.cs" />
+    <Compile Include="Logic\Attributes\DatabaseEntryAttribute.cs" />
+    <Compile Include="Logic\Attributes\DatabaseEntryElementAttribute.cs" />
+    <Compile Include="Logic\Attributes\DatabaseEntryJoinedElementAttribute.cs" />
+    <Compile Include="Logic\DatabaseEntry.cs" />
+    <Compile Include="Logic\DatabaseEntryDescriptor.cs" />
+    <Compile Include="Logic\DatabaseEntryElementDescriptor.cs" />
+    <Compile Include="Logic\DatabaseEntryJoinedElementDescriptor.cs" />
+    <Compile Include="Logic\DatabaseQuery.cs" />
+    <Compile Include="Logic\DatabaseQueryCriterion.cs" />
+    <Compile Include="Logic\DatabaseQueryOrder.cs" />
+    <Compile Include="Logic\DatabaseUtils.cs" />
+    <Compile Include="Logic\FileEntry.cs" />
+    <Compile Include="Logic\FileEntryData.cs" />
+    <Compile Include="Logic\FileEntryPackInfo.cs" />
+    <Compile Include="Logic\FileService.cs" />
+    <Compile Include="Logic\FileServiceDiskProvider.cs" />
+    <Compile Include="Logic\FileServiceMemoryProvider.cs" />
+    <Compile Include="Logic\FileServicePackProvider.cs" />
+    <Compile Include="Logic\FileServiceProvider.cs" />
+    <Compile Include="Logic\JsonDatabaseService.cs" />
+    <Compile Include="Logic\SqlConnectorCommand.cs" />
+    <Compile Include="Logic\SqlConnectorConnection.cs" />
+    <Compile Include="Logic\SqlConnectorTransaction.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\External\Newtonsoft.Json\Newtonsoft.Json.csproj">
+      <Project>{eeea67f9-9089-481d-a4dc-0966dec9fd7d}</Project>
+      <Name>Newtonsoft.Json</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Utils\CarbonCore.Utils.csproj">
+      <Project>{e05836d9-0bb3-4bfa-89e6-f5ed40a9d93c}</Project>
+      <Name>CarbonCore.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CarbonCore.ContentServices.csproj">
+      <Project>{5d3507bd-d8dd-4255-a262-8e360e936f10}</Project>
+      <Name>CarbonCore.ContentServices</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -91,7 +91,6 @@
     <Compile Include="Contracts\Network\IJsonNetPackage.cs" />
     <Compile Include="Contracts\Network\IJsonNetPeer.cs" />
     <Compile Include="Contracts\Network\IJsonNetServer.cs" />
-    <Compile Include="Database\DatabaseUtils.cs" />
     <Compile Include="Database\SqlStatement.cs" />
     <Compile Include="Database\SqlStatementConstraint.cs" />
     <Compile Include="Database\SqlStatementConstraintFollowUpConstraintType.cs" />

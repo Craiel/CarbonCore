@@ -3,7 +3,7 @@
     using System;
     using System.IO;
     using System.IO.Compression;
-    
+
     using CarbonCore.ContentServices.Contracts;
 
     public class ZipStreamCompressionProvider : ICompressionProvider

@@ -12,9 +12,15 @@
     // Formats a string using a dictionary approach
     public class Formatter : IFormatter
     {
+        private const string FormatterPattern = @"\{([^\}]+)\}";
+
         private static readonly IDictionary<string, object> GlobalCustomDictionary = new Dictionary<string, object>();
 
-        private static readonly Regex ParserExpression = new Regex(@"\{([^\}]+)\}", RegexOptions.Compiled);
+#if UNITY_5
+        private static readonly Regex ParserExpression = new Regex(FormatterPattern);
+#else
+        private static readonly Regex ParserExpression = new Regex(FormatterPattern, RegexOptions.Compiled);
+#endif
 
         private readonly IDictionary<string, object> defaultDictionary;
         private readonly IDictionary<string, object> dictionary;

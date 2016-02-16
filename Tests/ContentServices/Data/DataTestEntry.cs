@@ -2,8 +2,9 @@
 {
     using System.Collections.Generic;
     
-    using CarbonCore.ContentServices.Logic;
     using CarbonCore.ContentServices.Logic.Attributes;
+    using CarbonCore.ContentServices.Sql.Logic;
+    using CarbonCore.ContentServices.Sql.Logic.Attributes;
 
     using Newtonsoft.Json;
 

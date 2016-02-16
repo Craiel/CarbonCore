@@ -1,13 +1,13 @@
 ﻿namespace CarbonCore.ContentServices.Edge.IoC
 {
-    using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.Edge.Contracts;
     using CarbonCore.ContentServices.Edge.Logic;
-    using CarbonCore.ContentServices.IoC;
+    using CarbonCore.ContentServices.Sql.Contracts;
+    using CarbonCore.ContentServices.Sql.IoC;
     using CarbonCore.Utils.Edge.IoC;
     using CarbonCore.Utils.IoC;
     
-    [DependsOnModule(typeof(ContentServicesCompatModule))]
+    [DependsOnModule(typeof(ContentServicesSqlModule))]
     [DependsOnModule(typeof(UtilsEdgeModule))]
     public class ContentServicesModule : CarbonQuickModule
     {

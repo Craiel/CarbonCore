@@ -7,6 +7,7 @@
     using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.Edge.Contracts;
     using CarbonCore.ContentServices.Edge.IoC;
+    using CarbonCore.ContentServices.Sql.Contracts;
     using CarbonCore.Tests.ContentServices.Data;
     using CarbonCore.Utils.Contracts.IoC;
     using CarbonCore.Utils.Edge.IoC;

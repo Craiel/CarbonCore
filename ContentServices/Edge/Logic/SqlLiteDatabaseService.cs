@@ -6,11 +6,11 @@
     using System.Data.SQLite;
     using System.Linq;
     using System.Threading;
-
-    using CarbonCore.ContentServices.Contracts;
+    
     using CarbonCore.ContentServices.Edge.Contracts;
-    using CarbonCore.ContentServices.Logic;
-    using CarbonCore.ContentServices.Logic.Attributes;
+    using CarbonCore.ContentServices.Sql.Contracts;
+    using CarbonCore.ContentServices.Sql.Logic;
+    using CarbonCore.ContentServices.Sql.Logic.Attributes;
     using CarbonCore.Utils;
     using CarbonCore.Utils.Contracts;
     using CarbonCore.Utils.Contracts.IoC;

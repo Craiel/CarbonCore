@@ -1,7 +1,7 @@
 ﻿namespace CarbonCore.Tests.ContentServices.Data
 {
-    using CarbonCore.ContentServices.Logic;
-    using CarbonCore.ContentServices.Logic.Attributes;
+    using CarbonCore.ContentServices.Sql.Logic;
+    using CarbonCore.ContentServices.Sql.Logic.Attributes;
 
     [DatabaseEntry("TestTable2")]
     public class DataTestEntry2 : DatabaseEntry

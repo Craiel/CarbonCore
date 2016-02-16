@@ -88,6 +88,10 @@
       <Project>{5d3507bd-d8dd-4255-a262-8e360e936f10}</Project>
       <Name>CarbonCore.ContentServices</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Sql\CarbonCore.ContentServices.Sql.csproj">
+      <Project>{18b053c8-43b1-4adb-81b7-f7cd2095e2a6}</Project>
+      <Name>CarbonCore.ContentServices.Sql</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

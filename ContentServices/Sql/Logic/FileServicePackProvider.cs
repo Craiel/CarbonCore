@@ -1,0 +1,317 @@
+﻿namespace CarbonCore.ContentServices.Sql.Logic
+{
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+
+    using CarbonCore.ContentServices.Contracts;
+    using CarbonCore.ContentServices.Data;
+    using CarbonCore.ContentServices.Logic;
+    using CarbonCore.ContentServices.Sql.Contracts;
+    using CarbonCore.Utils.Contracts.IoC;
+    using CarbonCore.Utils.Diagnostics;
+    using CarbonCore.Utils.IO;
+
+    public class FileServicePackProvider : FileServiceProvider, IFileServicePackProvider
+    {
+        private const int PaddingValueMultiplier = 512;
+        private const int PaddingValueMin = 512;
+
+        private const string PackFilePattern = "{0}.df";
+        private const string IndexFile = "{0}.db";
+
+        private readonly IDatabaseService databaseService;
+
+        private readonly IDictionary<FileEntryKey, FileEntry> files;
+
+        private readonly IDictionary<FileEntryKey, FileEntryPackInfo> packInfo;
+
+        private string packName = "Data";
+
+        private long endOfFile;
+
+        private CarbonDirectory root;
+
+        private FileStream packStream;
+
+        // -------------------------------------------------------------------
+        // Constructor
+        // -------------------------------------------------------------------
+        public FileServicePackProvider(IFactory factory)
+            : this(factory.Resolve<IJsonDatabaseService>(), new DefaultCompressionProvider())
+        {
+        }
+
+        public FileServicePackProvider(IDatabaseService customDatabase, ICompressionProvider customProvider)
+            : base(customProvider)
+        {
+            this.databaseService = customDatabase;
+            this.files = new Dictionary<FileEntryKey, FileEntry>();
+            this.packInfo = new Dictionary<FileEntryKey, FileEntryPackInfo>();
+        }
+
+        // -------------------------------------------------------------------
+        // Public
+        // -------------------------------------------------------------------
+        public string PackName
+        {
+            get
+            {
+                return this.packName;
+            }
+
+            set
+            {
+                if (this.IsInitialized)
+                {
+                    throw new InvalidOperationException("Can not change the pack prefix after initialization");
+                }
+
+                this.packName = value;
+            }
+        }
+
+        public CarbonDirectory Root
+        {
+            get
+            {
+                return this.root;
+            }
+
+            set
+            {
+                if (this.IsInitialized)
+                {
+                    throw new NotSupportedException("Can not change root after initialization");
+                }
+
+                this.root = value;
+            }
+        }
+
+        // -------------------------------------------------------------------
+        // Protected
+        // -------------------------------------------------------------------
+        protected override void Dispose(bool disposing)
+        {
+            if (!disposing)
+            {
+                return;
+            }
+
+            if (this.packStream != null)
+            {
+                this.packStream.Dispose();
+                this.packStream = null;
+            }
+
+            this.databaseService.Dispose();
+            base.Dispose(true);
+        }
+
+        protected override void DoInitialize()
+        {
+            if (!this.root.Exists)
+            {
+                this.root.Create();
+            }
+
+            this.Used = 0;
+            this.Capacity = this.root.GetFreeSpace();
+
+            // Initialize the pack file
+            CarbonFile pack = this.root.ToFile(string.Format(PackFilePattern, this.packName));
+            this.packStream = pack.OpenWrite(FileMode.Create);
+            Diagnostic.Assert(this.packStream != null);
+
+            // Initialize the index db
+            CarbonFile index = this.root.ToFile(string.Format(IndexFile, this.packName));
+            this.databaseService.Initialize(index);
+
+            // Read all the file entries and verify
+            IList<FileEntry> entries = this.databaseService.Load<FileEntry>();
+            foreach (FileEntry entry in entries)
+            {
+                Diagnostic.Assert(!string.IsNullOrEmpty(entry.Hash));
+
+                this.files.Add(new FileEntryKey(entry.Hash), entry);
+            }
+
+            // Read all the pack info
+            IList<FileEntryPackInfo> packInfoList = this.databaseService.Load<FileEntryPackInfo>();
+            foreach (FileEntryPackInfo info in packInfoList)
+            {
+                Diagnostic.Assert(!string.IsNullOrEmpty(info.Hash));
+                if (info.Offset > this.endOfFile)
+                {
+                    this.endOfFile = info.Offset + info.Size + info.Padding;
+                }
+
+                this.packInfo.Add(new FileEntryKey(info.Hash), info);
+            }
+        }
+
+        protected override void DoLoad(FileEntryKey key, out byte[] data)
+        {
+            FileEntryPackInfo entry;
+            if (!this.packInfo.TryGetValue(key, out entry))
+            {
+                throw new FileNotFoundException("Could not load file data: " + key);
+            }
+            
+            data = new byte[entry.Size];
+            lock (this.packStream)
+            {
+                this.packStream.Seek(entry.Offset, SeekOrigin.Begin);
+                this.packStream.Read(data, 0, (int)entry.Size);
+            }
+        }
+
+        protected override void DoSave(FileEntryKey key, byte[] data)
+        {
+            FileEntryPackInfo info;
+            if (this.packInfo.TryGetValue(key, out info))
+            {
+                // Check if the new data still fits into the region
+                if (info.Size + info.Padding < data.Length)
+                {
+                    // The data won't fit, move the data to the end of the file, the old chunk becomes orphaned
+                    info.Offset = this.endOfFile;
+                    info.Padding = this.GetPaddingValue(data.Length);
+                }
+                else
+                {
+                    // It fits so set the data to write and adjust the padding
+                    long oldSize = info.Size + info.Padding;
+                    info.Size = data.Length;
+                    info.Padding = oldSize - info.Size;
+                }
+            }
+
+            // We have to lock the info creation as well to make sure end of file is incremented linear
+            lock (this.packStream)
+            {
+                if (info == null)
+                {
+                    info = new FileEntryPackInfo
+                    {
+                        Hash = key.Hash,
+                        Padding = this.GetPaddingValue(data.Length),
+                        Offset = this.endOfFile,
+                        Size = data.Length
+                    };
+
+                    this.endOfFile += data.Length;
+                }
+
+                var paddingBuffer = new byte[info.Padding];
+                this.packStream.Seek(info.Offset, SeekOrigin.Begin);
+                this.packStream.Write(data, 0, data.Length);
+                this.packStream.Write(paddingBuffer, 0, paddingBuffer.Length);
+                this.packStream.Flush();
+            }
+
+            // Save the info into the db and into our storage 
+            this.databaseService.Save(ref info);
+            this.packInfo[key] = info;
+
+            // If we don't have an entry for this hash create one and save it
+            if (!this.files.ContainsKey(key))
+            {
+                var entry = new FileEntry { Hash = key.Hash, Size = data.Length };
+                this.databaseService.Save(ref entry, true);
+                lock (this.files)
+                {
+                    this.files.Add(key, entry);
+                }
+            }
+        }
+
+        protected override void DoDelete(FileEntryKey key)
+        {
+            FileEntry entry;
+            if (!this.files.TryGetValue(key, out entry))
+            {
+                throw new InvalidOperationException(string.Format("Can not delete {0}, was not in the provider", key));
+            }
+
+            this.databaseService.Delete<FileEntryPackInfo>(entry.Id);
+            this.databaseService.Delete<FileEntry>(entry.Id);
+            this.files.Remove(key);
+        }
+
+        protected override int DoCleanup()
+        {
+            // Wait to have pending writes flushed before cleanup
+            this.databaseService.WaitForAsyncActions();
+
+            IList<object> deleteList = new List<object>();
+            IList<FileEntry> activeFiles = this.databaseService.Load<FileEntry>();
+            foreach (FileEntry file in activeFiles)
+            {
+                if (file.IsDeleted)
+                {
+                    object key = file.GetDescriptor().PrimaryKey.GetValue(file);
+                    deleteList.Add(key);
+                    this.databaseService.Delete<FileEntry>(key, true);
+                }
+            }
+
+            return deleteList.Count;
+        }
+
+        protected override FileEntry LoadEntry(FileEntryKey key)
+        {
+            // Wait to have pending writes flushed before loading
+            this.databaseService.WaitForAsyncActions();
+
+            Diagnostic.Assert(this.files.ContainsKey(key));
+
+            return this.files[key];
+        }
+
+        protected override void SaveEntry(FileEntryKey key, FileEntry entry)
+        {
+            Diagnostic.Assert(this.files.ContainsKey(key));
+
+            if (this.files.ContainsKey(key))
+            {
+                this.files[key] = entry;
+            }
+            else
+            {
+                this.files.Add(key, entry);
+            }
+        }
+        
+        protected override IList<FileEntryKey> DoGetFiles(bool includeDeleted)
+        {
+            IList<FileEntryKey> results = new List<FileEntryKey>();
+            foreach (FileEntryKey key in this.files.Keys)
+            {
+                if (this.files[key].IsDeleted && !includeDeleted)
+                {
+                    continue;
+                }
+
+                results.Add(key);
+            }
+
+            return results;
+        }
+
+        private int GetPaddingValue(long size)
+        {
+            var filePadding = (int)((((int)(size / PaddingValueMultiplier) + 1) * PaddingValueMultiplier) - size);
+            var partialSize = (long)(size * 0.01);
+            if (partialSize < PaddingValueMin)
+            {
+                return filePadding + PaddingValueMin;
+            }
+
+            var multiplier = (int)(partialSize / PaddingValueMultiplier);
+            int extraPadding = multiplier * PaddingValueMultiplier;
+            return filePadding + extraPadding;
+        }
+    }
+}

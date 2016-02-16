@@ -58,43 +58,19 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="Contracts\ICompressionProvider.cs" />
-    <Compile Include="Contracts\IDatabaseEntry.cs" />
-    <Compile Include="Contracts\IDatabaseService.cs" />
-    <Compile Include="Contracts\IDatabaseServiceAction.cs" />
-    <Compile Include="Contracts\IDataConnector.cs" />
     <Compile Include="Contracts\IDataEntry.cs" />
-    <Compile Include="Contracts\IFileService.cs" />
-    <Compile Include="Contracts\IFileServiceDiskProvider.cs" />
-    <Compile Include="Contracts\IFileServiceMemoryProvider.cs" />
-    <Compile Include="Contracts\IFileServicePackProvider.cs" />
-    <Compile Include="Contracts\IFileServiceProvider.cs" />
-    <Compile Include="Contracts\IJsonDatabaseService.cs" />
-    <Compile Include="Contracts\ISqlLiteConnector.cs" />
     <Compile Include="Contracts\ISyncContent.cs" />
     <Compile Include="Contracts\ISyncEntry.cs" />
     <Compile Include="Data\FileEntryKey.cs" />
-    <Compile Include="Data\JsonDatabase.cs" />
-    <Compile Include="Data\JsonDatabaseTable.cs" />
     <Compile Include="Data\Tiled\TiledMapData.cs" />
     <Compile Include="Data\Tiled\TiledMapLayerData.cs" />
     <Compile Include="Data\Tiled\TiledMapObjectData.cs" />
     <Compile Include="Data\Tiled\TiledMapTileset.cs" />
     <Compile Include="IoC\IoC.cs" />
-    <Compile Include="Logic\Attributes\DatabaseEntryJoinedElementAttribute.cs" />
-    <Compile Include="Logic\Attributes\DatabaseEntryAttribute.cs" />
-    <Compile Include="Logic\DatabaseEntryJoinedElementDescriptor.cs" />
-    <Compile Include="Logic\DatabaseEntryDescriptor.cs" />
-    <Compile Include="Logic\Attributes\DatabaseEntryElementAttribute.cs" />
-    <Compile Include="Logic\DatabaseEntryElementDescriptor.cs" />
-    <Compile Include="Logic\DatabaseQueryCriterion.cs" />
-    <Compile Include="Logic\DatabaseQueryOrder.cs" />
-    <Compile Include="Logic\DatabaseQuery.cs" />
-    <Compile Include="Logic\DatabaseEntry.cs" />
     <Compile Include="Logic\Attributes\DataElementAttribute.cs" />
     <Compile Include="Logic\DataEntryLogic\DataEntry.cs" />
     <Compile Include="Logic\Attributes\DataEntryAttribute.cs" />
@@ -139,18 +115,6 @@
     <Compile Include="Logic\Enums\TiledMapLayerType.cs" />
     <Compile Include="Logic\Enums\TiledMapOrientation.cs" />
     <Compile Include="Logic\Enums\TiledMapRenderOrder.cs" />
-    <Compile Include="Logic\FileEntry.cs" />
-    <Compile Include="Logic\FileEntryData.cs" />
-    <Compile Include="Logic\FileEntryPackInfo.cs" />
-    <Compile Include="Logic\FileService.cs" />
-    <Compile Include="Logic\FileServiceDiskProvider.cs" />
-    <Compile Include="Logic\FileServiceMemoryProvider.cs" />
-    <Compile Include="Logic\FileServicePackProvider.cs" />
-    <Compile Include="Logic\FileServiceProvider.cs" />
-    <Compile Include="Logic\JsonDatabaseService.cs" />
-    <Compile Include="Logic\SqlConnectorCommand.cs" />
-    <Compile Include="Logic\SqlConnectorConnection.cs" />
-    <Compile Include="Logic\SqlConnectorTransaction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

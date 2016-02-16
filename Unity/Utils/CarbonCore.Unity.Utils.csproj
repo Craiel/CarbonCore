@@ -119,6 +119,7 @@
     <Compile Include="Logic\Enums\Orientation.cs" />
     <Compile Include="Logic\Enums\ResourceLoadFlags.cs" />
     <Compile Include="Logic\Enums\ResourceLoadMode.cs" />
+    <Compile Include="Logic\Enums\SqlDbType.cs" />
     <Compile Include="Logic\IntervalTrigger.cs" />
     <Compile Include="Logic\Json\BoundsSerializer.cs" />
     <Compile Include="Logic\Json\BundleKeySerializer.cs" />

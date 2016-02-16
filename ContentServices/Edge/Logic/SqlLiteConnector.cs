@@ -7,8 +7,8 @@
     using System.Data.SQLite;
     using System.Threading;
     
-    using CarbonCore.ContentServices.Contracts;
-    using CarbonCore.ContentServices.Logic;
+    using CarbonCore.ContentServices.Sql.Contracts;
+    using CarbonCore.Utils;
     using CarbonCore.Utils.Contracts;
     using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.IO;
@@ -103,14 +103,14 @@
             Diagnostic.Assert(this.connection != null && statements != null && statements.Count > 0);
 
             DbCommand command = this.connection.CreateCommand();
-            command.CommandText = string.Format("{0};", Constants.StatementBegin);
+            command.CommandText = string.Format("{0};", ContentServices.Constants.StatementBegin);
             for (int i = 0; i < statements.Count; i++)
             {
                 ISqlStatement statement = statements[i];
                 statement.IntoCommand(command, string.Format("_{0}", i), append: true);
             }
 
-            command.CommandText = string.Format("{0}\n{1};", command.CommandText, Constants.StatementCommit);
+            command.CommandText = string.Format("{0}\n{1};", command.CommandText, ContentServices.Constants.StatementCommit);
 
             return command;
         }

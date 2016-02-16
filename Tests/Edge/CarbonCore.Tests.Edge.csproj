@@ -95,6 +95,10 @@
       <Project>{6e591d1d-592e-4872-8ca1-504a43de009b}</Project>
       <Name>CarbonCore.ContentServices.Edge</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\ContentServices\Sql\CarbonCore.ContentServices.Sql.csproj">
+      <Project>{18B053C8-43B1-4ADB-81B7-F7CD2095E2A6}</Project>
+      <Name>CarbonCore.ContentServices.Sql</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\GrammarParser\CarbonCore.GrammarParser.csproj">
       <Project>{50C22F18-89F6-48F3-A29F-CA25FDADDB90}</Project>
       <Name>CarbonCore.GrammarParser</Name>

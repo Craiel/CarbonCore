@@ -106,6 +106,10 @@
       <Project>{5d3507bd-d8dd-4255-a262-8e360e936f10}</Project>
       <Name>CarbonCore.ContentServices</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ContentServices\Sql\CarbonCore.ContentServices.Sql.csproj">
+      <Project>{18B053C8-43B1-4ADB-81B7-F7CD2095E2A6}</Project>
+      <Name>CarbonCore.ContentServices.Sql</Name>
+    </ProjectReference>
     <ProjectReference Include="..\External\Newtonsoft.Json\Newtonsoft.Json.csproj">
       <Project>{eeea67f9-9089-481d-a4dc-0966dec9fd7d}</Project>
       <Name>Newtonsoft.Json</Name>
