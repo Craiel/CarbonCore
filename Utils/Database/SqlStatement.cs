@@ -58,6 +58,7 @@
             }
         }
 
+#if !UNITY_5
         public static void PrepareCommand(IDbCommand command, IList<SqlStatement> statements)
         {
             Diagnostic.Assert(statements.Count > 0);
@@ -94,7 +95,9 @@
             builder.AppendLine();
             command.CommandText = builder.ToString();
         }
+#endif
 
+#if !UNITY_5
         public static void FinalizeCommand(IDbCommand command, IList<SqlStatement> statements)
         {
             Diagnostic.Assert(statements.Count > 0);
@@ -114,6 +117,7 @@
 
             command.CommandText = string.Concat(command.CommandText, "\n", commandAppendix.ToString());
         }
+#endif
 
         public ISqlStatement Table(string tableName)
         {
@@ -188,6 +192,7 @@
             return this.ToString(string.Empty);
         }
 
+#if !UNITY_5
         public virtual void IntoCommand(IDbCommand target, string statementSuffix = "", bool append = false, bool finalize = true)
         {
             string commandText = string.Concat(this.ToString(statementSuffix), finalize ? ";" : string.Empty);
@@ -237,6 +242,7 @@
                 target.CommandText = string.Format("{0}\n{1}", target.CommandText, commandText);
             }
         }
+#endif
 
         // -------------------------------------------------------------------
         // Protected
