@@ -32,7 +32,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Unity|AnyCPU'">
     <OutputPath>$(SolutionDir)bin\$(Configuration)\$(ProjectName)</OutputPath>
     <IntermediateOutputPath>$(SolutionDir)obj\$(Configuration)\$(ProjectName)</IntermediateOutputPath>
-    <DefineConstants>TRACE;DEBUG;UNITY; UNITY_5</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;UNITY; UNITY_5;WIN64</DefineConstants>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>$(SolutionDir)\CarbonCore.ruleset</CodeAnalysisRuleSet>
     <LangVersion>4</LangVersion>
@@ -41,7 +41,7 @@
     <Optimize>true</Optimize>
     <OutputPath>$(SolutionDir)bin\$(Configuration)\$(ProjectName)</OutputPath>
     <IntermediateOutputPath>$(SolutionDir)obj\$(Configuration)\$(ProjectName)</IntermediateOutputPath>
-    <DefineConstants>UNITY; UNITY_5</DefineConstants>
+    <DefineConstants>UNITY; UNITY_5;WIN64</DefineConstants>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>$(SolutionDir)\CarbonCore.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -150,6 +150,9 @@
     <Compile Include="Logic\TaskPoolLogic\TaskPool.cs" />
     <Compile Include="Logic\TaskPoolLogic\TaskPoolInstance.cs" />
     <Compile Include="Logic\TaskPoolLogic\TaskStatus.cs" />
+    <Compile Include="Logic\TimeUtils\UnityTimeUtils.cs" />
+    <Compile Include="Logic\TimeUtils\MSSystemTime.cs" />
+    <Compile Include="Logic\TimeUtils\MSTimeZoneInformation.cs" />
     <Compile Include="Logic\UnityDebugTraceListener.cs" />
     <Compile Include="Logic\Enums\SceneTransitionStep.cs" />
     <Compile Include="Logic\Scene\SceneObjectCleanup.cs" />
