@@ -11,9 +11,13 @@ namespace CarbonCore.Utils.Unity.Logic.Scene
 
     using UnityEngine;
 
+    public delegate bool PartialSceneLoadingDelegate(SceneTransitionStep step);
+
     public abstract class BaseScene : IScene
     {
         private readonly IDictionary<string, AsyncOperation> additiveLoadLevelOperations;
+
+        private readonly List<PartialSceneLoadingDelegate> pendingLoadingActions;
 
         private AsyncOperation loadLevelOperation;
 
@@ -25,6 +29,7 @@ namespace CarbonCore.Utils.Unity.Logic.Scene
             this.Name = name;
             this.LevelName = levelName;
             this.AdditiveLevelNames = new List<string>();
+            this.pendingLoadingActions = new List<PartialSceneLoadingDelegate>();
             this.UseAsyncLoading = true;
 
             this.additiveLoadLevelOperations = new Dictionary<string, AsyncOperation>();
@@ -297,6 +302,37 @@ namespace CarbonCore.Utils.Unity.Logic.Scene
 
         protected virtual bool ScenePostDestroy()
         {
+            return false;
+        }
+
+        protected void RegisterPendingLoadAction(Action action)
+        {
+            // Wrap the simple action into our delegate
+            this.pendingLoadingActions.Add(
+                x =>
+                    {
+                        action();
+                        return false;
+                    });
+        }
+
+        protected void RegisterPendingLoadAction(PartialSceneLoadingDelegate action)
+        {
+            this.pendingLoadingActions.Add(action);
+        }
+
+        protected bool ContinuePendingLoadingActions(SceneTransitionStep step)
+        {
+            if (this.pendingLoadingActions.Count > 0)
+            {
+                if (!this.pendingLoadingActions[0](step))
+                {
+                    this.pendingLoadingActions.RemoveAt(0);
+                }
+
+                return this.pendingLoadingActions.Count > 0;
+            }
+
             return false;
         }
 
