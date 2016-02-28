@@ -1,8 +1,8 @@
-﻿namespace CarbonCore.Utils
+﻿namespace CarbonCore.Utils.MathUtils
 {
     using System;
     using System.Collections.Generic;
-    
+
     public static class MathExtension
     {
         // -------------------------------------------------------------------
@@ -21,7 +21,7 @@
             return (float)(radian * (180.0f / Math.PI));
         }
 
-        public static float Clamp(this int value, int min, int max)
+        public static int Clamp(this int value, int min, int max)
         {
             return (value < min) ? min : (value > max) ? max : value;
         }
@@ -29,6 +29,21 @@
         public static float Clamp(this float value, float min, float max)
         {
             return (value < min) ? min : (value > max) ? max : value;
+        }
+
+        public static double Clamp(this double value, double min, double max)
+        {
+            return (value < min) ? min : (value > max) ? max : value;
+        }
+
+        public static float Floor(this float value)
+        {
+            return (float)Math.Floor(value);
+        }
+
+        public static int FloorToInt(this float value)
+        {
+            return (int)Math.Floor(value);
         }
         
         public static IList<int> ComputePrimes(int max)

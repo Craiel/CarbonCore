@@ -67,7 +67,7 @@
         public override bool Equals(object obj)
         {
             var typed = (Vector3D)obj;
-            return typed.X == this.X && typed.Y == this.Y && typed.Z == this.Z;
+            return Math.Abs(typed.X - this.X) < double.Epsilon && Math.Abs(typed.Y - this.Y) < double.Epsilon && Math.Abs(typed.Z - this.Z) < double.Epsilon;
         }
 
         public override int GetHashCode()
