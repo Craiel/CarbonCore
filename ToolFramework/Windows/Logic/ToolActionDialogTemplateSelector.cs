@@ -8,6 +8,9 @@
 
     public class ToolActionDialogTemplateSelector : DataTemplateSelector
     {
+        // -------------------------------------------------------------------
+        // Public
+        // -------------------------------------------------------------------
         public DataTemplate ProgressTemplate { get; set; }
         public DataTemplate SplashTemplate { get; set; }
 

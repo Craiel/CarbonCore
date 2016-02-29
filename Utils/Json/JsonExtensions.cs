@@ -18,12 +18,15 @@
 
         private static readonly IDictionary<Type, Type> GlobalConverterRegistration;
 
+        private static readonly IDictionary<Type, JsonConverterAttribute> LocalConverterRegistration;
+
         // ------------------------------------------------------------------- 
         // Constructor
         // ------------------------------------------------------------------- 
         static JsonExtensions()
         {
             GlobalConverterRegistration = new Dictionary<Type, Type>();
+            LocalConverterRegistration = new Dictionary<Type, JsonConverterAttribute>();
         }
 
         // ------------------------------------------------------------------- 
@@ -54,18 +57,29 @@
                 return (JsonConverter)Activator.CreateInstance(targetType, null);
             }
 
-            object[] converterAttributes = type.GetCustomAttributes(typeof(JsonConverterAttribute), true);
-            if (converterAttributes.Length <= 0)
+            JsonConverterAttribute attribute;
+            if (!LocalConverterRegistration.TryGetValue(type, out attribute))
+            {
+                object[] converterAttributes = type.GetCustomAttributes(typeof(JsonConverterAttribute), true);
+                if (converterAttributes.Length > 0)
+                {
+                    if (converterAttributes.Length > 1)
+                    {
+                        throw new InvalidOperationException("More than one possible converter found");
+                    }
+
+                    attribute = (JsonConverterAttribute)converterAttributes[0];
+                }
+
+                LocalConverterRegistration.Add(type, attribute);
+            }
+            
+            if (attribute == null)
             {
                 return null;
             }
 
-            if (converterAttributes.Length > 1)
-            {
-                throw new InvalidOperationException("More than one possible converter found");
-            }
-
-            return (JsonConverter)Activator.CreateInstance(((JsonConverterAttribute)converterAttributes[0]).ConverterType, null);
+            return (JsonConverter)Activator.CreateInstance(attribute.ConverterType, null);
         }
 
         public static T LoadFromData<T>(string data, params JsonConverter[] converters)
@@ -73,6 +87,17 @@
             return JsonConvert.DeserializeObject<T>(data, converters);
         }
 
+        public static T LoadFromByte<T>(byte[] data, bool compressed = true, params JsonConverter[] converters)
+        {
+            using (var stream = new MemoryStream())
+            {
+                stream.Write(data, 0, data.Length);
+                stream.Seek(0, SeekOrigin.Begin);
+
+                return LoadFromStream<T>(stream, compressed, converters);
+            }
+        }
+        
         public static string SaveToData<T>(T source, Formatting formatting = Formatting.None, params JsonConverter[] converters)
         {
 #if UNITY
@@ -185,7 +210,7 @@
             {
                 using (var compressedStream = new GZipStream(target, CompressionMode.Compress, true))
                 {
-                    using (var writer = new StreamWriter(compressedStream, Encoding.UTF8, DefaultStreamBufferSize))
+                    using (var writer = new NoDisposeStreamWriter(compressedStream, Encoding.UTF8, DefaultStreamBufferSize))
                     {
                         writer.Write(serializedData);
                     }
@@ -193,7 +218,7 @@
             }
             else
             {
-                using (var writer = new StreamWriter(target, Encoding.UTF8, DefaultStreamBufferSize))
+                using (var writer = new NoDisposeStreamWriter(target, Encoding.UTF8, DefaultStreamBufferSize))
                 {
                     writer.Write(serializedData);
                 }

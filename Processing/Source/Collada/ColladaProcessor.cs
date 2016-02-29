@@ -15,6 +15,7 @@
     using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.IO;
     using CarbonCore.Utils.Edge.DirectX;
+    using CarbonCore.Utils.MathUtils;
 
     using SharpDX;
 

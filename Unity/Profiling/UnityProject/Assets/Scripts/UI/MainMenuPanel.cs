@@ -28,11 +28,15 @@
         [SerializeField]
         public Button DictionaryTestButton;
 
+        [SerializeField]
+        public Button JsonTestButton;
+
         public void Awake()
         {
             this.GeneralTestButton.onClick.AddListener(this.OnGeneralTest);
             this.BehaviorTreeTestButton.onClick.AddListener(this.OnBehaviorTreeTest);
             this.DictionaryTestButton.onClick.AddListener(this.OnDictionaryTest);
+            this.JsonTestButton.onClick.AddListener(this.OnJsonTest);
         }
 
         public void Update()
@@ -55,6 +59,11 @@
         private void OnDictionaryTest()
         {
             TestController.Instance.EnableDictionaryTests = !TestController.Instance.EnableDictionaryTests;
+        }
+
+        private void OnJsonTest()
+        {
+            TestController.Instance.EnableJsonTests = !TestController.Instance.EnableJsonTests;
         }
     }
 }

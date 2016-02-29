@@ -78,7 +78,7 @@
             }
             else if (BundleProvider.Instance.CurrentRequest != null)
             {
-                string text = string.Format(LoadingDetailedTextFormat, pendingCount, BundleProvider.Instance.CurrentRequest.Key, 0);
+                string text = string.Format(LoadingDetailedTextFormat, pendingCount, BundleProvider.Instance.CurrentRequest.Info.Key, 0);
                 this.ProgressDetailText.text = text;
             }
             else

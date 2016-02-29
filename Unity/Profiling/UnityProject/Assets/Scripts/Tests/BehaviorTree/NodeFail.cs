@@ -14,8 +14,8 @@
         // -------------------------------------------------------------------
         public override void Execute(BehaviorTreeContext context)
         {
-            var system = context.Get<GameSystem>();
-            var list = context.Get<IList<int>>();
+            context.Get<GameSystem>();
+            context.Get<IList<int>>();
 
             this.Status = BehaviorTreeStatus.Failed;
         }

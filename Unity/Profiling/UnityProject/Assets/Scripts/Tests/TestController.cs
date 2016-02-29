@@ -4,6 +4,7 @@
     using Assets.Scripts.Systems;
     using Assets.Scripts.Tests.BehaviorTree;
     using Assets.Scripts.Tests.General;
+    using Assets.Scripts.Tests.JsonTests;
 
     using CarbonCore.Utils.Unity.Logic;
 
@@ -49,6 +50,8 @@
 
         public bool EnableDictionaryTests { get; set; }
 
+        public bool EnableJsonTests { get; set; }
+
         public override void Awake()
         {
             this.RegisterInController(SceneController.Instance, SceneRootCategory.System, true);
@@ -78,16 +81,25 @@
             if (this.EnableGeneralTests)
             {
                 GeneralTest.Run();
+                this.EnableGeneralTests = false;
             }
 
             if (this.EnableBehaviorTreeTests)
             {
                 BehaviorTreeTest.Run();
+                this.EnableBehaviorTreeTests = false;
             }
 
             if (this.EnableDictionaryTests)
             {
                 DictionaryTest.Run(this.DictionaryEntryCount, this.DictionaryLookupsPerInterval, this.DictionaryRandomLookup);
+                this.EnableDictionaryTests = false;
+            }
+
+            if (this.EnableJsonTests)
+            {
+                JsonTest.Run();
+                this.EnableJsonTests = false;
             }
         }
     }

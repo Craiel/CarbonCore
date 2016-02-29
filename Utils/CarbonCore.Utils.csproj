@@ -124,6 +124,7 @@
     <Compile Include="IO\CarbonDirectoryFilter.cs" />
     <Compile Include="IO\CarbonDirectoryResult.cs" />
     <Compile Include="IO\CarbonFileResult.cs" />
+    <Compile Include="IO\NoDisposeStreamWriter.cs" />
     <Compile Include="Json\JsonCarbonDirectoryConverter.cs" />
     <Compile Include="Json\JsonCarbonFileConverter.cs" />
     <Compile Include="Json\JsonConcreteTypeConverter.cs" />
@@ -142,10 +143,14 @@
     <Compile Include="MathUtils\RectL.cs" />
     <Compile Include="MathUtils\RectS.cs" />
     <Compile Include="MathUtils\RectUtils.cs" />
+    <Compile Include="MathUtils\Vector3D.cs" />
+    <Compile Include="MathUtils\Vector3F.cs" />
+    <Compile Include="MathUtils\Vector3I.cs" />
     <Compile Include="MathUtils\Vector2F.cs" />
     <Compile Include="MathUtils\Vector2I.cs" />
     <Compile Include="MathUtils\Vector2L.cs" />
     <Compile Include="MathUtils\Vector2S.cs" />
+    <Compile Include="MathUtils\Vector4B.cs" />
     <Compile Include="Network\CoreTcpClient.cs" />
     <Compile Include="Network\CoreTcpData.cs" />
     <Compile Include="Network\CoreTcpServer.cs" />
@@ -160,6 +165,7 @@
     <Compile Include="Network\Package\JsonNetPackagePing.cs" />
     <Compile Include="ProcessorSettings.cs" />
     <Compile Include="ProcessorUtils.cs" />
+    <Compile Include="RandomExtension.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="Threading\EngineThread.cs" />
     <Compile Include="Threading\EngineThreadSettings.cs" />
@@ -188,7 +194,7 @@
     <Compile Include="HashUtils.cs" />
     <Compile Include="IO\CarbonDirectory.cs" />
     <Compile Include="LimitedList.cs" />
-    <Compile Include="MathExtension.cs" />
+    <Compile Include="MathUtils\MathExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RuntimeInfo.cs" />
     <Compile Include="TextFile.cs" />
@@ -196,6 +202,7 @@
     <Compile Include="Timer.cs" />
     <Compile Include="TypeExtension.cs" />
     <Compile Include="UnitTest.cs" />
+    <Compile Include="UUID.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">

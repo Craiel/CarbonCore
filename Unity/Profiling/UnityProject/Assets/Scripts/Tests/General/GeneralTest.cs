@@ -29,10 +29,7 @@
         {
             var root = new CarbonDirectory(UnityEngine.Application.dataPath);
             
-            CarbonDirectoryResult[] results = root.GetDirectories(options: SearchOption.AllDirectories);
-            foreach (CarbonDirectoryResult result in results)
-            {
-            }
+            root.GetDirectories(options: SearchOption.AllDirectories);
         }
 
         private static void TestCarbonFile()

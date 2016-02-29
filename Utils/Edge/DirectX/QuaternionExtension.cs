@@ -2,13 +2,16 @@
 {
     using System;
     using System.Collections.Generic;
-
-    using CarbonCore.Utils;
+    
+    using CarbonCore.Utils.MathUtils;
 
     using SharpDX;
 
     public static class QuaternionExtension
     {
+        // -------------------------------------------------------------------
+        // Public
+        // -------------------------------------------------------------------
         /*public static Quaternion RotateTo(Vector3 source, Vector3 target)
         {
             Vector3 axis = Vector3.Cross(source, target);
