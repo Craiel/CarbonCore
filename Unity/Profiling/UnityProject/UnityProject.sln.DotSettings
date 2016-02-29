@@ -1,6 +1,6 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=E50EE7FB26BEDF47B1C8A75E95468FF2/AbsolutePath/@EntryValue">D:\_perforce\prod\Backend\External\CarbonCore\CarbonCore.sln.DotSettings</s:String>
-	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=E50EE7FB26BEDF47B1C8A75E95468FF2/RelativePath/@EntryValue">..\..\..\..\..\..\_perforce\prod\Backend\External\CarbonCore\CarbonCore.sln.DotSettings</s:String>
-	<s:Boolean x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=E50EE7FB26BEDF47B1C8A75E95468FF2/@KeyIndexDefined">True</s:Boolean>
-	<s:Boolean x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=FileE50EE7FB26BEDF47B1C8A75E95468FF2/@KeyIndexDefined">True</s:Boolean>
-	<s:Double x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=FileE50EE7FB26BEDF47B1C8A75E95468FF2/RelativePriority/@EntryValue">1</s:Double></wpf:ResourceDictionary>
+	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=A9F9D79DA6C08F4DAA94D2760D12DC0B/AbsolutePath/@EntryValue">D:\Dev\CarbonCore\CarbonCore.sln.DotSettings</s:String>
+	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=A9F9D79DA6C08F4DAA94D2760D12DC0B/RelativePath/@EntryValue">..\..\..\..\CarbonCore.sln.DotSettings</s:String>
+	<s:Boolean x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=A9F9D79DA6C08F4DAA94D2760D12DC0B/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=FileA9F9D79DA6C08F4DAA94D2760D12DC0B/@KeyIndexDefined">True</s:Boolean>
+	<s:Double x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=FileA9F9D79DA6C08F4DAA94D2760D12DC0B/RelativePriority/@EntryValue">1</s:Double></wpf:ResourceDictionary>

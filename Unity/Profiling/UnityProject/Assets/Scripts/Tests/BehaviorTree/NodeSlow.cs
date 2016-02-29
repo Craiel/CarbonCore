@@ -13,8 +13,8 @@
         // -------------------------------------------------------------------
         public override void Execute(BehaviorTreeContext context)
         {
-            var system = context.Get<GameSystem>();
-            var list = context.Get<IList<int>>();
+            context.Get<GameSystem>();
+            context.Get<IList<int>>();
 
             for (var i = 0; i < 1000; i++)
             {

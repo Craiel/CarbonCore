@@ -123,6 +123,7 @@
     <Compile Include="IO\CarbonDirectoryFilter.cs" />
     <Compile Include="IO\CarbonDirectoryResult.cs" />
     <Compile Include="IO\CarbonFileResult.cs" />
+    <Compile Include="IO\NoDisposeStreamWriter.cs" />
     <Compile Include="Json\JsonCarbonDirectoryConverter.cs" />
     <Compile Include="Json\JsonCarbonFileConverter.cs" />
     <Compile Include="Json\JsonConcreteTypeConverter.cs" />

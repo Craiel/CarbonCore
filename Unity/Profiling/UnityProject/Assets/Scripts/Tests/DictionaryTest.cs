@@ -1,4 +1,4 @@
-﻿namespace Assets.Scripts.Tests.BehaviorTree
+﻿namespace Assets.Scripts.Tests
 {
     using System.Collections.Generic;
     
