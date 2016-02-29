@@ -1,8 +1,10 @@
 ﻿namespace CarbonCore.Tests.Utils.Collections
 {
-    using CarbonCore.Utils.Collections;
-    using NUnit.Framework;
     using System;
+
+    using CarbonCore.Utils.Collections;
+
+    using NUnit.Framework;
 
     [TestFixture]
     public class CicularBufferTests
@@ -15,7 +17,7 @@
         {
             var buffer = new CircularBuffer<int>(1);
             Assert.AreEqual(buffer.HaveValue(0), false);
-            Assert.Throws<ArgumentOutOfRangeException>(delegate() { buffer.Get(0); });
+            Assert.Throws<ArgumentOutOfRangeException>(delegate { buffer.Get(0); });
         }
 
         [Test]
@@ -27,7 +29,7 @@
             Assert.AreEqual(buffer.Get(0), 0);
             Assert.AreEqual(buffer.Get(1), 1);
             buffer.Add(2);
-            Assert.Throws<ArgumentOutOfRangeException>(delegate() { buffer.Get(0); });
+            Assert.Throws<ArgumentOutOfRangeException>(delegate { buffer.Get(0); });
             Assert.AreEqual(buffer.Get(1), 1);
             Assert.AreEqual(buffer.Get(2), 2);
         }

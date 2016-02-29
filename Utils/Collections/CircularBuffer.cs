@@ -4,88 +4,102 @@
 
     public class CircularBuffer<T>
     {
-        private struct Data
-        {
-            public static Data Invalid = new Data { valid = false };
+        private static readonly DataEntry Invalid = new DataEntry { Valid = false };
 
-            public Data(T value)
-            {
-                this.valid = true;
-                this.data = value;
-            }
+        private readonly DataEntry[] buffer;
+        private readonly int length;
+        private int nextFree;
 
-            public bool valid;
-            public T data;
-        }
-
-        Data[] buffer;
-        int length;
-        int nextFree;
-
+        // -------------------------------------------------------------------
+        // Constructor
+        // -------------------------------------------------------------------
         public CircularBuffer(int length)
         {
-            this.buffer = new Data[length];
+            this.buffer = new DataEntry[length];
             this.length = length;
             this.nextFree = 0;
             for (int k = 0; k < length; k++)
             {
-                this.buffer[k].valid = false;
+                this.buffer[k].Valid = false;
             }
         }
 
+        // -------------------------------------------------------------------
+        // Public
+        // -------------------------------------------------------------------
         public bool HaveValue(int index)
         {
-            return IsIndexInRange(index) &&
-                   buffer[IndexToId(index)].valid;
+            return this.IsIndexInRange(index) && this.buffer[this.IndexToId(index)].Valid;
         }
 
         public T Get(int index)
         {
-            if (!HaveValue(index))
+            if (!this.HaveValue(index))
             {
                 throw new ArgumentOutOfRangeException();
             }
-            return buffer[IndexToId(index)].data;
+
+            return this.buffer[this.IndexToId(index)].Data;
         }
 
         public void Set(int index, T value)
         {
-            if (IsIndexInRange(index))
+            if (this.IsIndexInRange(index))
             {
-                buffer[IndexToId(index)] = new Data(value);
+                this.buffer[this.IndexToId(index)] = new DataEntry(value);
+                return;
             }
-            else if (index == nextFree)
-            {
-                Add(value);
-            }
-            else
-            {
-                int startIndex = nextFree;
-                int stopIndex = Math.Min(index, nextFree + length) - 1;
-                for (int k = startIndex; k <= stopIndex; k++)
-                {
-                    buffer[IndexToId(k)] = Data.Invalid;
-                }
 
-                buffer[IndexToId(index)] = new Data(value);
-                nextFree = index + 1;
+            if (index == this.nextFree)
+            {
+                this.Add(value);
+                return;
             }
+
+            int startIndex = this.nextFree;
+            int stopIndex = Math.Min(index, this.nextFree + this.length) - 1;
+            for (int k = startIndex; k <= stopIndex; k++)
+            {
+                this.buffer[this.IndexToId(k)] = Invalid;
+            }
+
+            this.buffer[this.IndexToId(index)] = new DataEntry(value);
+            this.nextFree = index + 1;
         }
 
         public void Add(T value)
         {
-            buffer[IndexToId(nextFree)] = new Data(value);
-            nextFree++;
+            this.buffer[this.IndexToId(this.nextFree)] = new DataEntry(value);
+            this.nextFree++;
         }
 
+        // -------------------------------------------------------------------
+        // Private
+        // -------------------------------------------------------------------
         private bool IsIndexInRange(int index)
         {
-            return nextFree - length <= index && index < nextFree;
+            return this.nextFree - this.length <= index && index < this.nextFree;
         }
 
         private int IndexToId(int index)
         {
-            return index % length;
+            return index % this.length;
+        }
+
+        // -------------------------------------------------------------------
+        // Data Struct
+        // -------------------------------------------------------------------
+        private struct DataEntry
+        {
+            public readonly T Data;
+
+            public bool Valid;
+
+            public DataEntry(T value)
+            {
+                this.Valid = true;
+                this.Data = value;
+            }
         }
     }
 }
