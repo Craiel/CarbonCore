@@ -56,7 +56,10 @@ namespace Newtonsoft.Json.Linq
     {
 #if !(DOTNET || PORTABLE40 || PORTABLE)
         internal ListChangedEventHandler _listChanged;
+
+#if !UNITY_5
         internal AddingNewEventHandler _addingNew;
+#endif
 
         /// <summary>
         /// Occurs when the list changes or an item in the list changes.
@@ -70,11 +73,13 @@ namespace Newtonsoft.Json.Linq
         /// <summary>
         /// Occurs before an item is added to the collection.
         /// </summary>
+#if !UNITY_5
         public event AddingNewEventHandler AddingNew
         {
             add { _addingNew += value; }
             remove { _addingNew -= value; }
         }
+#endif
 #endif
 #if !(NET20 || NET35 || PORTABLE40)
         internal NotifyCollectionChangedEventHandler _collectionChanged;
@@ -107,7 +112,7 @@ namespace Newtonsoft.Json.Linq
         internal JContainer(JContainer other)
             : this()
         {
-            ValidationUtils.ArgumentNotNull(other, UnityCompatibility.nameof(other));
+            ValidationUtils.ArgumentNotNull(other, nameof(other));
 
             int i = 0;
             foreach (JToken child in other)
@@ -139,11 +144,13 @@ namespace Newtonsoft.Json.Linq
         /// <param name="e">The <see cref="AddingNewEventArgs"/> instance containing the event data.</param>
         protected virtual void OnAddingNew(AddingNewEventArgs e)
         {
+#if !UNITY_5
             AddingNewEventHandler handler = _addingNew;
             if (handler != null)
             {
                 handler(this, e);
             }
+#endif
         }
 
         /// <summary>
@@ -192,12 +199,12 @@ namespace Newtonsoft.Json.Linq
         }
 #endif
 
-        /// <summary>
-        /// Gets a value indicating whether this token has child tokens.
-        /// </summary>
-        /// <value>
-        /// 	<c>true</c> if this token has child values; otherwise, <c>false</c>.
-        /// </value>
+            /// <summary>
+            /// Gets a value indicating whether this token has child tokens.
+            /// </summary>
+            /// <value>
+            /// 	<c>true</c> if this token has child values; otherwise, <c>false</c>.
+            /// </value>
         public override bool HasValues
         {
             get { return ChildrenTokens.Count > 0; }
@@ -382,7 +389,7 @@ namespace Newtonsoft.Json.Linq
 
             if (index > children.Count)
             {
-                throw new ArgumentOutOfRangeException(UnityCompatibility.nameof(index), "Index must be within the bounds of the List.");
+                throw new ArgumentOutOfRangeException(nameof(index), "Index must be within the bounds of the List.");
             }
 
             CheckReentrancy();
@@ -431,11 +438,11 @@ namespace Newtonsoft.Json.Linq
 
             if (index < 0)
             {
-                throw new ArgumentOutOfRangeException(UnityCompatibility.nameof(index), "Index is less than 0.");
+                throw new ArgumentOutOfRangeException(nameof(index), "Index is less than 0.");
             }
             if (index >= children.Count)
             {
-                throw new ArgumentOutOfRangeException(UnityCompatibility.nameof(index), "Index is equal to or greater than Count.");
+                throw new ArgumentOutOfRangeException(nameof(index), "Index is equal to or greater than Count.");
             }
 
             CheckReentrancy();
@@ -496,11 +503,11 @@ namespace Newtonsoft.Json.Linq
 
             if (index < 0)
             {
-                throw new ArgumentOutOfRangeException(UnityCompatibility.nameof(index), "Index is less than 0.");
+                throw new ArgumentOutOfRangeException(nameof(index), "Index is less than 0.");
             }
             if (index >= children.Count)
             {
-                throw new ArgumentOutOfRangeException(UnityCompatibility.nameof(index), "Index is equal to or greater than Count.");
+                throw new ArgumentOutOfRangeException(nameof(index), "Index is equal to or greater than Count.");
             }
 
             JToken existing = children[index];
@@ -602,11 +609,11 @@ namespace Newtonsoft.Json.Linq
         {
             if (array == null)
             {
-                throw new ArgumentNullException(UnityCompatibility.nameof(array));
+                throw new ArgumentNullException(nameof(array));
             }
             if (arrayIndex < 0)
             {
-                throw new ArgumentOutOfRangeException(UnityCompatibility.nameof(arrayIndex), "arrayIndex is less than 0.");
+                throw new ArgumentOutOfRangeException(nameof(arrayIndex), "arrayIndex is less than 0.");
             }
             if (arrayIndex >= array.Length && arrayIndex != 0)
             {
@@ -644,7 +651,7 @@ namespace Newtonsoft.Json.Linq
 
         internal virtual void ValidateToken(JToken o, JToken existing)
         {
-            ValidationUtils.ArgumentNotNull(o, UnityCompatibility.nameof(o));
+            ValidationUtils.ArgumentNotNull(o, nameof(o));
 
             if (o.Type == JTokenType.Property)
             {
@@ -775,7 +782,7 @@ namespace Newtonsoft.Json.Linq
 
         internal void ReadContentFrom(JsonReader r, JsonLoadSettings settings)
         {
-            ValidationUtils.ArgumentNotNull(r, UnityCompatibility.nameof(r));
+            ValidationUtils.ArgumentNotNull(r, nameof(r));
             IJsonLineInfo lineInfo = r as IJsonLineInfo;
 
             JContainer parent = this;
@@ -1249,7 +1256,7 @@ namespace Newtonsoft.Json.Linq
                     }
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(UnityCompatibility.nameof(settings), "Unexpected merge array handling when merging JSON.");
+                    throw new ArgumentOutOfRangeException(nameof(settings), "Unexpected merge array handling when merging JSON.");
             }
         }
     }

@@ -24,7 +24,7 @@
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <UseVSHostingProcess>true</UseVSHostingProcess>
-    <CodeAnalysisRuleSet>Netwonsoft.Json.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>Newtonsoft.Json.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -41,7 +41,7 @@
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>$(SolutionDir)bin\$(Configuration)\$(ProjectName)</OutputPath>
     <IntermediateOutputPath>$(SolutionDir)obj\$(Configuration)\$(ProjectName)</IntermediateOutputPath>
-    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS;NET35;PORTABLE;UNITY_5</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS;NET35;UNITY_5</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <RunCodeAnalysis>false</RunCodeAnalysis>
@@ -57,7 +57,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>Netwonsoft.Json.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>Newtonsoft.Json</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -160,6 +160,7 @@
     <Compile Include="Source\Linq\JValue.cs" />
     <Compile Include="Source\Linq\JsonLoadSettings.cs" />
     <Compile Include="Source\Linq\MergeArrayHandling.cs" />
+    <Compile Include="Source\Linq\MergeNullValueHandling.cs" />
     <Compile Include="Source\MemberSerialization.cs" />
     <Compile Include="Source\MetadataPropertyHandling.cs" />
     <Compile Include="Source\MissingMemberHandling.cs" />

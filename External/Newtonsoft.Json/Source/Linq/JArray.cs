@@ -238,7 +238,7 @@ namespace Newtonsoft.Json.Linq
         {
             get
             {
-                ValidationUtils.ArgumentNotNull(key, UnityCompatibility.nameof(key));
+                ValidationUtils.ArgumentNotNull(key, nameof(key));
 
                 if (!(key is int))
                 {
@@ -249,7 +249,7 @@ namespace Newtonsoft.Json.Linq
             }
             set
             {
-                ValidationUtils.ArgumentNotNull(key, UnityCompatibility.nameof(key));
+                ValidationUtils.ArgumentNotNull(key, nameof(key));
 
                 if (!(key is int))
                 {

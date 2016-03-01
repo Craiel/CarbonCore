@@ -444,7 +444,7 @@ namespace Newtonsoft.Json
         {
             if (delimiter != '"' && delimiter != '\'')
             {
-                throw new ArgumentException("Delimiter must be a single or double quote.", UnityCompatibility.nameof(delimiter));
+                throw new ArgumentException("Delimiter must be a single or double quote.", nameof(delimiter));
             }
 
             return JavaScriptUtils.ToEscapedJavaScriptString(value, delimiter, true, stringEscapeHandling);
@@ -848,7 +848,7 @@ namespace Newtonsoft.Json
         /// <returns>The deserialized object from the JSON string.</returns>
         public static object DeserializeObject(string value, Type type, JsonSerializerSettings settings)
         {
-            ValidationUtils.ArgumentNotNull(value, UnityCompatibility.nameof(value));
+            ValidationUtils.ArgumentNotNull(value, nameof(value));
 
             JsonSerializer jsonSerializer = JsonSerializer.CreateDefault(settings);
 

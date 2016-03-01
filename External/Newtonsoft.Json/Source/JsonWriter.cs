@@ -230,7 +230,7 @@ namespace Newtonsoft.Json
             {
                 if (value < Formatting.None || value > Formatting.Indented)
                 {
-                    throw new ArgumentOutOfRangeException(UnityCompatibility.nameof(value));
+                    throw new ArgumentOutOfRangeException(nameof(value));
                 }
 
                 _formatting = value;
@@ -247,7 +247,7 @@ namespace Newtonsoft.Json
             {
                 if (value < DateFormatHandling.IsoDateFormat || value > DateFormatHandling.MicrosoftDateFormat)
                 {
-                    throw new ArgumentOutOfRangeException(UnityCompatibility.nameof(value));
+                    throw new ArgumentOutOfRangeException(nameof(value));
                 }
 
                 _dateFormatHandling = value;
@@ -264,7 +264,7 @@ namespace Newtonsoft.Json
             {
                 if (value < DateTimeZoneHandling.Local || value > DateTimeZoneHandling.RoundtripKind)
                 {
-                    throw new ArgumentOutOfRangeException(UnityCompatibility.nameof(value));
+                    throw new ArgumentOutOfRangeException(nameof(value));
                 }
 
                 _dateTimeZoneHandling = value;
@@ -281,7 +281,7 @@ namespace Newtonsoft.Json
             {
                 if (value < StringEscapeHandling.Default || value > StringEscapeHandling.EscapeHtml)
                 {
-                    throw new ArgumentOutOfRangeException(UnityCompatibility.nameof(value));
+                    throw new ArgumentOutOfRangeException(nameof(value));
                 }
 
                 _stringEscapeHandling = value;
@@ -306,7 +306,7 @@ namespace Newtonsoft.Json
             {
                 if (value < FloatFormatHandling.String || value > FloatFormatHandling.DefaultValue)
                 {
-                    throw new ArgumentOutOfRangeException(UnityCompatibility.nameof(value));
+                    throw new ArgumentOutOfRangeException(nameof(value));
                 }
 
                 _floatFormatHandling = value;
@@ -493,7 +493,7 @@ namespace Newtonsoft.Json
         /// <param name="writeChildren">A flag indicating whether the current token's children should be written.</param>
         public void WriteToken(JsonReader reader, bool writeChildren)
         {
-            ValidationUtils.ArgumentNotNull(reader, UnityCompatibility.nameof(reader));
+            ValidationUtils.ArgumentNotNull(reader, nameof(reader));
 
             WriteToken(reader, writeChildren, true, true);
         }
@@ -520,18 +520,18 @@ namespace Newtonsoft.Json
                     WriteStartArray();
                     break;
                 case JsonToken.StartConstructor:
-                    ValidationUtils.ArgumentNotNull(value, UnityCompatibility.nameof(value));
+                    ValidationUtils.ArgumentNotNull(value, nameof(value));
                     WriteStartConstructor(value.ToString());
                     break;
                 case JsonToken.PropertyName:
-                    ValidationUtils.ArgumentNotNull(value, UnityCompatibility.nameof(value));
+                    ValidationUtils.ArgumentNotNull(value, nameof(value));
                     WritePropertyName(value.ToString());
                     break;
                 case JsonToken.Comment:
                     WriteComment((value != null) ? value.ToString() : null);
                     break;
                 case JsonToken.Integer:
-                    ValidationUtils.ArgumentNotNull(value, UnityCompatibility.nameof(value));
+                    ValidationUtils.ArgumentNotNull(value, nameof(value));
 #if !(NET20 || NET35 || PORTABLE || PORTABLE40)
                     if (value is BigInteger)
                     {
@@ -544,7 +544,7 @@ namespace Newtonsoft.Json
                     }
                     break;
                 case JsonToken.Float:
-                    ValidationUtils.ArgumentNotNull(value, UnityCompatibility.nameof(value));
+                    ValidationUtils.ArgumentNotNull(value, nameof(value));
                     if (value is decimal)
                     {
                         WriteValue((decimal)value);
@@ -563,11 +563,11 @@ namespace Newtonsoft.Json
                     }
                     break;
                 case JsonToken.String:
-                    ValidationUtils.ArgumentNotNull(value, UnityCompatibility.nameof(value));
+                    ValidationUtils.ArgumentNotNull(value, nameof(value));
                     WriteValue(value.ToString());
                     break;
                 case JsonToken.Boolean:
-                    ValidationUtils.ArgumentNotNull(value, UnityCompatibility.nameof(value));
+                    ValidationUtils.ArgumentNotNull(value, nameof(value));
                     WriteValue(Convert.ToBoolean(value, CultureInfo.InvariantCulture));
                     break;
                 case JsonToken.Null:
@@ -586,7 +586,7 @@ namespace Newtonsoft.Json
                     WriteEndConstructor();
                     break;
                 case JsonToken.Date:
-                    ValidationUtils.ArgumentNotNull(value, UnityCompatibility.nameof(value));
+                    ValidationUtils.ArgumentNotNull(value, nameof(value));
 #if !NET20
                     if (value is DateTimeOffset)
                     {
@@ -602,7 +602,7 @@ namespace Newtonsoft.Json
                     WriteRawValue((value != null) ? value.ToString() : null);
                     break;
                 case JsonToken.Bytes:
-                    ValidationUtils.ArgumentNotNull(value, UnityCompatibility.nameof(value));
+                    ValidationUtils.ArgumentNotNull(value, nameof(value));
                     if (value is Guid)
                     {
                         WriteValue((Guid)value);
@@ -613,7 +613,7 @@ namespace Newtonsoft.Json
                     }
                     break;
                 default:
-                    throw MiscellaneousUtils.CreateArgumentOutOfRangeException(UnityCompatibility.nameof(token), token, "Unexpected token type.");
+                    throw MiscellaneousUtils.CreateArgumentOutOfRangeException(nameof(token), token, "Unexpected token type.");
             }
         }
 
@@ -1632,7 +1632,7 @@ namespace Newtonsoft.Json
                 case JsonToken.PropertyName:
                     if (!(value is string))
                     {
-                        throw new ArgumentException("A name is required when setting property name state.", UnityCompatibility.nameof(value));
+                        throw new ArgumentException("A name is required when setting property name state.", nameof(value));
                     }
 
                     InternalWritePropertyName((string)value);
@@ -1663,7 +1663,7 @@ namespace Newtonsoft.Json
                     InternalWriteEnd(JsonContainerType.Constructor);
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(UnityCompatibility.nameof(token));
+                    throw new ArgumentOutOfRangeException(nameof(token));
             }
         }
 

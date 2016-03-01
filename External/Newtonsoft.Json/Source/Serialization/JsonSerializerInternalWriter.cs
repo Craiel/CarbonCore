@@ -61,7 +61,7 @@ namespace Newtonsoft.Json.Serialization
         {
             if (jsonWriter == null)
             {
-                throw new ArgumentNullException(UnityCompatibility.nameof(jsonWriter));
+                throw new ArgumentNullException(nameof(jsonWriter));
             }
 
             _rootType = objectType;

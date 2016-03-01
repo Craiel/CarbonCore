@@ -309,7 +309,7 @@ namespace Newtonsoft.Json.Serialization
 
         internal JsonContract(Type underlyingType)
         {
-            ValidationUtils.ArgumentNotNull(underlyingType, UnityCompatibility.nameof(underlyingType));
+            ValidationUtils.ArgumentNotNull(underlyingType, nameof(underlyingType));
 
             UnderlyingType = underlyingType;
 

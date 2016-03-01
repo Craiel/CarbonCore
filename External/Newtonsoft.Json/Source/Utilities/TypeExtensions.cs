@@ -36,7 +36,7 @@ namespace Newtonsoft.Json.Utilities
 {
     internal static class TypeExtensions
     {
-#if DOTNET || PORTABLE && !UNITY_5
+#if DOTNET || PORTABLE
 #if !DOTNET
         private static BindingFlags DefaultFlags = BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance;
 
@@ -98,7 +98,7 @@ namespace Newtonsoft.Json.Utilities
 
         public static MethodInfo Method(this Delegate d)
         {
-#if !(DOTNET || PORTABLE) || UNITY_5
+#if !(DOTNET || PORTABLE)
             return d.Method;
 #else
             return d.GetMethodInfo();
@@ -107,7 +107,7 @@ namespace Newtonsoft.Json.Utilities
 
         public static MemberTypes MemberType(this MemberInfo memberInfo)
         {
-#if !(DOTNET || PORTABLE || PORTABLE40) || UNITY_5
+#if !(DOTNET || PORTABLE || PORTABLE40)
             return memberInfo.MemberType;
 #else
             if (memberInfo is PropertyInfo)
@@ -135,7 +135,7 @@ namespace Newtonsoft.Json.Utilities
 
         public static bool ContainsGenericParameters(this Type type)
         {
-#if !(DOTNET || PORTABLE) || UNITY_5
+#if !(DOTNET || PORTABLE)
             return type.ContainsGenericParameters;
 #else
             return type.GetTypeInfo().ContainsGenericParameters;
@@ -144,7 +144,7 @@ namespace Newtonsoft.Json.Utilities
 
         public static bool IsInterface(this Type type)
         {
-#if !(DOTNET || PORTABLE) || UNITY_5
+#if !(DOTNET || PORTABLE)
             return type.IsInterface;
 #else
             return type.GetTypeInfo().IsInterface;
@@ -153,7 +153,7 @@ namespace Newtonsoft.Json.Utilities
 
         public static bool IsGenericType(this Type type)
         {
-#if !(DOTNET || PORTABLE) || UNITY_5
+#if !(DOTNET || PORTABLE)
             return type.IsGenericType;
 #else
             return type.GetTypeInfo().IsGenericType;
@@ -162,7 +162,7 @@ namespace Newtonsoft.Json.Utilities
 
         public static bool IsGenericTypeDefinition(this Type type)
         {
-#if !(DOTNET || PORTABLE) || UNITY_5
+#if !(DOTNET || PORTABLE)
             return type.IsGenericTypeDefinition;
 #else
             return type.GetTypeInfo().IsGenericTypeDefinition;
@@ -171,7 +171,7 @@ namespace Newtonsoft.Json.Utilities
 
         public static Type BaseType(this Type type)
         {
-#if !(DOTNET || PORTABLE) || UNITY_5
+#if !(DOTNET || PORTABLE)
             return type.BaseType;
 #else
             return type.GetTypeInfo().BaseType;
@@ -180,7 +180,7 @@ namespace Newtonsoft.Json.Utilities
 
         public static Assembly Assembly(this Type type)
         {
-#if !(DOTNET || PORTABLE) || UNITY_5
+#if !(DOTNET || PORTABLE)
             return type.Assembly;
 #else
             return type.GetTypeInfo().Assembly;
@@ -189,7 +189,7 @@ namespace Newtonsoft.Json.Utilities
 
         public static bool IsEnum(this Type type)
         {
-#if !(DOTNET || PORTABLE) || UNITY_5
+#if !(DOTNET || PORTABLE)
             return type.IsEnum;
 #else
             return type.GetTypeInfo().IsEnum;
@@ -198,7 +198,7 @@ namespace Newtonsoft.Json.Utilities
 
         public static bool IsClass(this Type type)
         {
-#if !(DOTNET || PORTABLE) || UNITY_5
+#if !(DOTNET || PORTABLE)
             return type.IsClass;
 #else
             return type.GetTypeInfo().IsClass;
@@ -207,7 +207,7 @@ namespace Newtonsoft.Json.Utilities
 
         public static bool IsSealed(this Type type)
         {
-#if !(DOTNET || PORTABLE) || UNITY_5
+#if !(DOTNET || PORTABLE)
             return type.IsSealed;
 #else
             return type.GetTypeInfo().IsSealed;
@@ -243,7 +243,7 @@ namespace Newtonsoft.Json.Utilities
 
         public static IEnumerable<MemberInfo> GetMember(this Type type, string name, MemberTypes memberType, BindingFlags bindingFlags)
         {
-#if PORTABLE && !UNITY_5
+#if PORTABLE
             return type.GetMemberInternal(name, memberType, bindingFlags);
 #else
             return type.GetMember(name, bindingFlags).Where(m =>
@@ -259,14 +259,14 @@ namespace Newtonsoft.Json.Utilities
         }
 #endif
 
-#if (DOTNET || PORTABLE) && !UNITY_5
+#if (DOTNET || PORTABLE)
         public static MethodInfo GetBaseDefinition(this MethodInfo method)
         {
             return method.GetRuntimeBaseDefinition();
         }
 #endif
 
-#if (DOTNET || PORTABLE) && !UNITY_5
+#if (DOTNET || PORTABLE)
         public static bool IsDefined(this Type type, Type attributeType, bool inherit)
         {
             return type.GetTypeInfo().CustomAttributes.Any(a => a.AttributeType == attributeType);
@@ -549,7 +549,7 @@ namespace Newtonsoft.Json.Utilities
 
         public static bool IsAbstract(this Type type)
         {
-#if !(DOTNET || PORTABLE) || UNITY_5
+#if !(DOTNET || PORTABLE)
             return type.IsAbstract;
 #else
             return type.GetTypeInfo().IsAbstract;
@@ -558,7 +558,7 @@ namespace Newtonsoft.Json.Utilities
 
         public static bool IsVisible(this Type type)
         {
-#if !(DOTNET || PORTABLE) || UNITY_5
+#if !(DOTNET || PORTABLE)
             return type.IsVisible;
 #else
             return type.GetTypeInfo().IsVisible;
@@ -567,7 +567,7 @@ namespace Newtonsoft.Json.Utilities
 
         public static bool IsValueType(this Type type)
         {
-#if !(DOTNET || PORTABLE) || UNITY_5
+#if !(DOTNET || PORTABLE)
             return type.IsValueType;
 #else
             return type.GetTypeInfo().IsValueType;

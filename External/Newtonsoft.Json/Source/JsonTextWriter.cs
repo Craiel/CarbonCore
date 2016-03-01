@@ -75,7 +75,7 @@ namespace Newtonsoft.Json
             {
                 if (value == null)
                 {
-                    throw new ArgumentNullException(UnityCompatibility.nameof(value));
+                    throw new ArgumentNullException(nameof(value));
                 }
 
                 _arrayPool = value;
@@ -150,7 +150,7 @@ namespace Newtonsoft.Json
         {
             if (textWriter == null)
             {
-                throw new ArgumentNullException(UnityCompatibility.nameof(textWriter));
+                throw new ArgumentNullException(nameof(textWriter));
             }
 
             _writer = textWriter;

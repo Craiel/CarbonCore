@@ -80,7 +80,7 @@ namespace Newtonsoft.Json
         {
             if (reader == null)
             {
-                throw new ArgumentNullException(UnityCompatibility.nameof(reader));
+                throw new ArgumentNullException(nameof(reader));
             }
 
             _reader = reader;
@@ -104,7 +104,7 @@ namespace Newtonsoft.Json
             {
                 if (value == null)
                 {
-                    throw new ArgumentNullException(UnityCompatibility.nameof(value));
+                    throw new ArgumentNullException(nameof(value));
                 }
 
                 _arrayPool = value;
@@ -595,7 +595,7 @@ namespace Newtonsoft.Json
                                         return ReadDateTimeOffsetString((string)Value);
 #endif
                                     default:
-                                        throw new ArgumentOutOfRangeException(UnityCompatibility.nameof(readType));
+                                        throw new ArgumentOutOfRangeException(nameof(readType));
                                 }
                             case '-':
                             case '.':
@@ -855,7 +855,7 @@ namespace Newtonsoft.Json
                                     case ReadType.ReadAsDouble:
                                         return ReadDoubleString(_stringReference.ToString());
                                     default:
-                                        throw new ArgumentOutOfRangeException(UnityCompatibility.nameof(readType));
+                                        throw new ArgumentOutOfRangeException(nameof(readType));
                                 }
                             case 'n':
                                 HandleNull();

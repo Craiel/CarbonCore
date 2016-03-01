@@ -56,7 +56,7 @@ namespace Newtonsoft.Json.Linq
 #if !(DOTNET || PORTABLE40 || PORTABLE)
         , ICustomTypeDescriptor
 #endif
-#if !(NET20 || PORTABLE40 || PORTABLE)
+#if !(NET20 || PORTABLE40 || PORTABLE || UNITY_5)
         , INotifyPropertyChanging
 #endif
     {
@@ -76,7 +76,7 @@ namespace Newtonsoft.Json.Linq
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
-#if !(NET20 || PORTABLE || PORTABLE40)
+#if !(NET20 || PORTABLE || PORTABLE40 || UNITY_5)
         /// <summary>
         /// Occurs when a property value is changing.
         /// </summary>
@@ -141,7 +141,7 @@ namespace Newtonsoft.Json.Linq
 
         internal override void ValidateToken(JToken o, JToken existing)
         {
-            ValidationUtils.ArgumentNotNull(o, UnityCompatibility.nameof(o));
+            ValidationUtils.ArgumentNotNull(o, nameof(o));
 
             if (o.Type != JTokenType.Property)
             {
@@ -187,7 +187,7 @@ namespace Newtonsoft.Json.Linq
                     JContainer existingContainer = existingProperty.Value as JContainer;
                     if (existingContainer == null)
                     {
-                        if (contentItem.Value.Type != JTokenType.Null)
+                        if (contentItem.Value.Type != JTokenType.Null || settings?.MergeNullValueHandling == MergeNullValueHandling.Merge)
                         {
                             existingProperty.Value = contentItem.Value;
                         }
@@ -223,7 +223,7 @@ namespace Newtonsoft.Json.Linq
 
         internal void InternalPropertyChanging(JProperty childProperty)
         {
-#if !(NET20 || PORTABLE40 || PORTABLE)
+#if !(NET20 || PORTABLE40 || PORTABLE || UNITY_5)
             OnPropertyChanging(childProperty.Name);
 #endif
         }
@@ -285,7 +285,7 @@ namespace Newtonsoft.Json.Linq
         {
             get
             {
-                ValidationUtils.ArgumentNotNull(key, UnityCompatibility.nameof(key));
+                ValidationUtils.ArgumentNotNull(key, nameof(key));
 
                 string propertyName = key as string;
                 if (propertyName == null)
@@ -297,7 +297,7 @@ namespace Newtonsoft.Json.Linq
             }
             set
             {
-                ValidationUtils.ArgumentNotNull(key, UnityCompatibility.nameof(key));
+                ValidationUtils.ArgumentNotNull(key, nameof(key));
 
                 string propertyName = key as string;
                 if (propertyName == null)
@@ -317,7 +317,7 @@ namespace Newtonsoft.Json.Linq
         {
             get
             {
-                ValidationUtils.ArgumentNotNull(propertyName, UnityCompatibility.nameof(propertyName));
+                ValidationUtils.ArgumentNotNull(propertyName, nameof(propertyName));
 
                 JProperty property = Property(propertyName);
 
@@ -332,7 +332,7 @@ namespace Newtonsoft.Json.Linq
                 }
                 else
                 {
-#if !(NET20 || PORTABLE40 || PORTABLE)
+#if !(NET20 || PORTABLE40 || PORTABLE || UNITY_5)
                     OnPropertyChanging(propertyName);
 #endif
                     Add(new JProperty(propertyName, value));
@@ -360,7 +360,7 @@ namespace Newtonsoft.Json.Linq
         /// <returns>A <see cref="JObject"/> that contains the JSON that was read from the specified <see cref="JsonReader"/>.</returns>
         public new static JObject Load(JsonReader reader, JsonLoadSettings settings)
         {
-            ValidationUtils.ArgumentNotNull(reader, UnityCompatibility.nameof(reader));
+            ValidationUtils.ArgumentNotNull(reader, nameof(reader));
 
             if (reader.TokenType == JsonToken.None)
             {
@@ -624,11 +624,11 @@ namespace Newtonsoft.Json.Linq
         {
             if (array == null)
             {
-                throw new ArgumentNullException(UnityCompatibility.nameof(array));
+                throw new ArgumentNullException(nameof(array));
             }
             if (arrayIndex < 0)
             {
-                throw new ArgumentOutOfRangeException(UnityCompatibility.nameof(arrayIndex), "arrayIndex is less than 0.");
+                throw new ArgumentOutOfRangeException(nameof(arrayIndex), "arrayIndex is less than 0.");
             }
             if (arrayIndex >= array.Length && arrayIndex != 0)
             {
@@ -695,7 +695,7 @@ namespace Newtonsoft.Json.Linq
             }
         }
 
-#if !(PORTABLE40 || PORTABLE || NET20)
+#if !(PORTABLE40 || PORTABLE || NET20 || UNITY_5)
         /// <summary>
         /// Raises the <see cref="PropertyChanging"/> event with the provided arguments.
         /// </summary>

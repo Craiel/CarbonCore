@@ -299,7 +299,7 @@ namespace Newtonsoft.Json.Linq
         internal JProperty(string name)
         {
             // called from JTokenWriter
-            ValidationUtils.ArgumentNotNull(name, UnityCompatibility.nameof(name));
+            ValidationUtils.ArgumentNotNull(name, nameof(name));
 
             _name = name;
         }
@@ -321,7 +321,7 @@ namespace Newtonsoft.Json.Linq
         /// <param name="content">The property content.</param>
         public JProperty(string name, object content)
         {
-            ValidationUtils.ArgumentNotNull(name, UnityCompatibility.nameof(name));
+            ValidationUtils.ArgumentNotNull(name, nameof(name));
 
             _name = name;
 

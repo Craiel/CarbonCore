@@ -41,7 +41,7 @@ namespace Newtonsoft.Json.Utilities
 
         public Base64Encoder(TextWriter writer)
         {
-            ValidationUtils.ArgumentNotNull(writer, UnityCompatibility.nameof(writer));
+            ValidationUtils.ArgumentNotNull(writer, nameof(writer));
             _writer = writer;
         }
 
@@ -49,22 +49,22 @@ namespace Newtonsoft.Json.Utilities
         {
             if (buffer == null)
             {
-                throw new ArgumentNullException(UnityCompatibility.nameof(buffer));
+                throw new ArgumentNullException(nameof(buffer));
             }
 
             if (index < 0)
             {
-                throw new ArgumentOutOfRangeException(UnityCompatibility.nameof(index));
+                throw new ArgumentOutOfRangeException(nameof(index));
             }
 
             if (count < 0)
             {
-                throw new ArgumentOutOfRangeException(UnityCompatibility.nameof(count));
+                throw new ArgumentOutOfRangeException(nameof(count));
             }
 
             if (count > (buffer.Length - index))
             {
-                throw new ArgumentOutOfRangeException(UnityCompatibility.nameof(count));
+                throw new ArgumentOutOfRangeException(nameof(count));
             }
 
             if (_leftOverBytesCount > 0)

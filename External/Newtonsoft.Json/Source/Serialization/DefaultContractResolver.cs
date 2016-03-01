@@ -236,7 +236,7 @@ namespace Newtonsoft.Json.Serialization
         {
             if (type == null)
             {
-                throw new ArgumentNullException(UnityCompatibility.nameof(type));
+                throw new ArgumentNullException(nameof(type));
             }
 
             DefaultContractResolverState state = GetState();
@@ -584,7 +584,7 @@ namespace Newtonsoft.Json.Serialization
 
             public EnumerableDictionaryWrapper(IEnumerable<KeyValuePair<TEnumeratorKey, TEnumeratorValue>> e)
             {
-                ValidationUtils.ArgumentNotNull(e, UnityCompatibility.nameof(e));
+                ValidationUtils.ArgumentNotNull(e, nameof(e));
                 _e = e;
             }
 
@@ -1321,7 +1321,7 @@ namespace Newtonsoft.Json.Serialization
             {
                 valueProvider = new ReflectionValueProvider(member);
             }
-#elif !(PORTABLE40 || UNITY_5)
+#elif !(PORTABLE40)
             valueProvider = new ExpressionValueProvider(member);
 #else
             valueProvider = new ReflectionValueProvider(member);

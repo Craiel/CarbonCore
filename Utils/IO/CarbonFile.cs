@@ -141,16 +141,9 @@
             return XmlWriter.Create(this.Path);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = "Checked")]
         public string ReadAsString()
         {
-            using (FileStream stream = this.OpenRead())
-            {
-                using (var reader = new StreamReader(stream, Encoding.UTF8, false, 4096))
-                {
-                    return reader.ReadToEnd();
-                }
-            }
+            return File.ReadAllText(this.GetPath());
         }
 
         public byte[] ReadAsByte()

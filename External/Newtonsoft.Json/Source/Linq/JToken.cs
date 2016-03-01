@@ -456,7 +456,7 @@ namespace Newtonsoft.Json.Linq
         {
             if (value == null)
             {
-                throw new ArgumentNullException(UnityCompatibility.nameof(value));
+                throw new ArgumentNullException(nameof(value));
             }
 
             if (value is JProperty)
@@ -471,7 +471,7 @@ namespace Newtonsoft.Json.Linq
 
         private static string GetType(JToken token)
         {
-            ValidationUtils.ArgumentNotNull(token, UnityCompatibility.nameof(token));
+            ValidationUtils.ArgumentNotNull(token, nameof(token));
 
             if (token is JProperty)
             {
@@ -1888,8 +1888,8 @@ namespace Newtonsoft.Json.Linq
 
         internal static JToken FromObjectInternal(object o, JsonSerializer jsonSerializer)
         {
-            ValidationUtils.ArgumentNotNull(o, UnityCompatibility.nameof(o));
-            ValidationUtils.ArgumentNotNull(jsonSerializer, UnityCompatibility.nameof(jsonSerializer));
+            ValidationUtils.ArgumentNotNull(o, nameof(o));
+            ValidationUtils.ArgumentNotNull(jsonSerializer, nameof(jsonSerializer));
 
             JToken token;
             using (JTokenWriter jsonWriter = new JTokenWriter())
@@ -2074,7 +2074,7 @@ namespace Newtonsoft.Json.Linq
         /// <returns>The new object created from the JSON value.</returns>
         public object ToObject(Type objectType, JsonSerializer jsonSerializer)
         {
-            ValidationUtils.ArgumentNotNull(jsonSerializer, UnityCompatibility.nameof(jsonSerializer));
+            ValidationUtils.ArgumentNotNull(jsonSerializer, nameof(jsonSerializer));
 
             using (JTokenReader jsonReader = new JTokenReader(this))
             {
@@ -2109,7 +2109,7 @@ namespace Newtonsoft.Json.Linq
         /// </returns>
         public static JToken ReadFrom(JsonReader reader, JsonLoadSettings settings)
         {
-            ValidationUtils.ArgumentNotNull(reader, UnityCompatibility.nameof(reader));
+            ValidationUtils.ArgumentNotNull(reader, nameof(reader));
 
             if (reader.TokenType == JsonToken.None)
             {
@@ -2402,7 +2402,7 @@ namespace Newtonsoft.Json.Linq
         {
             if (annotation == null)
             {
-                throw new ArgumentNullException(UnityCompatibility.nameof(annotation));
+                throw new ArgumentNullException(nameof(annotation));
             }
 
             if (_annotations == null)
@@ -2475,7 +2475,7 @@ namespace Newtonsoft.Json.Linq
         {
             if (type == null)
             {
-                throw new ArgumentNullException(UnityCompatibility.nameof(type));
+                throw new ArgumentNullException(nameof(type));
             }
 
             if (_annotations != null)
@@ -2559,7 +2559,7 @@ namespace Newtonsoft.Json.Linq
         {
             if (type == null)
             {
-                throw new ArgumentNullException(UnityCompatibility.nameof(type));
+                throw new ArgumentNullException(nameof(type));
             }
 
             if (_annotations == null)
@@ -2653,7 +2653,7 @@ namespace Newtonsoft.Json.Linq
         {
             if (type == null)
             {
-                throw new ArgumentNullException(UnityCompatibility.nameof(type));
+                throw new ArgumentNullException(nameof(type));
             }
 
             if (_annotations != null)

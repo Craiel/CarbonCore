@@ -1,5 +1,5 @@
 ﻿
-#if DOTNET || PORTABLE40 || PORTABLE && !UNITY_5
+#if DOTNET || PORTABLE40 || PORTABLE
 
 namespace System.Runtime.Serialization.Formatters
 {
