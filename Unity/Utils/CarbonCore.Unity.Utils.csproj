@@ -163,6 +163,7 @@
     <Compile Include="Logic\Scene\SceneObjectContainer.cs" />
     <Compile Include="Logic\Scene\SceneObjectController.cs" />
     <Compile Include="Logic\Scene\SceneObjectRoot.cs" />
+    <Compile Include="ProfilerUtils.cs" />
     <Compile Include="TextureExtensions.cs" />
     <Compile Include="UnityConstants.cs" />
     <Compile Include="Logic\UnitySingletonBehavior.cs" />

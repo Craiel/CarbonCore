@@ -61,7 +61,7 @@
         // -------------------------------------------------------------------
         private BehaviorTreeStatus ProcessChildren(BehaviorTreeContext context)
         {
-            UnityEngine.Profiler.BeginSample("ProcessChildren");
+            ProfilerUtils.BeginSampleThreadsafe("ProcessChildren");
 
             if (this.Children == null)
             {
@@ -79,18 +79,18 @@
                 BehaviorTreeStatus? nodeStatus = this.ExecuteNode(context, this.Children[i]);
                 if (nodeStatus != null)
                 {
-                    UnityEngine.Profiler.EndSample();
+                    ProfilerUtils.EndSampleThreadSafe();
                     return nodeStatus.Value;
                 }
             }
 
-            UnityEngine.Profiler.EndSample();
+            ProfilerUtils.EndSampleThreadSafe();
             return resultStatus;
         }
 
         private BehaviorTreeStatus ProcessChildrenRandom(BehaviorTreeContext context)
         {
-            UnityEngine.Profiler.BeginSample("ProcessChildrenRandom");
+            ProfilerUtils.BeginSampleThreadsafe("ProcessChildrenRandom");
 
             if (this.Children == null)
             {
@@ -118,12 +118,12 @@
                 BehaviorTreeStatus? nodeStatus = this.ExecuteNode(context, node);
                 if (nodeStatus != null)
                 {
-                    UnityEngine.Profiler.EndSample();
+                    ProfilerUtils.EndSampleThreadSafe();
                     return nodeStatus.Value;
                 }
             }
 
-            UnityEngine.Profiler.EndSample();
+            ProfilerUtils.EndSampleThreadSafe();
             return resultStatus;
         }
 

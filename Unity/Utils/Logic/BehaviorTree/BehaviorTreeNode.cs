@@ -21,11 +21,11 @@
 
         public void Execute(BehaviorTreeContext context)
         {
-            UnityEngine.Profiler.BeginSample("BT_N: " + this.GetType().Name);
+            ProfilerUtils.BeginSampleThreadsafe("BT_N: " + this.GetType().Name);
 
             this.DoExecute(context);
 
-            UnityEngine.Profiler.EndSample();
+            ProfilerUtils.EndSampleThreadSafe();
         }
 
         public virtual void OnExit(BehaviorTreeContext context)
