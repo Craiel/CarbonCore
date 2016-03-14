@@ -19,10 +19,19 @@
             this.Status = BehaviorTreeStatus.Undefined;
         }
 
-        public abstract void Execute(BehaviorTreeContext context);
+        public void Execute(BehaviorTreeContext context)
+        {
+            UnityEngine.Profiler.BeginSample("BT_N: " + this.GetType().Name);
+
+            this.DoExecute(context);
+
+            UnityEngine.Profiler.EndSample();
+        }
 
         public virtual void OnExit(BehaviorTreeContext context)
         {
         }
+
+        protected abstract void DoExecute(BehaviorTreeContext context);
     }
 }

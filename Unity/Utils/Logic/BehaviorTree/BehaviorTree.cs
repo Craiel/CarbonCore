@@ -26,7 +26,11 @@
 
         public virtual void Execute(BehaviorTreeContext context)
         {
+            UnityEngine.Profiler.BeginSample("BT: " + this.GetType().Name);
+
             this.Root.Execute(context);
+
+            UnityEngine.Profiler.EndSample();
         }
     }
 }

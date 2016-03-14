@@ -2,8 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-
-    using CarbonCore.Utils.Diagnostics;
+    
     using CarbonCore.Utils.Unity.Contracts.BehaviorTree;
     using CarbonCore.Utils.Unity.Logic.Enums;
 
@@ -47,17 +46,14 @@
             this.Children.Remove(node);
         }
 
-        public override void Execute(BehaviorTreeContext context)
+        // -------------------------------------------------------------------
+        // Protected
+        // -------------------------------------------------------------------
+        protected override void DoExecute(BehaviorTreeContext context)
         {
-            if (this.IsRandom)
-            {
-                // Random is slower so we have a specific function for it
-                this.Status = this.ProcessChildrenRandom(context);
-            }
-            else
-            {
-                this.Status = this.ProcessChildren(context);
-            }
+            this.Status = this.IsRandom 
+                ? this.ProcessChildrenRandom(context) 
+                : this.ProcessChildren(context);
         }
 
         // -------------------------------------------------------------------
@@ -65,6 +61,8 @@
         // -------------------------------------------------------------------
         private BehaviorTreeStatus ProcessChildren(BehaviorTreeContext context)
         {
+            UnityEngine.Profiler.BeginSample("ProcessChildren");
+
             if (this.Children == null)
             {
                 // No children, just succeed
@@ -81,15 +79,19 @@
                 BehaviorTreeStatus? nodeStatus = this.ExecuteNode(context, this.Children[i]);
                 if (nodeStatus != null)
                 {
+                    UnityEngine.Profiler.EndSample();
                     return nodeStatus.Value;
                 }
             }
 
+            UnityEngine.Profiler.EndSample();
             return resultStatus;
         }
 
         private BehaviorTreeStatus ProcessChildrenRandom(BehaviorTreeContext context)
         {
+            UnityEngine.Profiler.BeginSample("ProcessChildrenRandom");
+
             if (this.Children == null)
             {
                 // No children, just succeed
@@ -116,10 +118,12 @@
                 BehaviorTreeStatus? nodeStatus = this.ExecuteNode(context, node);
                 if (nodeStatus != null)
                 {
+                    UnityEngine.Profiler.EndSample();
                     return nodeStatus.Value;
                 }
             }
 
+            UnityEngine.Profiler.EndSample();
             return resultStatus;
         }
 

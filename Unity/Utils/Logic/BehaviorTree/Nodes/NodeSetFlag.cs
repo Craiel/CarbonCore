@@ -25,7 +25,10 @@
 
         public bool Value { get; set; }
 
-        public override void Execute(BehaviorTreeContext context)
+        // -------------------------------------------------------------------
+        // Protected
+        // -------------------------------------------------------------------
+        protected override void DoExecute(BehaviorTreeContext context)
         {
             context.SetVariable(this.Key, this.Value);
             this.Status = BehaviorTreeStatus.Succeeded;
