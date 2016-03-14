@@ -1,5 +1,6 @@
 ﻿namespace CarbonCore.Utils.Unity
 {
+    using System;
     using System.Diagnostics;
     using System.Threading;
 
@@ -7,35 +8,50 @@
     {
         private static int mainThreadId;
 
-        public static void Initialize()
+        private static Action<string> beginCallback;
+        private static Action endCallback;
+
+        // -------------------------------------------------------------------
+        // Public
+        // -------------------------------------------------------------------
+        public static bool IsEnabled { get; set; }
+
+        [Conditional("ENABLE_PROFILER")]
+        public static void Initialize(Action<string> begin, Action end)
         {
+            beginCallback += begin;
+            endCallback += end;
+
             mainThreadId = Thread.CurrentThread.ManagedThreadId;
+            IsEnabled = true;
         }
 
         [Conditional("ENABLE_PROFILER")]
         public static void BeginSampleThreadsafe(string title)
         {
-#if !NUNIT
-            if (Thread.CurrentThread.ManagedThreadId != mainThreadId)
+            if (!IsEnabled || Thread.CurrentThread.ManagedThreadId != mainThreadId)
             {
                 return;
             }
 
-            UnityEngine.Profiler.BeginSample(title);
-#endif
+            if (beginCallback != null)
+            {
+                beginCallback(title);
+            }
         }
 
         [Conditional("ENABLE_PROFILER")]
         public static void EndSampleThreadSafe()
         {
-#if !NUNIT
-            if (Thread.CurrentThread.ManagedThreadId != mainThreadId)
+            if (!IsEnabled || Thread.CurrentThread.ManagedThreadId != mainThreadId)
             {
                 return;
             }
 
-            UnityEngine.Profiler.EndSample();
-#endif
+            if (endCallback != null)
+            {
+                endCallback();
+            }
         }
     }
 }
