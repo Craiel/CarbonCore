@@ -1,5 +1,6 @@
 ﻿namespace CarbonCore.Utils
 {
+    using System;
     using System.Diagnostics;
     using System.Reflection;
 
@@ -24,6 +25,8 @@
 
         public static CarbonDirectory WorkingDirectory { get; private set; }
 
+        public static CarbonDirectory SystemDirectory { get; private set; }
+
         private static void UpdateRuntimeInfo()
         {
             WorkingDirectory = new CarbonDirectory(System.IO.Directory.GetCurrentDirectory());
@@ -44,6 +47,8 @@
                     Path = Assembly.GetDirectory();
                 }
             }
+
+            SystemDirectory = new CarbonDirectory(Environment.GetFolderPath(Environment.SpecialFolder.System));
         }
     }
 }
