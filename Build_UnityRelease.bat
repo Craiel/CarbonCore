@@ -1,7 +1,7 @@
 @echo off
 
-call SetupEnvironment.bat
+call Sys\SetupEnvironment.bat
 
 cls
-%MSBUILD%\msbuild.exe "%SOLUTIONFILE%" /p:configuration=UnityRelease
+%MSBUILD% %MSBUILDARGS% "%SOLUTIONFILE%" /p:configuration=UnityRelease
 pause

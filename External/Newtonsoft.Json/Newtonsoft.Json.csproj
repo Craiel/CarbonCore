@@ -17,47 +17,47 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>$(SolutionDir)bin\$(Configuration)\$(ProjectName)</OutputPath>
-    <IntermediateOutputPath>$(SolutionDir)obj\$(Configuration)\$(ProjectName)</IntermediateOutputPath>
+    <OutputPath>$(CCOUTDIR)bin\$(Configuration)\$(ProjectName)</OutputPath>
+    <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\$(ProjectName)</IntermediateOutputPath>
     <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS;NET35</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <UseVSHostingProcess>true</UseVSHostingProcess>
-    <CodeAnalysisRuleSet>Newtonsoft.Json.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>$(ProjectDir)Newtonsoft.Json.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>$(SolutionDir)bin\$(Configuration)\$(ProjectName)</OutputPath>
-    <IntermediateOutputPath>$(SolutionDir)obj\$(Configuration)\$(ProjectName)</IntermediateOutputPath>
+    <OutputPath>$(CCOUTDIR)bin\$(Configuration)\$(ProjectName)</OutputPath>
+    <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\$(ProjectName)</IntermediateOutputPath>
     <DefineConstants>TRACE;CODE_ANALYSIS;NET35</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>false</RunCodeAnalysis>
-    <CodeAnalysisRuleSet>Netwonsoft.Json.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>$(ProjectDir)Netwonsoft.Json.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Unity|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>$(SolutionDir)bin\$(Configuration)\$(ProjectName)</OutputPath>
-    <IntermediateOutputPath>$(SolutionDir)obj\$(Configuration)\$(ProjectName)</IntermediateOutputPath>
+    <OutputPath>$(CCOUTDIR)bin\$(Configuration)\$(ProjectName)</OutputPath>
+    <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\$(ProjectName)</IntermediateOutputPath>
     <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS;NET35;UNITY_5</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>Newtonsoft.Json.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>$(ProjectDir)Newtonsoft.Json.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnityRelease|AnyCPU'">
-    <OutputPath>$(SolutionDir)bin\$(Configuration)\$(ProjectName)</OutputPath>
-    <IntermediateOutputPath>$(SolutionDir)obj\$(Configuration)\$(ProjectName)</IntermediateOutputPath>
+    <OutputPath>$(CCOUTDIR)bin\$(Configuration)\$(ProjectName)</OutputPath>
+    <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\$(ProjectName)</IntermediateOutputPath>
     <DefineConstants>TRACE;CODE_ANALYSIS;NET35;UNITY_5</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>Newtonsoft.Json</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>$(ProjectDir)Newtonsoft.Json.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

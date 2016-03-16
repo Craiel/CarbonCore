@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D9170744-4BB2-48ED-A604-9774E3CC16AC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CarbonCore.Tests.Edge</RootNamespace>
+    <AssemblyName>CarbonCore.Tests.Edge</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>$(CCOUTDIR)bin\Edge\$(Configuration)\$(ProjectName)</OutputPath>
+    <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\$(ProjectName)</IntermediateOutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>$(CCSOURCEDIR)\CarbonCore.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MahApps.Metro, Version=1.2.4.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\MahApps.Metro.1.2.4.0\lib\net45\MahApps.Metro.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="nunit.framework, Version=3.0.5813.39031, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\NUnit.3.0.1\lib\net45\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite, Version=1.0.99.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\System.Data.SQLite.Core.1.0.99.0\lib\net46\System.Data.SQLite.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.SQLite.EF6, Version=1.0.99.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\System.Data.SQLite.EF6.1.0.99.0\lib\net46\System.Data.SQLite.EF6.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.SQLite.Linq, Version=1.0.99.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\System.Data.SQLite.Linq.1.0.99.0\lib\net46\System.Data.SQLite.Linq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\MahApps.Metro.1.2.4.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ContentServices\DatabaseServiceTests.cs" />
+    <Compile Include="Contracts\IFrameworkTestMain.cs" />
+    <Compile Include="Contracts\IFrameworkTestMainViewModel.cs" />
+    <Compile Include="Grammar\GrammarTests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Setup.cs" />
+    <Compile Include="Utils\NetworkTests.cs" />
+    <Compile Include="IoC\IoCTests.cs" />
+    <Compile Include="Utils\TestMath.cs" />
+    <Compile Include="Utils\TestVector2F.cs" />
+    <Compile Include="ToolFramework\FrameworkTestMain.cs" />
+    <Compile Include="ToolFramework\FrameworkActionTests.cs" />
+    <Compile Include="IoC\ToolFrameworkTestModule.cs" />
+    <Compile Include="ToolFramework\FrameworkTestMainViewModel.cs" />
+    <Compile Include="ToolFramework\FrameworkTestMainWindow.xaml.cs">
+      <DependentUpon>FrameworkTestMainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utils\DatabaseTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ContentServices\CarbonCore.ContentServices.csproj">
+      <Project>{5D3507BD-D8DD-4255-A262-8E360E936F10}</Project>
+      <Name>CarbonCore.ContentServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ContentServices\Edge\CarbonCore.ContentServices.Edge.csproj">
+      <Project>{6e591d1d-592e-4872-8ca1-504a43de009b}</Project>
+      <Name>CarbonCore.ContentServices.Edge</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ContentServices\Sql\CarbonCore.ContentServices.Sql.csproj">
+      <Project>{18B053C8-43B1-4ADB-81B7-F7CD2095E2A6}</Project>
+      <Name>CarbonCore.ContentServices.Sql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\GrammarParser\CarbonCore.GrammarParser.csproj">
+      <Project>{50C22F18-89F6-48F3-A29F-CA25FDADDB90}</Project>
+      <Name>CarbonCore.GrammarParser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ToolFramework\CarbonCore.ToolFramework.csproj">
+      <Project>{e4643df2-d2db-4e99-ab4b-d8ce4fd94d81}</Project>
+      <Name>CarbonCore.ToolFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ToolFramework\Windows\CarbonCore.ToolFramework.Windows.csproj">
+      <Project>{5f12fa78-59fc-4bf5-8312-0131e0350a63}</Project>
+      <Name>CarbonCore.ToolFramework.Windows</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Utils\Edge\CarbonCore.Utils.Edge.csproj">
+      <Project>{a46b19fc-eb4a-4bda-97e1-5b522fb4cc6b}</Project>
+      <Name>CarbonCore.Utils.Edge</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Utils\Edge\WPF\CarbonCore.Utils.Edge.WPF.csproj">
+      <Project>{75FF83F3-C123-4982-91F7-09D0F8A66536}</Project>
+      <Name>CarbonCore.Utils.Edge.WPF</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Utils\CarbonCore.Utils.csproj">
+      <Project>{e05836d9-0bb3-4bfa-89e6-f5ed40a9d93c}</Project>
+      <Name>CarbonCore.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CarbonCore.Tests.csproj">
+      <Project>{322f5db2-87ed-41ec-9a8b-aa14e1f9acd3}</Project>
+      <Name>CarbonCore.Tests</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="ToolFramework\FrameworkTestMainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

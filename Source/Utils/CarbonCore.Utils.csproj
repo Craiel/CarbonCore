@@ -1,0 +1,243 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E05836D9-0BB3-4BFA-89E6-F5ED40A9D93C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CarbonCore.Utils</RootNamespace>
+    <AssemblyName>CarbonCore.Utils</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Unity|AnyCPU'">
+    <OutputPath>$(CCOUTDIR)bin\$(Configuration)\$(ProjectName)</OutputPath>
+    <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\$(ProjectName)</IntermediateOutputPath>
+    <DefineConstants>TRACE;DEBUG;UNITY; UNITY_5</DefineConstants>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>$(CCSOURCEDIR)\CarbonCore.ruleset</CodeAnalysisRuleSet>
+    <LangVersion>4</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>$(CCOUTDIR)bin\$(Configuration)\$(ProjectName)</OutputPath>
+    <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\$(ProjectName)</IntermediateOutputPath>
+    <DefineConstants>UNITY</DefineConstants>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>$(CCSOURCEDIR)\CarbonCore.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>$(CCOUTDIR)bin\$(Configuration)\$(ProjectName)</OutputPath>
+    <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\$(ProjectName)</IntermediateOutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>$(CCSOURCEDIR)\CarbonCore.ruleset</CodeAnalysisRuleSet>
+    <LangVersion>default</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnityRelease|AnyCPU'">
+    <Optimize>true</Optimize>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <OutputPath>$(CCOUTDIR)bin\$(Configuration)\$(ProjectName)</OutputPath>
+    <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\$(ProjectName)</IntermediateOutputPath>
+    <DefineConstants>UNITY; UNITY_5</DefineConstants>
+    <CodeAnalysisRuleSet>$(CCSOURCEDIR)\CarbonCore.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyExtensions.cs" />
+    <Compile Include="AttributedPropertyInfo.cs" />
+    <Compile Include="CollectionExtensions.cs" />
+    <Compile Include="Collections\CircularBuffer.cs" />
+    <Compile Include="Collections\DefaultValueExtendedDictionary.cs" />
+    <Compile Include="Collections\ExtendedDictionary.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Contracts\Diagnostics\IMetric.cs" />
+    <Compile Include="Contracts\Diagnostics\IMetricProvider.cs" />
+    <Compile Include="Contracts\IExtendedDictionary.cs" />
+    <Compile Include="Contracts\IJsonConfig.cs" />
+    <Compile Include="Contracts\Diagnostics\ICarbonDiagnostics.cs" />
+    <Compile Include="Contracts\IoC\ICarbonContainer.cs" />
+    <Compile Include="Contracts\IoC\ICarbonQuickModule.cs" />
+    <Compile Include="Contracts\IoC\ICarbonQuickBinding.cs" />
+    <Compile Include="Contracts\IoC\IFactory.cs" />
+    <Compile Include="Contracts\ISqlStatement.cs" />
+    <Compile Include="Contracts\Network\ICoreTcpClient.cs" />
+    <Compile Include="Contracts\Network\ICoreTcpServer.cs" />
+    <Compile Include="Contracts\IThreadQueueComponent.cs" />
+    <Compile Include="Contracts\Network\IJsonNetClient.cs" />
+    <Compile Include="Contracts\Network\IJsonNetPackage.cs" />
+    <Compile Include="Contracts\Network\IJsonNetPeer.cs" />
+    <Compile Include="Contracts\Network\IJsonNetServer.cs" />
+    <Compile Include="Database\SqlStatement.cs" />
+    <Compile Include="Database\SqlStatementConstraint.cs" />
+    <Compile Include="Database\SqlStatementConstraintFollowUpConstraintType.cs" />
+    <Compile Include="Database\SqlStatementConstraintType.cs" />
+    <Compile Include="Database\SqlStatementOrderByRule.cs" />
+    <Compile Include="Database\SqlStatementOutput.cs" />
+    <Compile Include="Database\SqlStatementType.cs" />
+    <Compile Include="Diagnostics\CarbonDiagnostics.cs" />
+    <Compile Include="Diagnostics\Diagnostic.cs" />
+    <Compile Include="Diagnostics\Metrics\MetricFloat.cs" />
+    <Compile Include="Diagnostics\Metrics\MetricInt.cs" />
+    <Compile Include="Diagnostics\Metrics\MetricLong.cs" />
+    <Compile Include="Diagnostics\Metrics\MetricProvider.cs" />
+    <Compile Include="Diagnostics\Metrics\MetricTime.cs" />
+    <Compile Include="Diagnostics\Metrics\Metric.cs" />
+    <Compile Include="Diagnostics\TraceEventData.cs" />
+    <Compile Include="Diagnostics\ProgressRegion.cs" />
+    <Compile Include="Formatting\FormatHandler.cs" />
+    <Compile Include="I18N\LocaleConstants.cs" />
+    <Compile Include="I18N\Localization.cs" />
+    <Compile Include="I18N\LocalizationStringDictionary.cs" />
+    <Compile Include="IoC\CarbonContainerBuilder.cs" />
+    <Compile Include="IoC\CarbonQuickContainer.Context.cs" />
+    <Compile Include="IoC\CarbonQuickContainer.cs" />
+    <Compile Include="IoC\CarbonQuickModule.cs" />
+    <Compile Include="IoC\CarbonQuickBinding.cs" />
+    <Compile Include="IoC\DependsOnModuleAttribute.cs" />
+    <Compile Include="IoC\Factory.cs" />
+    <Compile Include="IoC\IoC.cs" />
+    <Compile Include="IO\CarbonDirectoryFilter.cs" />
+    <Compile Include="IO\CarbonDirectoryResult.cs" />
+    <Compile Include="IO\CarbonFileResult.cs" />
+    <Compile Include="IO\NoDisposeStreamWriter.cs" />
+    <Compile Include="Json\JsonCarbonDirectoryConverter.cs" />
+    <Compile Include="Json\JsonCarbonFileConverter.cs" />
+    <Compile Include="Json\JsonConcreteTypeConverter.cs" />
+    <Compile Include="Json\JsonConfig.cs" />
+    <Compile Include="Json\JsonDictionaryConverter.cs" />
+    <Compile Include="Json\JsonExtensions.cs" />
+    <Compile Include="MathUtils\BitOperations.cs" />
+    <Compile Include="MathUtils\Circle.cs" />
+    <Compile Include="MathUtils\FloatExtensions.cs" />
+    <Compile Include="MathUtils\LineF.cs" />
+    <Compile Include="MathUtils\LineI.cs" />
+    <Compile Include="MathUtils\LineL.cs" />
+    <Compile Include="MathUtils\LineS.cs" />
+    <Compile Include="MathUtils\PerlinNoise.cs" />
+    <Compile Include="MathUtils\RectF.cs" />
+    <Compile Include="MathUtils\RectL.cs" />
+    <Compile Include="MathUtils\RectS.cs" />
+    <Compile Include="MathUtils\RectUtils.cs" />
+    <Compile Include="MathUtils\Vector3D.cs" />
+    <Compile Include="MathUtils\Vector3F.cs" />
+    <Compile Include="MathUtils\Vector3I.cs" />
+    <Compile Include="MathUtils\Vector2F.cs" />
+    <Compile Include="MathUtils\Vector2I.cs" />
+    <Compile Include="MathUtils\Vector2L.cs" />
+    <Compile Include="MathUtils\Vector2S.cs" />
+    <Compile Include="MathUtils\Vector4B.cs" />
+    <Compile Include="Network\CoreTcpClient.cs" />
+    <Compile Include="Network\CoreTcpData.cs" />
+    <Compile Include="Network\CoreTcpServer.cs" />
+    <Compile Include="Network\CoreTcpUtils.cs" />
+    <Compile Include="Network\JsonNetClient.cs" />
+    <Compile Include="Network\JsonNetPackage.cs" />
+    <Compile Include="Network\JsonNetPeer.cs" />
+    <Compile Include="Network\JsonNetServer.cs" />
+    <Compile Include="Network\JsonNetUtils.cs" />
+    <Compile Include="Network\NetworkUtils.cs" />
+    <Compile Include="Network\Package\JsonNetPackagePayload.cs" />
+    <Compile Include="Network\Package\JsonNetPackagePing.cs" />
+    <Compile Include="ProcessorSettings.cs" />
+    <Compile Include="ProcessorUtils.cs" />
+    <Compile Include="RandomExtension.cs" />
+    <Compile Include="StringExtensions.cs" />
+    <Compile Include="Threading\EngineThread.cs" />
+    <Compile Include="Threading\EngineThreadSettings.cs" />
+    <Compile Include="Threading\EngineTime.cs" />
+    <Compile Include="Threading\SynchronizationBuffer.cs" />
+    <Compile Include="Threading\SynchronizationDataLock.cs" />
+    <Compile Include="Threading\ThreadQueuedComponent.cs" />
+    <Compile Include="Threading\ThreadQueueOperation.cs" />
+    <Compile Include="Contracts\IThreadQueueOperation.cs" />
+    <Compile Include="IO\CarbonFile.cs" />
+    <Compile Include="IO\CarbonPath.cs" />
+    <Compile Include="Contracts\IEventRelay.cs" />
+    <Compile Include="Contracts\IFormatter.cs" />
+    <Compile Include="Contracts\ILog.cs" />
+    <Compile Include="Contracts\ITextFile.cs" />
+    <Compile Include="Contracts\ITimer.cs" />
+    <Compile Include="Diagnostics\TraceListeners\ConsoleTraceListener.cs" />
+    <Compile Include="Diagnostics\TraceListeners\FileTraceListener.cs" />
+    <Compile Include="Diagnostics\TraceLog.cs" />
+    <Compile Include="Diagnostics\ProfileStatistics.cs" />
+    <Compile Include="EventRelay.cs" />
+    <Compile Include="FNV.cs" />
+    <Compile Include="Formatting\Formatter.cs" />
+    <Compile Include="Diagnostics\Profiler.cs" />
+    <Compile Include="Diagnostics\ProfileRegion.cs" />
+    <Compile Include="HashUtils.cs" />
+    <Compile Include="IO\CarbonDirectory.cs" />
+    <Compile Include="LimitedList.cs" />
+    <Compile Include="MathUtils\MathExtension.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RuntimeInfo.cs" />
+    <Compile Include="TextFile.cs" />
+    <Compile Include="Threading\ThreadQueuePayload.cs" />
+    <Compile Include="Timer.cs" />
+    <Compile Include="TypeExtension.cs" />
+    <Compile Include="UnitTest.cs" />
+    <Compile Include="UUID.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\External\Newtonsoft.Json\Newtonsoft.Json.csproj">
+      <Project>{eeea67f9-9089-481d-a4dc-0966dec9fd7d}</Project>
+      <Name>Newtonsoft.Json</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

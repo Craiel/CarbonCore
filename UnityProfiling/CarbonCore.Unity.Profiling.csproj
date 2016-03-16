@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A862A5BD-6BE9-3CF4-0425-4D19E49B7496}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CarbonCore.Unity.Profiling</RootNamespace>
+    <AssemblyName>CarbonCore.Unity.Profiling</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Unity|AnyCPU'">
+    <OutputPath>UnityProject\Assets\Core\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <Optimize>false</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnityRelease|AnyCPU'">
+    <OutputPath>UnityProject\Assets\Core\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Source\ContentServices\CarbonCore.ContentServices.csproj">
+      <Project>{5d3507bd-d8dd-4255-a262-8e360e936f10}</Project>
+      <Name>CarbonCore.ContentServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Source\Unity\Editor\Utils\CarbonCore.Unity.Editor.Utils.csproj">
+      <Project>{db147104-0c6f-4723-a86f-005ac742d4e6}</Project>
+      <Name>CarbonCore.Unity.Editor.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Source\Unity\Utils\CarbonCore.Unity.Utils.csproj">
+      <Project>{0ec48d10-8e81-4b43-a7ee-f4bd83516cea}</Project>
+      <Name>CarbonCore.Unity.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Source\Utils\CarbonCore.Utils.csproj">
+      <Project>{e05836d9-0bb3-4bfa-89e6-f5ed40a9d93c}</Project>
+      <Name>CarbonCore.Utils</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>del "$(TargetDir)UnityEngine*"
+del "$(TargetDir)UnityEditor*"
+del "$(TargetDir)Worlds.Game*"
+move "$(TargetDir)*.Editor.*" "$(TargetDir)\Editor"</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

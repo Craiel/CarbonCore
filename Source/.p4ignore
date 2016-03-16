@@ -1,0 +1,7 @@
+# Default output folders
+bin
+obj
+
+*.suo
+
+packages/
