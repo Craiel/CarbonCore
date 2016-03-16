@@ -1,23 +1,20 @@
 ﻿namespace CarbonCore.Unity.Tests.Data
 {
+    using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.Logic.Attributes;
-    using CarbonCore.ContentServices.Logic.DataEntryLogic;
+    using CarbonCore.Utils.Unity.Contracts.BufferedData;
 
     [DataEntry(UseDefaultEquality = true)]
-    public class BufferTestEntry : DataEntry
+    public class BufferTestEntry : IBufferedDataEntry
     {
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        [DataElement]
         public int TestInt { get; set; }
 
-        // -------------------------------------------------------------------
-        // Protected
-        // -------------------------------------------------------------------
-        protected override int DoGetHashCode()
+        public IDataEntry Clone()
         {
-            return this.TestInt.GetHashCode();
+            return new BufferTestEntry { TestInt = this.TestInt };
         }
     }
 }

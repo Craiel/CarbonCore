@@ -6,7 +6,7 @@
     using CarbonCore.ContentServices.Logic.DataEntryLogic;
 
     [DataEntry(UseDefaultEquality = true)]
-    public class JsonTestSubClass : DataEntry
+    public class JsonTestSubClass : SmartDataEntry
     {
         // -------------------------------------------------------------------
         // Public

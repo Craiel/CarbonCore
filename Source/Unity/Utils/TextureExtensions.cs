@@ -49,12 +49,22 @@
             return result;
         }
 
-        public static void SaveToFile(this Texture2D source, CarbonFile file)
+        public static void SaveToPNGFile(this Texture2D source, CarbonFile file)
         {
             file.DeleteIfExists();
             using (var stream = file.OpenWrite(FileMode.CreateNew))
             {
                 byte[] data = source.EncodeToPNG();
+                stream.Write(data, 0, data.Length);
+            }
+        }
+
+        public static void SaveToJPGFile(this Texture2D source, CarbonFile file, int quality = 75)
+        {
+            file.DeleteIfExists();
+            using (var stream = file.OpenWrite(FileMode.CreateNew))
+            {
+                byte[] data = source.EncodeToJPG(quality);
                 stream.Write(data, 0, data.Length);
             }
         }

@@ -1,16 +1,15 @@
-﻿namespace CarbonCore.Unity.Utils.Logic.BufferedData.Commands
+﻿namespace CarbonCore.Utils.Unity.Logic.BufferedData.Commands
 {
-    using CarbonCore.ContentServices.Contracts;
-    using CarbonCore.Unity.Utils.Contracts.BufferedData;
+    using CarbonCore.Utils.Unity.Contracts.BufferedData;
 
     public class BufferCommandDeleteSharedInstance : IBufferedDataCommand
     {
-        private readonly IDataEntry instance;
+        private readonly IBufferedDataEntry instance;
 
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
-        public BufferCommandDeleteSharedInstance(IDataEntry instance)
+        public BufferCommandDeleteSharedInstance(IBufferedDataEntry instance)
         {
             this.instance = instance;
         }

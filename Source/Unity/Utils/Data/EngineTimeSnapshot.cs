@@ -4,7 +4,7 @@
     using CarbonCore.ContentServices.Logic.DataEntryLogic;
     using CarbonCore.Utils.Threading;
 
-    public class EngineTimeSnapshot : DataEntry
+    public class EngineTimeSnapshot : SmartDataEntry
     {
         // -------------------------------------------------------------------
         // Constructor

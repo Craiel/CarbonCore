@@ -62,6 +62,7 @@
     <Compile Include="Contracts\BehaviorTree\IBehaviorTreeNode.cs" />
     <Compile Include="Contracts\BufferedData\IBufferedData.cs" />
     <Compile Include="Contracts\BufferedData\IBufferedDataCommand.cs" />
+    <Compile Include="Contracts\BufferedData\IBufferedDataEntry.cs" />
     <Compile Include="Contracts\BufferedData\IBufferedDataPool.cs" />
     <Compile Include="Contracts\BufferedData\IBufferedDataset.cs" />
     <Compile Include="Contracts\BufferedData\IBufferedDataSetInternal.cs" />

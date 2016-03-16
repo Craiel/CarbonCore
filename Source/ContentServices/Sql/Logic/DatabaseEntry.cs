@@ -5,7 +5,7 @@
     using CarbonCore.ContentServices.Logic.DataEntryLogic;
     using CarbonCore.ContentServices.Sql.Contracts;
 
-    public abstract class DatabaseEntry : DataEntry, IDatabaseEntry
+    public abstract class DatabaseEntry : SmartDataEntry, IDatabaseEntry
     {
         private readonly DatabaseEntryDescriptor descriptor;
 

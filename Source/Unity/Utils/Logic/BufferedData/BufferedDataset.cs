@@ -1,14 +1,14 @@
-﻿namespace CarbonCore.Unity.Utils.Logic.BufferedData
+﻿namespace CarbonCore.Utils.Unity.Logic.BufferedData
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
     
-    using CarbonCore.ContentServices.Contracts;
-    using CarbonCore.Unity.Utils.Contracts.BufferedData;
     using CarbonCore.Utils.Contracts.IoC;
     using CarbonCore.Utils.Diagnostics;
+    using CarbonCore.Utils.Unity.Contracts.BufferedData;
+    using CarbonCore.Utils.Unity.Logic;
 
     public class BufferedDataset : EngineComponent, IBufferedDataSetInternal
     {
@@ -19,7 +19,7 @@
         private readonly BufferedDataSetInstances instances;
 
         private readonly IDictionary<object, BufferedDataSetInstances> keyToInstanceLookup;
-        private readonly IDictionary<IDataEntry, object> instanceToKeyLookup;
+        private readonly IDictionary<IBufferedDataEntry, object> instanceToKeyLookup;
 
         private int refCount;
         
@@ -32,7 +32,7 @@
 
             this.instances = new BufferedDataSetInstances();
             this.keyToInstanceLookup = new Dictionary<object, BufferedDataSetInstances>();
-            this.instanceToKeyLookup = new Dictionary<IDataEntry, object>();
+            this.instanceToKeyLookup = new Dictionary<IBufferedDataEntry, object>();
 
             this.Id = Interlocked.Increment(ref nextId);
         }
@@ -47,20 +47,20 @@
             command.Execute(this);
         }
 
-        public void AddInstance(IDataEntry instance)
+        public void AddInstance(IBufferedDataEntry instance)
         {
             this.DoAddInstance(instance);
         }
 
-        public void RemoveInstance(IDataEntry instance)
+        public void RemoveInstance(IBufferedDataEntry instance)
         {
             this.DoRemoveInstance(instance);
         }
 
         public T GetInstance<T>(object key = null)
-            where T : IDataEntry
+            where T : IBufferedDataEntry
         {
-            IList<IDataEntry> results = this.DoGetInstances(typeof(T));
+            IList<IBufferedDataEntry> results = this.DoGetInstances(typeof(T));
             if (results == null || results.Count <= 0)
             {
                 return default(T);
@@ -76,9 +76,9 @@
 
         // Note: This is a GC heavy function, use with caution
         public IList<T> GetInstances<T>(object key = null)
-            where T : IDataEntry
+            where T : IBufferedDataEntry
         {
-            IList<IDataEntry> result = this.DoGetInstances(typeof(T), key);
+            IList<IBufferedDataEntry> result = this.DoGetInstances(typeof(T), key);
             if (result == null)
             {
                 return null;
@@ -87,7 +87,7 @@
             return result.Cast<T>().ToList();
         }
 
-        public void SetInstanceKey<T>(IDataEntry instance, T key)
+        public void SetInstanceKey<T>(IBufferedDataEntry instance, T key)
         {
             this.DoSetInstanceKey(instance, key);
         }
@@ -124,10 +124,10 @@
             // Clone over all the contents of the buffer
             foreach (Type type in this.instances.Keys)
             {
-                IList<IDataEntry> entryList = this.instances[type];
-                foreach (IDataEntry entry in entryList)
+                IList<IBufferedDataEntry> entryList = this.instances[type];
+                foreach (IBufferedDataEntry entry in entryList)
                 {
-                    IDataEntry clonedEntry = entry.Clone();
+                    IBufferedDataEntry clonedEntry = (IBufferedDataEntry)entry.Clone();
                     clone.AddInstance(clonedEntry);
 
                     object instanceKey;
@@ -144,15 +144,15 @@
         // -------------------------------------------------------------------
         // Private
         // -------------------------------------------------------------------
-        private void DoAddInstance(IDataEntry instance)
+        private void DoAddInstance(IBufferedDataEntry instance)
         {
             Diagnostic.Assert(instance != null, "Instance can not be null!");
 
             Type type = instance.GetType();
-            IList<IDataEntry> data;
+            IList<IBufferedDataEntry> data;
             if (!this.instances.TryGetValue(type, out data))
             {
-                data = new List<IDataEntry>();
+                data = new List<IBufferedDataEntry>();
                 this.instances.Add(type, data);
             }
 
@@ -160,7 +160,7 @@
             data.Add(instance);
         }
 
-        private void DoRemoveInstance(IDataEntry instance)
+        private void DoRemoveInstance(IBufferedDataEntry instance)
         {
             Diagnostic.Assert(instance != null, "Instance can not be null!");
 
@@ -183,7 +183,7 @@
             }
         }
 
-        private IList<IDataEntry> DoGetInstances(Type type, object key = null)
+        private IList<IBufferedDataEntry> DoGetInstances(Type type, object key = null)
         {
             // Check if we are looking instances associated with a specific key
             BufferedDataSetInstances source;
@@ -200,7 +200,7 @@
             }
 
             // Now we try to find the instances of the given type
-            IList<IDataEntry> result;
+            IList<IBufferedDataEntry> result;
             if (source.TryGetValue(type, out result))
             {
                 return result;
@@ -209,7 +209,7 @@
             return null;
         }
 
-        private void DoSetInstanceKey(IDataEntry instance, object key)
+        private void DoSetInstanceKey(IBufferedDataEntry instance, object key)
         {
             if (!this.keyToInstanceLookup.ContainsKey(key))
             {
@@ -220,7 +220,7 @@
             Type type = instance.GetType();
             if (!this.keyToInstanceLookup[key].ContainsKey(type))
             {
-                this.keyToInstanceLookup[key].Add(type, new List<IDataEntry>());
+                this.keyToInstanceLookup[key].Add(type, new List<IBufferedDataEntry>());
             }
 
             this.keyToInstanceLookup[key][type].Add(instance);
@@ -239,7 +239,7 @@
         // -------------------------------------------------------------------
         // Internal helper class
         // -------------------------------------------------------------------
-        internal class BufferedDataSetInstances : Dictionary<Type, IList<IDataEntry>>
+        internal class BufferedDataSetInstances : Dictionary<Type, IList<IBufferedDataEntry>>
         {
         }
     }
