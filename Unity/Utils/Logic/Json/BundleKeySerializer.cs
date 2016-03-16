@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Utils.Unity.Logic.Json
+﻿namespace CarbonCore.Unity.Utils.Logic.Json
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
@@ -6,7 +6,7 @@
     
     using CarbonCore.ContentServices.Logic.DataEntryLogic;
     using CarbonCore.ContentServices.Logic.DataEntryLogic.Serializers;
-    using CarbonCore.Utils.Unity.Data;
+    using CarbonCore.Unity.Utils.Data;
 
     [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1121:UseBuiltInTypeAlias", Justification = "Reviewed. Suppression is OK here.")]
     public class BundleKeySerializer : DataEntryElementSerializer

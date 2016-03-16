@@ -1,6 +1,6 @@
-﻿namespace CarbonCore.Utils.Unity.Logic.BufferedData.Commands
+﻿namespace CarbonCore.Unity.Utils.Logic.BufferedData.Commands
 {
-    using CarbonCore.Utils.Unity.Contracts.BufferedData;
+    using CarbonCore.Unity.Utils.Contracts.BufferedData;
 
     public class BufferCommandReset : IBufferedDataCommand
     {

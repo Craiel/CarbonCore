@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Utils.Unity.Editor
+﻿namespace CarbonCore.Unity.Editor.Utils
 {
     using System.Collections.Generic;
     using System.Linq;

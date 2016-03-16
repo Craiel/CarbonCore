@@ -1,8 +1,8 @@
-﻿namespace CarbonCore.Utils.Unity.Contracts.TaskPool
+﻿namespace CarbonCore.Unity.Utils.Contracts.TaskPool
 {
     using System;
 
-    using CarbonCore.Utils.Unity.Logic.TaskPoolLogic;
+    using CarbonCore.Unity.Utils.Logic.TaskPoolLogic;
 
     public interface ITask
     {

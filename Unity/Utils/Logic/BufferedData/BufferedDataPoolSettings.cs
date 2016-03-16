@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Utils.Unity.Logic.BufferedData
+﻿namespace CarbonCore.Unity.Utils.Logic.BufferedData
 {
     public class BufferedDataPoolSettings
     {

@@ -1,8 +1,8 @@
-﻿namespace CarbonCore.Utils.Unity.Logic.BufferedData
+﻿namespace CarbonCore.Unity.Utils.Logic.BufferedData
 {
     using System.Collections.Generic;
 
-    using CarbonCore.Utils.Unity.Contracts.BufferedData;
+    using CarbonCore.Unity.Utils.Contracts.BufferedData;
 
     public class BufferedDataCommandQueue
     {

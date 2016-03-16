@@ -1,7 +1,6 @@
-﻿namespace CarbonCore.Utils.Unity.Logic.BehaviorTree.Nodes
+﻿namespace CarbonCore.Unity.Utils.Logic.BehaviorTree.Nodes
 {
-    using CarbonCore.Utils.Unity.Logic.BehaviorTree;
-    using CarbonCore.Utils.Unity.Logic.Enums;
+    using CarbonCore.Unity.Utils.Logic.Enums;
 
     public class NodeIfFlagIsSet : BehaviorTreeLeafNode
     {

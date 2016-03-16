@@ -1,9 +1,10 @@
-﻿namespace CarbonCore.Utils.Unity.Logic
+﻿namespace CarbonCore.Unity.Utils.Logic
 {
     using System;
 
+    using CarbonCore.Unity.Utils.Contracts;
+    using CarbonCore.Unity.Utils.Logic.Scene;
     using CarbonCore.Utils.Diagnostics;
-    using CarbonCore.Utils.Unity.Contracts;
     using CarbonCore.Utils.Unity.Logic.Scene;
 
     using UnityEngine;

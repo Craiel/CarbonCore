@@ -1,12 +1,12 @@
-﻿namespace CarbonCore.Utils.Unity.IoC
+﻿namespace CarbonCore.Unity.Utils.IoC
 {
+    using CarbonCore.Unity.Utils.Contracts.BehaviorTree;
+    using CarbonCore.Unity.Utils.Contracts.BufferedData;
+    using CarbonCore.Unity.Utils.Contracts.TaskPool;
+    using CarbonCore.Unity.Utils.Logic.BehaviorTree;
+    using CarbonCore.Unity.Utils.Logic.BufferedData;
+    using CarbonCore.Unity.Utils.Logic.TaskPoolLogic;
     using CarbonCore.Utils.IoC;
-    using CarbonCore.Utils.Unity.Contracts.BehaviorTree;
-    using CarbonCore.Utils.Unity.Contracts.BufferedData;
-    using CarbonCore.Utils.Unity.Contracts.TaskPool;
-    using CarbonCore.Utils.Unity.Logic.BehaviorTree;
-    using CarbonCore.Utils.Unity.Logic.BufferedData;
-    using CarbonCore.Utils.Unity.Logic.TaskPoolLogic;
 
     [DependsOnModule(typeof(UtilsModule))]
     public class UtilsUnityModule : CarbonQuickModule

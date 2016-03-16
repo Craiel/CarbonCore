@@ -1,8 +1,9 @@
-﻿namespace CarbonCore.Utils.Unity.Logic.Scene
+﻿namespace CarbonCore.Unity.Utils.Logic.Scene
 {
     using System.Collections.Generic;
 
     using CarbonCore.Utils.Diagnostics;
+    using CarbonCore.Utils.Unity.Logic.Scene;
 
     using UnityEngine;
 

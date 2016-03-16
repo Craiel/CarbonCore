@@ -1,9 +1,9 @@
-﻿namespace CarbonCore.Utils.Unity.Logic.TaskPoolLogic
+﻿namespace CarbonCore.Unity.Utils.Logic.TaskPoolLogic
 {
     using System;
     using System.Threading;
 
-    using CarbonCore.Utils.Unity.Contracts.TaskPool;
+    using CarbonCore.Unity.Utils.Contracts.TaskPool;
 
     public delegate object TaskExecutionDelegate(Task task);
     public delegate void TaskCallbackDelegate(ITask task, object data);

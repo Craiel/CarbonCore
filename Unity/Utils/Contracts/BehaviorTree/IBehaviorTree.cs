@@ -1,7 +1,6 @@
-﻿namespace CarbonCore.Utils.Unity.Contracts.BehaviorTree
+﻿namespace CarbonCore.Unity.Utils.Contracts.BehaviorTree
 {
-    using CarbonCore.Utils.Unity.Contracts;
-    using CarbonCore.Utils.Unity.Logic.BehaviorTree;
+    using CarbonCore.Unity.Utils.Logic.BehaviorTree;
 
     public interface IBehaviorTree : IEngineComponent
     {

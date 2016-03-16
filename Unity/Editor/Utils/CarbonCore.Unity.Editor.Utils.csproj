@@ -8,8 +8,8 @@
     <ProjectGuid>{DB147104-0C6F-4723-A86F-005AC742D4E6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CarbonCore.Utils.Unity.Editor</RootNamespace>
-    <AssemblyName>CarbonCore.Utils.Unity.Editor</AssemblyName>
+    <RootNamespace>CarbonCore.Unity.Editor.Utils</RootNamespace>
+    <AssemblyName>CarbonCore.Unity.Editor.Utils</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -49,10 +49,10 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="UnityEditor">
-      <HintPath>..\..\..\External\Unity\5.2.2f1\UnityEditor.dll</HintPath>
+      <HintPath>$(INC_UNITYLIB)\UnityEditor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\External\Unity\5.2.2f1\UnityEngine.dll</HintPath>
+      <HintPath>$(INC_UNITYLIB)\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

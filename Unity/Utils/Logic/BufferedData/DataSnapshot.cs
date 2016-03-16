@@ -1,7 +1,7 @@
-﻿namespace CarbonCore.Utils.Unity.Logic.BufferedData
+﻿namespace CarbonCore.Unity.Utils.Logic.BufferedData
 {
-    using CarbonCore.Utils.Unity.Contracts.BufferedData;
-    using CarbonCore.Utils.Unity.Data;
+    using CarbonCore.Unity.Utils.Contracts.BufferedData;
+    using CarbonCore.Unity.Utils.Data;
 
     public class DataSnapshot : RefCountedWeakReference<IBufferedDatasetReadOnly>
     {

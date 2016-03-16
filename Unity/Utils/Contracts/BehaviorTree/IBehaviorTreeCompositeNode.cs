@@ -1,8 +1,8 @@
-﻿namespace CarbonCore.Utils.Unity.Contracts.BehaviorTree
+﻿namespace CarbonCore.Unity.Utils.Contracts.BehaviorTree
 {
     using System.Collections.Generic;
 
-    using CarbonCore.Utils.Unity.Logic.Enums;
+    using CarbonCore.Unity.Utils.Logic.Enums;
 
     public interface IBehaviorTreeCompositeNode : IBehaviorTreeNode
     {

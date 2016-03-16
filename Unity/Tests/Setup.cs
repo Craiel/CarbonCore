@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Tests.Unity
+﻿namespace CarbonCore.Unity.Tests
 {
     using CarbonCore.Utils.Diagnostics;
 

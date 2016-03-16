@@ -1,9 +1,8 @@
-﻿namespace CarbonCore.Utils.Unity.Logic.BehaviorTree
+﻿namespace CarbonCore.Unity.Utils.Logic.BehaviorTree
 {
+    using CarbonCore.Unity.Utils.Contracts.BehaviorTree;
     using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.Json;
-    using CarbonCore.Utils.Unity.Contracts.BehaviorTree;
-    using CarbonCore.Utils.Unity.Logic;
 
     public class BehaviorTree : EngineComponent, IBehaviorTree
     {

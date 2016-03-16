@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Utils.Unity.Contracts.BehaviorTree
+﻿namespace CarbonCore.Unity.Utils.Contracts.BehaviorTree
 {
     public interface IBehaviorTreeLeafNode : IBehaviorTreeNode
     {

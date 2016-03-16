@@ -1,8 +1,8 @@
-﻿namespace CarbonCore.Utils.Unity.Contracts
+﻿namespace CarbonCore.Unity.Utils.Contracts
 {
     using System.Collections.Generic;
 
-    using CarbonCore.Utils.Unity.Logic;
+    using CarbonCore.Unity.Utils.Logic;
 
     public interface IPriorityQueue<T> : IEnumerable<T>
         where T : PriorityQueueNode

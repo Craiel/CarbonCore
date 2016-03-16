@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Utils.Unity
+﻿namespace CarbonCore.Unity.Utils
 {
     using UnityEngine;
 

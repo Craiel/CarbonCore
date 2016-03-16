@@ -1,9 +1,9 @@
-﻿namespace CarbonCore.Utils.Unity.Logic.Resource
+﻿namespace CarbonCore.Unity.Utils.Logic.Resource
 {
     using System;
     using System.Collections.Generic;
 
-    using CarbonCore.Utils.Unity.Data;
+    using CarbonCore.Unity.Utils.Data;
 
     public class ResourceMap<T> where T : class
     {

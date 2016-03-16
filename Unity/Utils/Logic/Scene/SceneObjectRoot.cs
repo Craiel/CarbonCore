@@ -1,9 +1,9 @@
 ﻿namespace CarbonCore.Utils.Unity.Logic.Scene
 {
     using System;
-    using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
-    
+
+    using CarbonCore.Unity.Utils.Logic.Scene;
+
     using UnityEngine;
 
     using Object = UnityEngine.Object;

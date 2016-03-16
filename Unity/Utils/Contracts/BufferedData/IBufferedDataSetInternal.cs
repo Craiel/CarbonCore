@@ -1,7 +1,5 @@
-﻿namespace CarbonCore.Utils.Unity.Contracts.BufferedData
+﻿namespace CarbonCore.Unity.Utils.Contracts.BufferedData
 {
-    using CarbonCore.Utils.Unity.Contracts;
-
     internal interface IBufferedDataSetInternal : IEngineComponent, IBufferedDataset
     {
         void Execute(IBufferedDataCommand command);

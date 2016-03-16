@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Utils.Unity.Logic
+﻿namespace CarbonCore.Unity.Utils.Logic
 {
     using System;
     using System.Diagnostics;

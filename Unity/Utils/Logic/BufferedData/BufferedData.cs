@@ -1,12 +1,12 @@
-﻿namespace CarbonCore.Utils.Unity.Logic.BufferedData
+﻿namespace CarbonCore.Unity.Utils.Logic.BufferedData
 {
     using System;
     using System.Threading;
 
+    using CarbonCore.Unity.Utils.Contracts.BufferedData;
     using CarbonCore.Utils.Contracts.IoC;
     using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.Threading;
-    using CarbonCore.Utils.Unity.Contracts.BufferedData;
 
     public abstract class BufferedData : EngineComponent, IBufferedData
     {

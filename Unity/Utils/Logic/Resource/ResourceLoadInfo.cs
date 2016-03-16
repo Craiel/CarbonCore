@@ -1,7 +1,7 @@
-﻿namespace CarbonCore.Utils.Unity.Logic.Resource
+﻿namespace CarbonCore.Unity.Utils.Logic.Resource
 {
-    using CarbonCore.Utils.Unity.Data;
-    using CarbonCore.Utils.Unity.Logic.Enums;
+    using CarbonCore.Unity.Utils.Data;
+    using CarbonCore.Unity.Utils.Logic.Enums;
 
     public struct ResourceLoadInfo
     {

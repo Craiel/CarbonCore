@@ -1,6 +1,6 @@
-﻿namespace CarbonCore.Tests.Unity.Data
+﻿namespace CarbonCore.Unity.Tests.Data
 {
-    using CarbonCore.Utils.Unity.Contracts.BufferedData;
+    using CarbonCore.Unity.Utils.Contracts.BufferedData;
 
     public class BufferTestEntryUpdateCommand : IBufferedDataCommand
     {

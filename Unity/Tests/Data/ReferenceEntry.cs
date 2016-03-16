@@ -1,8 +1,8 @@
-﻿namespace CarbonCore.Tests.Unity.Data
+﻿namespace CarbonCore.Unity.Tests.Data
 {
     using System.Threading;
 
-    using CarbonCore.Utils.Unity.Contracts;
+    using CarbonCore.Unity.Utils.Contracts;
 
     public class ReferenceEntry : IRefCountedObject
     {

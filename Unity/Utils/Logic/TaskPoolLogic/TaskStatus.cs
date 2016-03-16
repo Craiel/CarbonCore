@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Utils.Unity.Logic.TaskPoolLogic
+﻿namespace CarbonCore.Unity.Utils.Logic.TaskPoolLogic
 {
     public enum TaskStatus
     {

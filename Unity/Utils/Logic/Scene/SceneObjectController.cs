@@ -1,9 +1,11 @@
-﻿namespace CarbonCore.Utils.Unity.Logic.Scene
+﻿namespace CarbonCore.Unity.Utils.Logic.Scene
 {
     using System;
     using System.Collections.Generic;
     using System.Globalization;
-    
+
+    using CarbonCore.Utils.Unity.Logic.Scene;
+
     using UnityEngine;
 
     public class SceneObjectController<T> : UnitySingleton<SceneObjectController<T>>

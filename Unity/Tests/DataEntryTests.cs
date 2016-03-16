@@ -1,6 +1,6 @@
-﻿namespace CarbonCore.Tests.Unity
+﻿namespace CarbonCore.Unity.Tests
 {
-    using CarbonCore.Tests.Unity.Data;
+    using CarbonCore.Unity.Tests.Data;
 
     using NUnit.Framework;
 

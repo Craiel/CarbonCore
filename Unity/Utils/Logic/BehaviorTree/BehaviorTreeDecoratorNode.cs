@@ -1,10 +1,10 @@
-﻿namespace CarbonCore.Utils.Unity.Logic.BehaviorTree
+﻿namespace CarbonCore.Unity.Utils.Logic.BehaviorTree
 {
     using System;
 
+    using CarbonCore.Unity.Utils.Contracts.BehaviorTree;
+    using CarbonCore.Unity.Utils.Logic.Enums;
     using CarbonCore.Utils.Diagnostics;
-    using CarbonCore.Utils.Unity.Contracts.BehaviorTree;
-    using CarbonCore.Utils.Unity.Logic.Enums;
 
     public class BehaviorTreeDecoratorNode : BehaviorTreeNode, IBehaviorTreeDecoratorNode
     {

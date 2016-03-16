@@ -1,13 +1,13 @@
-﻿namespace CarbonCore.Tests.Unity.BufferedData
+﻿namespace CarbonCore.Unity.Tests.BufferedData
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-
-    using CarbonCore.Tests.Unity.Data;
-    using CarbonCore.Utils.Unity.Contracts.BufferedData;
-    using CarbonCore.Utils.Unity.Logic.BufferedData;
-    using CarbonCore.Utils.Unity.Logic.BufferedData.Commands;
+    
+    using CarbonCore.Unity.Tests.Data;
+    using CarbonCore.Unity.Utils.Contracts.BufferedData;
+    using CarbonCore.Unity.Utils.Logic.BufferedData;
+    using CarbonCore.Unity.Utils.Logic.BufferedData.Commands;
 
     using NUnit.Framework;
 

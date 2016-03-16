@@ -1,9 +1,9 @@
-﻿namespace CarbonCore.Utils.Unity.Logic.Resource
+﻿namespace CarbonCore.Unity.Utils.Logic.Resource
 {
     using System.Collections.Generic;
     using System.Linq;
 
-    using CarbonCore.Utils.Unity.Contracts;
+    using CarbonCore.Unity.Utils.Contracts;
 
     public class ResourceRequestPool<T> where T : class, IResourceRequest
     {

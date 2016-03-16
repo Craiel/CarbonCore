@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Utils.Unity.Contracts
+﻿namespace CarbonCore.Unity.Utils.Contracts
 {
     using CarbonCore.Utils.Threading;
 

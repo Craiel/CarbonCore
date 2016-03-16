@@ -1,11 +1,11 @@
-﻿namespace CarbonCore.Utils.Unity.Logic
+﻿namespace CarbonCore.Unity.Utils.Logic
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
 
+    using CarbonCore.Unity.Utils.Contracts;
     using CarbonCore.Utils.Diagnostics;
-    using CarbonCore.Utils.Unity.Contracts;
 
     // https://github.com/BlueRaja/High-Speed-Priority-Queue-for-C-Sharp
     public class HeapPriorityQueue<T> : IPriorityQueue<T>

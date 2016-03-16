@@ -8,8 +8,8 @@
     <ProjectGuid>{0EC48D10-8E81-4B43-A7EE-F4BD83516CEA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CarbonCore.Utils.Unity</RootNamespace>
-    <AssemblyName>CarbonCore.Utils.Unity</AssemblyName>
+    <RootNamespace>CarbonCore.Unity.Utils</RootNamespace>
+    <AssemblyName>CarbonCore.Unity.Utils</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -51,7 +51,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
-      <HintPath>..\..\External\Unity\5.2.2f1\UnityEngine.dll</HintPath>
+      <HintPath>$(INC_UNITYLIB)\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

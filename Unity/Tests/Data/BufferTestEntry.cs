@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Tests.Unity.Data
+﻿namespace CarbonCore.Unity.Tests.Data
 {
     using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.Logic.Attributes;

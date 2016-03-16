@@ -1,8 +1,8 @@
-﻿namespace CarbonCore.Utils.Unity.Logic.Resource
+﻿namespace CarbonCore.Unity.Utils.Logic.Resource
 {
+    using CarbonCore.Unity.Utils.Contracts;
     using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.Diagnostics.Metrics;
-    using CarbonCore.Utils.Unity.Contracts;
 
     using UnityEngine;
 
