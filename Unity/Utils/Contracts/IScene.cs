@@ -1,6 +1,6 @@
-﻿namespace CarbonCore.Utils.Unity.Contracts
+﻿namespace CarbonCore.Unity.Utils.Contracts
 {
-    using CarbonCore.Utils.Unity.Logic.Enums;
+    using CarbonCore.Unity.Utils.Logic.Enums;
 
     public interface IScene
     {

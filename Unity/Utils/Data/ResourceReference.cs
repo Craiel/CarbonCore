@@ -1,8 +1,8 @@
-﻿namespace CarbonCore.Utils.Unity.Data
+﻿namespace CarbonCore.Unity.Utils.Data
 {
     using System;
 
-    using CarbonCore.Utils.Unity.Logic.Resource;
+    using CarbonCore.Unity.Utils.Logic.Resource;
 
     public class ResourceReference<T> : IDisposable
         where T : UnityEngine.Object

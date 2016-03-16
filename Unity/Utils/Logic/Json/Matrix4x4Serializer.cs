@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Utils.Unity.Logic.Json
+﻿namespace CarbonCore.Unity.Utils.Logic.Json
 {
     using System;
     using System.Diagnostics.CodeAnalysis;

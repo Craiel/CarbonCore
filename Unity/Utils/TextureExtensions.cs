@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Utils.Unity
+﻿namespace CarbonCore.Unity.Utils
 {
     using System;
     using System.IO;

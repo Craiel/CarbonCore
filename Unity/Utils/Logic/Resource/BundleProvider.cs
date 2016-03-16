@@ -1,13 +1,13 @@
-﻿namespace CarbonCore.Utils.Unity.Logic.Resource
+﻿namespace CarbonCore.Unity.Utils.Logic.Resource
 {
     using System;
     using System.Collections.Generic;
 
+    using CarbonCore.Unity.Utils.Data;
+    using CarbonCore.Unity.Utils.Logic.Enums;
     using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.Diagnostics.Metrics;
     using CarbonCore.Utils.IO;
-    using CarbonCore.Utils.Unity.Data;
-    using CarbonCore.Utils.Unity.Logic.Enums;
 
     using UnityEngine;
 

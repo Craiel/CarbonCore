@@ -1,9 +1,9 @@
-﻿namespace CarbonCore.Utils.Unity.Logic
+﻿namespace CarbonCore.Unity.Utils.Logic
 {
     using System;
 
-    using CarbonCore.Utils.Unity.Contracts;
-    using CarbonCore.Utils.Unity.Logic.Enums;
+    using CarbonCore.Unity.Utils.Contracts;
+    using CarbonCore.Unity.Utils.Logic.Enums;
 
     public class DelayedLoadedObject : IDelayedLoadedObject
     {

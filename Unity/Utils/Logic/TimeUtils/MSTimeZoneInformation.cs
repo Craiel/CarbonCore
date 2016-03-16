@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Utils.Unity.Logic.TimeUtils
+﻿namespace CarbonCore.Unity.Utils.Logic.TimeUtils
 {
 #if WIN64
     using System.Runtime.InteropServices;

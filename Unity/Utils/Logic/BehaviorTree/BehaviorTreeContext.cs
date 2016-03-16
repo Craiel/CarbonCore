@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Utils.Unity.Logic.BehaviorTree
+﻿namespace CarbonCore.Unity.Utils.Logic.BehaviorTree
 {
     using System;
     using System.Collections.Generic;

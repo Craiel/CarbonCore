@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Utils.Unity.Logic.BufferedData
+﻿namespace CarbonCore.Unity.Utils.Logic.BufferedData
 {
     using System;
     using System.Collections.Generic;
@@ -6,10 +6,9 @@
     using System.Threading;
     
     using CarbonCore.ContentServices.Contracts;
+    using CarbonCore.Unity.Utils.Contracts.BufferedData;
     using CarbonCore.Utils.Contracts.IoC;
     using CarbonCore.Utils.Diagnostics;
-    using CarbonCore.Utils.Unity.Contracts.BufferedData;
-    using CarbonCore.Utils.Unity.Logic;
 
     public class BufferedDataset : EngineComponent, IBufferedDataSetInternal
     {

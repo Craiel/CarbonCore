@@ -1,11 +1,11 @@
-﻿namespace CarbonCore.Utils.Unity.Logic
+﻿namespace CarbonCore.Unity.Utils.Logic
 {
+    using CarbonCore.Unity.Utils.Logic.Json;
+    using CarbonCore.Unity.Utils.Logic.Resource;
     using CarbonCore.Utils.Contracts;
     using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.Diagnostics.Metrics;
     using CarbonCore.Utils.Json;
-    using CarbonCore.Utils.Unity.Logic.Json;
-    using CarbonCore.Utils.Unity.Logic.Resource;
 
     using UnityEngine;
 

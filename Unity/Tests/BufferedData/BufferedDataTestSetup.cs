@@ -1,8 +1,8 @@
-﻿namespace CarbonCore.Tests.Unity.BufferedData
+﻿namespace CarbonCore.Unity.Tests.BufferedData
 {
+    using CarbonCore.Unity.Utils.IoC;
     using CarbonCore.Utils.Contracts.IoC;
     using CarbonCore.Utils.IoC;
-    using CarbonCore.Utils.Unity.IoC;
 
     using NUnit.Framework;
 

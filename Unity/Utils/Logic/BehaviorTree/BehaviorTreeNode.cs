@@ -1,7 +1,7 @@
-﻿namespace CarbonCore.Utils.Unity.Logic.BehaviorTree
+﻿namespace CarbonCore.Unity.Utils.Logic.BehaviorTree
 {
-    using CarbonCore.Utils.Unity.Contracts.BehaviorTree;
-    using CarbonCore.Utils.Unity.Logic.Enums;
+    using CarbonCore.Unity.Utils.Contracts.BehaviorTree;
+    using CarbonCore.Unity.Utils.Logic.Enums;
 
     using Newtonsoft.Json;
 

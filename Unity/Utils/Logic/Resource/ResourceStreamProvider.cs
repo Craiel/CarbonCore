@@ -1,12 +1,12 @@
-﻿namespace CarbonCore.Utils.Unity.Logic.Resource
+﻿namespace CarbonCore.Unity.Utils.Logic.Resource
 {
     using System.Collections.Generic;
     using System.Threading;
 
+    using CarbonCore.Unity.Utils.Data;
+    using CarbonCore.Unity.Utils.Logic.Enums;
     using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.Diagnostics.Metrics;
-    using CarbonCore.Utils.Unity.Data;
-    using CarbonCore.Utils.Unity.Logic.Enums;
 
     // Made to load resources from Application.streamingAssetsPath and other WWW accessible places
     public class ResourceStreamProvider : UnitySingleton<ResourceStreamProvider>

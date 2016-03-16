@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Utils.Unity.Logic.Enums
+﻿namespace CarbonCore.Unity.Utils.Logic.Enums
 {
     public enum AnchorPoint
     {

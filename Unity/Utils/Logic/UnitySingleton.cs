@@ -1,7 +1,7 @@
-﻿namespace CarbonCore.Utils.Unity.Logic
+﻿namespace CarbonCore.Unity.Utils.Logic
 {
+    using CarbonCore.Unity.Utils.Contracts;
     using CarbonCore.Utils.Diagnostics;
-    using CarbonCore.Utils.Unity.Contracts;
 
     public abstract class UnitySingleton<T> : IUnitySingleton
         where T : class, IUnitySingleton, new()

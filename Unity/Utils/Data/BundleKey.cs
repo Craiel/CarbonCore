@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Utils.Unity.Data
+﻿namespace CarbonCore.Unity.Utils.Data
 {
     using CarbonCore.Utils;
 

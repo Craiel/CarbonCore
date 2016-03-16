@@ -1,10 +1,9 @@
-﻿namespace CarbonCore.Utils.Unity.Logic.TaskPoolLogic
+﻿namespace CarbonCore.Unity.Utils.Logic.TaskPoolLogic
 {
     using System;
     using System.Linq;
 
-    using CarbonCore.Utils.Unity.Contracts.TaskPool;
-    using CarbonCore.Utils.Unity.Logic;
+    using CarbonCore.Unity.Utils.Contracts.TaskPool;
 
     public class TaskPool : EngineComponent, ITaskPool
     {

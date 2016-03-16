@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Utils.Unity.Logic.TimeUtils
+﻿namespace CarbonCore.Unity.Utils.Logic.TimeUtils
 {
     using System;
     using System.Runtime.InteropServices;

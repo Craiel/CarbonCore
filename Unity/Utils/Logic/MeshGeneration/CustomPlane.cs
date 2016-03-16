@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Utils.Unity.Logic.MeshGeneration
+﻿namespace CarbonCore.Unity.Utils.Logic.MeshGeneration
 {
     using UnityEngine;
 

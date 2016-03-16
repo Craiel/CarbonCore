@@ -1,6 +1,6 @@
-﻿namespace CarbonCore.Utils.Unity.Logic.MeshGeneration
+﻿namespace CarbonCore.Unity.Utils.Logic.MeshGeneration
 {
-    using CarbonCore.Utils.Unity.Logic.Enums;
+    using CarbonCore.Unity.Utils.Logic.Enums;
     
     public class PlaneOptions
     {

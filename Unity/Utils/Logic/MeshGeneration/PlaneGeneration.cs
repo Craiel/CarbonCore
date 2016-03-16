@@ -1,8 +1,8 @@
-﻿namespace CarbonCore.Utils.Unity.Logic.MeshGeneration
+﻿namespace CarbonCore.Unity.Utils.Logic.MeshGeneration
 {
     using System.Diagnostics.CodeAnalysis;
 
-    using CarbonCore.Utils.Unity.Logic.Enums;
+    using CarbonCore.Unity.Utils.Logic.Enums;
 
     using UnityEngine;
 

@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Utils.Unity.Editor.GUI
+﻿namespace CarbonCore.Unity.Editor.Utils.GUI
 {
     public class LayoutRegionSettings
     {

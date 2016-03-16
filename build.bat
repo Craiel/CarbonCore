@@ -1,7 +1,7 @@
 @echo off
 
-set MSBUILD="C:\Program Files (x86)\MSBuild\14.0\Bin"
+call SetupEnvironment.bat
 
 cls
-%MSBUILD%\msbuild.exe "CarbonCore.sln" /p:configuration=release
+%MSBUILD%\msbuild.exe "%SOLUTIONFILE%" /p:configuration=release
 pause

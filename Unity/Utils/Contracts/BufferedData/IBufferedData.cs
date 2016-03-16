@@ -1,7 +1,6 @@
-﻿namespace CarbonCore.Utils.Unity.Contracts.BufferedData
+﻿namespace CarbonCore.Unity.Utils.Contracts.BufferedData
 {
-    using CarbonCore.Utils.Unity.Contracts;
-    using CarbonCore.Utils.Unity.Logic.BufferedData;
+    using CarbonCore.Unity.Utils.Logic.BufferedData;
 
     public interface IBufferedData : IEngineComponent
     {

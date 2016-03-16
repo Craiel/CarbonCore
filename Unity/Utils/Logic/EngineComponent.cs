@@ -1,11 +1,11 @@
-﻿namespace CarbonCore.Utils.Unity.Logic
+﻿namespace CarbonCore.Unity.Utils.Logic
 {
     using System;
     using System.Collections.Generic;
 
+    using CarbonCore.Unity.Utils.Contracts;
     using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.Threading;
-    using CarbonCore.Utils.Unity.Contracts;
 
     public abstract class EngineComponent : IEngineComponent
     {

@@ -1,9 +1,9 @@
-﻿namespace CarbonCore.Utils.Unity.Data
+﻿namespace CarbonCore.Unity.Utils.Data
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-    
-    using CarbonCore.Utils.Unity.Contracts;
+
+    using CarbonCore.Unity.Utils.Contracts;
 
     // Static helper method to extend a RefCountedObject
     public static class RefCountedWeakReferenceExtensions
