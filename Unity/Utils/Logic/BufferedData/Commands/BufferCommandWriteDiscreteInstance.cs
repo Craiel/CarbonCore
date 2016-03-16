@@ -2,11 +2,10 @@
 {
     using System;
     
-    using CarbonCore.ContentServices.Contracts;
     using CarbonCore.Utils.Unity.Contracts.BufferedData;
 
     public class BufferCommandWriteDiscreteInstance<T> : IBufferedDataCommand
-        where T : IDataEntry
+        where T : IBufferedDataEntry
     {
         // -------------------------------------------------------------------
         // Public

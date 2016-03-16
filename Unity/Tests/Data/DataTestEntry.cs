@@ -6,7 +6,7 @@
     using Newtonsoft.Json;
 
     [JsonObject(MemberSerialization.OptOut)]
-    public class DataTestEntry : DataEntry
+    public class DataTestEntry : SmartDataEntry
     {
         // -------------------------------------------------------------------
         // Public

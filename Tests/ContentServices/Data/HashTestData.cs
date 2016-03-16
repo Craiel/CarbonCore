@@ -3,7 +3,7 @@
     using CarbonCore.ContentServices.Logic.Attributes;
     using CarbonCore.ContentServices.Logic.DataEntryLogic;
 
-    public class HashTestData : DataEntry
+    public class HashTestData : SmartDataEntry
     {
         [DataElement]
         public int Id { get; set; }

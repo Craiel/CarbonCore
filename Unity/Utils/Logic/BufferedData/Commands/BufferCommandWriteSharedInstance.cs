@@ -1,17 +1,16 @@
 ﻿namespace CarbonCore.Utils.Unity.Logic.BufferedData.Commands
 {
-    using CarbonCore.ContentServices.Contracts;
     using CarbonCore.Utils.Unity.Contracts.BufferedData;
 
     public class BufferCommandWriteSharedInstance : IBufferedDataCommand
     {
         private readonly object key;
-        private readonly IDataEntry instance;
+        private readonly IBufferedDataEntry instance;
 
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
-        public BufferCommandWriteSharedInstance(IDataEntry instance, object key = null)
+        public BufferCommandWriteSharedInstance(IBufferedDataEntry instance, object key = null)
         {
             this.key = key;
             this.instance = instance;

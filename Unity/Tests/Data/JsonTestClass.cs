@@ -10,7 +10,7 @@
     using Newtonsoft.Json;
 
     [DataEntry(UseDefaultEquality = true)]
-    public class JsonTestClass : DataEntry
+    public class JsonTestClass : SmartDataEntry
     {
         // -------------------------------------------------------------------
         // Public

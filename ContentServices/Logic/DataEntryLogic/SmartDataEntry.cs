@@ -11,7 +11,7 @@
     using Newtonsoft.Json;
 
     [JsonObject(MemberSerialization.OptOut)]
-    public abstract class DataEntry : IDataEntry
+    public abstract class SmartDataEntry : ISmartDataEntry
     {
         private int? changeHashCode;
         

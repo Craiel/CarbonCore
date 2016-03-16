@@ -28,7 +28,6 @@
                 stream.Seek(0, SeekOrigin.Begin);
                 var reader = new BsonReader(stream);
                 T instance = Serializer.Deserialize<T>(reader);
-                instance.ResetChangedState();
                 return instance;
             }
         }

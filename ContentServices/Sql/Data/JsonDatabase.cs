@@ -12,7 +12,7 @@
 
     [JsonObject(MemberSerialization.OptOut)]
     [DataEntry(UseDefaultEquality = true)]
-    public class JsonDatabase : DataEntry
+    public class JsonDatabase : SmartDataEntry
     {
         // -------------------------------------------------------------------
         // Constructor
