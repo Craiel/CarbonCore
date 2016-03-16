@@ -1,8 +1,8 @@
-﻿namespace CarbonCore.Utils.Unity.Logic.BufferedData.Commands
+﻿namespace CarbonCore.Unity.Utils.Logic.BufferedData.Commands
 {
     using System;
-    
-    using CarbonCore.Utils.Unity.Contracts.BufferedData;
+
+    using CarbonCore.Unity.Utils.Contracts.BufferedData;
 
     public class BufferCommandWriteDiscreteInstance<T> : IBufferedDataCommand
         where T : IBufferedDataEntry

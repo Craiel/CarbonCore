@@ -2,7 +2,7 @@
 {
     using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.Logic.Attributes;
-    using CarbonCore.Utils.Unity.Contracts.BufferedData;
+    using CarbonCore.Unity.Utils.Contracts.BufferedData;
 
     [DataEntry(UseDefaultEquality = true)]
     public class BufferTestEntry : IBufferedDataEntry
