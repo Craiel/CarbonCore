@@ -19,10 +19,19 @@
             this.Status = BehaviorTreeStatus.Undefined;
         }
 
-        public abstract void Execute(BehaviorTreeContext context);
+        public void Execute(BehaviorTreeContext context)
+        {
+            ProfilerUtils.BeginSampleThreadsafe("BT_N: " + this.GetType().Name);
+
+            this.DoExecute(context);
+
+            ProfilerUtils.EndSampleThreadSafe();
+        }
 
         public virtual void OnExit(BehaviorTreeContext context)
         {
         }
+
+        protected abstract void DoExecute(BehaviorTreeContext context);
     }
 }

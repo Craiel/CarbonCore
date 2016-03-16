@@ -21,7 +21,10 @@
         // -------------------------------------------------------------------
         public int Key { get; set; }
 
-        public override void Execute(BehaviorTreeContext context)
+        // -------------------------------------------------------------------
+        // Protected
+        // -------------------------------------------------------------------
+        protected override void DoExecute(BehaviorTreeContext context)
         {
             if (context.GetVariable<bool>(this.Key))
             {

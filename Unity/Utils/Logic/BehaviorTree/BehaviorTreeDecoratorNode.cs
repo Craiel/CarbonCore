@@ -32,7 +32,10 @@
 
         public int RepeatCount { get; set; }
 
-        public override void Execute(BehaviorTreeContext context)
+        // -------------------------------------------------------------------
+        // Protected
+        // -------------------------------------------------------------------
+        protected override void DoExecute(BehaviorTreeContext context)
         {
             Diagnostic.Assert(this.Leaf != null, "No leaf in decorator!");
 

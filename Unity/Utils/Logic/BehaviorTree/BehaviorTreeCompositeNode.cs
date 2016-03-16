@@ -46,17 +46,14 @@
             this.Children.Remove(node);
         }
 
-        public override void Execute(BehaviorTreeContext context)
+        // -------------------------------------------------------------------
+        // Protected
+        // -------------------------------------------------------------------
+        protected override void DoExecute(BehaviorTreeContext context)
         {
-            if (this.IsRandom)
-            {
-                // Random is slower so we have a specific function for it
-                this.Status = this.ProcessChildrenRandom(context);
-            }
-            else
-            {
-                this.Status = this.ProcessChildren(context);
-            }
+            this.Status = this.IsRandom 
+                ? this.ProcessChildrenRandom(context) 
+                : this.ProcessChildren(context);
         }
 
         // -------------------------------------------------------------------
@@ -64,6 +61,8 @@
         // -------------------------------------------------------------------
         private BehaviorTreeStatus ProcessChildren(BehaviorTreeContext context)
         {
+            ProfilerUtils.BeginSampleThreadsafe("ProcessChildren");
+
             if (this.Children == null)
             {
                 // No children, just succeed
@@ -80,15 +79,19 @@
                 BehaviorTreeStatus? nodeStatus = this.ExecuteNode(context, this.Children[i]);
                 if (nodeStatus != null)
                 {
+                    ProfilerUtils.EndSampleThreadSafe();
                     return nodeStatus.Value;
                 }
             }
 
+            ProfilerUtils.EndSampleThreadSafe();
             return resultStatus;
         }
 
         private BehaviorTreeStatus ProcessChildrenRandom(BehaviorTreeContext context)
         {
+            ProfilerUtils.BeginSampleThreadsafe("ProcessChildrenRandom");
+
             if (this.Children == null)
             {
                 // No children, just succeed
@@ -115,10 +118,12 @@
                 BehaviorTreeStatus? nodeStatus = this.ExecuteNode(context, node);
                 if (nodeStatus != null)
                 {
+                    ProfilerUtils.EndSampleThreadSafe();
                     return nodeStatus.Value;
                 }
             }
 
+            ProfilerUtils.EndSampleThreadSafe();
             return resultStatus;
         }
 

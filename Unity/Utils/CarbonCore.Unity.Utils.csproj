@@ -32,7 +32,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Unity|AnyCPU'">
     <OutputPath>$(SolutionDir)bin\$(Configuration)\$(ProjectName)</OutputPath>
     <IntermediateOutputPath>$(SolutionDir)obj\$(Configuration)\$(ProjectName)</IntermediateOutputPath>
-    <DefineConstants>TRACE;DEBUG;UNITY; UNITY_5;WIN64</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;UNITY; UNITY_5;WIN64;ENABLE_PROFILER</DefineConstants>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>$(SolutionDir)\CarbonCore.ruleset</CodeAnalysisRuleSet>
     <LangVersion>4</LangVersion>
@@ -163,6 +163,7 @@
     <Compile Include="Logic\Scene\SceneObjectContainer.cs" />
     <Compile Include="Logic\Scene\SceneObjectController.cs" />
     <Compile Include="Logic\Scene\SceneObjectRoot.cs" />
+    <Compile Include="ProfilerUtils.cs" />
     <Compile Include="TextureExtensions.cs" />
     <Compile Include="UnityConstants.cs" />
     <Compile Include="Logic\UnitySingletonBehavior.cs" />

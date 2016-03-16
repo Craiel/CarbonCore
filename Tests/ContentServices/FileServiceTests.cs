@@ -42,8 +42,6 @@
         [SetUp]
         public void Setup()
         {
-            Diagnostic.RegisterThread("FileServiceTestThread");
-
             this.container = CarbonContainerBuilder.BuildQuick<ContentServicesSqlModule>();
 
             this.dataDirectory = CarbonDirectory.GetTempDirectory();
@@ -76,8 +74,6 @@
             {
                 this.dataDirectory.Delete(true);
             }
-
-            Diagnostic.UnregisterThread();
         }
 
         [Test]

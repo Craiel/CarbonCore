@@ -25,7 +25,11 @@
 
         public virtual void Execute(BehaviorTreeContext context)
         {
+            ProfilerUtils.BeginSampleThreadsafe("BT: " + this.GetType().Name);
+
             this.Root.Execute(context);
+
+            ProfilerUtils.EndSampleThreadSafe();
         }
     }
 }

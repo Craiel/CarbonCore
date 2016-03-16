@@ -15,5 +15,11 @@
             // This initializes diagnostic and sets the main thread context
             Diagnostic.Info("Tests starting!");
         }
+
+        [OneTimeTearDown]
+        public void TearDown()
+        {
+            Diagnostic.UnregisterThread();
+        }
     }
 }
