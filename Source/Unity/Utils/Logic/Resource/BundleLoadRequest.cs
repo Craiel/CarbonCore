@@ -68,7 +68,7 @@
 
             if (this.request == null)
             {
-                this.request = AssetBundle.CreateFromMemory(this.data);
+                this.request = AssetBundle.LoadFromMemoryAsync(this.data);
                 return true;
             }
 
@@ -130,7 +130,7 @@
 
         private void LoadFromFileImmediate()
         {
-            this.bundle = AssetBundle.CreateFromFile(this.File.GetPath());
+            this.bundle = AssetBundle.LoadFromFile(this.File.GetPath());
         }
 
         private void LoadFromMemoryImmediate()
@@ -141,7 +141,7 @@
                 this.stream.Read(this.data, 0, this.data.Length);
             }
 
-            this.bundle = AssetBundle.CreateFromMemoryImmediate(this.data);
+            this.bundle = AssetBundle.LoadFromMemory(this.data);
 
             this.stream = null;
             this.data = null;
