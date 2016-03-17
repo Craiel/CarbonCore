@@ -129,6 +129,7 @@
     <Compile Include="Logic\Json\ResourceKeySerializer.cs" />
     <Compile Include="Logic\Json\Vector2ConverterSmall.cs" />
     <Compile Include="Logic\Json\Vector2IConverterSmall.cs" />
+    <Compile Include="Logic\Json\Matrix4x4ConverterSmall.cs" />
     <Compile Include="Logic\Json\Vector3Serializer.cs" />
     <Compile Include="Logic\MeshGeneration\AnchorUtils.cs" />
     <Compile Include="Logic\MeshGeneration\CustomPlane.cs" />
