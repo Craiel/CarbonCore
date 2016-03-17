@@ -61,6 +61,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.ContentServices.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newtonsoft.Json", "..\External\Newtonsoft.Json\Newtonsoft.Json.csproj", "{EEEA67F9-9089-481D-A4DC-0966DEC9FD7D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.Utils.Lua", "Utils\Lua\CarbonCore.Utils.Lua.csproj", "{F85D8EDF-7C3C-42DF-AECE-A1330BBF246E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -209,6 +211,14 @@ Global
 		{EEEA67F9-9089-481D-A4DC-0966DEC9FD7D}.Unity|Any CPU.Build.0 = Unity|Any CPU
 		{EEEA67F9-9089-481D-A4DC-0966DEC9FD7D}.UnityRelease|Any CPU.ActiveCfg = UnityRelease|Any CPU
 		{EEEA67F9-9089-481D-A4DC-0966DEC9FD7D}.UnityRelease|Any CPU.Build.0 = UnityRelease|Any CPU
+		{F85D8EDF-7C3C-42DF-AECE-A1330BBF246E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F85D8EDF-7C3C-42DF-AECE-A1330BBF246E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F85D8EDF-7C3C-42DF-AECE-A1330BBF246E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F85D8EDF-7C3C-42DF-AECE-A1330BBF246E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F85D8EDF-7C3C-42DF-AECE-A1330BBF246E}.Unity|Any CPU.ActiveCfg = Unity|Any CPU
+		{F85D8EDF-7C3C-42DF-AECE-A1330BBF246E}.Unity|Any CPU.Build.0 = Unity|Any CPU
+		{F85D8EDF-7C3C-42DF-AECE-A1330BBF246E}.UnityRelease|Any CPU.ActiveCfg = UnityRelease|Any CPU
+		{F85D8EDF-7C3C-42DF-AECE-A1330BBF246E}.UnityRelease|Any CPU.Build.0 = UnityRelease|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -233,5 +243,6 @@ Global
 		{1FF6D0DA-B801-4956-A015-CE04FC7FB93F} = {BFF63B4F-00C5-4315-8D22-6312782CFBE6}
 		{18B053C8-43B1-4ADB-81B7-F7CD2095E2A6} = {398B0266-738E-449E-B12C-9DB5A2CA4797}
 		{EEEA67F9-9089-481D-A4DC-0966DEC9FD7D} = {E928C946-3E15-46DB-8F1F-26523482FEAC}
+		{F85D8EDF-7C3C-42DF-AECE-A1330BBF246E} = {840BD203-1747-4DDF-B23F-666DC252952C}
 	EndGlobalSection
 EndGlobal
