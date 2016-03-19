@@ -185,6 +185,12 @@
 
             foreach (Type key in this.bindingInstances.Keys)
             {
+                if (this.bindingInstances[key].GetType().Implements<ICarbonContainer>())
+                {
+                    // Do not dispose Containers indirectly
+                    continue;
+                }
+
                 if (this.bindingInstances[key].GetType().Implements<IDisposable>())
                 {
                     ((IDisposable)this.bindingInstances[key]).Dispose();

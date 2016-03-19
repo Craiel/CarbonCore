@@ -80,6 +80,10 @@
       <Project>{eeea67f9-9089-481d-a4dc-0966dec9fd7d}</Project>
       <Name>Newtonsoft.Json</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CarbonCore.Utils.csproj">
+      <Project>{e05836d9-0bb3-4bfa-89e6-f5ed40a9d93c}</Project>
+      <Name>CarbonCore.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
@@ -105,6 +109,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Contracts\ILuaRuntimeFunction.cs" />
+    <Compile Include="Contracts\ILuaObject.cs" />
+    <Compile Include="Contracts\ILuaRuntime.cs" />
+    <Compile Include="IoC\IoC.cs" />
+    <Compile Include="Logic\DefaultFunctions.cs" />
+    <Compile Include="Logic\LuaNativeFunction.cs" />
+    <Compile Include="Logic\LuaObject.cs" />
+    <Compile Include="Logic\LuaRuntime.cs" />
+    <Compile Include="Logic\LuaWrappedFunction.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

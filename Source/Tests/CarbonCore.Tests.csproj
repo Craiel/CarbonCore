@@ -55,6 +55,7 @@
     <Compile Include="ContentServices\SerializerTests.cs" />
     <Compile Include="ContentServices\Data\SyncTestEntry2.cs" />
     <Compile Include="ContentServices\Data\SyncTestEntry.cs" />
+    <Compile Include="Lua\GeneralLuaTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\Static.cs">
       <DependentUpon>Static.tt</DependentUpon>
@@ -119,7 +120,15 @@
       <Project>{e05836d9-0bb3-4bfa-89e6-f5ed40a9d93c}</Project>
       <Name>CarbonCore.Utils</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Utils\Lua\CarbonCore.Utils.Lua.csproj">
+      <Project>{f85d8edf-7c3c-42df-aece-a1330bbf246e}</Project>
+      <Name>CarbonCore.Utils.Lua</Name>
+    </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
