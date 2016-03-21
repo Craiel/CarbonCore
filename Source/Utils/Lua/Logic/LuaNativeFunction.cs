@@ -20,7 +20,7 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public string Name { get; }
+        public string Name { get; private set; }
 
         public void Register(Lua target)
         {
