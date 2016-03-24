@@ -18,7 +18,7 @@
         {
             MSTimeZoneInformation result;
             int count = GetTimeZoneInformation(out result);
-            if (count == 1)
+            if (count >= 1)
             {
                 return result;
             }
