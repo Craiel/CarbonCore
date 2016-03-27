@@ -238,6 +238,14 @@
             return this.innerReverse.TryGetValue(value, out key);
         }
 
+        public void AddRange(IDictionary<T, TN> source)
+        {
+            foreach (KeyValuePair<T, TN> pair in source)
+            {
+                this.Add(pair.Key, pair.Value);
+            }
+        }
+
         // -------------------------------------------------------------------
         // Private
         // -------------------------------------------------------------------

@@ -52,7 +52,7 @@
             }
         }
 
-        public static void AddRange<T, TN>(this Dictionary<T, TN> target, IDictionary<T, TN> source)
+        public static void AddRange<T, TN>(this IDictionary<T, TN> target, IDictionary<T, TN> source)
         {
             foreach (KeyValuePair<T, TN> entry in source)
             {
