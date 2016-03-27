@@ -1,16 +1,26 @@
 ﻿namespace CarbonCore.Unity.Utils.Data
 {
-    using CarbonCore.ContentServices.Logic.Attributes;
-    using CarbonCore.ContentServices.Logic.DataEntryLogic;
     using CarbonCore.Utils.Threading;
 
-    public class EngineTimeSnapshot : SmartDataEntry
+    using Newtonsoft.Json;
+
+    [JsonObject(MemberSerialization.OptOut)]
+    public class EngineTimeSnapshot
     {
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
         public EngineTimeSnapshot()
         {
+        }
+
+        public EngineTimeSnapshot(EngineTimeSnapshot other)
+        {
+            this.Frame = other.Frame;
+            this.Speed = other.Speed;
+            this.Ticks = other.Ticks;
+            this.FixedTicks = other.FixedTicks;
+            this.TicksLostToPause = other.TicksLostToPause;
         }
 
         public EngineTimeSnapshot(EngineTime time)
@@ -29,35 +39,19 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        [DataElement]
         public long Frame { get; set; }
-
-        [DataElement]
+        
         public float Speed { get; set; }
-
-        [DataElement]
+        
         public long Ticks { get; set; }
         
-        [DataElement]
         public long FixedTicks { get; set; }
         
-        [DataElement]
         public long TicksLostToPause { get; set; }
 
         public EngineTime GetTime()
         {
             return new EngineTime(this.Frame, this.Speed, this.Ticks, this.FixedTicks, this.TicksLostToPause);
-        }
-
-        // -------------------------------------------------------------------
-        // Protected
-        // -------------------------------------------------------------------
-        protected override int DoGetHashCode()
-        {
-            return this.Frame.GetHashCode()
-                ^ this.Speed.GetHashCode()
-                ^ this.FixedTicks.GetHashCode()
-                ^ this.TicksLostToPause.GetHashCode();
         }
     }
 }
