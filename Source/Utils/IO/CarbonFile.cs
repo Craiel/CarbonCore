@@ -146,6 +146,11 @@
             return File.ReadAllText(this.GetPath());
         }
 
+        public void WriteAsString(string contents)
+        {
+            File.WriteAllText(this.GetPath(), contents);
+        }
+
         public byte[] ReadAsByte()
         {
             using (FileStream stream = this.OpenRead())
