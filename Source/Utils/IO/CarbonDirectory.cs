@@ -43,11 +43,12 @@
             string trimmedPath = this.Path;
             if (this.EndsWithSeparator)
             {
-                trimmedPath = this.Path.TrimEnd(System.IO.Path.DirectorySeparatorChar);
+                trimmedPath = this.Path.TrimEnd(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar);
             }
 
+            this.GetPathUsingDefaultSeparator();
             this.DirectoryName = this.Path;
-            this.DirectoryNameWithoutPath = System.IO.Path.GetFileName(trimmedPath);
+            this.DirectoryNameWithoutPath = System.IO.Path.GetFileName(this.GetStringUsingDefaultSeparator(trimmedPath));
         }
 
         public CarbonDirectory(CarbonFile file)

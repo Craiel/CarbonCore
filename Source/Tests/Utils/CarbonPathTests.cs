@@ -66,9 +66,9 @@
         [Test]
         public void FindParentTests()
         {
-            CarbonDirectory firstTestPath = new CarbonDirectory(@"C:\SomeDirectory\AnotherDirectory\Third\Fourth\Somefile.txt");
-            CarbonDirectory secondTestPath = new CarbonDirectory(@"C:/SomeDirectory/AnotherDirectory/Third/Fourth/Somefile.txt");
-            CarbonDirectory thirdTestPath = new CarbonDirectory(@"/SomeDirectory/AnotherDirectory/Third/Fourth/Somefile.txt");
+            CarbonDirectory firstTestPath = new CarbonDirectory(@"C:\SomeDirectory\AnotherDirectory\Third\Fourth");
+            CarbonDirectory secondTestPath = new CarbonDirectory(@"C:/SomeDirectory/AnotherDirectory/Third/Fourth");
+            CarbonDirectory thirdTestPath = new CarbonDirectory(@"/SomeDirectory/AnotherDirectory/Third/Fourth");
 
             CarbonDirectory result = firstTestPath.FindParent("AnotherDirectory");
             Assert.IsNotNull(result);
@@ -86,7 +86,7 @@
             Assert.IsNotNull(result);
             Assert.IsFalse(result.IsNull);
 
-            result = firstTestPath.FindParent("Another", false, true);
+            result = firstTestPath.FindParent("another", false, true);
             Assert.IsNull(result);
         }
 

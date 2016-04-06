@@ -148,14 +148,12 @@
 
         public string GetPathUsingDefaultSeparator()
         {
-            return this.path.Replace(DirectorySeparatorAlternative, DirectorySeparator)
-                .Replace(DirectorySeparatorUnity, DirectorySeparator);
+            return this.GetStringUsingDefaultSeparator(this.path);
         }
 
         public string GetPathUsingAlternativeSeparator()
         {
-            return this.path.Replace(DirectorySeparator, DirectorySeparatorAlternative)
-                .Replace(DirectorySeparatorUnity, DirectorySeparatorAlternative);
+            return this.GetStringUsingAlternativeSeparator(this.path);
         }
 
         public string GetUnityPath()
@@ -341,6 +339,18 @@
                 this.drive = info;
                 break;
             }
+        }
+
+        protected string GetStringUsingDefaultSeparator(string source)
+        {
+            return source.Replace(DirectorySeparatorAlternative, DirectorySeparator)
+                .Replace(DirectorySeparatorUnity, DirectorySeparator);
+        }
+
+        protected string GetStringUsingAlternativeSeparator(string source)
+        {
+            return source.Replace(DirectorySeparator, DirectorySeparatorAlternative)
+                .Replace(DirectorySeparatorUnity, DirectorySeparatorAlternative);
         }
     }
 }
