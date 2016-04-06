@@ -293,5 +293,47 @@
 
             return typed.Path == this.Path;
         }
+
+        public CarbonDirectory FindParent(string name, bool matchFullName = true, bool caseSensitive = false)
+        {
+            CarbonDirectory firstParent = this.GetParent();
+            if (firstParent == null)
+            {
+                return null;
+            }
+
+            var queue = new Queue<CarbonDirectory>();
+            queue.Enqueue(firstParent);
+            while (queue.Count > 0)
+            {
+                var directory = queue.Dequeue();
+                bool isMatch;
+                if (matchFullName)
+                {
+                    isMatch = directory.DirectoryNameWithoutPath.Equals(name, caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase);
+                }
+                else
+                {
+                    isMatch = caseSensitive 
+                        ? directory.DirectoryNameWithoutPath.Contains(name) 
+                        : directory.DirectoryNameWithoutPath.ToLowerInvariant().Contains(name.ToLowerInvariant());
+                }
+
+                if (isMatch)
+                {
+                    return directory;
+                }
+
+                CarbonDirectory parent = directory.GetParent();
+                if (parent == null || parent.Equals(directory))
+                {
+                    break;
+                }
+
+                queue.Enqueue(parent);
+            }
+
+            return null;
+        }
     }
 }

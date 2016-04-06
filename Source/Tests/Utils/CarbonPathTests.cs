@@ -64,6 +64,33 @@
         }
 
         [Test]
+        public void FindParentTests()
+        {
+            CarbonDirectory firstTestPath = new CarbonDirectory(@"C:\SomeDirectory\AnotherDirectory\Third\Fourth\Somefile.txt");
+            CarbonDirectory secondTestPath = new CarbonDirectory(@"C:/SomeDirectory/AnotherDirectory/Third/Fourth/Somefile.txt");
+            CarbonDirectory thirdTestPath = new CarbonDirectory(@"/SomeDirectory/AnotherDirectory/Third/Fourth/Somefile.txt");
+
+            CarbonDirectory result = firstTestPath.FindParent("AnotherDirectory");
+            Assert.IsNotNull(result);
+            Assert.IsFalse(result.IsNull);
+
+            result = secondTestPath.FindParent("AnotherDirectory");
+            Assert.IsNotNull(result);
+            Assert.IsFalse(result.IsNull);
+
+            result = thirdTestPath.FindParent("AnotherDirectory");
+            Assert.IsNotNull(result);
+            Assert.IsFalse(result.IsNull);
+
+            result = firstTestPath.FindParent("Another", false);
+            Assert.IsNotNull(result);
+            Assert.IsFalse(result.IsNull);
+
+            result = firstTestPath.FindParent("Another", false, true);
+            Assert.IsNull(result);
+        }
+
+        [Test]
         public void SearchTests()
         {
             CarbonDirectory current = RuntimeInfo.SystemDirectory;
