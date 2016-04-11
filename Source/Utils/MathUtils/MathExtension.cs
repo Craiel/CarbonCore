@@ -46,9 +46,19 @@
             return (int)Math.Floor(value);
         }
 
+        public static int FloorToInt(this double value)
+        {
+            return (int)Math.Floor(value);
+        }
+
         public static long FloorToLong(this double value)
         {
             return (long)Math.Floor(value);
+        }
+
+        public static double Floor(this double value)
+        {
+            return Math.Floor(value);
         }
         
         public static IList<int> ComputePrimes(int max)

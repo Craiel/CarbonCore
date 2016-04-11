@@ -82,6 +82,11 @@
                 (this.X * other.Y) - (this.Y * other.X));
         }
 
+        public double Distance(int x, int y, int z)
+        {
+            return Math.Sqrt(this.DistanceSq(x, y, z));
+        }
+
         public double DistanceSq(double toX, double toY, double toZ)
         {
             double d0 = this.X - toX;
