@@ -142,7 +142,13 @@
 
         public static void Assert(bool condition, string message, params object[] args)
         {
-            GetThreadContext().Assert(condition, PreformatMessage(message), args);
+            if (condition)
+            {
+                // Avoid the Preformat so we check condition here already
+                return;
+            }
+
+            GetThreadContext().Assert(true, PreformatMessage(message), args);
         }
 
         public static void AssertUnmanaged(bool condition, string message = null)
