@@ -53,6 +53,116 @@
             }
         }
 
+        public int this[int i]
+        {
+            get
+            {
+                switch (i)
+                {
+                    case 0:
+                        {
+                            return this.X;
+                        }
+
+                    case 1:
+                        {
+                            return this.Y;
+                        }
+
+                    case 2:
+                        {
+                            return this.Z;
+                        }
+
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+
+            set
+            {
+                switch (i)
+                {
+                    case 0:
+                        {
+                            this.X = value;
+                            break;
+                        }
+
+                    case 1:
+                        {
+                            this.Y = value;
+                            break;
+                        }
+
+                    case 2:
+                        {
+                            this.Z = value;
+                            break;
+                        }
+
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+        }
+
+        public static bool operator >(Vector3I v1, Vector3I v2)
+        {
+            int resultX = v1.X.CompareTo(v2.X);
+            int resultY = v1.Y.CompareTo(v2.Y);
+            int resultZ = v1.Z.CompareTo(v2.Z);
+            if (resultX <= 0 && resultY <= 0 && resultZ <= 0)
+            {
+                return false;
+            }
+
+            return resultX + resultY + resultZ > 0;
+        }
+
+        public static bool operator <(Vector3I v1, Vector3I v2)
+        {
+            int resultX = v1.X.CompareTo(v2.X);
+            int resultY = v1.Y.CompareTo(v2.Y);
+            int resultZ = v1.Z.CompareTo(v2.Z);
+            if (resultX <= 0 && resultY <= 0 && resultZ <= 0)
+            {
+                return false;
+            }
+
+            return resultX + resultY + resultZ < 0;
+        }
+
+        public static bool operator ==(Vector3I v1, Vector3I v2)
+        {
+            return v1.Equals(v2);
+        }
+
+        public static bool operator !=(Vector3I v1, Vector3I v2)
+        {
+            return !v1.Equals(v2);
+        }
+
+        public static Vector3I operator +(Vector3I v1, Vector3I v2)
+        {
+            return new Vector3I(v1.X + v2.X, v1.Y + v2.Y, v1.Z + v2.Z);
+        }
+
+        public static Vector3I operator -(Vector3I v1, Vector3I v2)
+        {
+            return new Vector3I(v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z);
+        }
+
+        public static Vector3I operator *(Vector3I v1, int s)
+        {
+            return new Vector3I(v1.X * s, v1.Y * s, v1.Z * s);
+        }
+
+        public static Vector3I operator /(Vector3I v1, int s)
+        {
+            return new Vector3I(v1.X / s, v1.Y / s, v1.Z / s);
+        }
+
         public override bool Equals(object obj)
         {
             var typed = (Vector3I)obj;
