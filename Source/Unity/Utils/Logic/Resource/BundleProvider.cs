@@ -52,9 +52,7 @@
                 return this.currentPendingLoads.Count;
             }
         }
-
-        public int BundlesLoaded { get; private set; }
-
+        
         public bool EnableHistory { get; set; }
 
         public BundleLoadRequest CurrentRequest { get; private set; }
@@ -243,7 +241,14 @@
 
             if (this.EnableHistory)
             {
-                this.history.Add(request.Info.Key, metric.Total);
+                if (this.history.ContainsKey(request.Info.Key))
+                {
+                    this.history[request.Info.Key] += metric.Total;
+                }
+                else
+                {
+                    this.history.Add(request.Info.Key, metric.Total);
+                }
             }
 
             if (this.BundleLoaded != null)

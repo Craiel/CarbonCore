@@ -165,6 +165,16 @@
             this.resourceMap.UnregisterResource(key);
         }
 
+        public void RegisterLink(ResourceKey source, ResourceKey target)
+        {
+            this.resourceMap.RegisterLink(source, target);
+        }
+
+        public void UnregisterLink(ResourceKey source)
+        {
+            this.resourceMap.UnregisterLink(source);
+        }
+
         public ResourceReference<T> AcquireOrLoadResource<T>(ResourceKey key, ResourceLoadFlags flags = ResourceLoadFlags.Cache)
             where T : UnityEngine.Object
         {
