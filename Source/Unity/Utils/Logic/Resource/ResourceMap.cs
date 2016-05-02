@@ -141,7 +141,7 @@
 
         public void UnregisterResource(ResourceKey key, bool cleanupLinksToResource = false)
         {
-            if (this.data.ContainsKey(key))
+            if (!this.data.ContainsKey(key))
             {
                 Diagnostic.Warning("Unregister Resource called with non existing key {0}", key);
                 return;
@@ -190,7 +190,7 @@
         public bool HasData(ResourceKey key)
         {
             ResourceKey? existingKey = this.FindExistingResourceKey(key);
-            return existingKey != null;
+            return existingKey != null && this.data[existingKey.Value] != null;
         }
 
         public void SetData(ResourceKey key, T resourceData)
