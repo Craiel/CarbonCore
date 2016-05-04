@@ -49,7 +49,7 @@
 
             for (int i = 0; i < TestSampleCount; i++)
             {
-                Thread.Sleep(1);
+                Thread.Sleep(5);
                 time.Update();
             }
 
@@ -60,7 +60,7 @@
 
             for (int i = 0; i < TestSampleCount; i++)
             {
-                Thread.Sleep(1);
+                Thread.Sleep(5);
                 time.Update();
             }
 
@@ -71,7 +71,7 @@
 
             for (int i = 0; i < TestSampleCount; i++)
             {
-                Thread.Sleep(1);
+                Thread.Sleep(5);
                 time.Update();
             }
 
