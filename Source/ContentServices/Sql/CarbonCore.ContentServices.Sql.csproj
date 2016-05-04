@@ -15,8 +15,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>$(CCOUTDIR)bin\$(Configuration)\$(ProjectName)</OutputPath>
-    <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\$(ProjectName)</IntermediateOutputPath>
+    <OutputPath>$(CCOUTDIR)bin\$(Configuration)\ContentServices</OutputPath>
+    <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\ContentServices</IntermediateOutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -24,8 +24,8 @@
     <CodeAnalysisRuleSet>$(CCSOURCEDIR)\CarbonCore.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>$(CCOUTDIR)bin\$(Configuration)\$(ProjectName)</OutputPath>
-    <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\$(ProjectName)</IntermediateOutputPath>
+    <OutputPath>$(CCOUTDIR)bin\$(Configuration)\ContentServices</OutputPath>
+    <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\ContentServices</IntermediateOutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>

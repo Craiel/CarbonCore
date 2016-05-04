@@ -17,8 +17,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>$(CCOUTDIR)bin\Edge\$(Configuration)\$(ProjectName)</OutputPath>
-    <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\$(ProjectName)</IntermediateOutputPath>
+    <OutputPath>$(CCOUTDIR)bin\Edge\$(Configuration)\TestsEdge</OutputPath>
+    <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\TestsEdge</IntermediateOutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -122,6 +122,10 @@
     <ProjectReference Include="..\..\Utils\CarbonCore.Utils.csproj">
       <Project>{e05836d9-0bb3-4bfa-89e6-f5ed40a9d93c}</Project>
       <Name>CarbonCore.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CarbonCore.Tests.ContentServices.csproj">
+      <Project>{64d7388f-17d7-47d4-b1a1-3066273773e9}</Project>
+      <Name>CarbonCore.Tests.ContentServices</Name>
     </ProjectReference>
     <ProjectReference Include="..\CarbonCore.Tests.csproj">
       <Project>{322f5db2-87ed-41ec-9a8b-aa14e1f9acd3}</Project>

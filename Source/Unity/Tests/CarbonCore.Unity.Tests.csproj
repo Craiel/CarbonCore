@@ -15,8 +15,8 @@
     </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Unity|AnyCPU'">
-    <OutputPath>$(CCOUTDIR)bin\$(Configuration)\$(ProjectName)</OutputPath>
-    <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\$(ProjectName)</IntermediateOutputPath>
+    <OutputPath>$(CCOUTDIR)bin\$(Configuration)\TestsUnity</OutputPath>
+    <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\TestsUnity</IntermediateOutputPath>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>$(CCSOURCEDIR)\CarbonCore.ruleset</CodeAnalysisRuleSet>
     <DefineConstants>TRACE;DEBUG;UNITY;UNITY_5</DefineConstants>
@@ -68,7 +68,7 @@
       <Project>{e05836d9-0bb3-4bfa-89e6-f5ed40a9d93c}</Project>
       <Name>CarbonCore.Utils</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Utils\CarbonCore.Unity.Utils.csproj">
+    <ProjectReference Include="..\Utils\CarbonCore.Unity.Utils.5.2.csproj">
       <Project>{0ec48d10-8e81-4b43-a7ee-f4bd83516cea}</Project>
       <Name>CarbonCore.Unity.Utils</Name>
     </ProjectReference>

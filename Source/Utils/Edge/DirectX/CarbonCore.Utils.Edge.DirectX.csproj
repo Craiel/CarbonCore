@@ -17,8 +17,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>$(CCOUTDIR)bin\Edge\$(Configuration)\$(ProjectName)</OutputPath>
-    <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\$(ProjectName)</IntermediateOutputPath>
+    <OutputPath>$(CCOUTDIR)bin\Edge\$(Configuration)\UtilsEdge</OutputPath>
+    <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\UtilsEdge</IntermediateOutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -26,8 +26,8 @@
     <CodeAnalysisRuleSet>$(CCSOURCEDIR)\CarbonCore.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>$(CCOUTDIR)bin\Edge\$(Configuration)\$(ProjectName)</OutputPath>
-    <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\$(ProjectName)</IntermediateOutputPath>
+    <OutputPath>$(CCOUTDIR)bin\Edge\$(Configuration)\UtilsEdge</OutputPath>
+    <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\UtilsEdge</IntermediateOutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>

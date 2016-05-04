@@ -30,16 +30,16 @@
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Unity|AnyCPU'">
-    <OutputPath>$(CCOUTDIR)bin\$(Configuration)\$(ProjectName)</OutputPath>
-    <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\$(ProjectName)</IntermediateOutputPath>
+    <OutputPath>$(CCOUTDIR)bin\$(Configuration)\Utils</OutputPath>
+    <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\Utils</IntermediateOutputPath>
     <DefineConstants>TRACE;DEBUG;UNITY; UNITY_5</DefineConstants>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>$(CCSOURCEDIR)\CarbonCore.ruleset</CodeAnalysisRuleSet>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>$(CCOUTDIR)bin\$(Configuration)\$(ProjectName)</OutputPath>
-    <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\$(ProjectName)</IntermediateOutputPath>
+    <OutputPath>$(CCOUTDIR)bin\$(Configuration)\Utils</OutputPath>
+    <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\Utils</IntermediateOutputPath>
     <DefineConstants>UNITY</DefineConstants>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>$(CCSOURCEDIR)\CarbonCore.ruleset</CodeAnalysisRuleSet>

@@ -68,7 +68,11 @@
 
             if (this.request == null)
             {
+#if UNITY_5_2
+                this.request = AssetBundle.CreateFromMemory(this.data);
+#else
                 this.request = AssetBundle.LoadFromMemoryAsync(this.data);
+#endif
                 return true;
             }
 
@@ -130,7 +134,11 @@
 
         private void LoadFromFileImmediate()
         {
+#if UNITY_5_2
+            this.bundle = AssetBundle.CreateFromFile(this.File.GetPath());
+#else
             this.bundle = AssetBundle.LoadFromFile(this.File.GetPath());
+#endif
         }
 
         private void LoadFromMemoryImmediate()
@@ -141,7 +149,11 @@
                 this.stream.Read(this.data, 0, this.data.Length);
             }
 
+#if UNITY_5_2
+            this.bundle = AssetBundle.CreateFromMemoryImmediate(this.data);
+#else
             this.bundle = AssetBundle.LoadFromMemory(this.data);
+#endif
 
             this.stream = null;
             this.data = null;

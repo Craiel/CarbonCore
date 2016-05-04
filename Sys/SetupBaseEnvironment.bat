@@ -6,6 +6,12 @@ ECHO Setting up CarbonCore Base Environment
 ECHO ---------------------------------
 ECHO.
 
+IF [%UNITY_VER%] NEQ [] GOTO SetupVS
+ECHO Setting Default Unity Version to 5.2
+ECHO.
+SET UNITY_VER=5.2
+
+:SetupVS
 IF [%VSVER%] NEQ [] GOTO SetupVSSettings
 ECHO Setting Default VS Version to 2015
 ECHO.

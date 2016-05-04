@@ -122,7 +122,7 @@
         // -------------------------------------------------------------------
         // Protected
         // -------------------------------------------------------------------
-#if UNITY
+#if UNITY_5
         protected abstract int DoGetHashCode();
 #else
         protected virtual int DoGetHashCode()

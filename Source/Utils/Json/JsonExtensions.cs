@@ -100,7 +100,7 @@
         
         public static string SaveToData<T>(T source, Formatting formatting = Formatting.None, params JsonConverter[] converters)
         {
-#if UNITY
+#if UNITY_5
             // Unity Serializer does not have formatting parameter
             var serializer = new JsonSerializer { DefaultValueHandling = DefaultValueHandling.Ignore };
 #else 

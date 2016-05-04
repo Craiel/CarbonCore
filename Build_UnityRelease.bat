@@ -3,7 +3,7 @@
 call Sys\SetupEnvironment.bat
 
 cls
-%MSBUILD% %MSBUILDARGS% "%SOLUTIONFILE%" /p:configuration=UnityRelease
+%MSBUILD% %MSBUILDARGS% "%SOLUTIONFILEUNITY%" /p:configuration=UnityRelease
 
 SET BUILD_STATUS=%ERRORLEVEL%
 
