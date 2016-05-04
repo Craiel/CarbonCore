@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CarbonCore.Unity.Editor.Utils</RootNamespace>
-    <AssemblyName>CarbonCore.Unity.Editor.Utils</AssemblyName>
+    <AssemblyName>CarbonCore.Unity.Editor.Utils.5.2</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>

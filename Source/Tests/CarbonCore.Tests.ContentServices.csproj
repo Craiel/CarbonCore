@@ -61,7 +61,7 @@
       <Name>CarbonCore.ContentServices</Name>
     </ProjectReference>
     <ProjectReference Include="..\ContentServices\Sql\CarbonCore.ContentServices.Sql.csproj">
-      <Project>{18B053C8-43B1-4ADB-81B7-F7CD2095E2A6}</Project>
+      <Project>{18b053c8-43b1-4adb-81b7-f7cd2095e2a6}</Project>
       <Name>CarbonCore.ContentServices.Sql</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utils\CarbonCore.Utils.csproj">
