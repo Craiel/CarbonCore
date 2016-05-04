@@ -41,7 +41,7 @@
     <Optimize>true</Optimize>
     <OutputPath>$(CCOUTDIR)bin\$(Configuration)\UtilsUnity</OutputPath>
     <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\UtilsUnity</IntermediateOutputPath>
-    <DefineConstants>UNITY; UNITY_5;WIN64</DefineConstants>
+    <DefineConstants>UNITY; UNITY_5;UNITY_5_2;WIN64</DefineConstants>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>$(CCSOURCEDIR)\CarbonCore.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>

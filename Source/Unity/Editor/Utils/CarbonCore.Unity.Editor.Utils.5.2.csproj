@@ -34,13 +34,13 @@
     <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\UtilsUnity\Editor</IntermediateOutputPath>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>$(CCSOURCEDIR)\CarbonCore.ruleset</CodeAnalysisRuleSet>
-    <DefineConstants>TRACE;DEBUG;UNITY; UNITY_5; UNITY_EDITOR</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;UNITY; UNITY_5;UNITY_5_2;UNITY_EDITOR</DefineConstants>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnityRelease|AnyCPU'">
     <OutputPath>$(CCOUTDIR)bin\$(Configuration)\UtilsUnity\Editor</OutputPath>
     <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\UtilsUnity\Editor</IntermediateOutputPath>
-    <DefineConstants>UNITY; UNITY_5; UNITY_EDITOR</DefineConstants>
+    <DefineConstants>UNITY; UNITY_5;UNITY_5_2;UNITY_EDITOR</DefineConstants>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>$(CCSOURCEDIR)\CarbonCore.ruleset</CodeAnalysisRuleSet>
     <Optimize>true</Optimize>
