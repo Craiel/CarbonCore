@@ -2,5 +2,6 @@
 Edge
 \bin\
 \obj\
+\Lua\
 AssemblyInfo
 ContentServices\Sql\

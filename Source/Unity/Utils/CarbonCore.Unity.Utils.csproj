@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CarbonCore.Unity.Utils</RootNamespace>
-    <AssemblyName>CarbonCore.Unity.Utils.5.2</AssemblyName>
+    <AssemblyName>CarbonCore.Unity.Utils</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -32,7 +32,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Unity|AnyCPU'">
     <OutputPath>$(CCOUTDIR)bin\$(Configuration)\UtilsUnity</OutputPath>
     <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\UtilsUnity</IntermediateOutputPath>
-    <DefineConstants>TRACE;DEBUG;UNITY;UNITY_5;UNITY_5_2;WIN64;ENABLE_PROFILER</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;$(CCUNITYDEFINES);WIN64;ENABLE_PROFILER</DefineConstants>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>$(CCSOURCEDIR)\CarbonCore.ruleset</CodeAnalysisRuleSet>
     <LangVersion>4</LangVersion>
@@ -41,7 +41,7 @@
     <Optimize>true</Optimize>
     <OutputPath>$(CCOUTDIR)bin\$(Configuration)\UtilsUnity</OutputPath>
     <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\UtilsUnity</IntermediateOutputPath>
-    <DefineConstants>UNITY; UNITY_5;UNITY_5_2;WIN64</DefineConstants>
+    <DefineConstants>$(CCUNITYDEFINES);WIN64</DefineConstants>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>$(CCSOURCEDIR)\CarbonCore.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>

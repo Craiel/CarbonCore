@@ -15,11 +15,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utils", "Utils", "{840BD203
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unity", "Unity", "{E0811CBC-A7AB-46B2-AD9D-E32088F4B35E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.Unity.Utils", "Unity\Utils\CarbonCore.Unity.Utils.5.2.csproj", "{0EC48D10-8E81-4B43-A7EE-F4BD83516CEA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.Unity.Utils", "Unity\Utils\CarbonCore.Unity.Utils.csproj", "{0EC48D10-8E81-4B43-A7EE-F4BD83516CEA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.Unity.Tests", "Unity\Tests\CarbonCore.Unity.Tests.csproj", "{79AB4C92-A569-412D-93B3-165553D93CCC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.Unity.Editor.Utils", "Unity\Editor\Utils\CarbonCore.Unity.Editor.Utils.5.2.csproj", "{DB147104-0C6F-4723-A86F-005AC742D4E6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.Unity.Editor.Utils", "Unity\Editor\Utils\CarbonCore.Unity.Editor.Utils.csproj", "{DB147104-0C6F-4723-A86F-005AC742D4E6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Editor", "Editor", "{52736DE4-F85F-45C9-811A-889EBA4C498A}"
 EndProject

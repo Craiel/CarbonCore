@@ -19,7 +19,7 @@
     <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\TestsUnity</IntermediateOutputPath>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>$(CCSOURCEDIR)\CarbonCore.ruleset</CodeAnalysisRuleSet>
-    <DefineConstants>TRACE;DEBUG;UNITY;UNITY_5</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;$(CCUNITYDEFINES)</DefineConstants>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <ItemGroup>
@@ -68,7 +68,7 @@
       <Project>{e05836d9-0bb3-4bfa-89e6-f5ed40a9d93c}</Project>
       <Name>CarbonCore.Utils</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Utils\CarbonCore.Unity.Utils.5.2.csproj">
+    <ProjectReference Include="..\Utils\CarbonCore.Unity.Utils.csproj">
       <Project>{0ec48d10-8e81-4b43-a7ee-f4bd83516cea}</Project>
       <Name>CarbonCore.Unity.Utils</Name>
     </ProjectReference>

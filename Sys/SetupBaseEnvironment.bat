@@ -6,10 +6,13 @@ ECHO Setting up CarbonCore Base Environment
 ECHO ---------------------------------
 ECHO.
 
+SET CCUNITYDEFINES=UNITY;UNITY_5
+
 IF [%UNITY_VER%] NEQ [] GOTO SetupVS
 ECHO Setting Default Unity Version to 5.2
 ECHO.
 SET UNITY_VER=5.2
+SET CCUNITYDEFINES=%CCUNITYDEFINES%;UNITY_5_2
 
 :SetupVS
 IF [%VSVER%] NEQ [] GOTO SetupVSSettings
@@ -49,3 +52,5 @@ ECHO Current = %CURRENTDIR%
 ECHO.
 ECHO VS Root set to %VSROOT%
 ECHO MSBuild set to %MSBUILD%
+ECHO Unity Version set to %UNITY_VER%
+ECHO Unity Defines set to %CCUNITYDEFINES%
