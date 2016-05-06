@@ -65,10 +65,6 @@
       <Project>{a46b19fc-eb4a-4bda-97e1-5b522fb4cc6b}</Project>
       <Name>CarbonCore.Utils.Edge</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Utils\Edge\CommandLine\CarbonCore.Utils.Edge.CommandLine.csproj">
-      <Project>{e99c6721-99a5-4dc3-bd9d-dc88f65d217a}</Project>
-      <Name>CarbonCore.Utils.Edge.CommandLine</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
