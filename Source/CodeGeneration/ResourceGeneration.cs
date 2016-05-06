@@ -11,57 +11,31 @@
         private static readonly List<string> PlainResultList = new List<string>();
         private static readonly List<string> UriResultList = new List<string>();
         private static readonly List<string> XamlResultList = new List<string>();
-
-        public static Project CurrentProject;
-        public static string ProjectPath;
         
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
         public static bool IncludeEmbeddedResources { get; set; }
 
-        public static IReadOnlyCollection<string> PlainResult
-        {
-            get
-            {
-                return PlainResultList.AsReadOnly();
-            }
-        }
+        public static IReadOnlyCollection<string> PlainResult => PlainResultList.AsReadOnly();
 
-        public static IReadOnlyCollection<string> UriResult
-        {
-            get
-            {
-                return UriResultList.AsReadOnly();
-            }
-        }
+        public static IReadOnlyCollection<string> UriResult => UriResultList.AsReadOnly();
 
-        public static IReadOnlyCollection<string> XamlResult
-        {
-            get
-            {
-                return XamlResultList.AsReadOnly();
-            }
-        }
+        public static IReadOnlyCollection<string> XamlResult => XamlResultList.AsReadOnly();
 
         public static void Initialize(object host, string templateFile)
         {
+            CodeGenerationUtils.Initialize(host, templateFile);
+
             PlainResultList.Clear();
             UriResultList.Clear();
             XamlResultList.Clear();
-
-            var provider = (IServiceProvider)host;
-            var dteObject = (DTE)provider.GetService(typeof(DTE));
-
-            CurrentProject = dteObject.Solution.FindProjectItem(templateFile).ContainingProject;
-
-            ProjectPath = System.IO.Path.GetDirectoryName(CurrentProject.FullName) + System.IO.Path.DirectorySeparatorChar;
         }
 
         public static void LocateResources()
         {
             var candidates = new Queue<ProjectItem>();
-            foreach (ProjectItem item in CurrentProject.ProjectItems)
+            foreach (ProjectItem item in CodeGenerationUtils.CurrentProject.ProjectItems)
             {
                 candidates.Enqueue(item);
             }
@@ -112,7 +86,7 @@
                 return;
             }
 
-            string file = item.FileNames[0].Replace(ProjectPath, string.Empty);
+            string file = item.FileNames[0].Replace(CodeGenerationUtils.ProjectPath, string.Empty);
             ResourceGenerationType generationType = DetermineType(file);
 
             PlainResultList.Add(file);
@@ -131,7 +105,8 @@
                         string id = System.IO.Path.GetFileNameWithoutExtension(file);
                         id = string.Concat("Icon", id[0].ToString(CultureInfo.InvariantCulture).ToUpper(), id.Substring(1, id.Length - 1));
 
-                        UriResultList.Add(string.Format("public static readonly Uri {0}Uri = new Uri(\"pack://application:,,,/{1};component/{2}\", UriKind.Absolute);", id, CurrentProject.Name, file));
+                        UriResultList.Add(
+                            $"public static readonly Uri {id}Uri = new Uri(\"pack://application:,,,/{CodeGenerationUtils.CurrentProject.Name};component/{file}\", UriKind.Absolute);");
                         XamlResultList.Add(string.Concat(@"<Image x:Shared=""false"" x:Key=""", id, @""" Source=""{Binding Source={x:Static resources:Static.", id, @"Uri}}""/>"));
                         return;
                     }

@@ -44,13 +44,22 @@
         {
             Diagnostic.Assert(reader.TokenType == JsonToken.StartArray);
 
-            var resultDictionary = Activator.CreateInstance(objectType, null);
-
             Type[] genericArguments = objectType.GetGenericArguments();
-            Diagnostic.Assert(genericArguments != null && genericArguments.Length == 2);
+            Diagnostic.Assert(genericArguments.Length == 2);
 
             Type keyType = objectType.GetGenericArguments()[0];
             Type valueType = objectType.GetGenericArguments()[1];
+
+            object resultDictionary;
+            if (objectType.IsInterface)
+            {
+                Type dictType = typeof(Dictionary<,>).MakeGenericType(keyType, valueType);
+                resultDictionary = Activator.CreateInstance(dictType);
+            }
+            else
+            {
+                resultDictionary = Activator.CreateInstance(objectType, null);
+            }
 
             try
             {
@@ -111,6 +120,12 @@
 
         private void SerializeValue(JsonWriter writer, object value, JsonSerializer serializer)
         {
+            if (value == null)
+            {
+                writer.WriteNull();
+                return;
+            }
+
             JsonConverter converter = JsonExtensions.FindConverter(value.GetType());
             if (converter != null)
             {

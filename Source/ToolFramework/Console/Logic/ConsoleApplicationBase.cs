@@ -8,6 +8,7 @@
     using CarbonCore.Utils.Contracts.IoC;
     using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.Edge.CommandLine.Contracts;
+    using CarbonCore.Utils.I18N;
 
     public abstract class ConsoleApplicationBase : IConsoleApplicationBase
     {
@@ -31,10 +32,13 @@
         // -------------------------------------------------------------------
         public abstract string Name { get; }
         
-        public virtual Version Version { get; private set; }
+        public virtual Version Version { get; }
 
         public virtual void Start()
         {
+            // Set the default locale to english
+            Localization.CurrentCulture = LocaleConstants.LocaleEnglishUS;
+
             if (!this.RegisterCommandLineArguments())
             {
                 return;
@@ -52,6 +56,8 @@
             }
 
             this.StartFinished();
+
+            Localization.SaveDictionaries();
         }
 
         public void Dispose()
@@ -63,7 +69,7 @@
         // -------------------------------------------------------------------
         // Protected
         // -------------------------------------------------------------------
-        protected ICommandLineArguments Arguments { get; private set; }
+        protected ICommandLineArguments Arguments { get; }
 
         protected abstract void StartFinished();
 

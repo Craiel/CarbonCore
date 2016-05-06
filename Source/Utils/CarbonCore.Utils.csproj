@@ -109,6 +109,7 @@
     <Compile Include="Diagnostics\Metrics\Metric.cs" />
     <Compile Include="Diagnostics\TraceEventData.cs" />
     <Compile Include="Diagnostics\ProgressRegion.cs" />
+    <Compile Include="EnumExtensions.cs" />
     <Compile Include="Formatting\FormatHandler.cs" />
     <Compile Include="I18N\LocaleConstants.cs" />
     <Compile Include="I18N\Localization.cs" />

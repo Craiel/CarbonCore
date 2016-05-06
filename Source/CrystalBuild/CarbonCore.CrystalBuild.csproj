@@ -46,17 +46,40 @@
   <ItemGroup>
     <Compile Include="Contracts\IContentProcessor.cs" />
     <Compile Include="Contracts\IProcessingContext.cs" />
+    <Compile Include="Data\BuildConfiguration.cs" />
+    <Compile Include="Data\BuildReference.cs" />
+    <Compile Include="Data\BuildProjectConfiguration.cs" />
+    <Compile Include="Data\DefaultBuildReferences.cs" />
     <Compile Include="Logic\ContentProcessor.cs" />
     <Compile Include="Logic\BuildingCache.cs" />
     <Compile Include="Logic\BuildingContext.cs" />
     <Compile Include="Logic\BuildingUtils.cs" />
+    <Compile Include="Logic\Enums\BuildTargetType.cs" />
+    <Compile Include="Logic\Enums\EnumValues.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EnumValues.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\External\Newtonsoft.Json\Newtonsoft.Json.csproj">
+      <Project>{eeea67f9-9089-481d-a4dc-0966dec9fd7d}</Project>
+      <Name>Newtonsoft.Json</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utils\CarbonCore.Utils.csproj">
       <Project>{E05836D9-0BB3-4BFA-89E6-F5ED40A9D93C}</Project>
       <Name>CarbonCore.Utils</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Logic\Enums\EnumValues.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EnumValues.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
