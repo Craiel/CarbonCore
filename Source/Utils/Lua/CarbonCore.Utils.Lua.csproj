@@ -116,6 +116,7 @@
     <Compile Include="Contracts\ILuaRuntime.cs" />
     <Compile Include="IoC\IoC.cs" />
     <Compile Include="Logic\DefaultFunctions.cs" />
+    <Compile Include="Logic\LuaExecutionResult.cs" />
     <Compile Include="Logic\LuaNativeFunction.cs" />
     <Compile Include="Logic\LuaObject.cs" />
     <Compile Include="Logic\LuaRuntime.cs" />

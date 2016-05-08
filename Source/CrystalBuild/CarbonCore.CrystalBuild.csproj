@@ -45,11 +45,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\IContentProcessor.cs" />
+    <Compile Include="Contracts\ICrystalBuildConfigurationRunTime.cs" />
     <Compile Include="Contracts\IProcessingContext.cs" />
     <Compile Include="Data\BuildConfiguration.cs" />
     <Compile Include="Data\BuildReference.cs" />
     <Compile Include="Data\BuildProjectConfiguration.cs" />
     <Compile Include="Data\DefaultBuildReferences.cs" />
+    <Compile Include="IoC\IoC.cs" />
+    <Compile Include="Logic\CrystalBuildConfigurationRunTime.cs" />
     <Compile Include="Logic\ContentProcessor.cs" />
     <Compile Include="Logic\BuildingCache.cs" />
     <Compile Include="Logic\BuildingContext.cs" />
@@ -70,6 +73,10 @@
     <ProjectReference Include="..\Utils\CarbonCore.Utils.csproj">
       <Project>{E05836D9-0BB3-4BFA-89E6-F5ED40A9D93C}</Project>
       <Name>CarbonCore.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utils\Lua\CarbonCore.Utils.Lua.csproj">
+      <Project>{F85D8EDF-7C3C-42DF-AECE-A1330BBF246E}</Project>
+      <Name>CarbonCore.Utils.Lua</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

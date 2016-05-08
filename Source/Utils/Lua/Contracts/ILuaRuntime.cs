@@ -1,6 +1,7 @@
 ﻿namespace CarbonCore.Utils.Lua.Contracts
 {
     using CarbonCore.Utils.IO;
+    using CarbonCore.Utils.Lua.Logic;
 
     public interface ILuaRuntime
     {
@@ -12,7 +13,7 @@
 
         void Reset(bool registerDefaults = true);
 
-        object[] Execute(string script);
-        object[] Execute(CarbonFile file);
+        LuaExecutionResult Execute(string script);
+        LuaExecutionResult Execute(CarbonFile file);
     }
 }

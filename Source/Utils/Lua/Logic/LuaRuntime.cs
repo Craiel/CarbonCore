@@ -46,12 +46,12 @@
             this.functions.Remove(runtimeFunction);
         }
 
-        public object[] Execute(string script)
+        public LuaExecutionResult Execute(string script)
         {
             return this.DoExecute(script);
         }
 
-        public object[] Execute(CarbonFile file)
+        public LuaExecutionResult Execute(CarbonFile file)
         {
             return this.DoExecute(file);
         }
@@ -87,32 +87,41 @@
             return lua;
         }
 
-        private object[] DoExecute(string script)
+        private LuaExecutionResult DoExecute(string script)
         {
+            LuaExecutionResult result = new LuaExecutionResult();
             try
             {
                 NLua.Lua lua = this.PrepareLua();
-                return lua.DoString(script);
+                result.ResultData = lua.DoString(script);
+                result.Success = true;
             }
             catch (Exception e)
             {
                 Diagnostic.Error("Failed to execute Script: {0}", e);
-                throw;
+                result.Exception = e;
             }
+
+            return result;
         }
 
-        private object[] DoExecute(CarbonFile file)
+        private LuaExecutionResult DoExecute(CarbonFile file)
         {
+            LuaExecutionResult result = new LuaExecutionResult();
+
             try
             {
                 NLua.Lua lua = this.PrepareLua();
-                return lua.DoFile(file.GetPath());
+                result.ResultData = lua.DoFile(file.GetPath());
+                result.Success = true;
             }
             catch (Exception e)
             {
                 Diagnostic.Error("Failed to execute Script: {0}", e);
-                throw;
+                result.Exception = e;
             }
+
+            return result;
         }
     }
 }
