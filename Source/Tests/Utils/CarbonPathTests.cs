@@ -1,5 +1,7 @@
 ﻿namespace CarbonCore.Tests.Utils
 {
+    using System.Text.RegularExpressions;
+
     using CarbonCore.Utils;
     using CarbonCore.Utils.IO;
 
@@ -68,17 +70,9 @@
         {
             CarbonDirectory firstTestPath = new CarbonDirectory(@"C:\SomeDirectory\AnotherDirectory\Third\Fourth");
             CarbonDirectory secondTestPath = new CarbonDirectory(@"C:/SomeDirectory/AnotherDirectory/Third/Fourth");
-            CarbonDirectory thirdTestPath = new CarbonDirectory(@"/SomeDirectory/AnotherDirectory/Third/Fourth");
+            CarbonDirectory thirdTestPath = new CarbonDirectory(@"/SomeDirectory/AnotherDirectory/Third/Fourth/Fourth/Fourth");
 
             CarbonDirectory result = firstTestPath.FindParent("AnotherDirectory");
-            Assert.IsNotNull(result);
-            Assert.IsFalse(result.IsNull);
-
-            result = secondTestPath.FindParent("AnotherDirectory");
-            Assert.IsNotNull(result);
-            Assert.IsFalse(result.IsNull);
-
-            result = thirdTestPath.FindParent("AnotherDirectory");
             Assert.IsNotNull(result);
             Assert.IsFalse(result.IsNull);
 
@@ -88,6 +82,22 @@
 
             result = firstTestPath.FindParent("another", false, true);
             Assert.IsNull(result);
+
+            result = secondTestPath.FindParent("AnotherDirectory");
+            Assert.IsNotNull(result);
+            Assert.IsFalse(result.IsNull);
+
+            result = thirdTestPath.FindParent("Fourth");
+            Assert.IsNotNull(result);
+            Assert.IsFalse(result.IsNull);
+
+            result = result.FindParent("Fourth");
+            Assert.IsNotNull(result);
+            Assert.IsFalse(result.IsNull);
+
+            result = thirdTestPath.FindParent("AnotherDirectory");
+            Assert.IsNotNull(result);
+            Assert.IsFalse(result.IsNull);
         }
 
         [Test]

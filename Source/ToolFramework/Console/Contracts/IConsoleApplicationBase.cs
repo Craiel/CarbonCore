@@ -8,6 +8,8 @@
 
         Version Version { get; }
 
+        int ExitCode { get; }
+
         void Start();
     }
 }

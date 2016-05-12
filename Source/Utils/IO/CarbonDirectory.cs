@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Text.RegularExpressions;
 
     using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.Json;
@@ -184,22 +183,16 @@
 
         public CarbonDirectory GetParent()
         {
-            string trimmedPath = this.TrimEnd(DirectorySeparator, DirectorySeparatorAlternative, DirectorySeparatorUnity);
-            var info = new DirectoryInfo(trimmedPath);
-            if (info.Parent != null)
-            {
-                var subDirRegex = new Regex(string.Format(DirectoryRegex, Regex.Escape(info.Parent.Name)));
-                MatchCollection matches = subDirRegex.Matches(trimmedPath);
-                if (matches.Count <= 0)
-                {
-                    return null;
-                }
+            string path = this.GetPath();
+            path = path.Substring(0, path.Length - this.DirectoryNameWithoutPath.Length - 1);
 
-                Match lastMatch = matches[matches.Count - 1];
-                return new CarbonDirectory(trimmedPath.Substring(0, lastMatch.Index + lastMatch.Value.Length));
+            var result = new CarbonDirectory(path);
+            if (string.IsNullOrEmpty(result.DirectoryNameWithoutPath))
+            {
+                return null;
             }
 
-            return null;
+            return result;
         }
 
         public CarbonFile ToFile<T>(params T[] other)

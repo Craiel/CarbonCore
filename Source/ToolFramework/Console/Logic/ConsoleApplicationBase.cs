@@ -25,6 +25,8 @@
             this.Arguments = factory.Resolve<ICommandLineArguments>();
 
             Diagnostic.RegisterThread(this.GetType().Name);
+
+            this.ExitCode = 0;
         }
 
         // -------------------------------------------------------------------
@@ -33,6 +35,8 @@
         public abstract string Name { get; }
         
         public virtual Version Version { get; }
+
+        public int ExitCode { get; protected set; }
 
         public virtual void Start()
         {
@@ -95,15 +99,6 @@
             }
 
             return true;
-        }
-        
-        protected virtual void OnMainWindowClosed(object sender, EventArgs e)
-        {
-            Environment.Exit(0);
-        }
-
-        protected virtual void OnMainWindowClosing(object sender, CancelEventArgs e)
-        {
         }
     }
 }
