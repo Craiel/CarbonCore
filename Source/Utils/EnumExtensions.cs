@@ -31,7 +31,16 @@
 
         public static object[] GetValuesCached(this Enum enumObject)
         {
-            Type enumType = enumObject.GetType();
+            return GetValuesCached(enumObject.GetType());
+        }
+
+        public static List<T> GetValuesCached<T>()
+        {
+            return GetValuesCached(typeof(T)).Cast<T>().ToList();
+        }
+
+        public static object[] GetValuesCached(Type enumType)
+        {
             object[] result;
             if (CachedEnumValues.TryGetValue(enumType, out result))
             {
