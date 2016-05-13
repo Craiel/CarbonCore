@@ -10,7 +10,7 @@ namespace CarbonCore.Unity.Utils.Logic.Scene
     using CarbonCore.Utils.Diagnostics;
 
     using UnityEngine;
-
+    using UnityEngine.SceneManagement;
     public delegate bool PartialSceneLoadingDelegate(SceneTransitionStep step);
 
     public abstract class BaseScene : IScene
@@ -253,7 +253,11 @@ namespace CarbonCore.Unity.Utils.Logic.Scene
         {
             if (this.loadLevelOperation == null)
             {
+#if UNITY_5_2
                 this.loadLevelOperation = Application.LoadLevelAsync(this.LevelName);
+#else
+                this.loadLevelOperation = SceneManager.LoadSceneAsync(this.LevelName);
+#endif
                 return true;
             }
 
@@ -276,7 +280,11 @@ namespace CarbonCore.Unity.Utils.Logic.Scene
                 else
                 {
                     // Start the next additive async load
+#if UNITY_5_2
                     operation = Application.LoadLevelAdditiveAsync(additiveLevelName);
+#else
+                    operation = SceneManager.LoadSceneAsync(additiveLevelName, LoadSceneMode.Additive);
+#endif
                     this.additiveLoadLevelOperations.Add(additiveLevelName, operation);
                     return true;
                 }
