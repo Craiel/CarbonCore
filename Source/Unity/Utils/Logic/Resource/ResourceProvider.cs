@@ -20,7 +20,7 @@
 
         private const int MaxConsecutiveSyncCallsInAsync = 20;
 
-        private readonly ResourceMap<UnityEngine.Object> resourceMap;
+        private readonly ResourceMap<ResourceLoadRequest> resourceMap;
 
         private readonly IDictionary<ResourceKey, int> referenceCount;
         
@@ -38,7 +38,7 @@
         // -------------------------------------------------------------------
         public ResourceProvider()
         {
-            this.resourceMap = new ResourceMap<UnityEngine.Object>();
+            this.resourceMap = new ResourceMap<ResourceLoadRequest>();
             this.referenceCount = new Dictionary<ResourceKey, int>();
 
             this.currentPendingLoads = new Queue<ResourceLoadInfo>();
@@ -126,7 +126,8 @@
             Diagnostic.Assert(resource != null, "Registering a loaded resource with null data!");
 
             // Register the resource without queuing
-            this.resourceMap.RegisterResource(key, resource);
+            ResourceLoadRequest request = new ResourceLoadRequest(new ResourceLoadInfo(key, ResourceLoadFlags.None), resource);
+            this.resourceMap.RegisterResource(key, request);
         }
 
         public void RegisterResource(ResourceKey key, ResourceLoadFlags flags = ResourceLoadFlags.Cache)
@@ -178,7 +179,23 @@
         public ResourceReference<T> AcquireOrLoadResource<T>(ResourceKey key, ResourceLoadFlags flags = ResourceLoadFlags.Cache)
             where T : UnityEngine.Object
         {
-            UnityEngine.Object data = this.resourceMap.GetData(key);
+            ResourceReference<T> result;
+            if (!this.TryAcquireOrLoadResource(key, out result, flags))
+            {
+                Diagnostic.Error("Could not load resource on-demand");
+            }
+
+            return result;
+        }
+
+        public bool TryAcquireOrLoadResource<T>(
+            ResourceKey key,
+            out ResourceReference<T> reference,
+            ResourceLoadFlags flags = ResourceLoadFlags.Cache) where T : UnityEngine.Object
+        {
+            reference = null;
+            ResourceLoadRequest request = this.resourceMap.GetData(key);
+            UnityEngine.Object data = request != null ? request.GetAsset() : null;
             if (data == null)
             {
                 if (key.Bundle != null)
@@ -187,21 +204,23 @@
                 }
 
                 this.DoLoadImmediate(new ResourceLoadInfo(key, flags));
-                data = this.resourceMap.GetData(key);
+                request = this.resourceMap.GetData(key);
+                data = request != null ? request.GetAsset() : null;
                 if (data == null)
                 {
-                    Diagnostic.Error("Could not load resource on-demand");
-                    return null;
+                    return false;
                 }
             }
 
-            return this.BuildReference<T>(key, data);
+            reference = this.BuildReference<T>(key, data);
+            return true;
         }
 
         public ResourceReference<T> AcquireResource<T>(ResourceKey key)
             where T : UnityEngine.Object
         {
-            UnityEngine.Object data = this.resourceMap.GetData(key);
+            ResourceLoadRequest request = this.resourceMap.GetData(key);
+            UnityEngine.Object data = request != null ? request.GetAsset() : null;
             if (data == null)
             {
                 data = this.AcquireFallbackResource<T>();
@@ -219,7 +238,8 @@
             where T : UnityEngine.Object
         {
             reference = null;
-            UnityEngine.Object data = this.resourceMap.GetData(key);
+            ResourceLoadRequest request = this.resourceMap.GetData(key);
+            UnityEngine.Object data = request != null ? request.GetAsset() : null;
             if (data == null)
             {
                 return false;
@@ -227,6 +247,19 @@
 
             reference = this.BuildReference<T>(key, data);
             return reference != null;
+        }
+
+        public ResourceLoadRequest LoadAsync(ResourceKey key)
+        {
+            ResourceLoadRequest request = this.resourceMap.GetData(key);
+
+            if (request == null)
+            {
+                request = DoLoad(new ResourceLoadInfo(key, ResourceLoadFlags.Cache));
+                this.resourceMap.SetData(key, request);
+            }
+
+            return request;
         }
         
         public void ReleaseResource<T>(ResourceReference<T> reference)
@@ -243,16 +276,7 @@
                 foreach (ResourceLoadRequest request in finishedRequests)
                 {
                     Diagnostic.TakeTimeMeasure(request.Metric);
-
-                    UnityEngine.Object[] results = request.GetAssets();
-                    if (results != null && results.Length == 1)
-                    {
-                        this.FinalizeLoadResource(request.Info, results[0], request.Metric);
-                    }
-                    else
-                    {
-                        Diagnostic.Warning("Load of {0} returned unexpected result, got {1}", request, results);
-                    }
+                    this.FinalizeLoadResource(request);
                 }
             }
 
@@ -361,7 +385,8 @@
             UnityEngine.Object result = LoadImmediate(info.Key);
             Diagnostic.TakeTimeMeasure(resourceTime);
 
-            this.FinalizeLoadResource(info, result, resourceTime);
+            var request = new ResourceLoadRequest(info, result);
+            this.FinalizeLoadResource(request);
         }
 
         private void IncreaseResourceRefCount(ResourceKey key)
@@ -388,27 +413,29 @@
             }
         }
 
-        private void FinalizeLoadResource(ResourceLoadInfo info, UnityEngine.Object data, MetricTime elapsedTime)
+        private void FinalizeLoadResource(ResourceLoadRequest request)
         {
+            UnityEngine.Object data = request.GetAsset();
+
             if (data == null)
             {
-                Diagnostic.Warning("Loading {0} returned null data", info.Key);
+                Diagnostic.Warning("Loading {0} returned null data", request.Info.Key);
                 return;
             }
 
             if (this.EnableHistory)
             {
-                if (this.history.ContainsKey(info.Key))
+                if (this.history.ContainsKey(request.Info.Key))
                 {
-                    this.history[info.Key] += elapsedTime.Total;
+                    this.history[request.Info.Key] += request.Metric.Total;
                 }
                 else
                 {
-                    this.history.Add(info.Key, elapsedTime.Total);
+                    this.history.Add(request.Info.Key, request.Metric.Total);
                 }
             }
 
-            if ((info.Flags & ResourceLoadFlags.Instantiate) != 0 && data is GameObject)
+            if ((request.Info.Flags & ResourceLoadFlags.Instantiate) != 0 && data is GameObject)
             {
                 try
                 {
@@ -417,16 +444,16 @@
                 }
                 catch (Exception e)
                 {
-                    Diagnostic.Error("Failed to instantiate resource {0} on load: {1}", info.Key, e);
+                    Diagnostic.Error("Failed to instantiate resource {0} on load: {1}", request.Info.Key, e);
                 }
             }
-
-            this.resourceMap.SetData(info.Key, data);
+            
+            this.resourceMap.SetData(request.Info.Key, request);
 
             this.ResourcesLoaded++;
             if (this.ResourceLoaded != null)
             {
-                this.ResourceLoaded(info, elapsedTime.Total);
+                this.ResourceLoaded(request.Info, request.Metric.Total);
             }
         }
 
@@ -445,7 +472,9 @@
             ResourceKey fallbackKey;
             if (this.fallbackResources.TryGetValue(typeof(T), out fallbackKey))
             {
-                return this.resourceMap.GetData(fallbackKey);
+                ResourceLoadRequest request = this.resourceMap.GetData(fallbackKey);
+                UnityEngine.Object data = request != null ? request.GetAsset() : null;
+                return data;
             }
 
             return null;

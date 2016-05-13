@@ -1,7 +1,6 @@
 ﻿namespace CarbonCore.Unity.Utils.Logic.Resource
 {
     using System;
-    using System.Linq;
 
     using CarbonCore.Unity.Utils.Contracts;
     using CarbonCore.Unity.Utils.Logic.Enums;
@@ -12,7 +11,7 @@
 
     public class ResourceLoadRequest : IResourceRequest
     {
-        private readonly UnityEngine.Object[] assets;
+        private readonly UnityEngine.Object asset;
         private readonly ResourceRequest resourceRequest;
         private readonly AssetBundleRequest bundleRequest;
 
@@ -33,10 +32,10 @@
             this.Mode = ResourceLoadMode.Bundle;
         }
 
-        public ResourceLoadRequest(ResourceLoadInfo info, UnityEngine.Object[] assets)
+        public ResourceLoadRequest(ResourceLoadInfo info, UnityEngine.Object asset)
             : this(info)
         {
-            this.assets = assets;
+            this.asset = asset;
             this.Mode = ResourceLoadMode.Assigned;
         }
 
@@ -91,7 +90,7 @@
             {
                 case ResourceLoadMode.Assigned:
                     {
-                        return this.assets.FirstOrDefault() as T;
+                        return this.asset as T;
                     }
 
                 case ResourceLoadMode.Internal:
@@ -111,23 +110,23 @@
             }
         }
 
-        public UnityEngine.Object[] GetAssets()
+        public UnityEngine.Object GetAsset()
         {
             switch (this.Mode)
             {
                     case ResourceLoadMode.Assigned:
                     {
-                        return this.assets;
+                        return this.asset;
                     }
 
                     case ResourceLoadMode.Internal:
                     {
-                        return new[] { this.resourceRequest.asset };
+                        return this.resourceRequest.asset;
                     }
 
                     case ResourceLoadMode.Bundle:
                     {
-                        return this.bundleRequest.allAssets;
+                        return this.bundleRequest.asset;
                     }
 
                 default:
