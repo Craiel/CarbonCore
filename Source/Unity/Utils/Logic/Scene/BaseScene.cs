@@ -10,7 +10,11 @@ namespace CarbonCore.Unity.Utils.Logic.Scene
     using CarbonCore.Utils.Diagnostics;
 
     using UnityEngine;
+
+#if UNITY_5_3 || UNITY_5_4
     using UnityEngine.SceneManagement;
+#endif
+
     public delegate bool PartialSceneLoadingDelegate(SceneTransitionStep step);
 
     public abstract class BaseScene : IScene
