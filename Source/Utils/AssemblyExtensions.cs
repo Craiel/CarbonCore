@@ -115,6 +115,21 @@
             return file;
         }
 
+        public static string LoadResourceAsString(this Assembly assembly, string resourcePath, string assemblyRoot = "")
+        {
+            byte[] data = assembly.LoadResource(resourcePath);
+            return BitConverter.ToString(data);
+        }
+
+        public static byte[] LoadResource(
+            this Assembly assembly,
+            string resourcePath,
+            string assemblyRoot = "")
+        {
+            string resourceFileName;
+            return assembly.LoadResource(resourcePath, out resourceFileName, assemblyRoot);
+        }
+
         public static byte[] LoadResource(this Assembly assembly, string resourcePath, out string resourceFileName, string assemblyRoot = "")
         {
             resourceFileName = GetLocalizedResourcePath(resourcePath, assemblyRoot);
@@ -131,8 +146,7 @@
                     Diagnostic.Error("Could not Open Resource Stream: {0}", resourcePath);
                     return null;
                 }
-
-                Diagnostic.Assert(stream != null);
+                
                 var data = new byte[stream.Length];
                 stream.Read(data, 0, data.Length);
                 return data;

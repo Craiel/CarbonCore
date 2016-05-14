@@ -109,17 +109,26 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <EmbeddedResource Include="Resources\LuaCoreSystem.lua" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\ILuaRuntimeFunction.cs" />
     <Compile Include="Contracts\ILuaObject.cs" />
     <Compile Include="Contracts\ILuaRuntime.cs" />
     <Compile Include="IoC\IoC.cs" />
+    <Compile Include="Logic\Core\LuaCore.cs" />
+    <Compile Include="Logic\Core\LuaCoreBase.cs" />
+    <Compile Include="Logic\Core\LuaCoreLibrary.cs" />
     <Compile Include="Logic\DefaultFunctions.cs" />
+    <Compile Include="Logic\LuaCache.cs" />
+    <Compile Include="Logic\LuaCachedScript.cs" />
     <Compile Include="Logic\LuaExecutionResult.cs" />
     <Compile Include="Logic\LuaNativeFunction.cs" />
     <Compile Include="Logic\LuaObject.cs" />
+    <Compile Include="Logic\LuaPreProcessingContext.cs" />
+    <Compile Include="Logic\LuaPreProcessor.cs" />
     <Compile Include="Logic\LuaRuntime.cs" />
+    <Compile Include="Logic\LuaSource.cs" />
     <Compile Include="Logic\LuaWrappedFunction.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

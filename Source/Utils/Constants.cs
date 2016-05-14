@@ -7,5 +7,6 @@
         public const string ExtensionCsv = ".csv";
         public const string ExtensionCSharp = ".cs";
         public const string ExtensionCss = ".css";
+        public const string ExtensionLua = ".lua";
     }
 }

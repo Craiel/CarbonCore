@@ -12,6 +12,8 @@
         private readonly IList<ILuaObject> objects;
         private readonly IList<ILuaRuntimeFunction> functions;
 
+        private readonly LuaPreProcessor preProcessor;
+
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
@@ -19,6 +21,8 @@
         {
             this.objects = new List<ILuaObject>();
             this.functions = new List<ILuaRuntimeFunction>();
+
+            this.preProcessor = new LuaPreProcessor();
 
             this.Reset();
         }
@@ -112,7 +116,8 @@
             try
             {
                 NLua.Lua lua = this.PrepareLua();
-                result.ResultData = lua.DoFile(file.GetPath());
+                string fullScript = this.preProcessor.Process(file);
+                result.ResultData = lua.DoString(fullScript);
                 result.Success = true;
             }
             catch (Exception e)

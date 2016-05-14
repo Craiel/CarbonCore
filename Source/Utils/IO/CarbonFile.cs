@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Text;
     using System.Xml;
 
     using CarbonCore.Utils.Diagnostics;
@@ -167,6 +166,39 @@
 
                 return result;
             }
+        }
+
+        public bool ReadAsList(ref IList<string> target)
+        {
+            if (!this.Exists)
+            {
+                return false;
+            }
+
+            target.Clear();
+            using (var stream = this.OpenRead())
+            {
+                using (var reader = new StreamReader(stream))
+                {
+                    while (!reader.EndOfStream)
+                    {
+                        target.Add(reader.ReadLine());
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        public IList<string> ReadAsList()
+        {
+            IList<string> lines = new List<string>();
+            if (this.ReadAsList(ref lines))
+            {
+                return lines;
+            }
+
+            return null;
         }
 
         public void Delete()
