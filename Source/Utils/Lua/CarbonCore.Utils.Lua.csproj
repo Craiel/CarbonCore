@@ -109,19 +109,19 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <EmbeddedResource Include="Resources\LuaCoreSystem.lua" />
+    <EmbeddedResource Include="Resources\LuaLibSystem.lua" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\ILuaRuntimeFunction.cs" />
     <Compile Include="Contracts\ILuaObject.cs" />
     <Compile Include="Contracts\ILuaRuntime.cs" />
     <Compile Include="IoC\IoC.cs" />
-    <Compile Include="Logic\Core\LuaCore.cs" />
-    <Compile Include="Logic\Core\LuaCoreBase.cs" />
-    <Compile Include="Logic\Core\LuaCoreLibrary.cs" />
+    <Compile Include="Logic\Library\LuaLibrary.cs" />
+    <Compile Include="Logic\Library\LuaLibraryBase.cs" />
+    <Compile Include="Logic\Library\LuaLibrarySystem.cs" />
     <Compile Include="Logic\DefaultFunctions.cs" />
     <Compile Include="Logic\LuaCache.cs" />
-    <Compile Include="Logic\LuaCachedScript.cs" />
+    <Compile Include="Logic\LuaScript.cs" />
     <Compile Include="Logic\LuaExecutionResult.cs" />
     <Compile Include="Logic\LuaNativeFunction.cs" />
     <Compile Include="Logic\LuaObject.cs" />

@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Text;
     using System.Xml;
 
     using CarbonCore.Utils.Diagnostics;
@@ -242,7 +243,13 @@
         
         public CarbonFile ToFile<T>(params T[] other)
         {
-            return new CarbonFile(this.Path + string.Concat(other));
+            StringBuilder newPathBuilder = new StringBuilder(this.Path);
+            foreach (T param in other)
+            {
+                newPathBuilder.Append(param);
+            }
+
+            return new CarbonFile(newPathBuilder.ToString());
         }
 
         public override string ToString()

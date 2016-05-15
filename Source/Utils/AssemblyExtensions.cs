@@ -117,8 +117,13 @@
 
         public static string LoadResourceAsString(this Assembly assembly, string resourcePath, string assemblyRoot = "")
         {
-            byte[] data = assembly.LoadResource(resourcePath);
-            return BitConverter.ToString(data);
+            byte[] data = assembly.LoadResource(resourcePath, assemblyRoot);
+            if (data == null)
+            {
+                return null;
+            }
+
+            return System.Text.Encoding.ASCII.GetString(data).TrimStart('?');
         }
 
         public static byte[] LoadResource(

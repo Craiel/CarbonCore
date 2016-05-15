@@ -7,9 +7,11 @@
     {
         void Register(ILuaObject luaObject);
         void Register(ILuaRuntimeFunction runtimeFunction);
+        void Register(string persistentScript);
 
         void Unregister(ILuaObject luaObject);
         void Unregister(ILuaRuntimeFunction runtimeFunction);
+        void Unregister(string persistentScript);
 
         void Reset(bool registerDefaults = true);
 

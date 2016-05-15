@@ -6,14 +6,16 @@
     using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.IO;
     using CarbonCore.Utils.Lua.Contracts;
+    using CarbonCore.Utils.Lua.Logic.Library;
 
     public class LuaRuntime : ILuaRuntime
     {
         private readonly IList<ILuaObject> objects;
         private readonly IList<ILuaRuntimeFunction> functions;
+        private readonly IList<string> persistentScripts;
 
-        private readonly LuaPreProcessor preProcessor;
-
+        private readonly HashSet<string> loadedLibraries;
+        
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
@@ -21,9 +23,10 @@
         {
             this.objects = new List<ILuaObject>();
             this.functions = new List<ILuaRuntimeFunction>();
+            this.persistentScripts = new List<string>();
 
-            this.preProcessor = new LuaPreProcessor();
-
+            this.loadedLibraries = new HashSet<string>();
+            
             this.Reset();
         }
 
@@ -40,6 +43,11 @@
             this.functions.Add(runtimeFunction);
         }
 
+        public void Register(string persistentScript)
+        {
+            this.persistentScripts.Add(persistentScript);
+        }
+        
         public void Unregister(ILuaObject luaObject)
         {
             this.objects.Remove(luaObject);
@@ -48,6 +56,11 @@
         public void Unregister(ILuaRuntimeFunction runtimeFunction)
         {
             this.functions.Remove(runtimeFunction);
+        }
+
+        public void Unregister(string persistentScript)
+        {
+            this.persistentScripts.Remove(persistentScript);
         }
 
         public LuaExecutionResult Execute(string script)
@@ -88,6 +101,11 @@
                 function.Register(lua);
             }
 
+            foreach (string script in this.persistentScripts)
+            {
+                lua.DoString(script);
+            }
+
             return lua;
         }
 
@@ -111,22 +129,23 @@
 
         private LuaExecutionResult DoExecute(CarbonFile file)
         {
-            LuaExecutionResult result = new LuaExecutionResult();
-
-            try
+            LuaScript script = LuaPreProcessor.Process(file);
+            foreach (string libraryInclude in script.LibraryIncludes)
             {
-                NLua.Lua lua = this.PrepareLua();
-                string fullScript = this.preProcessor.Process(file);
-                result.ResultData = lua.DoString(fullScript);
-                result.Success = true;
-            }
-            catch (Exception e)
-            {
-                Diagnostic.Error("Failed to execute Script: {0}", e);
-                result.Exception = e;
+                if (this.loadedLibraries.Contains(libraryInclude))
+                {
+                    continue;
+                }
+
+                if (!LuaLibrary.Register(this, libraryInclude))
+                {
+                    Diagnostic.Error("Aborting execution, required library {0} was not loaded", libraryInclude);
+                }
+
+                this.loadedLibraries.Add(libraryInclude);
             }
 
-            return result;
+            return this.DoExecute(script.GetCompleteData());
         }
     }
 }

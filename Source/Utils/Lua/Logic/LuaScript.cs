@@ -4,15 +4,16 @@
     using System.Collections.Generic;
     using System.Linq;
     
-    public class LuaCachedScript
+    public class LuaScript
     {
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
-        public LuaCachedScript(LuaSource source, IList<string> data)
+        public LuaScript(LuaSource source, IList<string> data)
         {
             this.Source = source;
             this.Data = new List<string>();
+            this.LibraryIncludes = new List<string>();
 
             this.Update(data);
         }
@@ -27,6 +28,8 @@
         public long SourceSize { get; private set; }
 
         public IList<string> Data { get; private set; }
+
+        public IList<string> LibraryIncludes { get; private set; }
 
         public bool HasChanged
         {

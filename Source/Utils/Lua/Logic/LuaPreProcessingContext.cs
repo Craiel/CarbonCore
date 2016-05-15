@@ -7,32 +7,44 @@
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
-        public LuaPreProcessingContext()
+        public LuaPreProcessingContext(LuaSource source)
         {
-            this.FinalScriptData = new List<string>();
+            this.ProcessedData = new List<string>();
             this.ProcessingStack = new Stack<LuaSource>();
-            this.CurrentSourceData = new List<string>();
+            this.SourceData = new List<string>();
+            this.LibraryIncludes = new List<string>();
+
+            this.Source = source;
+            this.ProcessingStack.Push(source);
         }
 
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public IList<string> FinalScriptData { get; private set; }
+        public bool HasError { get; set; }
+
+        public string ErrorReason { get; set; }
 
         public Stack<LuaSource> ProcessingStack { get; private set; }
 
-        public IList<string> CurrentSourceData { get; private set; }
+        public IList<string> ProcessedData { get; private set; }
 
-        public LuaSource? CurrentSource { get; set; }
+        public IList<string> SourceData { get; private set; }
 
-        public void Prepare(LuaSource source)
+        public IList<string> LibraryIncludes { get; private set; }
+
+        public int CurrentLineIndex { get; set; }
+
+        public string CurrentLine { get; set; }
+
+        public LuaSource Source { get; set; }
+
+        public bool IncludeCurrentLine { get; set; }
+        
+        public void Error(string reason)
         {
-            this.FinalScriptData.Clear();
-            this.ProcessingStack.Clear();
-            this.ProcessingStack.Push(source);
-
-            this.CurrentSourceData.Clear();
-            this.CurrentSource = null;
+            this.HasError = true;
+            this.ErrorReason = reason;
         }
     }
 }

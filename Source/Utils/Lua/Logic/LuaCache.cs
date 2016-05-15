@@ -4,14 +4,14 @@
     
     public static class LuaCache
     {
-        private static readonly IDictionary<LuaSource, LuaCachedScript> Cache;
+        private static readonly IDictionary<LuaSource, LuaScript> Cache;
 
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
         static LuaCache()
         {
-            Cache = new Dictionary<LuaSource, LuaCachedScript>();
+            Cache = new Dictionary<LuaSource, LuaScript>();
         }
 
         // -------------------------------------------------------------------
@@ -22,9 +22,9 @@
             Cache.Clear();
         }
 
-        public static LuaCachedScript GetScript(LuaSource source)
+        public static LuaScript GetScript(LuaSource source)
         {
-            LuaCachedScript cachedResult;
+            LuaScript cachedResult;
             if (Cache.TryGetValue(source, out cachedResult))
             {
                 if (!cachedResult.HasChanged)
@@ -37,17 +37,17 @@
             return null;
         }
 
-        public static LuaCachedScript SetScript(LuaSource source, IList<string> data)
+        public static LuaScript SetScript(LuaSource source, IList<string> data)
         {
             if (Cache.ContainsKey(source))
             {
-                LuaCachedScript existingEntry = Cache[source];
+                LuaScript existingEntry = Cache[source];
                 existingEntry.Update(data);
                 return existingEntry;
             }
             else
             {
-                var entry = new LuaCachedScript(source, data);
+                var entry = new LuaScript(source, data);
                 Cache.Add(source, entry);
                 return entry;
             }

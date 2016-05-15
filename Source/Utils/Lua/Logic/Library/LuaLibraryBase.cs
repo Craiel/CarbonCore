@@ -1,17 +1,17 @@
-﻿namespace CarbonCore.Utils.Lua.Logic.Core
+﻿namespace CarbonCore.Utils.Lua.Logic.Library
 {
     using System;
 
     using CarbonCore.Utils.Lua.Contracts;
 
-    public class LuaCoreBase
+    public class LuaLibraryBase
     {
-        private static readonly LuaPreProcessor CorePreProcessor = new LuaPreProcessor();
+        private const string LibraryPrefix = @"CarbonCore.Utils.Lua.Resources.LuaLib";
 
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
-        public LuaCoreBase(string name)
+        public LuaLibraryBase(string name)
         {
             this.Name = name;
         }
@@ -23,21 +23,31 @@
 
         public bool IsInitialized { get; private set; }
         
-        public string ScriptData { get; private set; }
+        public LuaScript Script { get; private set; }
 
         public void Initialize()
         {
             Type type = this.GetType();
 
-            string rawScriptData = type.Assembly.LoadResourceAsString(string.Concat(this.Name, Constants.ExtensionLua));
+            string rawScriptData = type.Assembly.LoadResourceAsString(string.Concat(LibraryPrefix, this.Name, Constants.ExtensionLua));
+            if (rawScriptData == null)
+            {
+                Diagnostics.Diagnostic.Warning("Lua Library {0} has no Script Data!", this.Name);
+                return;
+            }
 
             // No need to cache core scripts, they are already cached in here
-            this.ScriptData = CorePreProcessor.Process(rawScriptData, false);
-            Diagnostics.Diagnostic.Info("Loaded Lua Core Script {0} with {1} characters", this.Name, this.ScriptData.Length);
+            this.Script = LuaPreProcessor.Process(rawScriptData, false);
+            Diagnostics.Diagnostic.Info("Loaded Lua Core Script {0} with {1} characters", this.Name, this.Script.Data.Count);
         }
 
         public virtual void Register(ILuaRuntime target)
         {
+            if (!this.IsInitialized)
+            {
+                this.Initialize();
+            }
+
             this.RegisterCoreObjects(target);
             this.RegisterCoreLua(target);
         }
@@ -52,17 +62,12 @@
 
         protected virtual void RegisterCoreLua(ILuaRuntime target)
         {
-            LuaExecutionResult result = target.Execute(this.ScriptData);
-            if (result == null)
+            if (this.Script == null)
             {
-                Diagnostics.Diagnostic.Error("Failed to Register core lua {0}, no execution result returned!", this.Name);
                 return;
             }
 
-            if (!result.Success)
-            {
-                Diagnostics.Diagnostic.Error("Failed to Register core lua {0}: {1}", this.Name, result.Exception);
-            }
+            target.Register(this.Script.GetCompleteData());
         }
     }
 }

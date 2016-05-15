@@ -1,33 +1,25 @@
 ﻿namespace CarbonCore.Utils.Lua.Logic
 {
     using System;
-    using System.Linq;
+    using System.Text.RegularExpressions;
 
     using CarbonCore.Utils.IO;
 
-    public class LuaPreProcessor
+    public static class LuaPreProcessor
     {
-        private readonly LuaPreProcessingContext context;
-
-        // -------------------------------------------------------------------
-        // Constructor
-        // -------------------------------------------------------------------
-        public LuaPreProcessor()
-        {
-            this.context = new LuaPreProcessingContext();
-        }
-
+        private static readonly Regex LuaIncludeDirectiveRegex = new Regex(@"#include\s+([\<\""])(.*?)[\>\""]", RegexOptions.IgnoreCase);
+        
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public string Process(CarbonFile file, bool allowCaching = true)
+        public static LuaScript Process(CarbonFile file, bool allowCaching = true)
         {
-            return this.DoProcess(new LuaSource(file), allowCaching);
+            return DoProcess(new LuaSource(file), allowCaching);
         }
 
-        public string Process(string scriptData, bool allowCaching = true)
+        public static LuaScript Process(string scriptData, bool allowCaching = true)
         {
-            return this.DoProcess(new LuaSource(scriptData), allowCaching);
+            return DoProcess(new LuaSource(scriptData), allowCaching);
         }
 
         // -------------------------------------------------------------------
@@ -40,7 +32,7 @@
                 LuaSource source = context.ProcessingStack.Pop();
 
                 // Set and load the next source
-                context.CurrentSource = source;
+                context.Source = source;
                 LoadCurrentSource(context);
 
                 // Now do the actual processing
@@ -50,63 +42,108 @@
 
         private static void LoadCurrentSource(LuaPreProcessingContext context)
         {
-            if (context.CurrentSource == null)
+            if (context.Source.IsFile)
             {
-                throw new InvalidOperationException("Current lua source was null!");
-            }
-
-            if (context.CurrentSource.Value.IsFile)
-            {
-                context.CurrentSourceData.AddRange(context.CurrentSource.Value.FileSource.ReadAsList());
+                context.SourceData.AddRange(context.Source.FileSource.ReadAsList());
             }
             else
             {
-                context.CurrentSourceData.AddRange(context.CurrentSource.Value.CustomData.Split(new[] { Environment.NewLine }, StringSplitOptions.None));
+                context.SourceData.AddRange(context.Source.CustomData.Split(new[] { Environment.NewLine }, StringSplitOptions.None));
             }
         }
 
         private static void ProcessSourceData(LuaPreProcessingContext context)
         {
-            foreach (string line in context.CurrentSourceData)
+            for(var i = 0; i < context.SourceData.Count; i++)
             {
-                ProcessSourceLine(context, line);
+                context.CurrentLineIndex = i;
+                context.CurrentLine = context.SourceData[i];
+                context.IncludeCurrentLine = true;
+
+                ProcessSourceInclude(context);
+
+                if (context.IncludeCurrentLine)
+                {
+                    context.ProcessedData.Add(context.CurrentLine);
+                }
+            }
+        }
+        
+        private static void ProcessSourceInclude(LuaPreProcessingContext context)
+        {
+            Match includeMatch = LuaIncludeDirectiveRegex.Match(context.CurrentLine);
+            if (includeMatch.Success)
+            {
+                if (includeMatch.Groups[1].Value == "<")
+                {
+                    string includeName = includeMatch.Groups[2].Value;
+                    if (context.LibraryIncludes.Contains(includeName))
+                    {
+                        return;
+                    }
+
+                    context.LibraryIncludes.Add(includeName);
+                }
+                else
+                {
+                    if (!context.Source.IsFile)
+                    {
+                        context.Error("Can not have file include in script, script has invalid source info");
+                        return;
+                    }
+
+                    string includeFileName = includeMatch.Groups[2].Value;
+                    CarbonFile includeFile = context.Source.FileSource.GetDirectory().ToFile(includeFileName);
+                    Diagnostics.Diagnostic.Info("Processing Included script {0}", includeFile);
+
+                    LuaScript processedInclude = Process(includeFile);
+                    if (processedInclude == null)
+                    {
+                        context.Error("Could not process included script " + includeFile);
+                        return;
+                    }
+
+                    context.ProcessedData.AddRange(processedInclude.Data);
+                }
+
+                context.IncludeCurrentLine = false;
             }
         }
 
-        private static void ProcessSourceLine(LuaPreProcessingContext context, string line)
-        {
-            // TODO
-            context.FinalScriptData.Add(line);
-        }
-
-        private string DoProcess(LuaSource source, bool allowCaching)
+        private static LuaScript DoProcess(LuaSource source, bool allowCaching)
         {
             if (allowCaching)
             {
-                LuaCachedScript result = this.DoProcessCached(source);
-                return result.GetCompleteData();
+                LuaScript result = DoProcessCached(source);
+                return result;
             }
 
-            return this.DoProcessNonCached(source);
+            return DoProcessNonCached(source);
         }
 
-        private string DoProcessNonCached(LuaSource source)
+        private static LuaScript DoProcessNonCached(LuaSource source)
         {
             if (source.IsFile && !source.FileSource.Exists)
             {
                 return null;
             }
-            
-            this.context.Prepare(source);
-            Process(this.context);
 
-            string resultData = string.Join(Environment.NewLine, this.context.FinalScriptData.ToArray());
-            return resultData;
+            LuaPreProcessingContext context = new LuaPreProcessingContext(source);
+
+            Process(context);
+
+            if (context.HasError)
+            {
+                Diagnostics.Diagnostic.Error("Error in script processing: {0}", context.ErrorReason);
+                return null;
+            }
+
+            return BuildResult(context);
         }
-        
-        private LuaCachedScript DoProcessCached(LuaSource source)
+
+        private static LuaScript DoProcessCached(LuaSource source)
         {
-            LuaCachedScript result = LuaCache.GetScript(source);
+            LuaScript result = LuaCache.GetScript(source);
             if (result != null)
             {
                 return result;
@@ -117,10 +154,24 @@
                 return null;
             }
 
-            this.context.Prepare(source);
-            Process(this.context);
+            LuaPreProcessingContext context = new LuaPreProcessingContext(source);
+
+            Process(context);
+
+            if (context.HasError)
+            {
+                Diagnostics.Diagnostic.Error("Error in script processing: {0}", context.ErrorReason);
+                return null;
+            }
             
-            return LuaCache.SetScript(source, this.context.FinalScriptData);
+            return BuildResult(context);
+        }
+
+        private static LuaScript BuildResult(LuaPreProcessingContext context)
+        {
+            var result = new LuaScript(context.Source, context.ProcessedData);
+            result.LibraryIncludes.AddRange(context.LibraryIncludes);
+            return result;
         }
     }
 }
