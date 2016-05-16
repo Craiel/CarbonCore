@@ -64,6 +64,10 @@
             {
                 this.Current = JsonExtensions.LoadFromFile<T>(file, false);
             }
+            else
+            {
+                Diagnostic.Warning("Config {0} does not exist, skipping", file);
+            }
 
             if (this.Current == null)
             {
