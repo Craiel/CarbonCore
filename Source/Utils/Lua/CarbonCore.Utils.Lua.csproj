@@ -119,7 +119,6 @@
     <Compile Include="Logic\Library\LuaLibrary.cs" />
     <Compile Include="Logic\Library\LuaLibraryBase.cs" />
     <Compile Include="Logic\Library\LuaLibrarySystem.cs" />
-    <Compile Include="Logic\DefaultFunctions.cs" />
     <Compile Include="Logic\LuaCache.cs" />
     <Compile Include="Logic\LuaScript.cs" />
     <Compile Include="Logic\LuaExecutionResult.cs" />

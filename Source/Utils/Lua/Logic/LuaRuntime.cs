@@ -73,15 +73,10 @@
             return this.DoExecute(file);
         }
 
-        public void Reset(bool registerDefaults = true)
+        public void Reset()
         {
             this.objects.Clear();
             this.functions.Clear();
-
-            if (registerDefaults)
-            {
-                DefaultFunctions.Instance.Register(this);
-            }
         }
 
         // -------------------------------------------------------------------

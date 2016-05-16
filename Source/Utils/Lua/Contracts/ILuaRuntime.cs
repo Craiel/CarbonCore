@@ -13,7 +13,7 @@
         void Unregister(ILuaRuntimeFunction runtimeFunction);
         void Unregister(string persistentScript);
 
-        void Reset(bool registerDefaults = true);
+        void Reset();
 
         LuaExecutionResult Execute(string script);
         LuaExecutionResult Execute(CarbonFile file);

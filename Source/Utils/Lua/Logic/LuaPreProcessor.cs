@@ -7,6 +7,8 @@
 
     public static class LuaPreProcessor
     {
+        private static readonly Regex LuaSingleLineCommentRegex = new Regex(@"^[\s\t]*--[^\[]", RegexOptions.Compiled);
+
         private static readonly Regex LuaIncludeDirectiveRegex = new Regex(@"#include\s+([\<\""])(.*?)[\>\""]", RegexOptions.IgnoreCase);
         
         // -------------------------------------------------------------------
@@ -72,7 +74,7 @@
         private static void ProcessSourceInclude(LuaPreProcessingContext context)
         {
             Match includeMatch = LuaIncludeDirectiveRegex.Match(context.CurrentLine);
-            if (includeMatch.Success)
+            if (includeMatch.Success && !LuaSingleLineCommentRegex.IsMatch(context.CurrentLine))
             {
                 if (includeMatch.Groups[1].Value == "<")
                 {
