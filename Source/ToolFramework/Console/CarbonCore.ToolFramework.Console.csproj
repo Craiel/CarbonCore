@@ -45,7 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\IConsoleApplicationBase.cs" />
-    <Compile Include="IoC\IoC.cs" />
+    <Compile Include="IoC\ToolFrameworkConsoleModule.cs" />
     <Compile Include="Logic\ConsoleApplicationBase.cs" />
   </ItemGroup>
   <ItemGroup>

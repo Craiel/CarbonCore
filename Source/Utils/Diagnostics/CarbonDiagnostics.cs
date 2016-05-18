@@ -138,6 +138,7 @@
         // -------------------------------------------------------------------
         // Protected
         // -------------------------------------------------------------------
+#pragma warning disable SA1201 // A property should not follow a method
         protected IDictionary<int, Type> Metrics
         {
             get
@@ -161,5 +162,6 @@
                 return this.metricProviders;
             }
         }
+#pragma warning restore SA1201 // A property should not follow a method
     }
 }

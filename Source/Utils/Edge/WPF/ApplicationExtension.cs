@@ -10,15 +10,17 @@
         {
             var frame = new DispatcherFrame(true);
             application.Dispatcher.Invoke(
-                DispatcherPriority.Background, (SendOrPostCallback)delegate(object arg)
+                DispatcherPriority.Background,
+                (SendOrPostCallback)(arg =>
+                {
+                    var f = arg as DispatcherFrame;
+                    if (f != null)
                     {
-                        var f = arg as DispatcherFrame;
-                        if (f != null)
-                        {
-                            f.Continue = false;
-                        }
-                    },
+                        f.Continue = false;
+                    }
+                }),
                 frame);
+
             Dispatcher.PushFrame(frame);
         }
     }

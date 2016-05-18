@@ -8,7 +8,7 @@
     {
         public FrameworkTestMainWindow()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)

@@ -34,7 +34,7 @@
 
         private static readonly int[] TestIntArray = { 500, -1000, 9321, int.MinValue, int.MaxValue };
         
-        private static readonly long[] TestInt64Array = { 911111111111112, -5000, 123456, long.MinValue, long.MaxValue};
+        private static readonly long[] TestInt64Array = { 911111111111112, -5000, 123456, long.MinValue, long.MaxValue };
 
         // -------------------------------------------------------------------
         // Public
@@ -242,7 +242,6 @@
             cascadingDictionary.Add(1, new SyncTestEntry2 { Id = { Value = "1" }, OtherTestLong = { Value = 99 } });
             cascadingDictionary.Add(50, new SyncTestEntry2 { Id = { Value = "Third" }, OtherTestString = { Value = "Still the third..." } });
 
-
             Assert.IsTrue(simpleDictionary.IsChanged);
             Assert.IsTrue(cascadingDictionary.IsChanged);
 
@@ -266,7 +265,7 @@
             simpleDictionary["test"] = 125.9f;
             Assert.IsTrue(simpleDictionary.IsChanged);
 
-            (cascadingDictionary[0]).OtherTestString.Value = "Changing a property in a cascaded collection";
+            cascadingDictionary[0].OtherTestString.Value = "Changing a property in a cascaded collection";
             Assert.IsTrue(cascadingDictionary.IsChanged);
         }
 
@@ -290,7 +289,7 @@
                         new SyncTestEntry2
                             {
                                 Id = { Value = "Second entry" },
-                                OtherTestBool =  new Sync<bool>(true)
+                                OtherTestBool = new Sync<bool>(true)
                             },
                         new SyncTestEntry2
                             {

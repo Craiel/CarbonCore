@@ -122,7 +122,7 @@
     <Compile Include="IoC\CarbonQuickBinding.cs" />
     <Compile Include="IoC\DependsOnModuleAttribute.cs" />
     <Compile Include="IoC\Factory.cs" />
-    <Compile Include="IoC\IoC.cs" />
+    <Compile Include="IoC\UtilsModule.cs" />
     <Compile Include="IO\CarbonDirectoryFilter.cs" />
     <Compile Include="IO\CarbonDirectoryResult.cs" />
     <Compile Include="IO\CarbonFileResult.cs" />

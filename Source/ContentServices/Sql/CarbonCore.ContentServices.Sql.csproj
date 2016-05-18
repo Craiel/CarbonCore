@@ -56,7 +56,7 @@
     <Compile Include="Contracts\ISqlLiteConnector.cs" />
     <Compile Include="Data\JsonDatabase.cs" />
     <Compile Include="Data\JsonDatabaseTable.cs" />
-    <Compile Include="IoC\IoC.cs" />
+    <Compile Include="IoC\ContentServicesSqlModule.cs" />
     <Compile Include="Logic\Attributes\DatabaseEntryAttribute.cs" />
     <Compile Include="Logic\Attributes\DatabaseEntryElementAttribute.cs" />
     <Compile Include="Logic\Attributes\DatabaseEntryJoinedElementAttribute.cs" />

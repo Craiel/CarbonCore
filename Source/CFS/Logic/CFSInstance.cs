@@ -14,9 +14,7 @@
          
         private CFSFileTable primaryTable;
         private CFSFileTable backupTable;
-
-        //private Stream stream;
-
+        
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
@@ -114,14 +112,11 @@
         // -------------------------------------------------------------------
         protected void Initialize(Stream newStream)
         {
-            //this.stream = newStream;
-
             this.IsInitialized = true;
         }
 
         protected virtual void Dispose(bool isDisposing)
         {
-            
         }
     }
 }

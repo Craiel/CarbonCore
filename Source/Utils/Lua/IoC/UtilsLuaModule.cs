@@ -3,7 +3,7 @@
     using CarbonCore.Utils.IoC;
     using CarbonCore.Utils.Lua.Contracts;
     using CarbonCore.Utils.Lua.Logic;
-
+    
     [DependsOnModule(typeof(UtilsModule))]
     public class UtilsLuaModule : CarbonQuickModule
     {

@@ -4,7 +4,7 @@
     using CarbonCore.GrammarParser.Grammars;
     using CarbonCore.Utils.Edge.IoC;
     using CarbonCore.Utils.IoC;
-
+    
     [DependsOnModule(typeof(UtilsEdgeModule))]
     public class GrammarParserModule : CarbonQuickModule
     {

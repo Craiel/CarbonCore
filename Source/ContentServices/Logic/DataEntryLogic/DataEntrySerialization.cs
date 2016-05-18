@@ -117,8 +117,6 @@
             {
                 object value = serializationEntry.Property.GetValue(context.CurrentInstance);
                 
-                //object value = serializationEntry.Property.Accessor[context.CurrentInstance];
-
                 // If we have a serializer just write the data
                 if (serializationEntry.Serializer != null)
                 {

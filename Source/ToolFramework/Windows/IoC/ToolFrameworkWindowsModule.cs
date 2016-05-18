@@ -6,7 +6,7 @@
     using CarbonCore.Utils.Edge.IoC;
     using CarbonCore.Utils.Edge.WPF.IoC;
     using CarbonCore.Utils.IoC;
-
+    
     [DependsOnModule(typeof(UtilsEdgeModule))]
     [DependsOnModule(typeof(UtilsWPFModule))]
     [DependsOnModule(typeof(ToolFrameworkModule))]

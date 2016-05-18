@@ -26,7 +26,7 @@
         // -------------------------------------------------------------------
         protected override int DoGetHashCode()
         {
-            return this.Id == null ? 0: this.Id.GetHashCode() 
+            return this.Id == null ? 0 : this.Id.GetHashCode() 
                     ^ this.TestEntryId.GetHashCode() 
                     ^ this.TestString.GetHashCode();
         }

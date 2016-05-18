@@ -2,9 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
-
     using CarbonCore.Processing.Logic;
     using CarbonCore.Processing.Resource.Model;
     using CarbonCore.Processing.Source.Collada.Data;
@@ -13,10 +11,8 @@
     using CarbonCore.Processing.Source.Generic.Data;
     using CarbonCore.Utils;
     using CarbonCore.Utils.Diagnostics;
-    using CarbonCore.Utils.IO;
     using CarbonCore.Utils.Edge.DirectX;
-    using CarbonCore.Utils.MathUtils;
-
+    using CarbonCore.Utils.IO;
     using SharpDX;
 
     /* <summary>
@@ -134,7 +130,7 @@
                     }
                 }
 
-                if(colladaGeometry.Mesh.PolyLists != null)
+                if (colladaGeometry.Mesh.PolyLists != null)
                 {
                     // PolyLists
                     polygonData = new IDictionary<uint, uint[]>[colladaGeometry.Mesh.PolyLists.Length];
@@ -511,15 +507,15 @@
             {
                 if (rotation.Sid.EndsWith("X"))
                 {
-                    rotationX = MathExtension.DegreesToRadians(DataConversion.ToVector4(rotation.Data)[0][3]);
+                    rotationX = Utils.MathUtils.MathExtension.DegreesToRadians(DataConversion.ToVector4(rotation.Data)[0][3]);
                 }
                 else if (rotation.Sid.EndsWith("Y"))
                 {
-                    rotationY = MathExtension.DegreesToRadians(DataConversion.ToVector4(rotation.Data)[0][3]);
+                    rotationY = Utils.MathUtils.MathExtension.DegreesToRadians(DataConversion.ToVector4(rotation.Data)[0][3]);
                 }
                 else if (rotation.Sid.EndsWith("Z"))
                 {
-                    rotationZ = MathExtension.DegreesToRadians(DataConversion.ToVector4(rotation.Data)[0][3]);
+                    rotationZ = Utils.MathUtils.MathExtension.DegreesToRadians(DataConversion.ToVector4(rotation.Data)[0][3]);
                 }
             }
 

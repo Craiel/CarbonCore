@@ -5,11 +5,11 @@
 
     public class LuaLibrarySystem : LuaLibraryBase
     {
-        public readonly ILuaRuntimeFunction PrintLineFunction;
+        private readonly ILuaRuntimeFunction printLineFunction;
 
-        public readonly ILuaRuntimeFunction InfoFunction;
-        public readonly ILuaRuntimeFunction WarningFunction;
-        public readonly ILuaRuntimeFunction ErrorFunction;
+        private readonly ILuaRuntimeFunction infoFunction;
+        private readonly ILuaRuntimeFunction warningFunction;
+        private readonly ILuaRuntimeFunction errorFunction;
 
         // -------------------------------------------------------------------
         // Protected
@@ -17,11 +17,11 @@
         public LuaLibrarySystem()
             : base("System")
         {
-            this.PrintLineFunction = new LuaWrappedFunction("PrintLine", this, "LogInfo");
+            this.printLineFunction = new LuaWrappedFunction("PrintLine", this, "LogInfo");
 
-            this.InfoFunction = new LuaWrappedFunction("LogInfo", this, "LogInfo");
-            this.WarningFunction = new LuaWrappedFunction("LogWarning", this, "LogWarning");
-            this.ErrorFunction = new LuaWrappedFunction("LogError", this, "LogError");
+            this.infoFunction = new LuaWrappedFunction("LogInfo", this, "LogInfo");
+            this.warningFunction = new LuaWrappedFunction("LogWarning", this, "LogWarning");
+            this.errorFunction = new LuaWrappedFunction("LogError", this, "LogError");
         }
 
         // -------------------------------------------------------------------
@@ -49,10 +49,10 @@
         {
             base.RegisterCoreObjects(target);
 
-            target.Register(this.PrintLineFunction);
-            target.Register(this.InfoFunction);
-            target.Register(this.WarningFunction);
-            target.Register(this.ErrorFunction);
+            target.Register(this.printLineFunction);
+            target.Register(this.infoFunction);
+            target.Register(this.warningFunction);
+            target.Register(this.errorFunction);
         }
     }
 }

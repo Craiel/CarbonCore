@@ -65,7 +65,7 @@
     <Compile Include="Contracts\ISqlLiteDatabaseService.cs" />
     <Compile Include="Contracts\ISqlLiteFileServicePackProvider.cs" />
     <Compile Include="Contracts\ISqlLiteFileServiceDiskProvider.cs" />
-    <Compile Include="IoC\IoC.cs" />
+    <Compile Include="IoC\ContentServicesModule.cs" />
     <Compile Include="Logic\SqlLiteDatabaseService.cs" />
     <Compile Include="Logic\SqlLiteDatabaseServiceAction.cs" />
     <Compile Include="Logic\SQLiteStatement.cs" />

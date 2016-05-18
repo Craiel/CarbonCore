@@ -23,7 +23,7 @@
         {
             get
             {
-                return !changeHashCode.HasValue ||
+                return !this.changeHashCode.HasValue ||
                         this.GetHashCode() != this.changeHashCode;
             }
         }

@@ -4,6 +4,7 @@
     using System.Diagnostics;
     using System.Windows.Input;
 
+#pragma warning disable SA1649 // File name must match first type name
     public class RelayCommand<T> : ICommand
     {
         private readonly Action<T> executeAction;
@@ -21,7 +22,7 @@
         {
             if (execute == null)
             {
-                throw new ArgumentNullException("execute");
+                throw new ArgumentNullException(nameof(execute));
             }
 
             this.executeAction = execute;
@@ -58,4 +59,5 @@
             this.executeAction((T)parameter);
         }
     }
+#pragma warning restore SA1649 // File name must match first type name
 }

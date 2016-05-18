@@ -5,7 +5,7 @@
     using CarbonCore.Utils.Edge.CommandLine.Logic;
     using CarbonCore.Utils.Edge.IoC;
     using CarbonCore.Utils.IoC;
-
+    
     [DependsOnModule(typeof(UtilsEdgeModule))]
     [DependsOnModule(typeof(GrammarParserModule))]
     public class UtilsCommandLineModule : CarbonQuickModule

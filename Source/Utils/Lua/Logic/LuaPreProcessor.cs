@@ -56,7 +56,7 @@
 
         private static void ProcessSourceData(LuaPreProcessingContext context)
         {
-            for(var i = 0; i < context.SourceData.Count; i++)
+            for (var i = 0; i < context.SourceData.Count; i++)
             {
                 context.CurrentLineIndex = i;
                 context.CurrentLine = context.SourceData[i];

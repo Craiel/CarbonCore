@@ -98,6 +98,7 @@
     <Compile Include="Processors\Excel\ExcelData.cs" />
     <Compile Include="Processors\Excel\ExcelDataSheet.cs" />
     <Compile Include="Processors\Excel\ExcelProcessor.cs" />
+    <Compile Include="Processors\UserInterfaceProcessingOptions.cs" />
     <Compile Include="Processors\UserInterfaceProcessor.cs" />
     <Compile Include="Processors\ScriptProcessor.cs" />
     <Compile Include="Resource\CompiledShaderResource.cs" />
@@ -123,7 +124,7 @@
     <Compile Include="Source\Xcd\XcdProcessingOptions.cs" />
     <Compile Include="Source\Xcd\XcdProcessor.cs" />
     <Compile Include="Processors\FontProcessor.cs" />
-    <Compile Include="IoC\IoC.cs" />
+    <Compile Include="IoC\CarbonProcessingModule.cs" />
     <Compile Include="Processors\TextureProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source\Collada\ColladaProcessor.cs" />

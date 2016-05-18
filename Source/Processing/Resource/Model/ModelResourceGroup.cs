@@ -119,7 +119,7 @@
             this.Name = entry.Name;
             this.Offset = VectorExtension.Vector3FromList(entry.OffsetList);
             this.Scale = VectorExtension.Vector3FromList(entry.ScaleList);
-            this.Rotation = QuaternionExtension.QuaterionFromList(entry.RotationList);
+            this.Rotation = QuaternionExtension.QuaternionFromList(entry.RotationList);
             
             if (entry.ModelsCount > 0)
             {

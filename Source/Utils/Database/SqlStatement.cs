@@ -248,6 +248,7 @@
         // -------------------------------------------------------------------
         // Protected
         // -------------------------------------------------------------------
+#pragma warning disable SA1201 // A property should not follow a method
         protected IDictionary<string, object> Values
         {
             get
@@ -263,6 +264,7 @@
                 return this.where;
             }
         }
+#pragma warning restore SA1201 // A property should not follow a method
 
         protected string ToString(string suffix)
         {

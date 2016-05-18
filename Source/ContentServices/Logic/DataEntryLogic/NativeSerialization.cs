@@ -201,13 +201,13 @@
             return true;
         }
 
-        private static void WriteEnumerableSize(Stream target, Int16 count)
+        private static void WriteEnumerableSize(Stream target, short count)
         {
             byte[] length = BitConverter.GetBytes(count);
             target.Write(length, 0, 2);
         }
 
-        private static Int16 ReadEnumerableSize(Stream source)
+        private static short ReadEnumerableSize(Stream source)
         {
             byte[] lengthData = new byte[2];
             source.Read(lengthData, 0, 2);
