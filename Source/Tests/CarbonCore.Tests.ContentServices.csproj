@@ -43,6 +43,7 @@
     <Compile Include="ContentServices\SerializerTests.cs" />
     <Compile Include="ContentServices\Data\SyncTestEntry2.cs" />
     <Compile Include="ContentServices\Data\SyncTestEntry.cs" />
+    <Compile Include="Setup.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

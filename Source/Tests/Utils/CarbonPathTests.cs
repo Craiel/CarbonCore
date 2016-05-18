@@ -58,7 +58,7 @@
                 }
             }
 
-            Assert.AreEqual(5, iterations, "GetParent should have succeeded 5 times, got " + iterations);
+            Assert.AreEqual(6, iterations, "GetParent should have succeeded 5 times, got " + iterations);
 
             parentTest = new CarbonDirectory(@"D:\Directory (5)\With spaces and (brackets)\");
             var relative = parentTest.ToRelative<CarbonDirectory>(parentTest.GetParent());

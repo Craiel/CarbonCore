@@ -12,6 +12,8 @@
     [JsonConverter(typeof(JsonCarbonDirectoryConverter))]
     public class CarbonDirectory : CarbonPath
     {
+        private string trimmedPath;
+
         public static readonly CarbonDirectory TempDirectory = new CarbonDirectory(System.IO.Path.GetTempPath());
 
         // -------------------------------------------------------------------
@@ -39,10 +41,10 @@
                 return;
             }
 
-            string trimmedPath = this.Path;
+            this.trimmedPath = this.Path;
             if (this.EndsWithSeparator)
             {
-                trimmedPath = this.Path.TrimEnd(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar);
+                this.trimmedPath = this.Path.TrimEnd(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar);
             }
 
             this.GetPathUsingDefaultSeparator();
@@ -183,10 +185,16 @@
 
         public CarbonDirectory GetParent()
         {
-            string path = this.GetPath();
-            path = path.Substring(0, path.Length - this.DirectoryNameWithoutPath.Length - 1);
+            int expectedLength = this.trimmedPath.Length - this.DirectoryNameWithoutPath.Length - 1;
+            if (expectedLength <= 0)
+            {
+                // No parent anymore
+                return null;
+            }
 
-            var result = new CarbonDirectory(path);
+            string parentPath = this.trimmedPath.Substring(0, expectedLength);
+
+            var result = new CarbonDirectory(parentPath);
             if (string.IsNullOrEmpty(result.DirectoryNameWithoutPath))
             {
                 return null;

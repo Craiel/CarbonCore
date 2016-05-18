@@ -8,6 +8,7 @@
     using CarbonCore.ContentServices.Sql.Contracts;
     using CarbonCore.ContentServices.Sql.IoC;
     using CarbonCore.ContentServices.Sql.Logic;
+    using CarbonCore.Tests.Utils;
     using CarbonCore.Utils;
     using CarbonCore.Utils.Contracts.IoC;
     using CarbonCore.Utils.Diagnostics;
@@ -46,7 +47,8 @@
 
             this.dataDirectory = CarbonDirectory.GetTempDirectory();
 
-            IList<CarbonFile> files = this.GetType().Assembly.ExtractResources(this.dataDirectory, FileEntryResourcePath);
+            // We re-use the resources of the main test project
+            IList<CarbonFile> files = typeof(AssemblyTests).Assembly.ExtractResources(this.dataDirectory, FileEntryResourcePath);
             Assert.AreEqual(4, files.Count, "Must extract all resources properly");
 
             // Build the dictionary of eligible test files
