@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace CarbonCore.Utils.Contracts
+﻿namespace CarbonCore.Utils.Contracts
 {
+    using System;
+
     public interface ILog
     {
         string SourceName { get; }

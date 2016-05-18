@@ -3,8 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Globalization;
-    
-    using CarbonCore.ContentServices.Contracts;
+
     using CarbonCore.ContentServices.Edge.Contracts;
     using CarbonCore.ContentServices.Edge.IoC;
     using CarbonCore.ContentServices.Sql.Contracts;
@@ -19,7 +18,7 @@
     public class DatabaseServiceTests
     {
         private ICarbonContainer container;
-        
+
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
@@ -42,7 +41,7 @@
                 this.TestGeneric(service);
             }
         }
-        
+
         [Test]
         public void ServiceTests()
         {
@@ -149,7 +148,7 @@
             // Load batch
             IList<DataTestEntry> batchResult = service.Load<DataTestEntry>();
             Assert.AreEqual(6, batchResult.Count, "Load with no parameters must return all entries");
-            
+
             // Delete
             service.Delete<DataTestEntry>(1);
             savedEntry = service.Load<DataTestEntry>(1);

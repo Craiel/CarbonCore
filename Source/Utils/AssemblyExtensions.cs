@@ -198,7 +198,6 @@
             CarbonDirectory location = assembly.GetDirectory();
             Diagnostic.Assert(location.Exists);
 
-
             target.Create();
 
             IDictionary<string, byte[]> resources = LoadResources(assembly, path);
@@ -220,7 +219,7 @@
                     Diagnostic.Info("Extracted {0} ({1})", targetFile, targetFile.Size);
                 }
             }
-            
+
             return results;
         }
     }

@@ -1,12 +1,11 @@
 ﻿namespace CarbonCore.CodeGeneration
 {
-    using System.Collections;
     using System.Collections.Generic;
 
     public static class EnumValueGeneration
     {
         private static readonly IList<string> Excludes = new List<string>();
-        
+
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------

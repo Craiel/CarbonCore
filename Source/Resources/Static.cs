@@ -1,7 +1,7 @@
 ﻿namespace CarbonCore.Resources
 {
     using System;
-    
+
     public static class Static
     {
         // -------------------------------------------------------------------

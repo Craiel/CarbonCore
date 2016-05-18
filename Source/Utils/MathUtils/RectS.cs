@@ -9,6 +9,8 @@ namespace CarbonCore.Utils.MathUtils
     [DebuggerDisplay("RectS<{Left},{Top} - {Right},{Bottom}>")]
     public struct RectS
     {
+        public static RectS Zero = new RectS(0, 0, 0, 0);
+
         // ------------------------------------------------------------------- 
         // Constructor 
         // ------------------------------------------------------------------- 
@@ -34,8 +36,6 @@ namespace CarbonCore.Utils.MathUtils
         // ------------------------------------------------------------------- 
         // Public 
         // -------------------------------------------------------------------
-        public static RectS Zero = new RectS(0, 0, 0, 0);
-
         public short Top { get; set; }
         public short Left { get; set; }
         public short Bottom { get; set; }

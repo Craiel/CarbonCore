@@ -6,14 +6,15 @@
 
     public static class CodeGenerationUtils
     {
-        public static Project CurrentProject;
-        public static string ProjectPath;
-
-        public static string TemplateFile;
-
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
+        public static Project CurrentProject { get; private set; }
+
+        public static string ProjectPath { get; private set; }
+
+        public static string TemplateFile { get; private set; }
+
         public static void Initialize(object host, string templateFile)
         {
             TemplateFile = templateFile;

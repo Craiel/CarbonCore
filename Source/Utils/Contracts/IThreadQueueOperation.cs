@@ -2,11 +2,6 @@
 {
     using System;
 
-    public interface IThreadQueueOperationPayload
-    {
-        object Data { get; set; }
-    }
-
     public interface IThreadQueueOperation
     {
         bool Suceeded { get; set; }

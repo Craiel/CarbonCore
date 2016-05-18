@@ -66,6 +66,7 @@
         }
 
         public bool AutoUpdate { get; set; }
+
         public bool IsPaused { get; set; }
 
         public static TimeSpan TimeToTimeSpan(long time)

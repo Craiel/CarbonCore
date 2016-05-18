@@ -14,6 +14,32 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
+        public static MetricLong operator +(MetricLong first, MetricLong second)
+        {
+            var diff = new MetricLong(first.Id)
+            {
+                Count = first.Count + second.Count,
+                Total = first.Total + second.Total,
+                Min = first.Min + second.Min,
+                Max = first.Max + second.Max
+            };
+            diff.UpdateAverage();
+            return diff;
+        }
+
+        public static MetricLong operator -(MetricLong first, MetricLong second)
+        {
+            var diff = new MetricLong(first.Id)
+                       {
+                           Count = first.Count - second.Count,
+                           Total = first.Total - second.Total,
+                           Min = first.Min - second.Min,
+                           Max = first.Max - second.Max
+                       };
+            diff.UpdateAverage();
+            return diff;
+        }
+
         public void Add()
         {
             this.Add(1);
@@ -42,32 +68,6 @@
             base.Reset();
 
             this.Min = long.MaxValue;
-        }
-
-        public static MetricLong operator +(MetricLong first, MetricLong second)
-        {
-            var diff = new MetricLong(first.Id)
-            {
-                Count = first.Count + second.Count,
-                Total = first.Total + second.Total,
-                Min = first.Min + second.Min,
-                Max = first.Max + second.Max
-            };
-            diff.UpdateAverage();
-            return diff;
-        }
-
-        public static MetricLong operator -(MetricLong first, MetricLong second)
-        {
-            var diff = new MetricLong(first.Id)
-                       {
-                           Count = first.Count - second.Count,
-                           Total = first.Total - second.Total,
-                           Min = first.Min - second.Min,
-                           Max = first.Max - second.Max
-                       };
-            diff.UpdateAverage();
-            return diff;
         }
 
         public void UpdateAverage()

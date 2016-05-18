@@ -14,6 +14,35 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
+        public static MetricInt operator +(MetricInt first, MetricInt second)
+        {
+            var diff = new MetricInt(first.Id)
+            {
+                Count = first.Count + second.Count,
+                Total = first.Total + second.Total,
+                Min = first.Min + second.Min,
+                Max = first.Max + second.Max
+            };
+
+            diff.UpdateAverage();
+
+            return diff;
+        }
+
+        public static MetricInt operator -(MetricInt first, MetricInt second)
+        {
+            var diff = new MetricInt(first.Id)
+            {
+                Count = first.Count - second.Count,
+                Total = first.Total - second.Total,
+                Min = first.Min - second.Min,
+                Max = first.Max - second.Max
+            };
+
+            diff.UpdateAverage();
+            return diff;
+        }
+
         public void Add()
         {
             this.Add(1);
@@ -42,35 +71,6 @@
             base.Reset();
 
             this.Min = int.MaxValue;
-        }
-
-        public static MetricInt operator +(MetricInt first, MetricInt second)
-        {
-            var diff = new MetricInt(first.Id)
-            {
-                Count = first.Count + second.Count,
-                Total = first.Total + second.Total,
-                Min = first.Min + second.Min,
-                Max = first.Max + second.Max
-            };
-
-            diff.UpdateAverage();
-
-            return diff;
-        }
-
-        public static MetricInt operator -(MetricInt first, MetricInt second)
-        {
-            var diff = new MetricInt(first.Id)
-            {
-                Count = first.Count - second.Count,
-                Total = first.Total - second.Total,
-                Min = first.Min - second.Min,
-                Max = first.Max - second.Max
-            };
-
-            diff.UpdateAverage();
-            return diff;
         }
 
         public void UpdateAverage()

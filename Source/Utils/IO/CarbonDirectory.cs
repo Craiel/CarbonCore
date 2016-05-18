@@ -12,9 +12,9 @@
     [JsonConverter(typeof(JsonCarbonDirectoryConverter))]
     public class CarbonDirectory : CarbonPath
     {
-        private string trimmedPath;
-
         public static readonly CarbonDirectory TempDirectory = new CarbonDirectory(System.IO.Path.GetTempPath());
+
+        private readonly string trimmedPath;
 
         // -------------------------------------------------------------------
         // Constructor
@@ -49,7 +49,7 @@
 
             this.GetPathUsingDefaultSeparator();
             this.DirectoryName = this.Path;
-            this.DirectoryNameWithoutPath = System.IO.Path.GetFileName(this.GetStringUsingDefaultSeparator(trimmedPath));
+            this.DirectoryNameWithoutPath = System.IO.Path.GetFileName(this.GetStringUsingDefaultSeparator(this.trimmedPath));
         }
 
         public CarbonDirectory(CarbonFile file)

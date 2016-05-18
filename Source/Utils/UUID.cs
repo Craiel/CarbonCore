@@ -40,11 +40,6 @@
         public long LeastSignificantBits { get; private set; }
         public long MostSignificantBits { get; private set; }
 
-        public static Uuid FromString(string input)
-        {
-            return new Uuid(new Guid(input));
-        }
-
         public static bool operator ==(Uuid a, Uuid b)
         {
             return a.Equals(b);
@@ -53,6 +48,11 @@
         public static bool operator !=(Uuid a, Uuid b)
         {
             return !a.Equals(b);
+        }
+
+        public static Uuid FromString(string input)
+        {
+            return new Uuid(new Guid(input));
         }
 
         public override bool Equals(object obj)

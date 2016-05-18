@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Tests.ContentServices
+﻿namespace CarbonCore.Tests
 {
     using CarbonCore.Utils.Diagnostics;
 

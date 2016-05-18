@@ -31,7 +31,7 @@
 
             CarbonDirectory extended = stringInitialized.ToDirectory("OneMore");
             Assert.AreEqual("OneMore", extended.DirectoryNameWithoutPath);
-            Assert.AreEqual(stringInitialized, extended.GetParent());
+            Assert.IsTrue(stringInitialized.GetPath().StartsWith(extended.GetParent().GetPath()));
 
             long freeSpace = extended.GetFreeSpace();
             Assert.AreEqual(0, freeSpace, "GetFreeSpace should return 0 for relative paths");

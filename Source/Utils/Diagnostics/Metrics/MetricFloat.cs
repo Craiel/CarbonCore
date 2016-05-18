@@ -14,36 +14,6 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public void Add()
-        {
-            this.Add(1.0f);
-        }
-
-        public override void Add(float value)
-        {
-            this.Count++;
-            this.Total += value;
-
-            if (this.Min > value)
-            {
-                this.Min = value;
-            }
-
-            if (this.Max < value)
-            {
-                this.Max = value;
-            }
-
-            this.Average = this.Total / this.Count;
-        }
-
-        public override void Reset()
-        {
-            base.Reset();
-
-            this.Min = float.MaxValue;
-        }
-
         public static MetricFloat operator +(MetricFloat first, MetricFloat second)
         {
             var diff = new MetricFloat(first.Id)
@@ -72,6 +42,36 @@
             diff.UpdateAverage();
 
             return diff;
+        }
+
+        public void Add()
+        {
+            this.Add(1.0f);
+        }
+
+        public override void Add(float value)
+        {
+            this.Count++;
+            this.Total += value;
+
+            if (this.Min > value)
+            {
+                this.Min = value;
+            }
+
+            if (this.Max < value)
+            {
+                this.Max = value;
+            }
+
+            this.Average = this.Total / this.Count;
+        }
+
+        public override void Reset()
+        {
+            base.Reset();
+
+            this.Min = float.MaxValue;
         }
 
         public void UpdateAverage()

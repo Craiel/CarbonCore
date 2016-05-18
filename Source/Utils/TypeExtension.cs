@@ -2,13 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
     using System.Reflection;
 
     public static class TypeExtension
     {
-        public static bool Implements<T>(this Type type) where T : class
+        public static bool Implements<T>(this Type type) 
+            where T : class
         {
             if (!typeof(T).IsInterface)
             {

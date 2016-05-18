@@ -11,7 +11,7 @@
         private static readonly List<string> PlainResultList = new List<string>();
         private static readonly List<string> UriResultList = new List<string>();
         private static readonly List<string> XamlResultList = new List<string>();
-        
+
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------

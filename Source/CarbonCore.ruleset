@@ -1,5 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <RuleSet Name="CarbonCore Rules" Description="" ToolsVersion="14.0">
+  <Rules AnalyzerId="StyleCop.CSharp.DocumentationRules" RuleNamespace="none">
+	  <Rule Id="SA1633" Action="None" />
+	  <Rule Id="SA1652" Action="None" />
+	  <Rule Id="SA1028" Action="None" />
+	  <Rule Id="SA1516" Action="None" />
+	  <Rule Id="SA1127" Action="None" />
+	  <Rule Id="SA1407" Action="None" />
+  </Rules>
   <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
     <Rule Id="CA1001" Action="Warning" />
     <Rule Id="CA1009" Action="Warning" />

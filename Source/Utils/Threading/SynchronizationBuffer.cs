@@ -4,8 +4,9 @@
 
     using CarbonCore.Utils.Diagnostics;
 
-    // One-way synchronization buffer, Works only in single writer, singler reader environment
-    public class SynchronizationBuffer<T> where T : class, new()
+    // One-way synchronization buffer, Works only in single writer, single reader environment
+    public class SynchronizationBuffer<T> 
+        where T : class, new()
     {
         private const int BufferCount = 3;
 

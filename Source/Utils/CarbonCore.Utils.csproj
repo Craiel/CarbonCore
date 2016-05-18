@@ -85,6 +85,7 @@
     <Compile Include="Contracts\IoC\ICarbonQuickBinding.cs" />
     <Compile Include="Contracts\IoC\IFactory.cs" />
     <Compile Include="Contracts\ISqlStatement.cs" />
+    <Compile Include="Contracts\IThreadQueueOperationPayload.cs" />
     <Compile Include="Contracts\Network\ICoreTcpClient.cs" />
     <Compile Include="Contracts\Network\ICoreTcpServer.cs" />
     <Compile Include="Contracts\IThreadQueueComponent.cs" />
@@ -232,6 +233,14 @@
       <Project>{eeea67f9-9089-481d-a4dc-0966dec9fd7d}</Project>
       <Name>Newtonsoft.Json</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="$(SolutionDir)\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\Newtonsoft.Json.dll" />
+    <Analyzer Include="$(SolutionDir)\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="$(SolutionDir)\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
