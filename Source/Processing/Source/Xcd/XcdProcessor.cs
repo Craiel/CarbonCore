@@ -2,16 +2,14 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
-
     using CarbonCore.Processing.Data;
     using CarbonCore.Processing.Resource.Stage;
     using CarbonCore.Processing.Source.Generic.Data;
     using CarbonCore.Processing.Source.Xcd.Scene;
     using CarbonCore.Utils.Diagnostics;
-    using CarbonCore.Utils.IO;
     using CarbonCore.Utils.Edge.DirectX;
+    using CarbonCore.Utils.IO;
     using SharpDX;
 
     public static class XcdProcessor

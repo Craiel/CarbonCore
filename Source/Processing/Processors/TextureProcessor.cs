@@ -17,17 +17,6 @@
         DDSDxt5
     }
 
-    public struct TextureProcessingOptions
-    {
-        public TextureTargetFormat Format;
-
-        public bool IsNormalMap;
-
-        public bool ConvertToNormalMap;
-
-        public bool HasAlpha;
-    }
-
     public static class TextureProcessor
     {
         private const string CompressionTool = "nvcompress.exe";

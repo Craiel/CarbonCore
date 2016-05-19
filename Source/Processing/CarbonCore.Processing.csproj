@@ -98,6 +98,9 @@
     <Compile Include="Processors\Excel\ExcelData.cs" />
     <Compile Include="Processors\Excel\ExcelDataSheet.cs" />
     <Compile Include="Processors\Excel\ExcelProcessor.cs" />
+    <Compile Include="Processors\FontProcessingOptions.cs" />
+    <Compile Include="Processors\ScriptProcessingOptions.cs" />
+    <Compile Include="Processors\TextureProcessingOptions.cs" />
     <Compile Include="Processors\UserInterfaceProcessingOptions.cs" />
     <Compile Include="Processors\UserInterfaceProcessor.cs" />
     <Compile Include="Processors\ScriptProcessor.cs" />

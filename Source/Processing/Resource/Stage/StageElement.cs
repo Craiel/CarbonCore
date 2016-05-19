@@ -61,7 +61,7 @@
             // TODO:
             return null;
 
-            //return this.Properties.Select(propertyElement => propertyElement.GetBuilder().Build()).ToList();
+            // return this.Properties.Select(propertyElement => propertyElement.GetBuilder().Build()).ToList();
         }
 
         protected int SaveLayerData()

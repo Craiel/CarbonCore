@@ -11,7 +11,7 @@
 
         public override void Load(Stream source)
         {
-            //this.Data = Protocol.Resource.Raw.ParseFrom(source).Data.ToByteArray();
+            // this.Data = Protocol.Resource.Raw.ParseFrom(source).Data.ToByteArray();
         }
 
         public override long Save(Stream target)

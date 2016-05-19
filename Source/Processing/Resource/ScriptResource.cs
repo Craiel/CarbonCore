@@ -27,7 +27,7 @@
 
         public override void Load(Stream source)
         {
-            //this.Load(Protocol.Resource.Script.ParseFrom(source));
+            // this.Load(Protocol.Resource.Script.ParseFrom(source));
         }
 
         public Script Save()

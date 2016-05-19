@@ -10,11 +10,7 @@
     using CarbonCore.Utils.IO;
 
     public delegate string ResolveIncludeDelegate(string include);
-    public struct ScriptProcessingOptions
-    {
-        public ResolveIncludeDelegate IncludeResolver;
-    }
-
+    
     public class ScriptProcessor
     {
         private static readonly Regex ScriptFieldRegex = new Regex("{([a-z]+)[\\s]*([^\"]*)}", RegexOptions.IgnoreCase);
