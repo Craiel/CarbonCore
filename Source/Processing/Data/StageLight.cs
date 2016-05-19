@@ -4,7 +4,6 @@
 
     public enum StageLightType
     {
-        
     }
 
     public class StageLight

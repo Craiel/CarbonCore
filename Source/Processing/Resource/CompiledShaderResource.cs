@@ -28,7 +28,7 @@
 
         public override void Load(Stream source)
         {
-            //this.Load(CompiledShader.ParseFrom(source));
+            // this.Load(CompiledShader.ParseFrom(source));
         }
 
         public CompiledShader Save()

@@ -3,8 +3,6 @@
     using System;
     using System.Collections.Generic;
     
-    using CarbonCore.Utils.MathUtils;
-
     using SharpDX;
 
     public static class QuaternionExtension
@@ -26,7 +24,7 @@
 
             if (Math.Abs(dot - (-1.0f)) < float.Epsilon)
             {
-                return new Quaternion(up, MathExtension.DegreesToRadians(180.0f));
+                return new Quaternion(up, Utils.MathUtils.MathExtension.DegreesToRadians(180.0f));
             }
 
             if (Math.Abs(dot - 1.0f) < float.Epsilon)
@@ -40,7 +38,7 @@
             return Quaternion.RotationAxis(axis, angle);
         }
 
-        public static Quaternion QuaterionFromList(IList<float> floats)
+        public static Quaternion QuaternionFromList(IList<float> floats)
         {
             return new Quaternion(floats[0], floats[1], floats[2], floats[3]);
         }

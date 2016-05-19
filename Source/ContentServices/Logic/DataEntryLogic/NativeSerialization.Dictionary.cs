@@ -18,7 +18,7 @@
                 return;
             }
 
-            WriteEnumerableSize(stream, (Int16)dictionary.Count);
+            WriteEnumerableSize(stream, (short)dictionary.Count);
 
             foreach (T key in dictionary.Keys)
             {
@@ -66,7 +66,7 @@
             {
                 stream.WriteByte(1);
 
-                WriteEnumerableSize(stream, (Int16)cascade.Count);
+                WriteEnumerableSize(stream, (short)cascade.Count);
 
                 // Serialize in full
                 foreach (TK key in cascade.Keys)
@@ -143,7 +143,7 @@
             {
                 stream.WriteByte(1);
 
-                WriteEnumerableSize(stream, (Int16)cascade.Count);
+                WriteEnumerableSize(stream, (short)cascade.Count);
 
                 // Serialize in full
                 foreach (TK key in cascade.Keys)
@@ -215,7 +215,7 @@
             {
                 stream.WriteByte(1);
 
-                WriteEnumerableSize(stream, (Int16)cascade.Count);
+                WriteEnumerableSize(stream, (short)cascade.Count);
 
                 // Serialize in full
                 foreach (TK key in cascade.Keys)

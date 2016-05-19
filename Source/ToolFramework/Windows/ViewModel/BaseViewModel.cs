@@ -2,16 +2,15 @@
 {
     using System;
     using System.ComponentModel;
-    using System.IO;
     using System.Reflection;
     using System.Runtime.CompilerServices;
     using System.Windows;
     using System.Windows.Threading;
-
-    using CarbonCore.ToolFramework.Annotations;
+    
     using CarbonCore.ToolFramework.Windows.Contracts.ViewModels;
     using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.Edge.WPF;
+    using JetBrains.Annotations;
 
     public abstract class BaseViewModel : IBaseViewModel
     {
@@ -120,7 +119,6 @@
             target = value;
 
             // Todo: Create undo / redo event
-
             this.NotifyPropertyChangedDetailed(oldValue, value, propertyName);
             this.NotifyPropertyChangedExplicit(propertyName);
         }
@@ -143,7 +141,6 @@
             result = value;
 
             // Todo: Create undo / redo event
-
             this.NotifyPropertyChangedDetailed(oldValue, value, propertyName);
             this.NotifyPropertyChangedExplicit(propertyName);
         }

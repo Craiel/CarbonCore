@@ -66,7 +66,7 @@
 
         public override long Save(Stream target)
         {
-            //TODO:
+            // TODO:
             return 0;
 
             /*var builder = new Protocol.Resource.Stage.Builder { Version = Version };

@@ -5,7 +5,7 @@
     using NUnit.Framework;
 
     [TestFixture]
-    public class MathTests
+    public class TestMath
     {
         // -------------------------------------------------------------------
         // Public
@@ -13,7 +13,8 @@
         [Test]
         public void RectLTests()
         {
-            var testRect = new RectL();
+            var testRect = default(RectL);
+
             var testLine = new LineL(-5, -5, 10, 2);
             var testRectTwo = new RectL(2, 2, 20, 5);
             var testCircle = new Circle(-15, 5, 10);

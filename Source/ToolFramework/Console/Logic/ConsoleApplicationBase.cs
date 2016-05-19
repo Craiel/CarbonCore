@@ -73,7 +73,9 @@
         // -------------------------------------------------------------------
         // Protected
         // -------------------------------------------------------------------
+#pragma warning disable SA1201 // A property should not follow a method
         protected ICommandLineArguments Arguments { get; }
+#pragma warning restore SA1201 // A property should not follow a method
 
         protected abstract void StartFinished();
 

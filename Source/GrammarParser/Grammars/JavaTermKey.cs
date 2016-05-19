@@ -112,5 +112,6 @@
         SlashEquals,
         Star
    }
+
    // ReSharper restore InconsistentNaming
 }

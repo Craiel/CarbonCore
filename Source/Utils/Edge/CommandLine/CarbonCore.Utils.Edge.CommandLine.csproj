@@ -48,7 +48,7 @@
     <Compile Include="Contracts\ICommandLineSwitch.cs" />
     <Compile Include="Contracts\ICommandLineSwitchDefinition.cs" />
     <Compile Include="Logic\CommandLineSwitchDefinition.cs" />
-    <Compile Include="IoC\IoC.cs" />
+    <Compile Include="IoC\UtilsCommandLineModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

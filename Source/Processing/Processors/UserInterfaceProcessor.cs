@@ -12,11 +12,6 @@
     using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.IO;
     
-    public struct UserInterfaceProcessingOptions
-    {
-        public ScriptProcessingOptions ScriptOptions;
-    }
-
     public class UserInterfaceProcessor
     {
         private const string NodeTypeImage = "image";

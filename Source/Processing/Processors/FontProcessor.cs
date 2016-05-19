@@ -11,14 +11,6 @@
     using CarbonCore.Processing.Resource;
     using CarbonCore.Utils.IO;
 
-    public struct FontProcessingOptions
-    {
-        public FontStyle Style;
-
-        public int Size;
-        public int CharactersPerRow;
-    }
-
     public static class FontProcessor
     {
         private static readonly bool[] Characters;

@@ -115,7 +115,7 @@
     <Compile Include="Contracts\ILuaRuntimeFunction.cs" />
     <Compile Include="Contracts\ILuaObject.cs" />
     <Compile Include="Contracts\ILuaRuntime.cs" />
-    <Compile Include="IoC\IoC.cs" />
+    <Compile Include="IoC\UtilsLuaModule.cs" />
     <Compile Include="Logic\Library\LuaLibrary.cs" />
     <Compile Include="Logic\Library\LuaLibraryBase.cs" />
     <Compile Include="Logic\Library\LuaLibrarySystem.cs" />

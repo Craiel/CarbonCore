@@ -8,7 +8,8 @@
 
     using NUnit.Framework;
 
-    [TestFixture, Apartment(ApartmentState.STA)]
+    [TestFixture]
+    [Apartment(ApartmentState.STA)]
     public class FrameworkActionTests
     {
         private ICarbonContainer container;
@@ -25,13 +26,6 @@
         [TearDown]
         public void TearDown()
         {
-        }
-
-        [Test]
-        public void GeneralWiringTest()
-        {
-            //var main = this.container.Resolve<IFrameworkTestMain>();
-            //main.Start();
         }
     }
 }

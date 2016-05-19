@@ -53,7 +53,7 @@
     <Compile Include="Grammars\JavaGrammar.cs" />
     <Compile Include="Grammars\JavaGrammar.Static.cs" />
     <Compile Include="Grammars\JavaTermKey.cs" />
-    <Compile Include="IoC\IoC.cs" />
+    <Compile Include="IoC\GrammarParserModule.cs" />
     <Compile Include="Terms\TermIdentifierKey.cs" />
     <Compile Include="Tokenize\TokenizeData.cs" />
     <Compile Include="Tokenize\Tokenizer.cs" />

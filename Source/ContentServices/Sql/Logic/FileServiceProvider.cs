@@ -251,7 +251,6 @@
                             }
                     }
 
-
                     // TODO
                     /*if (mode == CompressionMode.Compress)
                     {

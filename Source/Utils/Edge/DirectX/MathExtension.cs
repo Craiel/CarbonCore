@@ -4,7 +4,7 @@
 
     using SharpDX;
 
-    public static class DXMathExtension
+    public static class MathExtension
     {
         public static float Distance(Vector3 a, Vector3 b)
         {
@@ -29,13 +29,12 @@
         {
             // dist = (ax + by + cz + d) / sqrt(a*a + b*b + c*c)
             return
-                (float)
-                Math.Abs(
-                    ((plane.Normal.X * point.X) + (plane.Normal.Y * point.Y) + (plane.Normal.Z * point.Z))
-                    /
-                    Math.Sqrt(
-                        (plane.Normal.X * plane.Normal.X) + (plane.Normal.Y * plane.Normal.Y)
-                        + (plane.Normal.Z * plane.Normal.Z)));
+                (float)Math.Abs(
+                        ((plane.Normal.X * point.X) + (plane.Normal.Y * point.Y) + (plane.Normal.Z * point.Z))
+                        /
+                        Math.Sqrt(
+                            (plane.Normal.X * plane.Normal.X) + (plane.Normal.Y * plane.Normal.Y)
+                            + (plane.Normal.Z * plane.Normal.Z)));
         }
 
         public static void OrthoNormalize(ref Vector3 normal, ref Vector3 tangent)

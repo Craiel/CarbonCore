@@ -9,6 +9,8 @@
 
     public class StageProperty
     {
+        public StagePropertyType Type { get; set; }
+
         public string ToStringUtf8()
         {
             throw new System.NotImplementedException();
@@ -18,7 +20,5 @@
         {
             throw new System.NotImplementedException();
         }
-
-        public StagePropertyType Type { get; set; }
     }
 }

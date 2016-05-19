@@ -71,7 +71,7 @@
     <Compile Include="Data\Tiled\TiledMapLayerData.cs" />
     <Compile Include="Data\Tiled\TiledMapObjectData.cs" />
     <Compile Include="Data\Tiled\TiledMapTileset.cs" />
-    <Compile Include="IoC\IoC.cs" />
+    <Compile Include="IoC\ContentServicesModule.cs" />
     <Compile Include="Logic\Attributes\DataElementAttribute.cs" />
     <Compile Include="Logic\DataEntryLogic\SmartDataEntry.cs" />
     <Compile Include="Logic\Attributes\DataEntryAttribute.cs" />

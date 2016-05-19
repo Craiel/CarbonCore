@@ -6,7 +6,6 @@
     //  There is a unity issue with this class if the bool is after the generic Value<T>
     //  It will result in an empty error and a mono crash with the message
     //  `class->image->dynamic || field->offset > 0'
-
     [DebuggerDisplay("{Value}")]
     public class Sync<T>
         where T : struct

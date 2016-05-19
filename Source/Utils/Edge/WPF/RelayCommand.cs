@@ -1,9 +1,9 @@
-﻿using System;
-using System.Diagnostics;
-using System.Windows.Input;
-
-namespace CarbonCore.Utils.Edge.WPF
+﻿namespace CarbonCore.Utils.Edge.WPF
 {
+    using System;
+    using System.Diagnostics;
+    using System.Windows.Input;
+
     public class RelayCommand : ICommand
     {
         private readonly Action executeAction;
@@ -21,7 +21,7 @@ namespace CarbonCore.Utils.Edge.WPF
         {
             if (execute == null)
             {
-                throw new ArgumentNullException("execute");
+                throw new ArgumentNullException(nameof(execute));
             }
 
             this.executeAction = execute;

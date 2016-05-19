@@ -25,7 +25,8 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        [DatabaseEntryElement, JsonConverter(typeof(JsonDictionaryConverter<string, JsonDatabaseTable>))]
+        [DatabaseEntryElement]
+        [JsonConverter(typeof(JsonDictionaryConverter<string, JsonDatabaseTable>))]
         public Dictionary<string, JsonDatabaseTable> Tables { get; set; }
 
         // -------------------------------------------------------------------
