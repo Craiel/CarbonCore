@@ -28,9 +28,15 @@
 	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpCodeStyle/BRACES_FOR_WHILE/@EntryValue">Required</s:String>
 	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpCodeStyle/DEFAULT_PRIVATE_MODIFIER/@EntryValue">Explicit</s:String>
 	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpCodeStyle/MODIFIERS_ORDER/@EntryValue">public protected internal private abstract virtual sealed override static readonly extern unsafe volatile async new</s:String>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpCodeStyle/ThisQualifier/INSTANCE_MEMBERS_QUALIFY_MEMBERS/@EntryValue">Field, Property, Event, Method</s:String>
 	<s:Boolean x:Key="/Default/CodeStyle/CSharpUsing/AddImportsToDeepestScope/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CSharpUsing/QualifiedUsingAtNestedScope/@EntryValue">False</s:Boolean>
+	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=API/@EntryIndexedValue">API</s:String>
 	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=BLP/@EntryIndexedValue">BLP</s:String>
 	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=CFS/@EntryIndexedValue">CFS</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=CS/@EntryIndexedValue">CS</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=DAE/@EntryIndexedValue">DAE</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=FOV/@EntryIndexedValue">FOV</s:String>
 	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=LUA/@EntryIndexedValue">LUA</s:String>
 	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=MC/@EntryIndexedValue">MC</s:String>
 	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=OGG/@EntryIndexedValue">OGG</s:String>
