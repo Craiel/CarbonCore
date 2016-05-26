@@ -20,18 +20,6 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public virtual void Set<T>(T value)
-        {
-            Type type = typeof(T);
-            if (this.objects.ContainsKey(type))
-            {
-                this.objects[type] = value;
-                return;
-            }
-
-            this.objects.Add(type, value);
-        }
-
         public virtual void SetVariable<T>(int key, T value)
         {
             this.DoSetVariable(key, value);
@@ -41,19 +29,7 @@
         {
             this.DoSetVariable(key, value);
         }
-
-        public virtual T Get<T>()
-        {
-            Type type = typeof(T);
-            object result;
-            if (this.objects.TryGetValue(type, out result))
-            {
-                return (T)result;
-            }
-
-            return default(T);
-        }
-
+        
         public virtual T GetVariable<T>(int key)
         {
             return this.DoGetVariable<T>(key);
@@ -68,6 +44,38 @@
         {
             this.objects.Clear();
             this.variables.Clear();
+        }
+
+        // -------------------------------------------------------------------
+        // Protected
+        // -------------------------------------------------------------------
+        protected virtual void Set<T>(T value)
+        {
+            this.objects.Add(typeof(T), value);
+        }
+
+        protected virtual void SetOrReplace<T>(T value)
+        {
+            Type type = typeof(T);
+            if (this.objects.ContainsKey(type))
+            {
+                this.objects[type] = value;
+                return;
+            }
+
+            this.objects.Add(type, value);
+        }
+
+        protected virtual T Get<T>()
+        {
+            Type type = typeof(T);
+            object result;
+            if (this.objects.TryGetValue(type, out result))
+            {
+                return (T)result;
+            }
+
+            return default(T);
         }
 
         // -------------------------------------------------------------------
