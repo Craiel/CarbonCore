@@ -117,6 +117,11 @@
     <Compile Include="Logic\Enums\BehaviorTreeStatus.cs" />
     <Compile Include="Logic\Enums\BundleLoadFlags.cs" />
     <Compile Include="Logic\Enums\DelayedLoadedObjectPhase.cs" />
+    <Compile Include="Logic\Enums\EnumValues.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EnumValues.tt</DependentUpon>
+    </Compile>
     <Compile Include="Logic\Enums\Orientation.cs" />
     <Compile Include="Logic\Enums\ResourceLoadFlags.cs" />
     <Compile Include="Logic\Enums\ResourceLoadMode.cs" />
@@ -214,6 +219,15 @@
     <Analyzer Include="$(SolutionDir)\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\Newtonsoft.Json.dll" />
     <Analyzer Include="$(SolutionDir)\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="$(SolutionDir)\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Logic\Enums\EnumValues.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EnumValues.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
