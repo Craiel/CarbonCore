@@ -1,10 +1,10 @@
 ﻿namespace CarbonCore.Utils.Collections
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
 
     using CarbonCore.Utils.Contracts;
-    using CarbonCore.Utils.Diagnostics;
 
     public class ExtendedDictionary<T, TN> : IExtendedDictionary<T, TN>
     {
@@ -107,7 +107,10 @@
 
         public IEnumerator<KeyValuePair<TN, T>> GetReverseEnumerator()
         {
-            Diagnostic.Assert(this.innerReverse != null);
+            if (!this.enableReverseLookup)
+            {
+                throw new InvalidOperationException("Reverse lookup was not enabled");
+            }
 
             return this.innerReverse.GetEnumerator();
         }
@@ -128,7 +131,10 @@
 
         public void Add(KeyValuePair<TN, T> item)
         {
-            Diagnostic.Assert(this.innerReverse != null);
+            if (!this.enableReverseLookup)
+            {
+                throw new InvalidOperationException("Reverse lookup was not enabled");
+            }
 
             this.innerReverse.Add(item);
             this.inner.Add(item.Value, item.Key);
@@ -150,7 +156,10 @@
 
         public bool Contains(KeyValuePair<TN, T> item)
         {
-            Diagnostic.Assert(this.innerReverse != null);
+            if (!this.enableReverseLookup)
+            {
+                throw new InvalidOperationException("Reverse lookup was not enabled");
+            }
 
             return this.innerReverse.Contains(item);
         }
@@ -162,7 +171,10 @@
 
         public void CopyTo(KeyValuePair<TN, T>[] array, int arrayIndex)
         {
-            Diagnostic.Assert(this.innerReverse != null);
+            if (!this.enableReverseLookup)
+            {
+                throw new InvalidOperationException("Reverse lookup was not enabled");
+            }
 
             this.innerReverse.CopyTo(array, arrayIndex);
         }
@@ -182,14 +194,17 @@
 
         public bool Remove(KeyValuePair<TN, T> item)
         {
-            Diagnostic.Assert(this.innerReverse != null);
-
             if (!this.inner.Remove(item.Value))
             {
                 return false;
             }
 
-            return this.innerReverse.Remove(item.Key);
+            if (this.innerReverse != null)
+            {
+                return this.innerReverse.Remove(item.Key);
+            }
+
+            return true;
         }
         
         public bool ContainsKey(T key)
@@ -199,7 +214,10 @@
 
         public bool ContainsValue(TN value)
         {
-            Diagnostic.Assert(this.innerReverse != null);
+            if (!this.enableReverseLookup)
+            {
+                throw new InvalidOperationException("Reverse lookup was not enabled");
+            }
 
             return this.innerReverse.ContainsKey(value);
         }
@@ -233,7 +251,10 @@
 
         public bool TryGetKey(TN value, out T key)
         {
-            Diagnostic.Assert(this.innerReverse != null);
+            if (!this.enableReverseLookup)
+            {
+                throw new InvalidOperationException("Reverse lookup was not enabled");
+            }
 
             return this.innerReverse.TryGetValue(value, out key);
         }
