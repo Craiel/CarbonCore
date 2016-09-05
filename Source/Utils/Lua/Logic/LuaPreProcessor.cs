@@ -1,19 +1,40 @@
 ﻿namespace CarbonCore.Utils.Lua.Logic
 {
     using System;
+    using System.Collections.Generic;
     using System.Text.RegularExpressions;
 
     using CarbonCore.Utils.IO;
 
     public static class LuaPreProcessor
     {
-        private static readonly Regex LuaSingleLineCommentRegex = new Regex(@"^[\s\t]*--[^\[]", RegexOptions.Compiled);
+        private const string LuaCommentStart = "--";
+        private const string LuaVariableCheck = "$(";
 
-        private static readonly Regex LuaIncludeDirectiveRegex = new Regex(@"#include\s+([\<\""])(.*?)[\>\""]", RegexOptions.IgnoreCase);
+        private const char LuaCommentDirectiveChar = '#';
+        private const char IncludeInternalStart = '<';
+        private const char IncludeInternalEnd = '>';
+        private const char IncludeExternal = '"';
         
+        private static readonly Regex LuaPreprocessorVariablesRegex = new Regex(@"\$\((\w+)\)", RegexOptions.Compiled);
+
+        private static readonly IDictionary<string, string> Variables = new Dictionary<string, string>();
+
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
+        public static void DefineVariable(string key, string value)
+        {
+            if (Variables.ContainsKey(key))
+            {
+                Variables[key] = value;
+            }
+            else
+            {
+                Variables.Add(key, value);
+            }
+        }
+
         public static LuaScript Process(CarbonFile file, bool allowCaching = true)
         {
             return DoProcess(new LuaSource(file), allowCaching);
@@ -59,59 +80,137 @@
             for (var i = 0; i < context.SourceData.Count; i++)
             {
                 context.CurrentLineIndex = i;
-                context.CurrentLine = context.SourceData[i];
+                context.CurrentLineSource = context.SourceData[i];
+                context.CurrentLineTarget = context.CurrentLineSource;
+                context.CurrentLineTrimmed = context.CurrentLineSource.Trim();
                 context.IncludeCurrentLine = true;
 
-                ProcessSourceInclude(context);
+                ProcessComments(context);
+                ProcessVariables(context);
 
                 if (context.IncludeCurrentLine)
                 {
-                    context.ProcessedData.Add(context.CurrentLine);
+                    context.ProcessedData.Add(context.CurrentLineTarget);
                 }
             }
+        }
+
+        private static void ProcessVariables(LuaPreProcessingContext context)
+        {
+            if (!context.CurrentLineSource.Contains(LuaVariableCheck))
+            {
+                // No variables in the line
+                return;
+            }
+            
+            MatchCollection matches = LuaPreprocessorVariablesRegex.Matches(context.CurrentLineSource);
+            if (matches.Count <= 0)
+            {
+                // No matches
+                return;
+            }
+
+            IList<string> variableKeys = new List<string>();
+            foreach (Match match in matches)
+            {
+                string key = match.Groups[1].Value;
+                if (variableKeys.Contains(key) || !Variables.ContainsKey(key))
+                {
+                    continue;
+                }
+
+                variableKeys.Add(key);
+            }
+
+            foreach (string key in variableKeys)
+            {
+                string replacementPattern = string.Format("$({0})", key);
+                context.CurrentLineTarget = context.CurrentLineTarget.Replace(replacementPattern, Variables[key]);
+            }
+        }
+
+        private static void ProcessComments(LuaPreProcessingContext context)
+        {
+            if (!context.CurrentLineTrimmed.StartsWith(LuaCommentStart) || context.CurrentLineTrimmed.Length <= LuaCommentStart.Length)
+            {
+                return;
+            }
+
+            // Check if this comment is a preprocessor directive
+            if (context.CurrentLineTrimmed[2] == LuaCommentDirectiveChar)
+            {
+                string directive = context.CurrentLineTrimmed.SubstringUntil(' ', 3);
+                if (directive == null)
+                {
+                    Diagnostics.Diagnostic.Error("Could not determine directive for line {0}: {1}", context.CurrentLineIndex, context.CurrentLineTrimmed);
+                    return;
+                }
+
+                string directiveParams = context.CurrentLineTrimmed.Substring(
+                    3 + directive.Length,
+                    context.CurrentLineTrimmed.Length - 3 - directive.Length);
+                directiveParams = string.IsNullOrEmpty(directiveParams) ? null : directiveParams.Trim();
+
+                switch (directive.ToLowerInvariant())
+                {
+                    case "include":
+                        {
+                            ProcessInclude(context, directiveParams);
+                            break;
+                        }
+                }
+            }
+        }
+
+        private static void ProcessInclude(LuaPreProcessingContext context, string includeParams)
+        {
+            bool isSystemInclude = includeParams[0] == IncludeInternalStart;
+            string includeName = includeParams.TrimStart(IncludeInternalStart, IncludeExternal).TrimEnd(IncludeInternalEnd, IncludeExternal);
+
+            if (isSystemInclude)
+            {
+                if (context.LibraryIncludes.Contains(includeName))
+                {
+                    return;
+                }
+
+                context.LibraryIncludes.Add(includeName);
+            }
+            else
+            {
+                if (!context.Source.IsFile)
+                {
+                    context.Error("Can not have file include in script, script has invalid source info");
+                    return;
+                }
+                
+                CarbonFile includeFile = context.Source.FileSource.GetDirectory().ToFile(includeName);
+                Diagnostics.Diagnostic.Info("Processing Included script {0}", includeFile);
+
+                LuaScript processedInclude = Process(includeFile);
+                if (processedInclude == null)
+                {
+                    context.Error("Could not process included script " + includeFile);
+                    return;
+                }
+
+                // Add the includes of the file
+                foreach (string libraryInclude in processedInclude.LibraryIncludes)
+                {
+                    if (context.LibraryIncludes.Contains(libraryInclude))
+                    {
+                        continue;
+                    }
+
+                    context.LibraryIncludes.Add(libraryInclude);
+                }
+
+                context.ProcessedData.AddRange(processedInclude.Data);
+            }
+
+            context.IncludeCurrentLine = false;
         }
         
-        private static void ProcessSourceInclude(LuaPreProcessingContext context)
-        {
-            Match includeMatch = LuaIncludeDirectiveRegex.Match(context.CurrentLine);
-            if (includeMatch.Success && !LuaSingleLineCommentRegex.IsMatch(context.CurrentLine))
-            {
-                if (includeMatch.Groups[1].Value == "<")
-                {
-                    string includeName = includeMatch.Groups[2].Value;
-                    if (context.LibraryIncludes.Contains(includeName))
-                    {
-                        return;
-                    }
-
-                    context.LibraryIncludes.Add(includeName);
-                }
-                else
-                {
-                    if (!context.Source.IsFile)
-                    {
-                        context.Error("Can not have file include in script, script has invalid source info");
-                        return;
-                    }
-
-                    string includeFileName = includeMatch.Groups[2].Value;
-                    CarbonFile includeFile = context.Source.FileSource.GetDirectory().ToFile(includeFileName);
-                    Diagnostics.Diagnostic.Info("Processing Included script {0}", includeFile);
-
-                    LuaScript processedInclude = Process(includeFile);
-                    if (processedInclude == null)
-                    {
-                        context.Error("Could not process included script " + includeFile);
-                        return;
-                    }
-
-                    context.ProcessedData.AddRange(processedInclude.Data);
-                }
-
-                context.IncludeCurrentLine = false;
-            }
-        }
-
         private static LuaScript DoProcess(LuaSource source, bool allowCaching)
         {
             if (allowCaching)

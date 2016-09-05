@@ -8,22 +8,27 @@
     {
         private static readonly LuaLibrarySystem SystemLibrary = new LuaLibrarySystem();
 
-        private static readonly IDictionary<string, LuaLibrarySystem> LibraryRegistry = new Dictionary<string, LuaLibrarySystem>();
+        private static readonly IDictionary<string, LuaLibraryBase> LibraryRegistry = new Dictionary<string, LuaLibraryBase>();
 
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
         static LuaLibrary()
         {
-            LibraryRegistry.Add(SystemLibrary.Name, SystemLibrary);
+            RegisterLibrary(SystemLibrary);
         }
 
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
+        public static void RegisterLibrary(LuaLibraryBase library)
+        {
+            LibraryRegistry.Add(library.Name, library);
+        }
+
         public static bool Register(ILuaRuntime target, string name)
         {
-            LuaLibrarySystem library;
+            LuaLibraryBase library;
             if (!LibraryRegistry.TryGetValue(name, out library))
             {
                 Diagnostics.Diagnostic.Error("Library {0} does not exist in LuaLibrary", name);

@@ -56,5 +56,30 @@
         {
             return target.AppendCommaSeparated(columns).Append(Environment.NewLine);
         }
+
+        public static string SubstringUntil(this string source, char target, int startIndex = 0)
+        {
+            if (startIndex == source.Length - 1 || source[startIndex] == target)
+            {
+                return null;
+            }
+
+            int targetIndex = -1;
+            for (var i = startIndex; i < source.Length; i++)
+            {
+                if (source[i] == target)
+                {
+                    targetIndex = i;
+                    break;
+                }
+            }
+
+            if (targetIndex < 0)
+            {
+                return null;
+            }
+
+            return source.Substring(startIndex, targetIndex - startIndex);
+        }
     }
 }

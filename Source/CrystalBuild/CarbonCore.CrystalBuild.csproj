@@ -63,6 +63,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EnumValues.tt</DependentUpon>
     </Compile>
+    <Compile Include="Logic\LuaLibraryCrystalBuildConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
