@@ -85,7 +85,7 @@
             IList<CarbonFileResult> results = new List<CarbonFileResult>();
             foreach (CarbonDirectoryFilter filter in filters)
             {
-                if (filter.Directory.IsNull || !filter.Directory.Exists)
+                if (filter.Directory == null || filter.Directory.IsNull || !filter.Directory.Exists)
                 {
                     Diagnostic.Warning("Specified directory is invalid: {0}", filter.Directory);
                     continue;
