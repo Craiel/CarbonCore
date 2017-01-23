@@ -11,7 +11,7 @@ namespace CarbonCore.Unity.Utils.Logic.Scene
 
     using UnityEngine;
 
-#if UNITY_5_3 || UNITY_5_4
+#if UNITY_5_3 || UNITY_5_4 || UNITY_5_5
     using UnityEngine.SceneManagement;
 #endif
 

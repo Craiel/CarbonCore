@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyExtensions.cs" />
+    <Compile Include="Crypto.cs" />
     <Compile Include="EnumExtensions.cs" />
     <Compile Include="TraceListeners\EventTraceListener.cs" />
     <Compile Include="TraceListeners\Log4NetTraceListener.cs" />
