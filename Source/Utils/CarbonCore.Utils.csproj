@@ -141,6 +141,7 @@
     <Compile Include="MathUtils\LineL.cs" />
     <Compile Include="MathUtils\LineS.cs" />
     <Compile Include="MathUtils\PerlinNoise.cs" />
+    <Compile Include="MathUtils\Quaternion.cs" />
     <Compile Include="MathUtils\RectF.cs" />
     <Compile Include="MathUtils\RectL.cs" />
     <Compile Include="MathUtils\RectS.cs" />
