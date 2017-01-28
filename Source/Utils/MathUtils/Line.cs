@@ -2,29 +2,29 @@
 {
     using System;
     using System.Diagnostics;
-
+    using Microsoft.Xna.Framework;
     using Newtonsoft.Json;
 
     [JsonObject(MemberSerialization.OptOut)]
-    [DebuggerDisplay("LineF<{Start},{End}>")]
-    public struct LineF
+    [DebuggerDisplay("Line<{Start},{End}>")]
+    public struct Line
     {
         // ------------------------------------------------------------------- 
         // Constructor 
         // ------------------------------------------------------------------- 
-        public LineF(Vector2F start, Vector2F end)
+        public Line(Point start, Point end)
             : this()
         {
             this.Start = start;
             this.End = end;
         }
 
-        public LineF(float x1, float y1, float x2, float y2)
-            : this(new Vector2F(x1, y1), new Vector2F(x2, y2))
+        public Line(int x1, int y1, int x2, int y2)
+            : this(new Point(x1, y1), new Point(x2, y2))
         {
         }
 
-        public LineF(LineF that)
+        public Line(Line that)
             : this(that.Start, that.End)
         {
         }
@@ -32,15 +32,16 @@
         // ------------------------------------------------------------------- 
         // Public 
         // ------------------------------------------------------------------- 
-        public Vector2F Start { get; set; }
-        public Vector2F End { get; set; }
+        public Point Start { get; set; }
+
+        public Point End { get; set; }
 
         [JsonIgnore]
         public bool IsVertical
         {
             get
             {
-                return Math.Abs(this.End.X) - Math.Abs(this.Start.X) < float.Epsilon;
+                return Math.Abs(this.End.X) - Math.Abs(this.Start.X) == 0;
             }
         }
 
@@ -49,14 +50,14 @@
         {
             get
             {
-                return Math.Abs(this.End.Y) - Math.Abs(this.Start.Y) < float.Epsilon;
+                return Math.Abs(this.End.Y) - Math.Abs(this.Start.Y) == 0;
             }
         }
 
-        public RectF GetBounds()
+        public Rectangle GetBounds()
         {
-            var topLeft = new Vector2F(0, 0);
-            var bottomRight = new Vector2F(0, 0);
+            var topLeft = new Point(0, 0);
+            var bottomRight = new Point(0, 0);
             if (this.IsHorizontal)
             {
                 topLeft.X = this.Start.X;
@@ -95,13 +96,13 @@
                 }
             }
 
-            bottomRight = new Vector2F(bottomRight.X - topLeft.X, bottomRight.Y - topLeft.Y);
-            return new RectF(topLeft, bottomRight);
+            bottomRight = new Point(bottomRight.X - topLeft.X, bottomRight.Y - topLeft.Y);
+            return new Rectangle(topLeft, bottomRight);
         }
         
         public override bool Equals(object other)
         {
-            var typed = (LineF)other;
+            var typed = (Line)other;
 
             return typed.Start.Equals(this.Start) && typed.End.Equals(this.End);
         }

@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MonoGame.Math</RootNamespace>
     <AssemblyName>MonoGame.Math</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
@@ -55,6 +55,12 @@
     <Compile Include="BoundingFrustum.cs" />
     <Compile Include="BoundingSphere.cs" />
     <Compile Include="ContainmentType.cs" />
+    <Compile Include="Curve.cs" />
+    <Compile Include="CurveContinuity.cs" />
+    <Compile Include="CurveKey.cs" />
+    <Compile Include="CurveKeyCollection.cs" />
+    <Compile Include="CurveLoopType.cs" />
+    <Compile Include="CurveTangent.cs" />
     <Compile Include="MathHelper.cs" />
     <Compile Include="Matrix.cs" />
     <Compile Include="Plane.cs" />
