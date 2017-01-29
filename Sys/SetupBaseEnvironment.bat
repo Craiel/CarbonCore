@@ -12,11 +12,12 @@ IF "%UNITY_VER%" == "5.2" GOTO SetupUnityDefines52
 IF "%UNITY_VER%" == "5.3" GOTO SetupUnityDefines53
 IF "%UNITY_VER%" == "5.4" GOTO SetupUnityDefines54
 IF "%UNITY_VER%" == "5.5" GOTO SetupUnityDefines55
+IF "%UNITY_VER%" == "5.6" GOTO SetupUnityDefines56
 IF [%UNITY_VER%] NEQ [] GOTO UnknownUnityDefine
-ECHO Setting Default Unity Version to 5.2
+ECHO Setting Default Unity Version to 5.5
 ECHO.
-SET UNITY_VER=5.2
-GOTO SetupUnityDefines52
+SET UNITY_VER=5.5
+GOTO SetupUnityDefines55
 
 :SetupUnityDefines52
 SET CCUNITYDEFINES=%CCUNITYDEFINES%;UNITY_5_2
@@ -32,6 +33,10 @@ GOTO SetupVS
 
 :SetupUnityDefines55
 SET CCUNITYDEFINES=%CCUNITYDEFINES%;UNITY_5_5
+GOTO SetupVS
+
+:SetupUnityDefines56
+SET CCUNITYDEFINES=%CCUNITYDEFINES%;UNITY_5_6
 GOTO SetupVS
 
 :UnknownUnityDefine
