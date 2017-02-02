@@ -170,6 +170,7 @@
     <Compile Include="ProcessorUtils.cs" />
     <Compile Include="RandomExtension.cs" />
     <Compile Include="StringExtensions.cs" />
+    <Compile Include="StringTable.cs" />
     <Compile Include="Threading\EngineThread.cs" />
     <Compile Include="Threading\EngineThreadSettings.cs" />
     <Compile Include="Threading\EngineTime.cs" />
