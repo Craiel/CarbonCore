@@ -76,7 +76,6 @@
     <Compile Include="Utils\NetworkTests.cs" />
     <Compile Include="IoC\QuickBindingTests.cs" />
     <Compile Include="Utils\TestMath.cs" />
-    <Compile Include="Utils\TestVector2F.cs" />
     <Compile Include="ToolFramework\FrameworkTestMain.cs" />
     <Compile Include="ToolFramework\FrameworkActionTests.cs" />
     <Compile Include="IoC\ToolFrameworkTestModule.cs" />
@@ -87,6 +86,10 @@
     <Compile Include="Utils\DatabaseTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\External\MonoGame.Math\MonoGame.Math.csproj">
+      <Project>{67858d44-b6ce-4148-9e9d-61be8f743fd1}</Project>
+      <Name>MonoGame.Math</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\ContentServices\CarbonCore.ContentServices.csproj">
       <Project>{5D3507BD-D8DD-4255-A262-8E360E936F10}</Project>
       <Name>CarbonCore.ContentServices</Name>

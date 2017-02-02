@@ -1,26 +1,8 @@
 ﻿namespace CarbonCore.Utils.MathUtils
 {
-    using System;
-    using System.Collections.Generic;
-
-    public enum GenerationDirection
-    {
-        Up,
-        Down,
-        Left,
-        Right
-    }
-
-    public enum IntersectionType
-    {
-        None,
-        Contained,
-        Intersected
-    }
-
     public static class RectUtils
     {
-        public static IList<Vector2L> GenerateCircleRectOffsets(this RectL rect, ushort distance, bool fill = true)
+        /*public static IList<Vector2L> GenerateCircleRectOffsets(this RectL rect, ushort distance, bool fill = true)
         {
             if (distance <= 0)
             {
@@ -142,6 +124,6 @@
             }
 
             return count;
-        }
+        }*/
     }
 }
