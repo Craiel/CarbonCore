@@ -2,7 +2,7 @@
 
 call Sys\SetupBaseEnvironment.bat
 
-SET INC_UNITYLIB=%CCROOTDIR%\External\Unity\5.2.4f1
+SET INC_UNITYLIB=%CCROOTDIR%\External\Unity\5.5.0f3
 
 SET SOLUTIONFILE=%CCSOURCEDIR%\CarbonCore.sln
 SET SOLUTIONFILEUNITY=%CCSOURCEDIR%\CarbonCoreUnity.sln

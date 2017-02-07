@@ -205,7 +205,7 @@
             instance.GetLogContext(managedThreadId).IsMuted = mute;
         }
 
-        public static void TraceMeasure(MetricTime metric, string message)
+        public static void TraceMeasure(MetricLong metric, string message)
         {
             StringBuilder builder = new StringBuilder();
             builder.AppendLine(message);

@@ -44,8 +44,8 @@
     <CodeAnalysisRuleSet>$(CCSOURCEDIR)\CarbonCore.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac, Version=4.2.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\Autofac.4.2.1\lib\net45\Autofac.dll</HintPath>
+    <Reference Include="Autofac, Version=4.3.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\Autofac.4.3.0\lib\net45\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="log4net, Version=2.0.7.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyExtensions.cs" />
+    <Compile Include="Crypto.cs" />
     <Compile Include="EnumExtensions.cs" />
     <Compile Include="TraceListeners\EventTraceListener.cs" />
     <Compile Include="TraceListeners\Log4NetTraceListener.cs" />

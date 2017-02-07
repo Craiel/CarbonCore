@@ -10,7 +10,6 @@
     using CarbonCore.Utils.IO;
 
     using Newtonsoft.Json;
-    using Newtonsoft.Json.Bson;
 
     public static class JsonExtensions
     {
@@ -98,7 +97,7 @@
             }
         }
         
-        public static string SaveToData<T>(T source, Formatting formatting = Formatting.None, params JsonConverter[] converters)
+        public static string SaveToData<T>(T source, Formatting formatting = Formatting.None, DefaultValueHandling defaultHandling = DefaultValueHandling.Ignore, params JsonConverter[] converters)
         {
 #if UNITY_5
             // Unity Serializer does not have formatting parameter
@@ -125,11 +124,11 @@
             return builder.ToString();
         }
 
-        public static byte[] SaveToByte<T>(T source, bool compress = true, Formatting formatting = Formatting.None, params JsonConverter[] converters)
+        public static byte[] SaveToByte<T>(T source, bool compress = true, Formatting formatting = Formatting.None, DefaultValueHandling defaultHandling = DefaultValueHandling.Ignore, params JsonConverter[] converters)
         {
             using (var stream = new MemoryStream())
             {
-                SaveToStream(stream, source, compress, formatting, converters);
+                SaveToStream(stream, source, compress, formatting, defaultHandling, converters);
 
                 stream.Seek(0, SeekOrigin.Begin);
                 var result = new byte[stream.Length];
@@ -177,7 +176,7 @@
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = "Checked")]
-        public static void SaveToFile<T>(CarbonFile file, T data, bool compress = true, Formatting formatting = Formatting.None, params JsonConverter[] converters)
+        public static void SaveToFile<T>(CarbonFile file, T data, bool compress = true, Formatting formatting = Formatting.None, DefaultValueHandling defaultHandling = DefaultValueHandling.Ignore, params JsonConverter[] converters)
         {
             // Check if we need to create directories
             CarbonDirectory directory = file.GetDirectory();
@@ -187,7 +186,7 @@
             }
 
             // Serialize
-            string serialized = SaveToData(data, formatting, converters);
+            string serialized = SaveToData(data, formatting, defaultHandling, converters);
 
             // Write to disk either compressed or bare
             using (var stream = file.OpenCreate())
@@ -196,10 +195,10 @@
             }
         }
 
-        public static void SaveToStream<T>(Stream target, T data, bool compress = true, Formatting formatting = Formatting.None, params JsonConverter[] converters)
+        public static void SaveToStream<T>(Stream target, T data, bool compress = true, Formatting formatting = Formatting.None, DefaultValueHandling defaultHandling = DefaultValueHandling.Ignore, params JsonConverter[] converters)
         {
             // Serialize
-            string serialized = SaveToData(data, formatting, converters);
+            string serialized = SaveToData(data, formatting, defaultHandling, converters);
 
             DoSaveToStream(target, serialized, compress);
         }

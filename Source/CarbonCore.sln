@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.GrammarParser", "GrammarParser\CarbonCore.GrammarParser.csproj", "{50C22F18-89F6-48F3-A29F-CA25FDADDB90}"
 EndProject
@@ -54,6 +54,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.Utils.Lua", "Utils\Lua\CarbonCore.Utils.Lua.csproj", "{F85D8EDF-7C3C-42DF-AECE-A1330BBF246E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonCore.Tests.ContentServices", "Tests\CarbonCore.Tests.ContentServices.csproj", "{64D7388F-17D7-47D4-B1A1-3066273773E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Math", "..\External\MonoGame.Math\MonoGame.Math.csproj", "{67858D44-B6CE-4148-9E9D-61BE8F743FD1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -142,6 +144,10 @@ Global
 		{64D7388F-17D7-47D4-B1A1-3066273773E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{64D7388F-17D7-47D4-B1A1-3066273773E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64D7388F-17D7-47D4-B1A1-3066273773E9}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{67858D44-B6CE-4148-9E9D-61BE8F743FD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67858D44-B6CE-4148-9E9D-61BE8F743FD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67858D44-B6CE-4148-9E9D-61BE8F743FD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67858D44-B6CE-4148-9E9D-61BE8F743FD1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -164,5 +170,6 @@ Global
 		{EEEA67F9-9089-481D-A4DC-0966DEC9FD7D} = {E928C946-3E15-46DB-8F1F-26523482FEAC}
 		{F85D8EDF-7C3C-42DF-AECE-A1330BBF246E} = {840BD203-1747-4DDF-B23F-666DC252952C}
 		{64D7388F-17D7-47D4-B1A1-3066273773E9} = {FE64595E-07DB-412B-A5B7-0A64EABB3A4A}
+		{67858D44-B6CE-4148-9E9D-61BE8F743FD1} = {E928C946-3E15-46DB-8F1F-26523482FEAC}
 	EndGlobalSection
 EndGlobal

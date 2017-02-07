@@ -134,25 +134,10 @@
     <Compile Include="Json\JsonDictionaryConverter.cs" />
     <Compile Include="Json\JsonExtensions.cs" />
     <Compile Include="MathUtils\BitOperations.cs" />
-    <Compile Include="MathUtils\Circle.cs" />
     <Compile Include="MathUtils\FloatExtensions.cs" />
-    <Compile Include="MathUtils\LineF.cs" />
-    <Compile Include="MathUtils\LineI.cs" />
-    <Compile Include="MathUtils\LineL.cs" />
-    <Compile Include="MathUtils\LineS.cs" />
+    <Compile Include="MathUtils\Line.cs" />
     <Compile Include="MathUtils\PerlinNoise.cs" />
-    <Compile Include="MathUtils\RectF.cs" />
-    <Compile Include="MathUtils\RectL.cs" />
-    <Compile Include="MathUtils\RectS.cs" />
     <Compile Include="MathUtils\RectUtils.cs" />
-    <Compile Include="MathUtils\Vector3D.cs" />
-    <Compile Include="MathUtils\Vector3F.cs" />
-    <Compile Include="MathUtils\Vector3I.cs" />
-    <Compile Include="MathUtils\Vector2F.cs" />
-    <Compile Include="MathUtils\Vector2I.cs" />
-    <Compile Include="MathUtils\Vector2L.cs" />
-    <Compile Include="MathUtils\Vector2S.cs" />
-    <Compile Include="MathUtils\Vector4B.cs" />
     <Compile Include="Network\CoreTcpClient.cs" />
     <Compile Include="Network\CoreTcpData.cs" />
     <Compile Include="Network\CoreTcpServer.cs" />
@@ -169,6 +154,7 @@
     <Compile Include="ProcessorUtils.cs" />
     <Compile Include="RandomExtension.cs" />
     <Compile Include="StringExtensions.cs" />
+    <Compile Include="StringTable.cs" />
     <Compile Include="Threading\EngineThread.cs" />
     <Compile Include="Threading\EngineThreadSettings.cs" />
     <Compile Include="Threading\EngineTime.cs" />
@@ -229,6 +215,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\External\MonoGame.Math\MonoGame.Math.csproj">
+      <Project>{67858d44-b6ce-4148-9e9d-61be8f743fd1}</Project>
+      <Name>MonoGame.Math</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\External\Newtonsoft.Json\Newtonsoft.Json.csproj">
       <Project>{eeea67f9-9089-481d-a4dc-0966dec9fd7d}</Project>
       <Name>Newtonsoft.Json</Name>

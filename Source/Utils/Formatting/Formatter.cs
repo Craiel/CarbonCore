@@ -89,6 +89,15 @@
             }
         }
 
+        public void Unset(string rawKey)
+        {
+            string key = rawKey.Trim().ToUpper();
+            if (this.dictionary.ContainsKey(key))
+            {
+                this.dictionary.Remove(key);
+            }
+        }
+
         // -------------------------------------------------------------------
         // Private
         // -------------------------------------------------------------------
