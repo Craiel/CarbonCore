@@ -1,0 +1,13 @@
+print "Including Default settings"
+
+SetFramework("v4.6")
+
+buildDebug = CreateBuildConfig("Debug", "AnyCPU")
+buildDebug.SetDefine(buildDebug, "TRACE")
+buildDebug.SetDefine(buildDebug, "DEBUG")
+buildDebug.EnableForTarget(buildDebug, "Debug");
+
+buildRelease = CreateBuildConfig("Release", "AnyCPU")
+buildRelease.SetDefine(buildRelease, "TRACE")
+buildRelease.SetOptimize(buildRelease, true)
+buildRelease.EnableForTarget(buildRelease, "Release");

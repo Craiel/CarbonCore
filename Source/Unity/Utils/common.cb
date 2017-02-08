@@ -1,4 +1,0 @@
---#include <System>
---#include <CrystalBuildConfig>
-
-print "Including common settings"

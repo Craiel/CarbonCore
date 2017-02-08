@@ -1,0 +1,1 @@
+AddReference("JetBrains.Annotations", "$(PROJECT_ROOT)Source/packages/JetBrains.Annotations.10.2.1/lib/net/JetBrains.Annotations.dll")

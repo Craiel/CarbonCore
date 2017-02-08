@@ -1,0 +1,4 @@
+AddReference("PresentationCore")
+AddReference("PresentationFramework")
+AddReference("WindowsBase")
+AddReference("System.Xaml")

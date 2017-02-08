@@ -1,0 +1,11 @@
+--#include <System>
+--#include <CrystalBuildConfig>
+
+print "Including common settings"
+
+SetDefaultOutputPath("$(PROJECT_ROOT)Build/bin/$(Configuration)/$(ProjectName)")
+SetDefaultIntermediateOutputPath("$(PROJECT_ROOT)Build/obj/$(Configuration)/$(ProjectName)")
+
+SetCodeAnalysisRules("$(PROJECT_ROOT)Source/CarbonCore.ruleset")
+
+AddStandardReferences()

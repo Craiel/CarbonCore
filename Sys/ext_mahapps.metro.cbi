@@ -1,0 +1,2 @@
+AddReference("MahApps.Metro", "$(PROJECT_ROOT)Source/packages/MahApps.Metro.1.4.1/lib/net45/MahApps.Metro.dll")
+AddReference("System.Windows.Interactivity", "$(PROJECT_ROOT)Source/packages/MahApps.Metro.1.4.1/lib/net45/System.Windows.Interactivity.dll")

@@ -1,0 +1,24 @@
+print "Including Unity settings"
+
+unityDefines = "UNITY;UNITY_5;UNITY_5_5"
+unityIncludePath = "$(PROJECT_ROOT)External/Unity/5.5.0f3/"
+
+SetFramework("v3.5")
+SetFrameworkProfile("Unity Full v3.5")
+
+AddReference("UnityEngine", unityIncludePath .. "UnityEngine.dll")
+
+buildUnity = CreateBuildConfig("Unity", "AnyCPU")
+buildUnity.SetDefine(buildUnity, "TRACE")
+buildUnity.SetDefine(buildUnity, "DEBUG")
+buildUnity.SetDefine(buildUnity, unityDefines)
+buildUnity.SetDefine(buildUnity, "WIN64")
+buildUnity.SetDefine(buildUnity, "ENABLE_PROFILER")
+buildUnity.EnableForTarget(buildUnity, "Debug");
+
+buildUnityRelease = CreateBuildConfig("UnityRelease", "AnyCPU")
+buildUnityRelease.SetDefine(buildUnityRelease, unityDefines)
+buildUnityRelease.SetDefine(buildUnityRelease, "WIN64")
+buildUnityRelease.SetDefine(buildUnityRelease, "ENABLE_PROFILER")
+buildUnityRelease.SetOptimize(buildUnityRelease, true)
+buildUnity.EnableForTarget(buildUnityRelease, "Release");

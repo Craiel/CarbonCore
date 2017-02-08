@@ -1,0 +1,15 @@
+﻿--#include <System>
+--#include "$(PROJECT_ROOT)Sys/common.cbi"
+--#include "$(PROJECT_ROOT)Sys/unity.cbi"
+
+print "Configuring Build with CrystalBuild version $(CB_VER) ..."
+
+AddSources("$(BUILD_DIR)", "*.cs", true)
+SetOutputType("Library")
+SetNamespace("CarbonCore.Unity.Utils")
+
+AddProjectReference("$(PROJECT_ROOT)External/Newtonsoft.Json", "Newtonsoft.Json")
+AddProjectReference("$(PROJECT_ROOT)Source/ContentServices", "CarbonCore.ContentServices")
+AddProjectReference("$(PROJECT_ROOT)Source/Utils", "CarbonCore.Utils")
+
+return WriteProjectFile()
