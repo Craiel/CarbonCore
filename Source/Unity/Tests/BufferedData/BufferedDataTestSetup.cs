@@ -16,7 +16,7 @@
         // -------------------------------------------------------------------
         public static IFactory Factory { get; private set; }
 
-        [OneTimeSetUp]
+        [SetUp]
         public void SetUp()
         {
             this.container = CarbonContainerBuilder.BuildQuick<UtilsUnityModule>();

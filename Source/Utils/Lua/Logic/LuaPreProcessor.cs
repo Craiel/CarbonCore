@@ -35,6 +35,16 @@
             }
         }
 
+        public static void DefineVariableFromPath(string key, CarbonDirectory path)
+        {
+            DefineVariable(key, path.ToString().Replace(@"\", @"\\"));
+        }
+
+        public static void DefineVariableFromPath(string key, CarbonFile path)
+        {
+            DefineVariable(key, path.ToString().Replace(@"\", @"\\"));
+        }
+
         public static LuaScript Process(CarbonFile file, bool allowCaching = true)
         {
             return DoProcess(new LuaSource(file), allowCaching);
@@ -82,11 +92,10 @@
                 context.CurrentLineIndex = i;
                 context.CurrentLineSource = context.SourceData[i];
                 context.CurrentLineTarget = context.CurrentLineSource;
-                context.CurrentLineTrimmed = context.CurrentLineSource.Trim();
                 context.IncludeCurrentLine = true;
 
-                ProcessComments(context);
                 ProcessVariables(context);
+                ProcessComments(context);
 
                 if (context.IncludeCurrentLine)
                 {
@@ -131,24 +140,25 @@
 
         private static void ProcessComments(LuaPreProcessingContext context)
         {
-            if (!context.CurrentLineTrimmed.StartsWith(LuaCommentStart) || context.CurrentLineTrimmed.Length <= LuaCommentStart.Length)
+            if (!context.CurrentLineTarget.StartsWith(LuaCommentStart) || context.CurrentLineTarget.Length <= LuaCommentStart.Length)
             {
                 return;
             }
 
+            string line = context.CurrentLineTarget.Trim();
             // Check if this comment is a preprocessor directive
-            if (context.CurrentLineTrimmed[2] == LuaCommentDirectiveChar)
+            if (line[2] == LuaCommentDirectiveChar)
             {
-                string directive = context.CurrentLineTrimmed.SubstringUntil(' ', 3);
+                string directive = line.SubstringUntil(' ', 3);
                 if (directive == null)
                 {
-                    Diagnostics.Diagnostic.Error("Could not determine directive for line {0}: {1}", context.CurrentLineIndex, context.CurrentLineTrimmed);
+                    Diagnostics.Diagnostic.Error("Could not determine directive for line {0}: {1}", context.CurrentLineIndex, line);
                     return;
                 }
 
-                string directiveParams = context.CurrentLineTrimmed.Substring(
+                string directiveParams = line.Substring(
                     3 + directive.Length,
-                    context.CurrentLineTrimmed.Length - 3 - directive.Length);
+                    line.Length - 3 - directive.Length);
                 directiveParams = string.IsNullOrEmpty(directiveParams) ? null : directiveParams.Trim();
 
                 switch (directive.ToLowerInvariant())
@@ -184,7 +194,12 @@
                     return;
                 }
                 
-                CarbonFile includeFile = context.Source.FileSource.GetDirectory().ToFile(includeName);
+                CarbonFile includeFile = new CarbonFile(includeName);
+                if (!includeFile.Exists)
+                {
+                    includeFile = context.Source.FileSource.GetDirectory().ToFile(includeName);
+                }
+                
                 Diagnostics.Diagnostic.Info("Processing Included script {0}", includeFile);
 
                 LuaScript processedInclude = Process(includeFile);

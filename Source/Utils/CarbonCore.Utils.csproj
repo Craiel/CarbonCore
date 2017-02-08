@@ -40,7 +40,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>$(CCOUTDIR)bin\$(Configuration)\Utils</OutputPath>
     <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\Utils</IntermediateOutputPath>
-    <DefineConstants>UNITY</DefineConstants>
+    <DefineConstants>TRACE;UNITY</DefineConstants>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>$(CCSOURCEDIR)\CarbonCore.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>

@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.CrystalBuild.Data
+﻿namespace CarbonCore.CrystalBuild.Sharp.Data
 {
     public static class DefaultBuildReferences
     {

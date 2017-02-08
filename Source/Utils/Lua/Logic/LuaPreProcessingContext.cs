@@ -36,9 +36,7 @@
         public int CurrentLineIndex { get; set; }
 
         public string CurrentLineSource { get; set; }
-
-        public string CurrentLineTrimmed { get; set; }
-
+        
         public string CurrentLineTarget { get; set; }
 
         public LuaSource Source { get; set; }

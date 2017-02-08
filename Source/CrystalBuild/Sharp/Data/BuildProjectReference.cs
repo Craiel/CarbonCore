@@ -1,12 +1,12 @@
-﻿namespace CarbonCore.CrystalBuild.Data
+﻿namespace CarbonCore.CrystalBuild.Sharp.Data
 {
-    public class BuildReference
+    public class BuildProjectReference
     {
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public string Name { get; set; }
+        public string Path { get; set; }
 
-        public string HintPath { get; set; }
+        public string Namespace { get; set; }
     }
 }

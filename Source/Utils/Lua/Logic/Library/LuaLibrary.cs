@@ -3,6 +3,7 @@
     using System.Collections.Generic;
 
     using CarbonCore.Utils.Lua.Contracts;
+    using Diagnostics;
 
     public static class LuaLibrary
     {
@@ -23,6 +24,12 @@
         // -------------------------------------------------------------------
         public static void RegisterLibrary(LuaLibraryBase library)
         {
+            if (LibraryRegistry.ContainsKey(library.Name))
+            {
+                Diagnostic.Warning("Library already registered: {0}", library.Name);
+                return;
+            }
+
             LibraryRegistry.Add(library.Name, library);
         }
 
@@ -45,6 +52,11 @@
             {
                 LibraryRegistry[name].Register(target);
             }
+        }
+
+        public static void UnregisterLibrary(LuaLibraryBase library)
+        {
+            LibraryRegistry.Remove(library.Name);
         }
     }
 }

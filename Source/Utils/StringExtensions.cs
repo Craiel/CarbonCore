@@ -81,5 +81,10 @@
 
             return source.Substring(startIndex, targetIndex - startIndex);
         }
+
+        public static string GetAgnosticPath(this string sourcePath)
+        {
+            return sourcePath.Replace('/', System.IO.Path.DirectorySeparatorChar).Replace('\\', System.IO.Path.DirectorySeparatorChar);
+        }
     }
 }

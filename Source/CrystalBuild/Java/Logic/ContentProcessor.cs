@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.CrystalBuild.Logic
+﻿namespace CarbonCore.CrystalBuild.Java.Logic
 {
     using System.Text;
 

@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.CrystalBuild.Logic.Enums
+﻿namespace CarbonCore.CrystalBuild.Sharp.Enums
 {
     public enum BuildTargetType
     {

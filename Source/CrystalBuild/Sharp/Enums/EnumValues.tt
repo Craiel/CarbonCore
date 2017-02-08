@@ -5,7 +5,7 @@
 <#@ import namespace="EnvDTE" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="CarbonCore.CodeGeneration" #>
-namespace CarbonCore.CrystalBuild.Logic.Enums
+namespace CarbonCore.CrystalBuild.Sharp.Enums
 {
     using System.Collections.Generic;
     
