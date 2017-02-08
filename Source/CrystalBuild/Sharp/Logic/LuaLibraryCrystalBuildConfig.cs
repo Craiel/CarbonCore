@@ -9,7 +9,6 @@
     using Enums;
     using Utils.Diagnostics;
     using Utils.IO;
-    using Utils.Lua.Contracts;
     using Utils.Lua.Logic.Library;
 
     public class LuaLibraryCrystalBuildConfig : LuaLibraryBase
@@ -140,7 +139,7 @@
             this.context.AddReference(DefaultBuildReferences.DefaultReferenceSystemXml);
         }
 
-        public void AddReference(string name, string hintPath)
+        public void AddReference(string name, string hintPath = null)
         {
             var reference = new BuildReference {Name = name};
             if (!string.IsNullOrEmpty(hintPath))
@@ -193,6 +192,11 @@
             foreach (CarbonFile source in this.context.TTSources)
             {
                 outData.AddTT(source.ToRelative<CarbonFile>(this.context.BuildDir));
+            }
+
+            foreach (CarbonFile source in this.context.XamlSources)
+            {
+                outData.AddXaml(source.ToRelative<CarbonFile>(this.context.BuildDir));
             }
 
             foreach (BuildReference reference in this.context.References)

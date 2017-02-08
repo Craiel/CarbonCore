@@ -45,26 +45,29 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\IContentProcessor.cs" />
-    <Compile Include="Contracts\ICrystalBuildConfigurationRunTime.cs" />
     <Compile Include="Contracts\IProcessingContext.cs" />
-    <Compile Include="Data\BuildConfiguration.cs" />
-    <Compile Include="Data\BuildReference.cs" />
-    <Compile Include="Data\BuildProjectConfiguration.cs" />
-    <Compile Include="Data\DefaultBuildReferences.cs" />
+    <Compile Include="Sharp\Data\BuildProjectReference.cs" />
+    <Compile Include="Sharp\Data\BuildReference.cs" />
+    <Compile Include="Sharp\Data\CSP\CSPFile.cs" />
+    <Compile Include="Sharp\Data\CSP\CSPPropertyGroup.cs" />
+    <Compile Include="Sharp\Data\DefaultBuildReferences.cs" />
     <Compile Include="IoC\IoC.cs" />
-    <Compile Include="Logic\CrystalBuildConfigurationRunTime.cs" />
-    <Compile Include="Logic\ContentProcessor.cs" />
+    <Compile Include="Sharp\Logic\CrystalBuildConfigurationRunTime.cs" />
+    <Compile Include="Java\Logic\ContentProcessor.cs" />
     <Compile Include="Logic\BuildingCache.cs" />
     <Compile Include="Logic\BuildingContext.cs" />
-    <Compile Include="Logic\BuildingUtils.cs" />
-    <Compile Include="Logic\Enums\BuildTargetType.cs" />
-    <Compile Include="Logic\Enums\EnumValues.cs">
+    <Compile Include="Java\Logic\BuildingUtils.cs" />
+    <Compile Include="Sharp\Logic\CrystalBuildContext.cs" />
+    <Compile Include="Sharp\Enums\BuildTargetType.cs" />
+    <Compile Include="Sharp\Enums\EnumValues.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>EnumValues.tt</DependentUpon>
     </Compile>
-    <Compile Include="Logic\LuaLibraryCrystalBuildConfig.cs" />
+    <Compile Include="Sharp\Data\BuildConfigObject.cs" />
+    <Compile Include="Sharp\Logic\LuaLibraryCrystalBuildConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sharp\SharpConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\External\Newtonsoft.Json\Newtonsoft.Json.csproj">
@@ -81,13 +84,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Logic\Enums\EnumValues.tt">
+    <Content Include="Sharp\Enums\EnumValues.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>EnumValues.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Data\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

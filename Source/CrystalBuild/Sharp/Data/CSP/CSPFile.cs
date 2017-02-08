@@ -131,12 +131,29 @@
 
             element.AppendChild(generatorElement);
             element.AppendChild(lastOutputElement);
-            /*<ItemGroup>
-    <Content Include="Logic\Enums\EnumValues.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>EnumValues.cs</LastGenOutput>
-    </Content>
-  </ItemGroup>*/
+        }
+
+        public void AddXaml(CarbonFile xaml)
+        {
+            CarbonFile targetFile = new CarbonFile(xaml.GetPath() + SharpConstants.ExtensionCS);
+
+            // The compile for the generated code
+            XmlElement element = this.DoAddItem("Compile", targetFile.GetPath());
+            XmlElement dependElement = this.Document.CreateElement("DependentUpon", SharpConstants.ProjectFileNamespace);
+            dependElement.InnerText = xaml.FileName;
+            
+            element.AppendChild(dependElement);
+
+            // Create the TT Content section
+            element = this.DoAddItem("Page", xaml.GetPath());
+            XmlElement generatorElement = this.Document.CreateElement("Generator", SharpConstants.ProjectFileNamespace);
+            XmlElement subTypeElement = this.Document.CreateElement("SubType", SharpConstants.ProjectFileNamespace);
+
+            generatorElement.InnerText = "MSBuild:Compile";
+            subTypeElement.InnerText = "Designer";
+
+            element.AppendChild(generatorElement);
+            element.AppendChild(subTypeElement);
         }
     }
 }
