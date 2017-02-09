@@ -72,6 +72,9 @@ SET VSROOT=%ProgramFiles(x86)%\Microsoft Visual Studio %VSVERSION%\Common7
 SET MSBUILDPATH="%ProgramFiles(x86)%\MSBuild\%VSVERSION%\Bin"
 SET MSBUILD=%MSBUILDPATH%\msbuild.exe
 SET MSBUILDARGS=
+SET XBUILDPATH="%ProgramFiles%\Mono\bin"
+SET XBUILD=%XBUILDPATH%\xbuild.bat
+SET XBUILDARGS=
 
 ECHO Sys = %CCSYSDIR%
 ECHO Root = %CCROOTDIR%
@@ -81,5 +84,6 @@ ECHO Current = %CURRENTDIR%
 ECHO.
 ECHO VS Root set to %VSROOT%
 ECHO MSBuild set to %MSBUILD%
+ECHO XBuild set to %XBUILD%
 ECHO Unity Version set to %UNITY_VER%
 ECHO Unity Defines set to %CCUNITYDEFINES%

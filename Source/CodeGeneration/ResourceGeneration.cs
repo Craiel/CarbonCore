@@ -4,7 +4,9 @@
     using System.Collections.Generic;
     using System.Globalization;
 
+#if !__MonoCS__
     using EnvDTE;
+#endif
 
     public static class ResourceGeneration
     {
@@ -34,6 +36,9 @@
 
         public static void LocateResources()
         {
+#if __MonoCS__
+            throw new InvalidOperationException("Resource Generation is not supported in Mono!");
+#else
             var candidates = new Queue<ProjectItem>();
             foreach (ProjectItem item in CodeGenerationUtils.CurrentProject.ProjectItems)
             {
@@ -56,11 +61,13 @@
                     candidates.Enqueue(item);
                 }
             }
+#endif
         }
 
         // -------------------------------------------------------------------
         // Private
         // -------------------------------------------------------------------
+#if !__MonoCS__
         private static void ProcessItem(ProjectItem item)
         {
             if (item.Properties == null)
@@ -130,6 +137,7 @@
 
             return null;
         }
+#endif
 
         private static ResourceGenerationType DetermineType(string file)
         {
