@@ -5,6 +5,7 @@
 print "Configuring Build with CrystalBuild version $(CB_VER) ..."
 
 AddSources("$(BUILD_DIR)", "*.cs", true)
+AddSource("$(BUILD_DIR)Static.Resources.xaml")
 
 SetOutputType("Library")
 SetNamespace("CarbonCore.Resources")

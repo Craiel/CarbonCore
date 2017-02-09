@@ -25,7 +25,9 @@
             
             this.AddLibraryFunction<string, string, bool>(this.AddSources);
             this.AddLibraryFunction<string>(this.AddSource);
+            this.AddLibraryFunction<string>(this.AddConfig);
 
+            this.AddLibraryFunction<string>(this.SetEntryPoint);
             this.AddLibraryFunction<string>(this.SetDefaultOutputPath);
             this.AddLibraryFunction<string>(this.SetDefaultIntermediateOutputPath);
             this.AddLibraryFunction<string>(this.SetCodeAnalysisRules);
@@ -33,6 +35,7 @@
             this.AddLibraryFunction<string>(this.SetFrameworkProfile);
             this.AddLibraryFunction<string>(this.SetOutputType);
             this.AddLibraryFunction<string>(this.SetNamespace);
+            this.AddLibraryFunction<string>(this.SetIcon);
 
             this.AddLibraryFunction(this.AddStandardReferences);
             this.AddLibraryFunction<string, string>(this.AddReference);
@@ -42,7 +45,7 @@
 
             this.AddLibraryFunction(this.WriteProjectFile);
         }
-        
+
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
@@ -78,6 +81,11 @@
             this.context.AddSource(source, source); 
         }
 
+        public void AddConfig(string file)
+        {
+            this.context.AddConfig(new CarbonFile(file));
+        }
+        
         public void SetDefaultOutputPath(string path)
         {
             this.context.DefaultOutputPath = path;
@@ -129,6 +137,16 @@
         public void SetNamespace(string name)
         {
             this.context.Namespace = name;
+        }
+
+        public void SetIcon(string fileName)
+        {
+            this.context.Icon = fileName;
+        }
+
+        public void SetEntryPoint(string entry)
+        {
+            this.context.EntryPoint = entry;
         }
 
         public void AddStandardReferences()
@@ -189,9 +207,15 @@
                 outData.AddItem("Compile", source.ToRelative<CarbonFile>(this.context.BuildDir).GetPath());
             }
 
-            foreach (CarbonFile source in this.context.TTSources)
+            foreach (CarbonFile source in this.context.ConfigFiles)
             {
-                outData.AddTT(source.ToRelative<CarbonFile>(this.context.BuildDir));
+                outData.AddItem("None", source.ToRelative<CarbonFile>(this.context.BuildDir).GetPath());
+            }
+
+            foreach (CarbonFile source in this.context.TTSources.Keys)
+            {
+                CarbonFile target = this.context.TTSources[source];
+                outData.AddTT(source.ToRelative<CarbonFile>(this.context.BuildDir), target.ToRelative<CarbonFile>(this.context.BuildDir));
             }
 
             foreach (CarbonFile source in this.context.XamlSources)
@@ -207,6 +231,20 @@
             foreach (BuildProjectReference reference in this.context.ProjectReferences)
             {
                 outData.AddProjectReference(reference);
+            }
+
+            if (!string.IsNullOrEmpty(this.context.Icon))
+            {
+                var iconGroup = outData.AddPropertyGroup();
+                iconGroup.AddProperty("ApplicationIcon", this.context.Icon);
+
+                outData.AddItem("Content", this.context.Icon);
+            }
+
+            if (!string.IsNullOrEmpty(this.context.EntryPoint))
+            {
+                var entryGroup = outData.AddPropertyGroup();
+                entryGroup.AddProperty("StartupObject", this.context.EntryPoint);
             }
 
             CarbonFile packageFile = this.context.BuildDir.ToFile(SharpConstants.NugetPackageFile);

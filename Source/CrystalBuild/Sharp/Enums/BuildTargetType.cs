@@ -3,6 +3,6 @@
     public enum BuildTargetType
     {
         Library,
-        Executable
+        Exe
     }
 }

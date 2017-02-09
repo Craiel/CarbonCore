@@ -1,8 +1,8 @@
 ﻿--#include <System>
---#include "$(PROJECT_ROOT)Sys/common.cbi"
---#include "$(PROJECT_ROOT)Sys/default.cbi"
---#include "$(PROJECT_ROOT)Sys/ext_nunit.cbi"
---#include "$(PROJECT_ROOT)Sys/ext_xaml.cbi"
+--#include "$(PROJECT_ROOT)sys/common.cbi"
+--#include "$(PROJECT_ROOT)sys/default.cbi"
+--#include "$(PROJECT_ROOT)sys/ext_nunit.cbi"
+--#include "$(PROJECT_ROOT)sys/ext_xaml.cbi"
 
 print "Configuring Build with CrystalBuild version $(CB_VER) ..."
 

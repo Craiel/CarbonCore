@@ -1,5 +1,6 @@
 ﻿namespace CarbonCore.Utils.Lua.Logic
 {
+    using System;
     using System.Reflection;
 
     using CarbonCore.Utils.Lua.Contracts;
@@ -19,6 +20,11 @@
             this.Name = name;
             this.owner = owner;
             this.method = owner.GetType().GetMethod(functionName);
+
+            if (this.method == null)
+            {
+                throw new InvalidOperationException("LuaWrapperdFunction requires valid method");
+            }
         }
 
         // -------------------------------------------------------------------

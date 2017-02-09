@@ -104,10 +104,8 @@
             return itemNode;
         }
 
-        public void AddTT(CarbonFile ttFile)
+        public void AddTT(CarbonFile ttFile, CarbonFile targetFile)
         {
-            CarbonFile targetFile = ttFile.ChangeExtension(SharpConstants.ExtensionCS);
-
             // The compile for the generated code
             XmlElement element = this.DoAddItem("Compile", targetFile.GetPath());
             XmlElement autoGenElement = this.Document.CreateElement("AutoGen", SharpConstants.ProjectFileNamespace);
