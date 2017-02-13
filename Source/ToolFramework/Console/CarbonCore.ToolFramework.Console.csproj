@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <ProjectGuid>{93057C59-6CFE-4AFC-919F-651FE88865C8}</ProjectGuid>
+    <ProjectGuid>{1FF6D0DA-B801-4956-A015-CE04FC7FB93F}</ProjectGuid>
     <AssemblyName>CarbonCore.ToolFramework.Console</AssemblyName>
     <RootNamespace>CarbonCore.ToolFramework.Console</RootNamespace>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
@@ -41,11 +41,11 @@
     <Reference Include="log4net">
       <HintPath>D:\Dev\CarbonCore\Source\packages\log4net.2.0.7\lib\net45-full\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>D:\Dev\CarbonCore\Source\packages\Newtonsoft.Json.9.0.1\lib\net35\Newtonsoft.Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="D:\Dev\CarbonCore\External\Newtonsoft.Json\Newtonsoft.Json.csproj">
-      <Name>Newtonsoft.Json</Name>
-    </ProjectReference>
     <ProjectReference Include="D:\Dev\CarbonCore\Source\ContentServices\CarbonCore.ContentServices.csproj">
       <Name>CarbonCore.ContentServices</Name>
     </ProjectReference>

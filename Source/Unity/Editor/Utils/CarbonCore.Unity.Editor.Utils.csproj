@@ -1,113 +1,64 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{DB147104-0C6F-4723-A86F-005AC742D4E6}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CarbonCore.Unity.Editor.Utils</RootNamespace>
+    <ProjectGuid>{DB147104-0C6F-4723-A86F-005AC742D4E6}</ProjectGuid>
     <AssemblyName>CarbonCore.Unity.Editor.Utils</AssemblyName>
+    <RootNamespace>CarbonCore.Unity.Editor.Utils</RootNamespace>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Unity|AnyCPU'">
-    <OutputPath>$(CCOUTDIR)bin\$(Configuration)\UtilsUnity\Editor</OutputPath>
-    <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\UtilsUnity\Editor</IntermediateOutputPath>
+    <Optimize>False</Optimize>
+    <OutputPath>D:\Dev\CarbonCore\Build\bin\$(Configuration)\$(ProjectName)</OutputPath>
+    <IntermediateOutputPath>D:\Dev\CarbonCore\Build\obj\$(Configuration)\$(ProjectName)</IntermediateOutputPath>
+    <DefineConstants>TRACE;DEBUG;UNITY;UNITY_5;UNITY_5_5;WIN64;ENABLE_PROFILER</DefineConstants>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisRuleSet>$(CCSOURCEDIR)\CarbonCore.ruleset</CodeAnalysisRuleSet>
-    <DefineConstants>TRACE;DEBUG;$(CCUNITYDEFINES);UNITY_EDITOR</DefineConstants>
-    <LangVersion>4</LangVersion>
+    <CodeAnalysisRuleSet>D:\Dev\CarbonCore\Source\CarbonCore.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnityRelease|AnyCPU'">
-    <OutputPath>$(CCOUTDIR)bin\$(Configuration)\UtilsUnity\Editor</OutputPath>
-    <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\UtilsUnity\Editor</IntermediateOutputPath>
-    <DefineConstants>$(CCUNITYDEFINES);UNITY_EDITOR</DefineConstants>
+    <Optimize>True</Optimize>
+    <OutputPath>D:\Dev\CarbonCore\Build\bin\$(Configuration)\$(ProjectName)</OutputPath>
+    <IntermediateOutputPath>D:\Dev\CarbonCore\Build\obj\$(Configuration)\$(ProjectName)</IntermediateOutputPath>
+    <DefineConstants>UNITY;UNITY_5;UNITY_5_5;WIN64;ENABLE_PROFILER</DefineConstants>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisRuleSet>$(CCSOURCEDIR)\CarbonCore.ruleset</CodeAnalysisRuleSet>
-    <Optimize>true</Optimize>
+    <CodeAnalysisRuleSet>D:\Dev\CarbonCore\Source\CarbonCore.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="UnityEditor">
-      <HintPath>$(INC_UNITYLIB)\UnityEditor.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine">
-      <HintPath>$(INC_UNITYLIB)\UnityEngine.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="AssetUtils.cs" />
+    <Compile Include="UnityHotReloadGuard.cs" />
     <Compile Include="GUI\LayoutRegion.cs" />
     <Compile Include="GUI\LayoutRegionSettings.cs" />
     <Compile Include="GUI\Splitter.cs" />
-    <Compile Include="UnityHotReloadGuard.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Utils\CarbonCore.Unity.Utils.csproj">
-      <Project>{0ec48d10-8e81-4b43-a7ee-f4bd83516cea}</Project>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine">
+      <HintPath>D:\Dev\CarbonCore\External\Unity\5.5.0f3\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>D:\Dev\CarbonCore\Source\packages\Newtonsoft.Json.9.0.1\lib\net35\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor">
+      <HintPath>D:\Dev\CarbonCore\External\Unity\5.5.0f3\UnityEditor.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="D:\Dev\CarbonCore\Source\ContentServices\CarbonCore.ContentServices.csproj">
+      <Name>CarbonCore.ContentServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Dev\CarbonCore\Source\Utils\CarbonCore.Utils.csproj">
+      <Name>CarbonCore.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Dev\CarbonCore\Source\Unity\Utils\CarbonCore.Unity.Utils.csproj">
       <Name>CarbonCore.Unity.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="$(SolutionDir)\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\Newtonsoft.Json.dll" />
-    <Analyzer Include="$(SolutionDir)\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
-    <Analyzer Include="$(SolutionDir)\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>del $(TargetDir)UnityEngine.*
-del $(TargetDir)UnityEditor.*</PostBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

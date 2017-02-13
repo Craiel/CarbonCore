@@ -1,64 +1,30 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5F12FA78-59FC-4BF5-8312-0131E0350A63}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CarbonCore.ToolFramework.Windows</RootNamespace>
+    <ProjectGuid>{5F12FA78-59FC-4BF5-8312-0131E0350A63}</ProjectGuid>
     <AssemblyName>CarbonCore.ToolFramework.Windows</AssemblyName>
+    <RootNamespace>CarbonCore.ToolFramework.Windows</RootNamespace>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>$(CCOUTDIR)bin\$(Configuration)\ToolFramework</OutputPath>
-    <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\ToolFramework</IntermediateOutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>D:\Dev\CarbonCore\Build\bin\$(Configuration)\$(ProjectName)</OutputPath>
+    <IntermediateOutputPath>D:\Dev\CarbonCore\Build\obj\$(Configuration)\$(ProjectName)</IntermediateOutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>$(CCSOURCEDIR)\CarbonCore.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>D:\Dev\CarbonCore\Source\CarbonCore.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>$(CCOUTDIR)bin\$(Configuration)\ToolFramework</OutputPath>
-    <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\ToolFramework</IntermediateOutputPath>
+    <Optimize>True</Optimize>
+    <OutputPath>D:\Dev\CarbonCore\Build\bin\$(Configuration)\$(ProjectName)</OutputPath>
+    <IntermediateOutputPath>D:\Dev\CarbonCore\Build\obj\$(Configuration)\$(ProjectName)</IntermediateOutputPath>
     <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>$(CCSOURCEDIR)\CarbonCore.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>D:\Dev\CarbonCore\Source\CarbonCore.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="JetBrains.Annotations, Version=10.2.1.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\JetBrains.Annotations.10.2.1\lib\net\JetBrains.Annotations.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="log4net, Version=2.0.7.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\log4net.2.0.7\lib\net45-full\log4net.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="MahApps.Metro, Version=1.4.1.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\MahApps.Metro.1.4.1\lib\net45\MahApps.Metro.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\MahApps.Metro.1.4.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
-  </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\IWindowApplicationBase.cs" />
     <Compile Include="Contracts\ViewModels\IBaseViewModel.cs" />
@@ -68,10 +34,10 @@
     <Compile Include="Contracts\ViewModels\IToolActionDialogViewModel.cs" />
     <Compile Include="Contracts\ViewModels\IToolActionViewModel.cs" />
     <Compile Include="IoC\ToolFrameworkWindowsModule.cs" />
-    <Compile Include="Logic\Actions\DispatcherToolAction.cs" />
-    <Compile Include="Logic\Converters\TraceEventTypeToColorConverter.cs" />
     <Compile Include="Logic\ToolActionDialogTemplateSelector.cs" />
     <Compile Include="Logic\WindowApplicationBase.cs" />
+    <Compile Include="Logic\Actions\DispatcherToolAction.cs" />
+    <Compile Include="Logic\Converters\TraceEventTypeToColorConverter.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\LogEntryViewModel.cs" />
     <Compile Include="ViewModel\LogViewModel.cs" />
@@ -86,40 +52,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Resources\CarbonCore.Resources.csproj">
-      <Project>{aab4906e-de39-4678-a155-14579cc7f4ec}</Project>
-      <Name>CarbonCore.Resources</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Utils\CarbonCore.Utils.csproj">
-      <Project>{E05836D9-0BB3-4BFA-89E6-F5ED40A9D93C}</Project>
-      <Name>CarbonCore.Utils</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Utils\Edge\CarbonCore.Utils.Edge.csproj">
-      <Project>{a46b19fc-eb4a-4bda-97e1-5b522fb4cc6b}</Project>
-      <Name>CarbonCore.Utils.Edge</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Utils\Edge\CommandLine\CarbonCore.Utils.Edge.CommandLine.csproj">
-      <Project>{e99c6721-99a5-4dc3-bd9d-dc88f65d217a}</Project>
-      <Name>CarbonCore.Utils.Edge.CommandLine</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Utils\Edge\WPF\CarbonCore.Utils.Edge.WPF.csproj">
-      <Project>{75ff83f3-c123-4982-91f7-09d0f8a66536}</Project>
-      <Name>CarbonCore.Utils.Edge.WPF</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CarbonCore.ToolFramework.csproj">
-      <Project>{e4643df2-d2db-4e99-ab4b-d8ce4fd94d81}</Project>
-      <Name>CarbonCore.ToolFramework</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Resources\Converters.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\ToolActionDisplays.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="View\LogView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -130,22 +62,52 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Properties\" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="log4net">
+      <HintPath>D:\Dev\CarbonCore\Source\packages\log4net.2.0.7\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro">
+      <HintPath>D:\Dev\CarbonCore\Source\packages\MahApps.Metro.1.4.1\lib\net45\MahApps.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Interactivity">
+      <HintPath>D:\Dev\CarbonCore\Source\packages\MahApps.Metro.1.4.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="JetBrains.Annotations">
+      <HintPath>D:\Dev\CarbonCore\Source\packages\JetBrains.Annotations.10.2.1\lib\net\JetBrains.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>D:\Dev\CarbonCore\Source\packages\Newtonsoft.Json.9.0.1\lib\net35\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="D:\Dev\CarbonCore\Source\ContentServices\CarbonCore.ContentServices.csproj">
+      <Name>CarbonCore.ContentServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Dev\CarbonCore\Source\ToolFramework\CarbonCore.ToolFramework.csproj">
+      <Name>CarbonCore.ToolFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Dev\CarbonCore\Source\Resources\CarbonCore.Resources.csproj">
+      <Name>CarbonCore.Resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Dev\CarbonCore\Source\Utils\CarbonCore.Utils.csproj">
+      <Name>CarbonCore.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Dev\CarbonCore\Source\Utils\Edge\CarbonCore.Utils.Edge.csproj">
+      <Name>CarbonCore.Utils.Edge</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Dev\CarbonCore\Source\Utils\Edge\WPF\CarbonCore.Utils.Edge.WPF.csproj">
+      <Name>CarbonCore.Utils.Edge.WPF</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="$(SolutionDir)\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\Newtonsoft.Json.dll" />
-    <Analyzer Include="$(SolutionDir)\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
-    <Analyzer Include="$(SolutionDir)\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

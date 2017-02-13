@@ -3,6 +3,7 @@
 --#include "$(PROJECT_ROOT)sys/default.cbi"
 --#include "$(PROJECT_ROOT)sys/ext_nunit.cbi"
 --#include "$(PROJECT_ROOT)sys/ext_xaml.cbi"
+--#include "$(PROJECT_ROOT)Sys/ext_json.cbi"
 
 print "Configuring Build with CrystalBuild version $(CB_VER) ..."
 

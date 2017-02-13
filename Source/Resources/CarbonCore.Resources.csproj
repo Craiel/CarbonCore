@@ -1,47 +1,30 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AAB4906E-DE39-4678-A155-14579CC7F4EC}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CarbonCore.Resources</RootNamespace>
+    <ProjectGuid>{AAB4906E-DE39-4678-A155-14579CC7F4EC}</ProjectGuid>
     <AssemblyName>CarbonCore.Resources</AssemblyName>
+    <RootNamespace>CarbonCore.Resources</RootNamespace>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>$(CCOUTDIR)bin\$(Configuration)\Resources</OutputPath>
-    <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\Resources</IntermediateOutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>D:\Dev\CarbonCore\Build\bin\$(Configuration)\$(ProjectName)</OutputPath>
+    <IntermediateOutputPath>D:\Dev\CarbonCore\Build\obj\$(Configuration)\$(ProjectName)</IntermediateOutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>$(CCSOURCEDIR)\CarbonCore.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>D:\Dev\CarbonCore\Source\CarbonCore.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>$(CCOUTDIR)bin\$(Configuration)\Resources</OutputPath>
-    <IntermediateOutputPath>$(CCOUTDIR)obj\$(Configuration)\Resources</IntermediateOutputPath>
+    <Optimize>True</Optimize>
+    <OutputPath>D:\Dev\CarbonCore\Build\bin\$(Configuration)\$(ProjectName)</OutputPath>
+    <IntermediateOutputPath>D:\Dev\CarbonCore\Build\obj\$(Configuration)\$(ProjectName)</IntermediateOutputPath>
     <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>$(CCSOURCEDIR)\CarbonCore.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>D:\Dev\CarbonCore\Source\CarbonCore.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
-  </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Static.cs">
@@ -54,39 +37,39 @@
     <Resource Include="Icons\placeholder.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-    <None Include="Static.tt">
+    <Content Include="Static.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Static.cs</LastGenOutput>
-    </None>
-    <None Include="Static.Resources.tt">
+    </Content>
+    <Content Include="Static.Resources.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Static.Resources.xaml</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Page Include="Static.Resources.xaml">
       <Generator>MSBuild:Compile</Generator>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Static.Resources.tt</DependentUpon>
       <SubType>Designer</SubType>
+      <DependentUpon>Static.Resources.tt</DependentUpon>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include="$(SolutionDir)\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\Newtonsoft.Json.dll" />
-    <Analyzer Include="$(SolutionDir)\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
-    <Analyzer Include="$(SolutionDir)\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="System.Xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="D:\Dev\CarbonCore\Source\Utils\CarbonCore.Utils.csproj">
+      <Name>CarbonCore.Utils</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
