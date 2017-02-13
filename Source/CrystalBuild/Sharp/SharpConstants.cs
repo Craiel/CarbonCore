@@ -10,5 +10,6 @@
 
         public const string ExtensionCS = ".cs";
         public const string ExtensionTT = ".tt";
+        public const string ExtensionXaml = ".xaml";
     }
 }

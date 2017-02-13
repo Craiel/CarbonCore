@@ -176,6 +176,19 @@
             return uniformLocal.Contains(uniformOther);
         }
 
+        public bool StartsWith(CarbonPath other, bool ignoreCase = false)
+        {
+            string uniformLocal = this.GetPathUsingDefaultSeparator();
+            string uniformOther = other.GetPathUsingDefaultSeparator();
+
+            if (ignoreCase)
+            {
+                return uniformLocal.StartsWith(uniformOther, StringComparison.OrdinalIgnoreCase);
+            }
+
+            return uniformLocal.StartsWith(uniformOther);
+        }
+
         public bool EndsWith(CarbonPath other, bool ignoreCase = false)
         {
             string uniformLocal = this.GetPathUsingDefaultSeparator();

@@ -1,5 +1,6 @@
 ﻿namespace CarbonCore.CrystalBuild.Sharp.Data.CSP
 {
+    using System;
     using System.Collections.Generic;
     using System.Xml;
     using Utils;
@@ -85,39 +86,31 @@
             node.AppendChild(nameNode);
         }
 
-        // -------------------------------------------------------------------
-        // Private
-        // -------------------------------------------------------------------
-        private XmlElement DoAddItem(string type, string content)
-        {
-            XmlElement groupParent;
-            if (!this.itemGroups.TryGetValue(type, out groupParent))
-            {
-                groupParent = this.Document.CreateElement("ItemGroup", SharpConstants.ProjectFileNamespace);
-                this.Root.AppendChild(groupParent);
-                this.itemGroups.Add(type, groupParent);
-            }
-
-            var itemNode = this.Document.CreateElement(type, SharpConstants.ProjectFileNamespace);
-            itemNode.SetAttribute("Include", content);
-            groupParent.AppendChild(itemNode);
-            return itemNode;
-        }
-
         public void AddTT(CarbonFile ttFile, CarbonFile targetFile)
         {
             // The compile for the generated code
-            XmlElement element = this.DoAddItem("Compile", targetFile.GetPath());
-            XmlElement autoGenElement = this.Document.CreateElement("AutoGen", SharpConstants.ProjectFileNamespace);
-            XmlElement designTimeElement = this.Document.CreateElement("DesignTime", SharpConstants.ProjectFileNamespace);
-            XmlElement dependElement = this.Document.CreateElement("DependentUpon", SharpConstants.ProjectFileNamespace);
-            autoGenElement.InnerText = "True";
-            designTimeElement.InnerText = "True";
-            dependElement.InnerText = ttFile.FileName;
+            XmlElement element;
+            if (targetFile.Extension.Equals(SharpConstants.ExtensionXaml, StringComparison.OrdinalIgnoreCase))
+            {
+                XmlElement page = AddXamlPage(targetFile);
+                XmlElement dependElement = this.Document.CreateElement("DependentUpon", SharpConstants.ProjectFileNamespace);
+                dependElement.InnerText = ttFile.FileName;
+                page.AppendChild(dependElement);
+            }
+            else
+            {
+                element = this.DoAddItem("Compile", targetFile.GetPath());
+                XmlElement autoGenElement = this.Document.CreateElement("AutoGen", SharpConstants.ProjectFileNamespace);
+                XmlElement designTimeElement = this.Document.CreateElement("DesignTime", SharpConstants.ProjectFileNamespace);
+                XmlElement dependElement = this.Document.CreateElement("DependentUpon", SharpConstants.ProjectFileNamespace);
+                autoGenElement.InnerText = "True";
+                designTimeElement.InnerText = "True";
+                dependElement.InnerText = ttFile.FileName;
 
-            element.AppendChild(autoGenElement);
-            element.AppendChild(designTimeElement);
-            element.AppendChild(dependElement);
+                element.AppendChild(autoGenElement);
+                element.AppendChild(designTimeElement);
+                element.AppendChild(dependElement);
+            }
 
             // Create the TT Content section
             element = this.DoAddItem("Content", ttFile.GetPath());
@@ -139,11 +132,35 @@
             XmlElement element = this.DoAddItem("Compile", targetFile.GetPath());
             XmlElement dependElement = this.Document.CreateElement("DependentUpon", SharpConstants.ProjectFileNamespace);
             dependElement.InnerText = xaml.FileName;
-            
+
             element.AppendChild(dependElement);
 
             // Create the TT Content section
-            element = this.DoAddItem("Page", xaml.GetPath());
+            AddXamlPage(xaml);
+        }
+
+        // -------------------------------------------------------------------
+        // Private
+        // -------------------------------------------------------------------
+        private XmlElement DoAddItem(string type, string content)
+        {
+            XmlElement groupParent;
+            if (!this.itemGroups.TryGetValue(type, out groupParent))
+            {
+                groupParent = this.Document.CreateElement("ItemGroup", SharpConstants.ProjectFileNamespace);
+                this.Root.AppendChild(groupParent);
+                this.itemGroups.Add(type, groupParent);
+            }
+
+            var itemNode = this.Document.CreateElement(type, SharpConstants.ProjectFileNamespace);
+            itemNode.SetAttribute("Include", content);
+            groupParent.AppendChild(itemNode);
+            return itemNode;
+        }
+
+        private XmlElement AddXamlPage(CarbonFile xaml)
+        {
+            XmlElement element = this.DoAddItem("Page", xaml.GetPath());
             XmlElement generatorElement = this.Document.CreateElement("Generator", SharpConstants.ProjectFileNamespace);
             XmlElement subTypeElement = this.Document.CreateElement("SubType", SharpConstants.ProjectFileNamespace);
 
@@ -152,6 +169,8 @@
 
             element.AppendChild(generatorElement);
             element.AppendChild(subTypeElement);
+
+            return element;
         }
     }
 }

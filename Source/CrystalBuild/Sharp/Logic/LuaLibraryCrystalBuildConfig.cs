@@ -26,6 +26,7 @@
             this.AddLibraryFunction<string, string, bool>(this.AddSources);
             this.AddLibraryFunction<string>(this.AddSource);
             this.AddLibraryFunction<string>(this.AddConfig);
+            this.AddLibraryFunction<string, string, bool>(this.AddContent);
 
             this.AddLibraryFunction<string>(this.SetEntryPoint);
             this.AddLibraryFunction<string>(this.SetDefaultOutputPath);
@@ -59,10 +60,17 @@
                 return;
             }
 
+            // If we are adding files outside of the build directory root them in the directory that was added (incl. structure)
+            CarbonDirectory fileRelativeRoot = this.context.BuildDir;
+            if (!directory.StartsWith(this.context.BuildDir))
+            {
+                fileRelativeRoot = directory;
+            }
+
             CarbonFileResult[] matches = directory.GetFiles(pattern, recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
             foreach (CarbonFileResult result in matches)
             {
-                this.context.AddSource(result.Absolute, result.Absolute.ToRelative<CarbonFile>(this.context.BuildDir));
+                this.context.AddSource(result.Absolute, result.Absolute.ToRelative<CarbonFile>(fileRelativeRoot));
             }
 
             Diagnostic.Info("Added {0} Sources", matches.Length);
@@ -79,6 +87,25 @@
             }
 
             this.context.AddSource(source, source); 
+        }
+
+        public void AddContent(string path, string pattern = "*.png", bool recursive = false)
+        {
+            Diagnostic.Info("Adding content from {0}", path);
+            var directory = new CarbonDirectory(path);
+            if (!directory.Exists)
+            {
+                Diagnostic.Warning("Skipping AddContent for {0}, does not exist", path);
+                return;
+            }
+
+            CarbonFileResult[] matches = directory.GetFiles(pattern, recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
+            foreach (CarbonFileResult result in matches)
+            {
+                this.context.AddContent(result.Absolute, result.Absolute.ToRelative<CarbonFile>(this.context.BuildDir));
+            }
+
+            Diagnostic.Info("Added {0} Content Files", matches.Length);
         }
 
         public void AddConfig(string file)
@@ -205,6 +232,11 @@
             foreach (CarbonFile source in this.context.Sources)
             {
                 outData.AddItem("Compile", source.ToRelative<CarbonFile>(this.context.BuildDir).GetPath());
+            }
+
+            foreach (CarbonFile content in this.context.Content)
+            {
+                outData.AddItem("Resource", content.ToRelative<CarbonFile>(this.context.BuildDir).GetPath());
             }
 
             foreach (CarbonFile source in this.context.ConfigFiles)

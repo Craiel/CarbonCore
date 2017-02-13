@@ -18,6 +18,7 @@
             this.Guid = Guid.NewGuid();
 
             this.Sources = new List<CarbonFile>();
+            this.Content = new List<CarbonFile>();
             this.ConfigFiles = new List<CarbonFile>();
             this.TTSources = new Dictionary<CarbonFile, CarbonFile>();
             this.XamlSources = new List<CarbonFile>();
@@ -59,6 +60,8 @@
 
         public IList<CarbonFile> Sources { get; }
 
+        public IList<CarbonFile> Content { get; }
+
         public IList<CarbonFile> ConfigFiles { get; }
 
         public IDictionary<CarbonFile, CarbonFile> TTSources { get; }
@@ -95,6 +98,17 @@
             }
 
             this.Sources.Add(relativeSource);
+        }
+
+        public void AddContent(CarbonFile source, CarbonFile relativeSource)
+        {
+            if (this.Content.Contains(relativeSource))
+            {
+                Diagnostic.Warning("Skipping Duplicate Content: {0}", relativeSource);
+                return;
+            }
+
+            this.Content.Add(relativeSource);
         }
 
         public void AddConfig(CarbonFile file)

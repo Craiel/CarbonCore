@@ -7,18 +7,18 @@
         private static readonly DataEntry Invalid = new DataEntry { Valid = false };
 
         private readonly DataEntry[] buffer;
-        private readonly int length;
-        private int nextFree;
+        private readonly ulong length;
+        private ulong nextFree;
 
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
-        public CircularBuffer(int length)
+        public CircularBuffer(ulong length)
         {
             this.buffer = new DataEntry[length];
             this.length = length;
             this.nextFree = 0;
-            for (int k = 0; k < length; k++)
+            for (ulong k = 0; k < length; k++)
             {
                 this.buffer[k].Valid = false;
             }
@@ -27,12 +27,12 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public bool HaveValue(int index)
+        public bool HaveValue(ulong index)
         {
             return this.IsIndexInRange(index) && this.buffer[this.IndexToId(index)].Valid;
         }
 
-        public T Get(int index)
+        public T Get(ulong index)
         {
             if (!this.HaveValue(index))
             {
@@ -42,7 +42,7 @@
             return this.buffer[this.IndexToId(index)].Data;
         }
 
-        public void Set(int index, T value)
+        public void Set(ulong index, T value)
         {
             if (this.IsIndexInRange(index))
             {
@@ -56,9 +56,9 @@
                 return;
             }
 
-            int startIndex = this.nextFree;
-            int stopIndex = Math.Min(index, this.nextFree + this.length) - 1;
-            for (int k = startIndex; k <= stopIndex; k++)
+            ulong startIndex = this.nextFree;
+            ulong stopIndex = Math.Min(index, this.nextFree + this.length) - 1;
+            for (ulong k = startIndex; k <= stopIndex; k++)
             {
                 this.buffer[this.IndexToId(k)] = Invalid;
             }
@@ -67,21 +67,23 @@
             this.nextFree = index + 1;
         }
 
-        public void Add(T value)
+        public ulong Add(T value)
         {
-            this.buffer[this.IndexToId(this.nextFree)] = new DataEntry(value);
+            ulong id = this.IndexToId(this.nextFree);
+            this.buffer[id] = new DataEntry(value);
             this.nextFree++;
+            return this.nextFree - 1;
         }
 
         // -------------------------------------------------------------------
         // Private
         // -------------------------------------------------------------------
-        private bool IsIndexInRange(int index)
+        private bool IsIndexInRange(ulong index)
         {
             return this.nextFree - this.length <= index && index < this.nextFree;
         }
 
-        private int IndexToId(int index)
+        private ulong IndexToId(ulong index)
         {
             return index % this.length;
         }
