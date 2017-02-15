@@ -1,0 +1,2 @@
+AddReference("System.Data.SQLite", "$(PROJECT_ROOT)Source/packages/System.Data.SQLite.Core.1.0.104.0/lib/net45/System.Data.SQLite.dll")
+

@@ -1,16 +1,17 @@
 ﻿--#include <System>
 --#include "$(PROJECT_ROOT)Sys/common.cbi"
 --#include "$(PROJECT_ROOT)Sys/default.cbi"
---#include "$(PROJECT_ROOT)Sys/ext_json.cbi"
+--#include "$(PROJECT_ROOT)Sys/ext_sqlite.cbi"
 
 print "Configuring Build with CrystalBuild version $(CB_VER) ..."
 
 AddSources("$(BUILD_DIR)", "*.cs", true)
 
 SetOutputType("Library")
-SetNamespace("CarbonCore.ToolFramework")
+SetNamespace("CarbonCore.ContentServices.Edge")
 
 AddProjectReference("$(PROJECT_ROOT)Source/ContentServices", "CarbonCore.ContentServices")
+AddProjectReference("$(PROJECT_ROOT)Source/ContentServices/Sql", "CarbonCore.ContentServices.Sql")
 AddProjectReference("$(PROJECT_ROOT)Source/Utils", "CarbonCore.Utils")
 AddProjectReference("$(PROJECT_ROOT)Source/Utils/Edge", "CarbonCore.Utils.Edge")
 

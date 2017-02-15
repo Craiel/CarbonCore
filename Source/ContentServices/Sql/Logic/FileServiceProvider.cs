@@ -8,9 +8,10 @@
 
     using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.Data;
-    using CarbonCore.ContentServices.Logic.Enums;
     using CarbonCore.ContentServices.Sql.Contracts;
     using CarbonCore.Utils.Diagnostics;
+
+    using CompressionLevel = ContentServices.Logic.Enums.CompressionLevel;
 
     public abstract class FileServiceProvider : IFileServiceProvider
     {

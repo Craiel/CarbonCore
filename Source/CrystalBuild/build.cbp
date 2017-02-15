@@ -1,17 +1,16 @@
 ﻿--#include <System>
 --#include "$(PROJECT_ROOT)Sys/common.cbi"
 --#include "$(PROJECT_ROOT)Sys/default.cbi"
---#include "$(PROJECT_ROOT)Sys/ext_json.cbi"
 
 print "Configuring Build with CrystalBuild version $(CB_VER) ..."
 
 AddSources("$(BUILD_DIR)", "*.cs", true)
 
 SetOutputType("Library")
-SetNamespace("CarbonCore.ToolFramework")
+SetNamespace("CarbonCore.CrystalBuild")
 
-AddProjectReference("$(PROJECT_ROOT)Source/ContentServices", "CarbonCore.ContentServices")
 AddProjectReference("$(PROJECT_ROOT)Source/Utils", "CarbonCore.Utils")
+AddProjectReference("$(PROJECT_ROOT)Source/Utils/Lua", "CarbonCore.Utils.Lua")
 AddProjectReference("$(PROJECT_ROOT)Source/Utils/Edge", "CarbonCore.Utils.Edge")
 
 return WriteProjectFile()

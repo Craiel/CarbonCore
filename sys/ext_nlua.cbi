@@ -1,0 +1,2 @@
+AddReference("NLua", "$(PROJECT_ROOT)Source/packages/NLua.1.3.2.1/lib/net35/NLua.dll")
+AddReference("KeraLua", "$(PROJECT_ROOT)Source/packages/NLua.1.3.2.1/lib/net35/KeraLua.dll")

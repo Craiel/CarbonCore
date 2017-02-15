@@ -67,13 +67,48 @@
                 fileRelativeRoot = directory;
             }
 
-            CarbonFileResult[] matches = directory.GetFiles(pattern, recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
+            int filesAdded;
+            if (recursive)
+            {
+                filesAdded = this.AddDirectorySourcesRecursive(directory, fileRelativeRoot, pattern);
+            }
+            else
+            {
+                filesAdded = this.AddDirectorySources(directory, fileRelativeRoot, pattern);
+            }
+
+            Diagnostic.Info("Added {0} Sources", filesAdded);
+        }
+
+        private int AddDirectorySourcesRecursive(CarbonDirectory directory, CarbonDirectory fileRelativeRoot, string pattern)
+        {
+            int filesAdded = 0;
+            CarbonDirectoryResult[] subDirectories = directory.GetDirectories();
+            for (var i = 0; i < subDirectories.Length; i++)
+            {
+                CarbonFileResult[] projectFiles = subDirectories[i].Absolute.GetFiles("*.cbp");
+                if (projectFiles.Length > 0)
+                {
+                    Diagnostic.Info("Skipping AddSources for {0}, sub-project found ({1})", subDirectories[i].Relative, projectFiles[0]);
+                    continue;
+                }
+
+                filesAdded += this.AddDirectorySourcesRecursive(subDirectories[i].Absolute, fileRelativeRoot, pattern);
+            }
+
+            filesAdded += this.AddDirectorySources(directory, fileRelativeRoot, pattern);
+            return filesAdded;
+        }
+
+        private int AddDirectorySources(CarbonDirectory directory, CarbonDirectory fileRelativeRoot, string pattern)
+        {
+            CarbonFileResult[] matches = directory.GetFiles(pattern);
             foreach (CarbonFileResult result in matches)
             {
                 this.context.AddSource(result.Absolute, result.Absolute.ToRelative<CarbonFile>(fileRelativeRoot));
             }
 
-            Diagnostic.Info("Added {0} Sources", matches.Length);
+            return matches.Length;
         }
 
         public void AddSource(string path)

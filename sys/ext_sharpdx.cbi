@@ -1,0 +1,4 @@
+AddReference("SharpDX", "$(PROJECT_ROOT)Source/packages/SharpDX.3.1.1/lib/net45/SharpDX.dll")
+AddReference("SharpDX.Direct3D11", "$(PROJECT_ROOT)Source/packages/SharpDX.Direct3D11.3.1.1/lib/net45/SharpDX.Direct3D11.dll")
+AddReference("SharpDX.DXGI", "$(PROJECT_ROOT)Source/packages/SharpDX.DXGI.3.1.1/lib/net45/SharpDX.DXGI.dll")
+AddReference("SharpDX.Mathematics", "$(PROJECT_ROOT)Source/packages/SharpDX.Mathematics.3.1.1/lib/net45/SharpDX.Mathematics.dll")
