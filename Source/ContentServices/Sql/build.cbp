@@ -1,6 +1,7 @@
 ﻿--#include <System>
---#include "$(PROJECT_ROOT)Sys/common.cbi"
---#include "$(PROJECT_ROOT)Sys/default.cbi"
+--#include "$(PROJECT_ROOT)Sys/settings_common.cbi"
+--#include "$(PROJECT_ROOT)Sys/settings_default.cbi"
+--#include "$(PROJECT_ROOT)Sys/build_default.cbi"
 --#include "$(PROJECT_ROOT)Sys/ext_json.cbi"
 --#include "$(PROJECT_ROOT)Sys/ext_sqlite.cbi"
 

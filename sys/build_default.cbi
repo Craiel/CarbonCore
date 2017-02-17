@@ -1,7 +1,3 @@
-print "Including Default settings"
-
-SetFramework("v4.6")
-
 buildDebug = CreateBuildConfig("Debug", "AnyCPU")
 buildDebug.SetDefine(buildDebug, "TRACE")
 buildDebug.SetDefine(buildDebug, "DEBUG")
