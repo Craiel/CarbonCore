@@ -1,6 +1,5 @@
 print "Including Unity settings"
 
-unityDefines = "UNITY;UNITY_5;UNITY_5_5"
 unityIncludePath = "$(PROJECT_ROOT)External/Unity/5.5.0f3/"
 
 SetFramework("v3.5")

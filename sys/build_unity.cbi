@@ -1,3 +1,5 @@
+unityDefines = "UNITY;UNITY_5;UNITY_5_5;UNITY_5_6"
+
 buildUnity = CreateBuildConfig("Unity", "AnyCPU")
 buildUnity.SetDefine(buildUnity, "TRACE")
 buildUnity.SetDefine(buildUnity, "DEBUG")
