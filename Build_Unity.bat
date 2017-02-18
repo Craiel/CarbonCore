@@ -1,5 +1,6 @@
 @echo off
 
+call Update.bat
 call Sys\SetupEnvironment.bat
 
 cls

@@ -4,3 +4,4 @@
 Build/
 
 *.csproj
+CrystalBuild.global.config
