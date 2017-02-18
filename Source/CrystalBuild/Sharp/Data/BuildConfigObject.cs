@@ -82,7 +82,11 @@
             target.AddProperty("IntermediateOutputPath", this.IntermediateOutputPath.GetAgnosticPath());
             target.AddProperty("DefineConstants", string.Join(";", this.Defines));
             target.AddProperty("PlatformTarget", this.Target);
-            target.AddProperty("CodeAnalysisRuleSet", this.CodeAnalysisRules.GetAgnosticPath());
+
+            if (!string.IsNullOrEmpty(this.CodeAnalysisRules))
+            {
+                target.AddProperty("CodeAnalysisRuleSet", this.CodeAnalysisRules.GetAgnosticPath());
+            }
         }
 
         public void EnableForTarget(string target)
