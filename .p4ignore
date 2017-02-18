@@ -2,3 +2,5 @@
 .vs
 
 Build/
+
+*.csproj

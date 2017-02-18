@@ -1,3 +1,5 @@
 Build/
 
 _*.sh
+
+*.csproj
