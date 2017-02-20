@@ -17,6 +17,9 @@
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
+        [SerializeField]
+        public bool AutoInstantiate;
+
         public static bool IsInstanceActive
         {
             get
@@ -84,6 +87,11 @@
 
         public virtual void Awake()
         {
+            if (instance == null && this.AutoInstantiate)
+            {
+                instance = (T)this;
+            }
+
             if (instance != null && instance != this)
             {
                 Diagnostic.Error("Duplicate Instance of {0} found, destroying!", this.GetType());
