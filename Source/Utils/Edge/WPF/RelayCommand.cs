@@ -34,7 +34,9 @@
             {
                 if (this.canExecuteAction != null)
                 {
+#if !__MonoCS__
                     CommandManager.RequerySuggested += value;
+#endif
                 }
             }
 
@@ -42,7 +44,9 @@
             {
                 if (this.canExecuteAction != null)
                 {
+#if !__MonoCS__
                     CommandManager.RequerySuggested -= value;
+#endif
                 }
             }
         }

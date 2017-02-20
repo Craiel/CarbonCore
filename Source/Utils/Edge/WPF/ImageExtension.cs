@@ -6,15 +6,18 @@
     using System.Runtime.InteropServices;
     using System.Windows;
     using System.Windows.Media;
-    using System.Windows.Media.Imaging;
 
+#if !__MonoCS__
+    using System.Windows.Media.Imaging;
     using Image = System.Windows.Controls.Image;
+#endif
 
     public static class ImageExtension
     {
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
+#if !__MonoCS__
         public static Image ToImage(this Uri uri)
         {
             var image = new Image { Source = uri.ToImageSource() };
@@ -55,6 +58,7 @@
 
             return bitSrc;
         }
+#endif
 
         // -------------------------------------------------------------------
         // Internal
