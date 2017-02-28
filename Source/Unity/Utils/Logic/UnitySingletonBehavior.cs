@@ -20,21 +20,9 @@
         [SerializeField]
         public bool AutoInstantiate;
 
-        public static bool IsInstanceActive
-        {
-            get
-            {
-                return instance != default(T);
-            }
-        }
+        public static bool IsInstanceActive => instance != default(T);
 
-        public static T Instance
-        {
-            get
-            {
-                return instance;
-            }
-        }
+        public static T Instance => instance;
 
         public bool IsInitialized { get; protected set; }
 
@@ -65,7 +53,11 @@
                     Diagnostic.Error("Adding Component of type {0} returned null", typeof(T));
                 }
 
-                DontDestroyOnLoad(gameObject);
+                // Only attempt Don't destroy if the object has no parent
+                if (gameObject.transform.parent == null)
+                {
+                    DontDestroyOnLoad(gameObject);
+                }
             }
         }
 
