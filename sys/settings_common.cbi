@@ -3,8 +3,8 @@
 
 print "Including common settings"
 
-SetDefaultOutputPath("$(PROJECT_ROOT)Build/bin/$(Configuration)/$(ProjectName)")
-SetDefaultIntermediateOutputPath("$(PROJECT_ROOT)Build/obj/$(Configuration)/$(ProjectName)")
+SetDefaultOutputPath("$(PROJECT_ROOT)Build/bin/$(Configuration)/$(AssemblyName)")
+SetDefaultIntermediateOutputPath("$(PROJECT_ROOT)Build/obj/$(Configuration)/$(AssemblyName)")
 
 SetCodeAnalysisRules("$(PROJECT_ROOT)Source/CarbonCore.ruleset")
 
