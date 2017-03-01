@@ -175,7 +175,7 @@
 
         public BuildConfigObject CreateBuildConfig(string name, string target)
         {
-            BuildConfigObject config = this.context.AddBuildConfig(name);
+            BuildConfigObject config = this.context.AddBuildConfig(string.Concat(name, '_', target), name);
             if (config == null)
             {
                 return null;

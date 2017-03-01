@@ -116,16 +116,16 @@
             this.ConfigFiles.Add(file);
         }
 
-        public BuildConfigObject AddBuildConfig(string name)
+        public BuildConfigObject AddBuildConfig(string id, string name)
         {
-            if (this.BuildConfigs.ContainsKey(name))
+            if (this.BuildConfigs.ContainsKey(id))
             {
-                Diagnostic.Error("Build configuration already exists: {0}", name);
+                Diagnostic.Error("Build configuration already exists: {0}", id);
                 return null;
             }
 
             BuildConfigObject config = new BuildConfigObject(name);
-            this.BuildConfigs.Add(name, config);
+            this.BuildConfigs.Add(id, config);
             return config;
         }
 
