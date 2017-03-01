@@ -6,6 +6,7 @@
 
     public static class ApplicationExtension
     {
+#if !__MonoCS__
         public static void DoEvents(this Application application)
         {
             var frame = new DispatcherFrame(true);
@@ -23,5 +24,6 @@
 
             Dispatcher.PushFrame(frame);
         }
+#endif
     }
 }
