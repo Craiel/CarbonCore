@@ -40,7 +40,7 @@
 
             this.AddLibraryFunction(this.AddStandardReferences);
             this.AddLibraryFunction<string, string>(this.AddReference);
-            this.AddLibraryFunction<string, string>(this.AddProjectReference);
+            this.AddLibraryFunction<string, string, bool>(this.AddProjectReference);
 
             this.AddLibraryFunction<string, string, BuildConfigObject>(this.CreateBuildConfig);
 
@@ -230,15 +230,15 @@
             this.context.AddReference(reference);
         }
 
-        public void AddProjectReference(string path, string nameSpace)
+        public void AddProjectReference(string path, string nameSpace, bool isCSharp = true)
         {
-            var reference = new BuildProjectReference {Path = path, Namespace = nameSpace};
+            var reference = new BuildProjectReference {Path = path, Namespace = nameSpace, IsCSharpProject = isCSharp};
             this.context.AddProjectReference(reference);
         }
 
         public string WriteProjectFile()
         {
-            CarbonFile outputFile = this.context.BuildDir.ToFile(this.context.Namespace + SharpConstants.ProjectFileExtension);
+            CarbonFile outputFile = this.context.BuildDir.ToFile(this.context.Namespace + SharpConstants.ProjectFileExtensionCSharp);
             var outData = CSPFile.Create();
             this.context.SaveAsProjectSettings(outData.AddPropertyGroup());
 
