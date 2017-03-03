@@ -1,9 +1,11 @@
-﻿namespace CarbonCore.Applications.CrystalBuild.CSharp
+﻿namespace CarbonCore.CrystalBuild.Console
 {
-    using CarbonCore.Applications.CrystalBuild.Contracts;
-    using CarbonCore.Applications.CrystalBuild.CSharp.IoC;
-    using CarbonCore.Utils.Diagnostics;
-    using CarbonCore.Utils.Edge.IoC;
+    using Applications.CrystalBuild.Contracts;
+
+    using IoC;
+
+    using Utils.Diagnostics;
+    using Utils.Edge.IoC;
 
     public static class Entry
     {

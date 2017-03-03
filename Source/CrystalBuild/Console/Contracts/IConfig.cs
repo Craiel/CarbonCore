@@ -1,7 +1,8 @@
-﻿namespace CarbonCore.Applications.CrystalBuild.CSharp.Contracts
+﻿namespace CarbonCore.CrystalBuild.Console.Contracts
 {
-    using CarbonCore.Applications.CrystalBuild.CSharp.Data;
-    using CarbonCore.Utils.Contracts;
+    using Data;
+
+    using Utils.Contracts;
 
     public interface IConfig : IJsonConfig<CSharpBuildConfig>
     {

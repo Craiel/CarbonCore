@@ -1,8 +1,8 @@
-﻿namespace CarbonCore.Applications.CrystalBuild.CSharp.Data
+﻿namespace CarbonCore.CrystalBuild.Console.Data
 {
-    using CarbonCore.Utils.IO;
-
     using Newtonsoft.Json;
+
+    using Utils.IO;
 
     [JsonObject(MemberSerialization.OptOut)]
     public class CSharpBuildConfig

@@ -1,10 +1,12 @@
-﻿namespace CarbonCore.Applications.CrystalBuild.CSharp
+﻿namespace CarbonCore.CrystalBuild.Console
 {
-    using CarbonCore.Applications.CrystalBuild.CSharp.Contracts;
-    using CarbonCore.Applications.CrystalBuild.CSharp.Data;
-    using CarbonCore.Utils;
-    using CarbonCore.Utils.IO;
-    using CarbonCore.Utils.Json;
+    using Contracts;
+
+    using Data;
+
+    using Utils;
+    using Utils.IO;
+    using Utils.Json;
 
     public class Config : JsonConfig<CSharpBuildConfig>, IConfig
     {

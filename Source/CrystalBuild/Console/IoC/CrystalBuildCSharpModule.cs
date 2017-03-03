@@ -1,14 +1,19 @@
-﻿namespace CarbonCore.Applications.CrystalBuild.CSharp.IoC
+﻿namespace CarbonCore.CrystalBuild.Console.IoC
 {
-    using CarbonCore.Applications.CrystalBuild.Contracts;
-    using CarbonCore.Applications.CrystalBuild.CSharp;
-    using CarbonCore.Applications.CrystalBuild.CSharp.Contracts;
-    using CarbonCore.Applications.CrystalBuild.CSharp.Logic;
-    using CarbonCore.CrystalBuild.IoC;
-    using CarbonCore.ToolFramework.Console.IoC;
-    using CarbonCore.Utils.Edge.CommandLine.IoC;
-    using CarbonCore.Utils.Edge.IoC;
-    using CarbonCore.Utils.IoC;
+    using Applications.CrystalBuild.Contracts;
+    using Applications.CrystalBuild.CSharp;
+    using Applications.CrystalBuild.CSharp.Contracts;
+    using Applications.CrystalBuild.CSharp.Logic;
+
+    using Contracts;
+
+    using CrystalBuild.IoC;
+
+    using ToolFramework.Console.IoC;
+
+    using Utils.Edge.CommandLine.IoC;
+    using Utils.Edge.IoC;
+    using Utils.IoC;
 
     [DependsOnModule(typeof(UtilsEdgeModule))]
     [DependsOnModule(typeof(UtilsCommandLineModule))]

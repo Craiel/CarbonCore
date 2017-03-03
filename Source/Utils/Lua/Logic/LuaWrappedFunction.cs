@@ -23,7 +23,7 @@
 
             if (this.method == null)
             {
-                throw new InvalidOperationException("LuaWrapperdFunction requires valid method");
+                throw new InvalidOperationException("LuaWrappedFunction requires valid method");
             }
         }
 

@@ -1,13 +1,21 @@
-﻿namespace CarbonCore.Applications.CrystalBuild.CSharp
+﻿namespace CarbonCore.CrystalBuild.Console
 {
     using System.Collections.Generic;
     using System.IO;
-    using CarbonCore.Applications.CrystalBuild.Contracts;
-    using CarbonCore.Applications.CrystalBuild.CSharp.Contracts;
-    using CarbonCore.ToolFramework.Console.Logic;
-    using CarbonCore.Utils.Contracts.IoC;
-    using CarbonCore.Utils.Edge.CommandLine.Contracts;
-    using CarbonCore.Utils.IO;
+
+    using Applications.CrystalBuild.Contracts;
+    using Applications.CrystalBuild.CSharp;
+    using Applications.CrystalBuild.CSharp.Contracts;
+
+    using Contracts;
+
+    using Scripting;
+
+    using ToolFramework.Console.Logic;
+
+    using Utils.Contracts.IoC;
+    using Utils.Edge.CommandLine.Contracts;
+    using Utils.IO;
 
     public class Main : ConsoleApplicationBase, IMain
     {
