@@ -2,14 +2,14 @@
 --#include "$(PROJECT_ROOT)sys/settings_common.cbi"
 --#include "$(PROJECT_ROOT)sys/settings_default.cbi"
 --#include "$(PROJECT_ROOT)sys/build_default.cbi"
---#include "$(PROJECT_ROOT)sys/ext_sharpdx.cbi"
+--#include "$(PROJECT_ROOT)sys/ext_scripting.cbi"
 
 print "Configuring Build with CrystalBuild version $(CB_VER) ..."
 
 AddSources("$(BUILD_DIR)", "*.cs", true)
 
 SetOutputType("Library")
-SetNamespace("CarbonCore.Utils.Edge.DirectX")
+SetNamespace("CarbonCore.Scripting")
 
 AddProjectReference("$(PROJECT_ROOT)Source/Utils", "CarbonCore.Utils")
 

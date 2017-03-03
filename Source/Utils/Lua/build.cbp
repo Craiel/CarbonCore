@@ -1,10 +1,8 @@
 ﻿--#include <System>
---#include "$(PROJECT_ROOT)Sys/settings_common.cbi"
---#include "$(PROJECT_ROOT)Sys/settings_default.cbi"
---#include "$(PROJECT_ROOT)Sys/build_default.cbi"
 --#include "$(PROJECT_ROOT)Sys/ext_nlua.cbi"
-
-SetFramework("v3.5")
+--#include "$(PROJECT_ROOT)sys/settings_common.cbi"
+--#include "$(PROJECT_ROOT)sys/settings_default.cbi"
+--#include "$(PROJECT_ROOT)sys/build_default.cbi"
 
 print "Configuring Build with CrystalBuild version $(CB_VER) ..."
 

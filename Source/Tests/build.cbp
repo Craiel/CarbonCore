@@ -1,10 +1,10 @@
 ﻿--#include <System>
---#include "$(PROJECT_ROOT)Sys/settings_common.cbi"
---#include "$(PROJECT_ROOT)Sys/settings_default.cbi"
---#include "$(PROJECT_ROOT)Sys/build_default.cbi"
+--#include "$(PROJECT_ROOT)sys/settings_common.cbi"
+--#include "$(PROJECT_ROOT)sys/settings_default.cbi"
+--#include "$(PROJECT_ROOT)sys/build_default.cbi"
 --#include "$(PROJECT_ROOT)sys/ext_nunit.cbi"
 --#include "$(PROJECT_ROOT)sys/ext_xaml.cbi"
---#include "$(PROJECT_ROOT)Sys/ext_json.cbi"
+--#include "$(PROJECT_ROOT)sys/ext_json.cbi"
 
 print "Configuring Build with CrystalBuild version $(CB_VER) ..."
 
@@ -13,7 +13,6 @@ AddSources("$(BUILD_DIR)", "*.cs", true)
 SetOutputType("Library")
 SetNamespace("CarbonCore.Tests")
 
-AddProjectReference("$(PROJECT_ROOT)External/Newtonsoft.Json", "Newtonsoft.Json")
 AddProjectReference("$(PROJECT_ROOT)External/MonoGame.Math", "MonoGame.Math")
 AddProjectReference("$(PROJECT_ROOT)Source/ContentServices", "CarbonCore.ContentServices")
 AddProjectReference("$(PROJECT_ROOT)Source/ContentServices/Sql", "CarbonCore.ContentServices.Sql")
