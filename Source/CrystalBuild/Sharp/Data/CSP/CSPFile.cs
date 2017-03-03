@@ -77,7 +77,8 @@
 
         public void AddProjectReference(BuildProjectReference reference)
         {
-            string referencePath = string.Concat(reference.Path, System.IO.Path.DirectorySeparatorChar, reference.Namespace, SharpConstants.ProjectFileExtension);
+            string extension = reference.IsCSharpProject ? SharpConstants.ProjectFileExtensionCSharp : SharpConstants.ProjectFileExtensionCPP;
+            string referencePath = string.Concat(reference.Path, System.IO.Path.DirectorySeparatorChar, reference.Namespace, extension);
             
             XmlElement node = this.DoAddItem("ProjectReference", referencePath.GetAgnosticPath());
 

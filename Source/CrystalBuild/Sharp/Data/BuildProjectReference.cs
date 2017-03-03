@@ -8,5 +8,7 @@
         public string Path { get; set; }
 
         public string Namespace { get; set; }
+
+        public bool IsCSharpProject { get; set; }
     }
 }

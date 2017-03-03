@@ -2,7 +2,8 @@
 {
     public static class SharpConstants
     {
-        public const string ProjectFileExtension = ".csproj";
+        public const string ProjectFileExtensionCSharp = ".csproj";
+        public const string ProjectFileExtensionCPP = ".vcxproj";
 
         public const string NugetPackageFile = "packages.config";
 
