@@ -1,0 +1,23 @@
+﻿--#include <System>
+--#include "$(PROJECT_ROOT)sys/settings_common.cbi"
+--#include "$(PROJECT_ROOT)sys/settings_default.cbi"
+--#include "$(PROJECT_ROOT)sys/build_default.cbi"
+--#include "$(PROJECT_ROOT)sys/ext_json.cbi"
+
+print "Configuring Build with CrystalBuild version $(CB_VER) ..."
+
+AddSources("$(BUILD_DIR)", "*.cs", true)
+AddConfig("App.config")
+
+SetOutputType("Exe")
+SetNamespace("CarbonCore.CrystalBuild.Console")
+
+AddProjectReference("$(PROJECT_ROOT)Source/Utils", "CarbonCore.Utils")
+AddProjectReference("$(PROJECT_ROOT)Source/Utils/Lua", "CarbonCore.Utils.Lua")
+AddProjectReference("$(PROJECT_ROOT)Source/Utils/Edge", "CarbonCore.Utils.Edge")
+AddProjectReference("$(PROJECT_ROOT)Source/Utils/Edge/CommandLine", "CarbonCore.Utils.Edge.CommandLine")
+AddProjectReference("$(PROJECT_ROOT)Source/CrystalBuild", "CarbonCore.CrystalBuild")
+AddProjectReference("$(PROJECT_ROOT)Source/ToolFramework", "CarbonCore.ToolFramework")
+AddProjectReference("$(PROJECT_ROOT)Source/ToolFramework/Console", "CarbonCore.ToolFramework.Console")
+
+return WriteProjectFile()
