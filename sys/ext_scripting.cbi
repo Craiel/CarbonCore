@@ -20,6 +20,7 @@ AddReference("System.Xml.XmlDocument", "$(PROJECT_ROOT)Source/packages/System.Xm
 AddReference("System.Xml.XPath", "$(PROJECT_ROOT)Source/packages/System.Xml.XPath.4.0.1/lib/net46/System.Xml.XPath.dll")
 AddReference("System.Xml.XPath.XDocument", "$(PROJECT_ROOT)Source/packages/System.Xml.XPath.XDocument.4.0.1/lib/net46/System.Xml.XPath.XDocument.dll")
     
+AddReference("Microsoft.CSharp")
 AddReference("System")
 AddReference("System.ComponentModel.Composition")
 AddReference("System.Core")

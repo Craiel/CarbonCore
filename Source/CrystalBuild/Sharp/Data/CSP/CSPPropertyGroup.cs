@@ -5,9 +5,7 @@
     public class CSPPropertyGroup
     {
         private readonly XmlElement node;
-
-        private XmlAttribute conditionAttribute;
-
+        
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
