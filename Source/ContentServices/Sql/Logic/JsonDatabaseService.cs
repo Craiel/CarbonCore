@@ -1,11 +1,11 @@
 ﻿namespace CarbonCore.ContentServices.Sql.Logic
 {
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     
     using CarbonCore.ContentServices.Sql.Contracts;
     using CarbonCore.ContentServices.Sql.Data;
-    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.IO;
     using CarbonCore.Utils.Json;
 
@@ -74,7 +74,7 @@
         public T Load<T>(object key, bool loadFull = false) where T : IDatabaseEntry
         {
             IList<T> results = this.Load<T>(new List<object> { key }, loadFull);
-            Diagnostic.Assert(results.Count <= 1, "Expected 1 result but got " + results.Count);
+            Debug.Assert(results.Count <= 1, "Expected 1 result but got " + results.Count);
 
             return results.FirstOrDefault();
         }

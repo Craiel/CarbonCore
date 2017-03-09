@@ -2,11 +2,15 @@
 {
     using System.Collections.Generic;
     using CSP;
+
+    using NLog;
+
     using Utils;
-    using Utils.Diagnostics;
 
     public class BuildConfigObject
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
@@ -41,7 +45,7 @@
         {
             if (this.Defines.Contains(define))
             {
-                Diagnostic.Warning("Define {0} already set", define);
+                Logger.Warn("Define {0} already set", define);
                 return;
             }
 
@@ -52,7 +56,7 @@
         {
             if (!this.Defines.Contains(define))
             {
-                Diagnostic.Warning("Define is not set: {0}", define);
+                Logger.Warn("Define is not set: {0}", define);
                 return;
             }
 

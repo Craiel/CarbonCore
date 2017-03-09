@@ -1,14 +1,19 @@
 ﻿namespace CarbonCore.Unity.Utils.Logic.Scene
 {
     using System.Collections.Generic;
-
-    using CarbonCore.Utils.Diagnostics;
+    
     using CarbonCore.Utils.Unity.Logic.Scene;
+
+    using NLog;
 
     using UnityEngine;
 
+    using Logger = UnityEngine.Logger;
+
     public class SceneObjectContainer
     {
+        private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly IDictionary<string, SceneObjectRoot> rootEntries;
 
         // -------------------------------------------------------------------
@@ -81,7 +86,7 @@
 
             if (this.rootEntries.ContainsKey(key))
             {
-                Diagnostic.Error("Root with same key is already registered: {0}", key);
+                Logger.Error("Root with same key is already registered: {0}", key);
                 return null;
             }
 

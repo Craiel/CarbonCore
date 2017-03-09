@@ -2,12 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
 
     using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.Data;
     using CarbonCore.ContentServices.Logic;
     using CarbonCore.ContentServices.Sql.Contracts;
-    using CarbonCore.Utils.Diagnostics;
 
     public class FileServiceMemoryProvider : FileServiceProvider, IFileServiceMemoryProvider
     {
@@ -93,14 +93,14 @@
 
         protected override FileEntry LoadEntry(FileEntryKey key)
         {
-            Diagnostic.Assert(this.files.ContainsKey(key));
+            Debug.Assert(this.files.ContainsKey(key));
 
             return this.fileEntries[key];
         }
 
         protected override void SaveEntry(FileEntryKey key, FileEntry entry)
         {
-            Diagnostic.Assert(this.files.ContainsKey(key));
+            Debug.Assert(this.files.ContainsKey(key));
 
             this.fileEntries[key] = entry;
         }

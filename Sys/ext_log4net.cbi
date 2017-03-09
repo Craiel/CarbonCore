@@ -1,1 +1,0 @@
-AddReference("log4net", "$(PROJECT_ROOT)Source/packages/log4net.2.0.7/lib/net45-full/log4net.dll")

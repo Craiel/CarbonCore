@@ -1,19 +1,19 @@
 ﻿namespace CarbonCore.Unity.Tests
 {
-    using CarbonCore.Utils.Diagnostics;
+    using NLog;
 
     using NUnit.Framework;
 
     [SetUpFixture]
     public class Setup
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         [SetUp]
         public void SetUp()
         {
-            Diagnostic.RegisterThread("Test Main");
-            
             // This initializes diagnostic and sets the main thread context
-            Diagnostic.Info("Tests starting!");
+            Logger.Info("Tests starting!");
         }
     }
 }

@@ -2,9 +2,9 @@
 {
     using System;
     using System.Data;
+    using System.Diagnostics;
 
     using CarbonCore.Utils;
-    using CarbonCore.Utils.Diagnostics;
 
     public enum DatabaseQueryCriterionType
     {
@@ -19,8 +19,8 @@
         // -------------------------------------------------------------------
         public DatabaseQueryCriterion(string name, Type internalType, SqlDbType databaseType, params object[] values)
         {
-            Diagnostic.Assert(!string.IsNullOrEmpty(name));
-            Diagnostic.Assert(values != null && values.Length > 0);
+            Debug.Assert(!string.IsNullOrEmpty(name));
+            Debug.Assert(values != null && values.Length > 0);
 
             this.Name = name;
             this.InternalType = internalType;

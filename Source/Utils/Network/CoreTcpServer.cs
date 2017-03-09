@@ -7,12 +7,14 @@
 
     using CarbonCore.Utils.Contracts.IoC;
     using CarbonCore.Utils.Contracts.Network;
-    using CarbonCore.Utils.Diagnostics;
-    using CarbonCore.Utils.Threading;
+
+    using NLog;
 
     public class CoreTcpServer : ICoreTcpServer
     {
         private static readonly long DefaultClientTimeout = TimeSpan.FromSeconds(2).Ticks;
+
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly IFactory factory;
         
@@ -188,7 +190,7 @@
                 var baseTcpClient = this.CreateClient();
                 baseTcpClient.SetClient(client);
 
-                Diagnostic.InfoUnmanaged("Client connected: {0}", client.Client.RemoteEndPoint);
+                Logger.Info("Client connected: {0}", client.Client.RemoteEndPoint);
 
                 if (this.ClientConnected != null)
                 {

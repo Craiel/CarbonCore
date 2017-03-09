@@ -2,18 +2,23 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Reflection;
     
     using CarbonCore.ContentServices.Sql.Contracts;
     using CarbonCore.ContentServices.Sql.Logic.Attributes;
-    using CarbonCore.Utils;
-    using CarbonCore.Utils.Diagnostics;
+
+    using NLog;
+
+    using Utils;
 
     public class DatabaseEntryDescriptor
     {
         public static readonly IDictionary<Type, DatabaseEntryDescriptor> Descriptors = new Dictionary<Type, DatabaseEntryDescriptor>();
+
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly IDictionary<string, DatabaseEntryElementDescriptor> elementNameLookup;
         
@@ -22,7 +27,7 @@
         // -------------------------------------------------------------------
         public DatabaseEntryDescriptor(Type targetType)
         {
-            Diagnostic.Assert(typeof(IDatabaseEntry).IsAssignableFrom(targetType));
+            Debug.Assert(typeof(IDatabaseEntry).IsAssignableFrom(targetType));
 
             this.Type = targetType;
 
@@ -140,7 +145,7 @@
                 }
             }
 
-            Diagnostic.Assert(this.EntryAttribute != null, "The Main attribute is not defined");
+            Debug.Assert(this.EntryAttribute != null, "The Main attribute is not defined");
             this.TableName = this.EntryAttribute.Table;
 
             PropertyInfo[] properties = this.Type.GetProperties();
@@ -185,7 +190,7 @@
 
             if (this.PrimaryKey == null)
             {
-                Diagnostic.Warning("DatabaseEntry has no Primary key defined: {0}", this.Type);
+                Logger.Warn("DatabaseEntry has no Primary key defined: {0}", this.Type);
             }
         }
     }

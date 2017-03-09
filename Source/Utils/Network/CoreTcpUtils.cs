@@ -4,12 +4,15 @@
     using System.Net.Sockets;
 
     using CarbonCore.Utils.Contracts.Network;
-    using CarbonCore.Utils.Diagnostics;
+
+    using NLog;
 
     public static class CoreTcpUtils
     {
         private const int DefaultBufferSize = 8192;
-        
+
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         // -------------------------------------------------------------------
         // Protected
         // -------------------------------------------------------------------
@@ -80,7 +83,7 @@
                         if (instruction.TimeOut != null && instruction.LastReadTime + instruction.TimeOut > DateTime.Now.Ticks)
                         {
                             instruction.Data.State = TcpDataState.TimedOut;
-                            Diagnostic.WarningUnmanaged("BaseTcpPeer Timed out: {0}", instruction.Client.EndPoint);
+                            Logger.Warn("BaseTcpPeer Timed out: {0}", instruction.Client.EndPoint);
                         }
                     }
                 }
@@ -88,7 +91,7 @@
             catch (Exception e)
             {
                 instruction.Data.State = TcpDataState.Disconnected;
-                Diagnostic.WarningUnmanaged("BaseTcpPeer Disconnected {0}: {1}", instruction.Client.EndPoint, e);
+                Logger.Warn("BaseTcpPeer Disconnected {0}: {1}", instruction.Client.EndPoint, e);
             }
 
             instruction.Callback(instruction.Data);
@@ -139,7 +142,7 @@
             catch
             {
                 instruction.Data.State = TcpDataState.Disconnected;
-                Diagnostic.WarningUnmanaged("BaseTcpPeer Disconnected: {0}", instruction.Client.EndPoint);
+                Logger.Warn("BaseTcpPeer Disconnected: {0}", instruction.Client.EndPoint);
             }
 
             instruction.Callback(instruction.Data);

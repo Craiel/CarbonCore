@@ -1,12 +1,10 @@
 ﻿namespace CarbonCore.ToolFramework.Console.Logic
 {
     using System;
-    using System.ComponentModel;
 
     using CarbonCore.ToolFramework.Console.Contracts;
     using CarbonCore.Utils;
     using CarbonCore.Utils.Contracts.IoC;
-    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.Edge.CommandLine.Contracts;
     using CarbonCore.Utils.I18N;
 
@@ -17,15 +15,10 @@
         // -------------------------------------------------------------------
         protected ConsoleApplicationBase(IFactory factory)
         {
-            // Configure log4net
-            log4net.Config.XmlConfigurator.Configure();
-
             this.Version = AssemblyExtensions.GetVersion(this.GetType());
 
             this.Arguments = factory.Resolve<ICommandLineArguments>();
-
-            Diagnostic.RegisterThread(this.GetType().Name);
-
+            
             this.ExitCode = 0;
         }
 

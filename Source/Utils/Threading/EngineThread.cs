@@ -4,13 +4,15 @@
     using System.Diagnostics;
     using System.Threading;
 
-    using CarbonCore.Utils.Diagnostics;
+    using NLog;
 
     public delegate bool EngineThreadUpdateDelegate(EngineTime time);
 
     public class EngineThread
     {
         private const int DefaultShutdownTimeout = 100000;
+
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private static readonly long PerformanceMeasureInterval = Stopwatch.Frequency;   
 
@@ -94,9 +96,7 @@
         public bool IsThreadFinished { get; private set; }
 
         public bool HadErrors { get; private set; }
-
-        public bool MuteTrace { get; set; }
-
+        
         public EngineTime Time
         {
             get
@@ -140,11 +140,6 @@
             this.internalThread.Name = this.ThreadName;
             this.internalThread.IsBackground = true;
             this.internalThread.Start();
-
-            if (this.MuteTrace)
-            {
-                Diagnostic.SetMute(this.internalThread.ManagedThreadId);
-            }
         }
 
         public void Synchronize(Action callback)
@@ -177,8 +172,6 @@
         // -------------------------------------------------------------------
         private void ThreadMain()
         {
-            Diagnostic.RegisterThread(this.ThreadName, this.time);
-
             try
             {
                 while (this.isRunning)
@@ -196,21 +189,18 @@
 
                         this.CheckThreadPerformance();
 
-                        using (new ProfileRegion("EngineThread.Update: " + this.ThreadName) { IncludeThreadId = true })
+                        try
                         {
-                            try
+                            if (!this.threadAction(this.time))
                             {
-                                if (!this.threadAction(this.time))
-                                {
-                                    break;
-                                }
+                                break;
                             }
-                            catch (Exception e)
-                            {
-                                this.isRunning = false;
-                                this.HadErrors = true;
-                                Diagnostic.Exception(e);
-                            }
+                        }
+                        catch (Exception e)
+                        {
+                            this.isRunning = false;
+                            this.HadErrors = true;
+                            Logger.Error(e);
                         }
                     }
                 }
@@ -221,8 +211,7 @@
                 this.IsThreadFinished = true;
                 this.shutdownEvent.Set();
 
-                Diagnostic.Warning("Engine Thread {0} ({1}) Ended", this.ThreadId, this.ThreadName);
-                Diagnostic.UnregisterThread();
+                Logger.Warn("Engine Thread {0} ({1}) Ended", this.ThreadId, this.ThreadName);
             }
         }
 

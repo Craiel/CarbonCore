@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using CarbonCore.Processing.Logic;
     using CarbonCore.Processing.Resource.Model;
@@ -10,9 +11,11 @@
     using CarbonCore.Processing.Source.Collada.Scene;
     using CarbonCore.Processing.Source.Generic.Data;
     using CarbonCore.Utils;
-    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.Edge.DirectX;
     using CarbonCore.Utils.IO;
+
+    using NLog;
+
     using SharpDX;
 
     /* <summary>
@@ -25,6 +28,8 @@
     public static class ColladaProcessor
     {
         private static readonly IDictionary<string, ModelResourceGroup> MeshLibrary = new Dictionary<string, ModelResourceGroup>();
+
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private static string targetElement;
         private static CarbonDirectory texturePath;
@@ -123,7 +128,7 @@
                         ParseGeometry(i, colladaGeometry);
                         ModelResource part = TranslateGeometry(i, colladaGeometry.Name);
 
-                        Diagnostic.Warning(
+                        Logger.Warn(
                             "ColladaSource does not support materials yet! ({0})", source.Id);
 
                         parts.Add(part);
@@ -205,7 +210,7 @@
             currentSources = geometry.Mesh.Sources;
             if (geometry.Mesh.Polygons != null && geometry.Mesh.Polygons.Polygons != null)
             {
-                Diagnostic.Assert(geometry.Mesh.Polygons != null, "Must have polygons if we are not working with Poly Lists!");
+                Debug.Assert(geometry.Mesh.Polygons != null, "Must have polygons if we are not working with Poly Lists!");
 
                 currentInputs = geometry.Mesh.Polygons.Inputs;
                 vertexInput = FindInput("VERTEX");
@@ -405,7 +410,7 @@
             uint element = 0;
             foreach (IntArrayType data in polygons)
             {
-                Diagnostic.Assert(data.Data.Length == (highestOffset + 1) * 3, "Polygon data must be vertex count 3 right now, otherwise we have to adjust the VertexCount array!");
+                Debug.Assert(data.Data.Length == (highestOffset + 1) * 3, "Polygon data must be vertex count 3 right now, otherwise we have to adjust the VertexCount array!");
 
                 vertexCount[polygon++] = 3;
                 uint dataElementOffset = 0;

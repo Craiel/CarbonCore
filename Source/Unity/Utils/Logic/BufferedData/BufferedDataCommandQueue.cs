@@ -83,7 +83,7 @@
                 return;
             }
 
-            // Diagnostic.Info("Trimming {0} Commands from Queue", targetId - this.OldestId);
+            // Logger.Info("Trimming {0} Commands from Queue", targetId - this.OldestId);
 
             long id = this.OldestId;
             while (id < targetId)

@@ -5,13 +5,15 @@
     using System.Data;
     using System.Data.Common;
     using System.Data.SQLite;
+    using System.Diagnostics;
     using System.Threading;
     
     using CarbonCore.ContentServices.Sql.Contracts;
     using CarbonCore.Utils;
     using CarbonCore.Utils.Contracts;
-    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.IO;
+
+    using NLog;
 
     public class SqlLiteConnector : ISqlLiteConnector
     {
@@ -19,6 +21,8 @@
         public const string SqlLastId = "SELECT last_insert_rowid()";
 
         private const string InMemoryIdentifier = ":memory:";
+
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly SQLiteFactory factory;
 
@@ -53,19 +57,19 @@
 
         public void SetFile(CarbonFile newFile)
         {
-            Diagnostic.Assert(this.connection == null, "SetFile must be called while disconnected!");
+            Debug.Assert(this.connection == null, "SetFile must be called while disconnected!");
 
             this.file = newFile;
         }
 
         public bool Connect()
         {
-            Diagnostic.Assert(this.connection == null);
+            Debug.Assert(this.connection == null);
 
             this.connection = this.factory.CreateConnection() as SQLiteConnection;
             if (this.connection == null)
             {
-                Diagnostic.Error("Could not create connection");
+                Logger.Error("Could not create connection");
                 return false;
             }
             
@@ -86,12 +90,12 @@
 
         public IDbCommand CreateCommand(ISqlStatement statement)
         {
-            Diagnostic.Assert(this.connection != null);
+            Debug.Assert(this.connection != null);
 
             IDbCommand command = this.connection.CreateCommand();
             if (statement != null)
             {
-                Diagnostic.Info("SQLite: {0}", statement);
+                Logger.Info("SQLite: {0}", statement);
                 statement.IntoCommand(command);
             }
 
@@ -100,7 +104,7 @@
 
         public IDbCommand CreateCommand(IList<ISqlStatement> statements)
         {
-            Diagnostic.Assert(this.connection != null && statements != null && statements.Count > 0);
+            Debug.Assert(this.connection != null && statements != null && statements.Count > 0);
 
             DbCommand command = this.connection.CreateCommand();
             command.CommandText = string.Format("{0};", ContentServices.Constants.StatementBegin);

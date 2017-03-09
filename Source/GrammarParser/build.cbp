@@ -2,6 +2,7 @@
 --#include "$(PROJECT_ROOT)sys/settings_common.cbi"
 --#include "$(PROJECT_ROOT)sys/settings_default.cbi"
 --#include "$(PROJECT_ROOT)sys/build_default.cbi"
+--#include "$(PROJECT_ROOT)sys/ext_nlog.cbi"
 
 print "Configuring Build with CrystalBuild version $(CB_VER) ..."
 

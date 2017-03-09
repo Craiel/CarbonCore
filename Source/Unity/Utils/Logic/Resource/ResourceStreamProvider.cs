@@ -5,8 +5,8 @@
 
     using CarbonCore.Unity.Utils.Data;
     using CarbonCore.Unity.Utils.Logic.Enums;
-    using CarbonCore.Utils.Diagnostics;
-    using CarbonCore.Utils.Diagnostics.Metrics;
+
+    using NLog;
 
     // Made to load resources from Application.streamingAssetsPath and other WWW accessible places
     public class ResourceStreamProvider : UnitySingleton<ResourceStreamProvider>
@@ -16,6 +16,8 @@
         private const float DefaultReadTimeout = 10;
 
         private const int MaxConsecutiveSyncCallsInAsync = 20;
+
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly ResourceMap<byte[]> resourceMap;
 
@@ -88,7 +90,7 @@
             {
                 if (key.Bundle != null)
                 {
-                    Diagnostic.Error("Can not stream bundled resources!");
+                    Logger.Error("Can not stream bundled resources!");
                     return null;
                 }
 
@@ -96,7 +98,7 @@
                 data = this.resourceMap.GetData(key);
                 if (data == null)
                 {
-                    Diagnostic.Error("Could not load resource on-demand");
+                    Logger.Error("Could not load resource on-demand");
                     return null;
                 }
             }
@@ -109,7 +111,7 @@
             byte[] data = this.resourceMap.GetData(key);
             if (data == null)
             {
-                Diagnostic.Error("Resource was not loaded or registered: {0}", key);
+                Logger.Error("Resource was not loaded or registered: {0}", key);
                 return null;
             }
 
@@ -153,16 +155,14 @@
             {
                 foreach (ResourceStreamRequest request in finishedRequests)
                 {
-                    Diagnostic.TakeTimeMeasure(request.Metric);
-
                     byte[] result = request.GetData();
                     if (result != null)
                     {
-                        this.FinalizeLoadResource(request.Info, result, request.Metric);
+                        this.FinalizeLoadResource(request.Info, result);
                     }
                     else
                     {
-                        Diagnostic.Warning("Load of {0} returned unexpected no data", request.Info.Key);
+                        Logger.Warn("Load of {0} returned unexpected no data", request.Info.Key);
                     }
                 }
             }
@@ -210,8 +210,7 @@
             {
                 return;
             }
-
-            MetricTime totalTime = Diagnostic.BeginTimeMeasure();
+            
             int resourceCount = this.currentPendingLoads.Count;
             while (this.currentPendingLoads.Count > 0)
             {
@@ -222,8 +221,7 @@
                 }
             }
             
-            Diagnostic.TakeTimeMeasure(totalTime);
-            Diagnostic.Info("Immediate! Loaded {0} resources in {1}ms", resourceCount, Diagnostic.GetTimeInMS(totalTime.Total));
+            Logger.Info("Immediate! Loaded {0} resources in {1}ms", resourceCount, -1);
         }
 
         // -------------------------------------------------------------------
@@ -235,8 +233,7 @@
             {
                 this.ResourceLoading(info);
             }
-
-            MetricTime resourceTime = Diagnostic.BeginTimeMeasure();
+            
             var request = new ResourceStreamRequest(info);
             float time = UnityEngine.Time.time;
             while (!request.IsDone)
@@ -244,21 +241,19 @@
                 Thread.Sleep(2);
                 if (UnityEngine.Time.time > time + DefaultReadTimeout)
                 {
-                    Diagnostic.Error("Timeout while reading {0}", info.Key);
+                    Logger.Error("Timeout while reading {0}", info.Key);
                     return;
                 }
             }
             
-            Diagnostic.TakeTimeMeasure(resourceTime);
-
-            this.FinalizeLoadResource(info, request.GetData(), resourceTime);
+            this.FinalizeLoadResource(info, request.GetData());
         }
 
-        private void FinalizeLoadResource(ResourceLoadInfo info, byte[] data, MetricTime elapsedTime)
+        private void FinalizeLoadResource(ResourceLoadInfo info, byte[] data)
         {
             if (data == null)
             {
-                Diagnostic.Warning("Loading {0} returned null data", info.Key);
+                Logger.Warn("Loading {0} returned null data", info.Key);
                 return;
             }
 
@@ -266,11 +261,11 @@
             {
                 if (this.history.ContainsKey(info.Key))
                 {
-                    this.history[info.Key] += elapsedTime.Total;
+                    this.history[info.Key] += 1;
                 }
                 else
                 {
-                    this.history.Add(info.Key, elapsedTime.Total);
+                    this.history.Add(info.Key, 1);
                 }
             }
 
@@ -279,7 +274,7 @@
             this.ResourcesLoaded++;
             if (this.ResourceLoaded != null)
             {
-                this.ResourceLoaded(info, elapsedTime.Total);
+                this.ResourceLoaded(info, 1);
             }
         }
 

@@ -7,12 +7,16 @@
     using Data;
     using Data.CSP;
     using Enums;
-    using Utils.Diagnostics;
+
+    using NLog;
+
     using Utils.IO;
     using Utils.Lua.Logic.Library;
 
     public class LuaLibraryCrystalBuildConfig : LuaLibraryBase
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly CrystalBuildContext context;
         
         // -------------------------------------------------------------------
@@ -52,11 +56,11 @@
         // -------------------------------------------------------------------
         public void AddSources(string path, string pattern = "*.cs", bool recursive = false)
         {
-            Diagnostic.Info("Adding sources from {0}", path);
+            Logger.Info("Adding sources from {0}", path);
             var directory = new CarbonDirectory(path);
             if (!directory.Exists)
             {
-                Diagnostic.Warning("Skipping AddSources for {0}, does not exist", path);
+                Logger.Warn("Skipping AddSources for {0}, does not exist", path);
                 return;
             }
 
@@ -77,7 +81,7 @@
                 filesAdded = this.AddDirectorySources(directory, fileRelativeRoot, pattern);
             }
 
-            Diagnostic.Info("Added {0} Sources", filesAdded);
+            Logger.Info("Added {0} Sources", filesAdded);
         }
 
         private int AddDirectorySourcesRecursive(CarbonDirectory directory, CarbonDirectory fileRelativeRoot, string pattern)
@@ -89,7 +93,7 @@
                 CarbonFileResult[] projectFiles = subDirectories[i].Absolute.GetFiles("*.cbp");
                 if (projectFiles.Length > 0)
                 {
-                    Diagnostic.Info("Skipping AddSources for {0}, sub-project found ({1})", subDirectories[i].Relative, projectFiles[0]);
+                    Logger.Info("Skipping AddSources for {0}, sub-project found ({1})", subDirectories[i].Relative, projectFiles[0]);
                     continue;
                 }
 
@@ -113,11 +117,11 @@
 
         public void AddSource(string path)
         {
-            Diagnostic.Info("Adding source {0}", path);
+            Logger.Info("Adding source {0}", path);
             var source = new CarbonFile(path);
             if (!source.Exists)
             {
-                Diagnostic.Warning("Skipping AddSource for {0}, does not exist", path);
+                Logger.Warn("Skipping AddSource for {0}, does not exist", path);
                 return;
             }
 
@@ -126,11 +130,11 @@
 
         public void AddContent(string path, string pattern = "*.png", bool recursive = false)
         {
-            Diagnostic.Info("Adding content from {0}", path);
+            Logger.Info("Adding content from {0}", path);
             var directory = new CarbonDirectory(path);
             if (!directory.Exists)
             {
-                Diagnostic.Warning("Skipping AddContent for {0}, does not exist", path);
+                Logger.Warn("Skipping AddContent for {0}, does not exist", path);
                 return;
             }
 
@@ -140,7 +144,7 @@
                 this.context.AddContent(result.Absolute, result.Absolute.ToRelative<CarbonFile>(this.context.BuildDir));
             }
 
-            Diagnostic.Info("Added {0} Content Files", matches.Length);
+            Logger.Info("Added {0} Content Files", matches.Length);
         }
 
         public void AddConfig(string file)
@@ -190,7 +194,7 @@
             BuildTargetType type;
             if (!Enum.TryParse(typeString, out type))
             {
-                Diagnostic.Warning("Unknown Output type: {0}", typeString);
+                Logger.Warn("Unknown Output type: {0}", typeString);
             }
 
             this.context.OutputType = type;

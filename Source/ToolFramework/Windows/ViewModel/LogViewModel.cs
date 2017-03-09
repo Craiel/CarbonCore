@@ -9,8 +9,6 @@
 
     using CarbonCore.ToolFramework.Windows.Contracts.ViewModels;
     using CarbonCore.Utils.Contracts.IoC;
-    using CarbonCore.Utils.Diagnostics;
-    using CarbonCore.Utils.Edge.TraceListeners;
     using CarbonCore.Utils.Edge.WPF;
     using CarbonCore.Utils.Edge.WPF.Collections;
 
@@ -48,7 +46,7 @@
                 this.eventCount.Add(type, 0);
             }
 
-            this.updateTimer = new Timer(this.OnPollEvents, null, TimeSpan.FromSeconds(1), TimeSpan.FromMilliseconds(100));
+            //this.updateTimer = new Timer(this.OnPollEvents, null, TimeSpan.FromSeconds(1), TimeSpan.FromMilliseconds(100));
         }
 
         // -------------------------------------------------------------------
@@ -158,7 +156,7 @@
             }
         }
 
-        private void ReceiveEvent(TraceEventData data)
+        /*private void ReceiveEvent(TraceEventData data)
         {
             var vm = this.factory.Resolve<ILogEntryViewModel>();
             vm.SetData(data);
@@ -175,11 +173,7 @@
 
         private void OnPollEvents(object state)
         {
-            IList<TraceEventData> data = EventTraceListener.PollEventData();
-            foreach (TraceEventData eventData in data)
-            {
-                this.ReceiveEvent(eventData);
-            }
-        }
+            Logger.Warn("Event Listener no longer defined!");
+        }*/
     }
 }

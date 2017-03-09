@@ -9,8 +9,9 @@
     using CarbonCore.Processing.Source.Collada.Effect;
     using CarbonCore.Processing.Source.Collada.General;
     using CarbonCore.Processing.Source.Collada.Geometry;
-    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.IO;
+
+    using NLog;
 
     public struct ColladaMeshInfo
     {
@@ -21,6 +22,8 @@
 
     public class ColladaInfo
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly List<ColladaMeshInfo> meshInfos;
         private readonly IDictionary<string, ModelMaterialElement> materialInfo;
         private readonly IDictionary<string, string> imageInfo;
@@ -180,7 +183,7 @@
             {
                 if (string.IsNullOrEmpty(image.InitFrom.Source))
                 {
-                    Diagnostic.Error("Collada Image InitFrom value was null for " + image.Name);
+                    Logger.Error("Collada Image InitFrom value was null for " + image.Name);
                     continue;
                 }
 
@@ -242,7 +245,7 @@
                     }
                     else
                     {
-                        Diagnostic.Warning("Unhandled effect entry! Check source");
+                        Logger.Warn("Unhandled effect entry! Check source");
                         continue;
                     }
 

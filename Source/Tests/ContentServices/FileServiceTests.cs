@@ -11,7 +11,6 @@
     using CarbonCore.Tests.Utils;
     using CarbonCore.Utils;
     using CarbonCore.Utils.Contracts.IoC;
-    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.IO;
     using CarbonCore.Utils.IoC;
 

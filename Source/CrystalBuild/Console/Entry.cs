@@ -3,8 +3,7 @@
     using Applications.CrystalBuild.Contracts;
 
     using IoC;
-
-    using Utils.Diagnostics;
+    
     using Utils.Edge.IoC;
 
     public static class Entry
@@ -16,8 +15,6 @@
         {
             var container = CarbonContainerAutofacBuilder.Build<CrystalBuildCSharpModule>();
             container.Resolve<IMain>().Start();
-
-            Profiler.TraceProfilerStatistics();
         }
     }
 }

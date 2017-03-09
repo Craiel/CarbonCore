@@ -2,13 +2,17 @@
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Diagnostics;
+
     using CarbonCore.ContentServices.Data;
     using CarbonCore.ContentServices.Sql.Contracts;
-    using CarbonCore.Utils.Diagnostics;
+
+    using NLog;
 
     public class FileService : IFileService
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly IList<IFileServiceProvider> providers;
         private readonly IDictionary<FileEntryKey, IFileServiceProvider> fileProviderLookup;
 
@@ -112,7 +116,7 @@
 
         public void Delete(FileEntryKey key)
         {
-            Diagnostic.Assert(this.fileProviderLookup.ContainsKey(key));
+            Debug.Assert(this.fileProviderLookup.ContainsKey(key));
 
             this.fileProviderLookup[key].Delete(key);
             this.fileProviderLookup.Remove(key);
@@ -131,14 +135,14 @@
         
         public void AddProvider(IFileServiceProvider provider)
         {
-            Diagnostic.Assert(!this.providers.Contains(provider));
+            Debug.Assert(!this.providers.Contains(provider));
 
             this.MixInProvider(provider);
         }
 
         public void RemoveProvider(IFileServiceProvider provider)
         {
-            Diagnostic.Assert(this.providers.Contains(provider));
+            Debug.Assert(this.providers.Contains(provider));
 
             this.MixOutProvider(provider);
 
@@ -178,7 +182,7 @@
                 throw new InvalidOperationException(string.Format("Entry {0} does not exist", key));
             }
 
-            Diagnostic.Warning("Warning! Changing version of {0} to {1}", key, version);
+            Logger.Warn("Warning! Changing version of {0} to {1}", key, version);
             provider.SetVersion(key, version);
         }
 
@@ -201,7 +205,7 @@
                 throw new KeyNotFoundException(string.Format("File does not exist: {0}", key));
             }
 
-            Diagnostic.Warning("Warning! Changing create date of {0} to {1}", key, date);
+            Logger.Warn("Warning! Changing create date of {0} to {1}", key, date);
             provider.SetCreateDate(key, date);
         }
 
@@ -230,7 +234,7 @@
                 throw new ArgumentException("Modified date has to be equal or newer than Create date");
             }
 
-            Diagnostic.Warning("Warning! Changing modified date of {0} to {1}", key, date);
+            Logger.Warn("Warning! Changing modified date of {0} to {1}", key, date);
             provider.SetModifiedDate(key, date);
         }
 
@@ -302,19 +306,19 @@
                 int providerVersion = provider.GetVersion(key);
                 if (currentVersion <= providerVersion)
                 {
-                    Diagnostic.Warning("Ignoring entry {0} in {1}, version {2} < {3} from {4}", key, provider, providerVersion, currentVersion, this.fileProviderLookup[key]);
+                    Logger.Warn("Ignoring entry {0} in {1}, version {2} < {3} from {4}", key, provider, providerVersion, currentVersion, this.fileProviderLookup[key]);
                     continue;
                 }
 
                 // The provider version is more recent than the one we have so replace
-                Diagnostic.Warning("Replacing version {0} of {1} ({2}) with version {3} from {4}", currentVersion, key, this.fileProviderLookup[key], providerVersion, provider);
+                Logger.Warn("Replacing version {0} of {1} ({2}) with version {3} from {4}", currentVersion, key, this.fileProviderLookup[key], providerVersion, provider);
                 this.fileProviderLookup[key] = provider;
             }
         }
 
         private void MixOutProvider(IFileServiceProvider provider)
         {
-            Diagnostic.Assert(this.providers.Contains(provider));
+            Debug.Assert(this.providers.Contains(provider));
 
             IList<FileEntryKey> files = provider.GetFiles();
             if (files != null)

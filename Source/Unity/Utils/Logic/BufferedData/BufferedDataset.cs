@@ -2,15 +2,19 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Threading;
 
     using CarbonCore.Unity.Utils.Contracts.BufferedData;
     using CarbonCore.Utils.Contracts.IoC;
-    using CarbonCore.Utils.Diagnostics;
+
+    using NLog;
 
     public class BufferedDataset : EngineComponent, IBufferedDataSetInternal
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private static int nextId;
 
         private readonly IFactory factory;
@@ -145,7 +149,7 @@
         // -------------------------------------------------------------------
         private void DoAddInstance(IBufferedDataEntry instance)
         {
-            Diagnostic.Assert(instance != null, "Instance can not be null!");
+            Debug.Assert(instance != null, "Instance can not be null!");
 
             Type type = instance.GetType();
             IList<IBufferedDataEntry> data;
@@ -155,18 +159,18 @@
                 this.instances.Add(type, data);
             }
 
-            Diagnostic.Assert(!data.Contains(instance), "Instance was already added!");
+            Debug.Assert(!data.Contains(instance), "Instance was already added!");
             data.Add(instance);
         }
 
         private void DoRemoveInstance(IBufferedDataEntry instance)
         {
-            Diagnostic.Assert(instance != null, "Instance can not be null!");
+            Debug.Assert(instance != null, "Instance can not be null!");
 
             Type type = instance.GetType();
             if (!this.instances.ContainsKey(type))
             {
-                Diagnostic.Warning("Instance type was not registered");
+                Logger.Warn("Instance type was not registered");
                 return;
             }
 

@@ -4,10 +4,12 @@
     using System.Data;
     using System.Threading;
 
-    using CarbonCore.Utils.Diagnostics;
+    using NLog;
 
     public class SqlConnectorConnection : IDisposable
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private static int nextConnectionId = 1;
 
         private readonly IDbConnection connection;
@@ -131,7 +133,7 @@
 
             if (this.activeTransaction == null || this.activeTransaction.IsDiposed)
             {
-                Diagnostic.Warning("Creating command without active transaction!");
+                Logger.Warn("Creating command without active transaction!");
             }
 
             this.activeCommand = new SqlConnectorCommand(this.connection.CreateCommand());

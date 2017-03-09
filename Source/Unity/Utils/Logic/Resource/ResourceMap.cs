@@ -4,12 +4,15 @@
     using System.Collections.Generic;
 
     using CarbonCore.Unity.Utils.Data;
-    using CarbonCore.Utils.Diagnostics;
+
+    using NLog;
 
     public class ResourceMap<T> where T : class
     {
         private const int KeyLookupLength = 2;
         private const int KeyLookupMaxDepth = 50;
+
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly IDictionary<ResourceKey, T> data;
 
@@ -61,7 +64,7 @@
         {
             if (this.resources.Contains(source))
             {
-                Diagnostic.Error("Resource {0} was already loaded, can not add as a link");
+                Logger.Error("Resource {0} was already loaded, can not add as a link");
                 return;
             }
 
@@ -73,7 +76,7 @@
                 }
                 else
                 {
-                    Diagnostic.Error("Resource {0} was already linked to {1}, skipping link to {2}", source, this.linkToResource[source], target);
+                    Logger.Error("Resource {0} was already linked to {1}, skipping link to {2}", source, this.linkToResource[source], target);
                     return;
                 }
             }
@@ -95,7 +98,7 @@
             if (!this.links.Contains(source))
             {
                 // Link was not registered
-                Diagnostic.Warning("Unregister link called with non existing key {0}", source);
+                Logger.Warn("Unregister link called with non existing key {0}", source);
                 return;
             }
 
@@ -143,7 +146,7 @@
         {
             if (!this.data.ContainsKey(key))
             {
-                Diagnostic.Warning("Unregister Resource called with non existing key {0}", key);
+                Logger.Warn("Unregister Resource called with non existing key {0}", key);
                 return;
             }
 
@@ -237,7 +240,7 @@
         {
             if (depth > KeyLookupMaxDepth)
             {
-                Diagnostic.Error("ResourceKey lookup exceeded max depth, probably circular resource link!");
+                Logger.Error("ResourceKey lookup exceeded max depth, probably circular resource link!");
                 return null;
             }
 

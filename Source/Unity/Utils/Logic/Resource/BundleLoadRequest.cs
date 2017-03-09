@@ -3,8 +3,6 @@
     using System.IO;
 
     using CarbonCore.Unity.Utils.Logic.Enums;
-    using CarbonCore.Utils.Diagnostics;
-    using CarbonCore.Utils.Diagnostics.Metrics;
     using CarbonCore.Utils.IO;
 
     using UnityEngine;
@@ -29,7 +27,6 @@
         {
             this.Info = info;
             this.File = file;
-            this.Metric = Diagnostic.BeginTimeMeasure();
         }
 
         // -------------------------------------------------------------------
@@ -38,9 +35,7 @@
         public BundleLoadInfo Info { get; private set; }
 
         public CarbonFile File { get; private set; }
-
-        public MetricTime Metric { get; private set; }
-
+        
         public void LoadImmediate()
         {
             if ((this.Info.Flags & BundleLoadFlags.Uncompressed) != 0)

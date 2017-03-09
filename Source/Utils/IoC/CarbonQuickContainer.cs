@@ -2,15 +2,19 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Reflection;
 
     using CarbonCore.Utils.Contracts.IoC;
-    using CarbonCore.Utils.Diagnostics;
+
+    using NLog;
 
     public partial class CarbonQuickContainer : ICarbonContainer
     {
         // Lower this to trace resolve errors
         private const long ResolveHardLimit = long.MaxValue;
+
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private static readonly ResolvePersistentContext PersistentContext = new ResolvePersistentContext();
 
@@ -38,7 +42,7 @@
             IList<ICarbonQuickBinding> moduleBindings = module.GetQuickBindings();
             if (moduleBindings == null)
             {
-                Diagnostic.Warning("Module {0} has no bindings", module.GetType().Name);
+                Logger.Warn("Module {0} has no bindings", module.GetType().Name);
                 return;
             }
 
@@ -210,16 +214,16 @@
 
             if (binding.Instance != null)
             {
-                Diagnostic.Assert(binding.IsAlwaysUnique == false, "Binding can not be always unique with explicit instance");
+                Debug.Assert(binding.IsAlwaysUnique == false, "Binding can not be always unique with explicit instance");
             }
 
             if (binding.IsSingleton)
             {
-                Diagnostic.Assert(!binding.IsAlwaysUnique, "Binding can not be singleton and always unique!");
+                Debug.Assert(!binding.IsAlwaysUnique, "Binding can not be singleton and always unique!");
             }
 
             // Test to make sure we have either an instance or implementation
-            Diagnostic.Assert(binding.Implementation != null || binding.Instance != null);
+            Debug.Assert(binding.Implementation != null || binding.Instance != null);
         }
     }
 }

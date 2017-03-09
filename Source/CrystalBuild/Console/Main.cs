@@ -46,6 +46,9 @@
         // -------------------------------------------------------------------
         protected override void StartFinished()
         {
+            var test = new ScriptingEngine();
+            test.Execute();
+
             if (this.projectRoot == null)
             {
                 this.Arguments.PrintArgumentUse();

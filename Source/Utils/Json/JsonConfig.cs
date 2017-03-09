@@ -1,16 +1,20 @@
 ﻿namespace CarbonCore.Utils.Json
 {
     using System;
+    using System.Diagnostics;
 
     using CarbonCore.Utils.Contracts;
-    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.IO;
 
     using Newtonsoft.Json;
-    
+
+    using NLog;
+
     public class JsonConfig<T> : IJsonConfig<T>
         where T : class
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private CarbonFile configFile;
         
         // -------------------------------------------------------------------
@@ -27,7 +31,7 @@
         public virtual bool Save(CarbonFile file = null)
         {
             CarbonFile targetFile = file ?? this.configFile;
-            Diagnostic.Assert(targetFile != null);
+            Debug.Assert(targetFile != null);
 
             try
             {
@@ -36,8 +40,7 @@
             }
             catch (Exception e)
             {
-                Diagnostic.Exception(e);
-                Diagnostic.Error("Could not save config to {0}", file);
+                Logger.Error(e, "Could not save config to {0}", file);
                 return false;
             }
         }
@@ -66,12 +69,12 @@
             }
             else
             {
-                Diagnostic.Warning("Config {0} does not exist, skipping", file);
+                Logger.Warn("Config {0} does not exist, skipping", file);
             }
 
             if (this.Current == null)
             {
-                Diagnostic.Error("Config is invalid, resetting to default");
+                Logger.Error("Config is invalid, resetting to default");
                 this.Current = this.GetDefault();
 
                 JsonExtensions.SaveToFile(file, this.Current, false, Formatting.Indented);

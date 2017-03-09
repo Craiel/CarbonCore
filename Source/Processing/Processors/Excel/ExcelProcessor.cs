@@ -5,9 +5,10 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-
-    using CarbonCore.Utils.Diagnostics;
+    
     using CarbonCore.Utils.IO;
+
+    using NLog;
 
     using NPOI.SS.UserModel;
     using NPOI.XSSF.UserModel;
@@ -15,7 +16,9 @@
     public static class ExcelProcessor
     {
         private const string DataEndMarker = "-END-";
-        
+
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
@@ -24,7 +27,7 @@
             using (FileStream stream = source.OpenRead())
             {
                 var workBook = new XSSFWorkbook(stream);
-                Diagnostic.Info("  - {0} Sheet(s)", workBook.NumberOfSheets);
+                Logger.Info("  - {0} Sheet(s)", workBook.NumberOfSheets);
                 ExcelData data = new ExcelData { FileName = source.FileName };
 
                 for (var i = 0; i < workBook.NumberOfSheets; i++)
@@ -32,7 +35,7 @@
                     ISheet sheet = workBook.GetSheetAt(i);
                     if (sheet.PhysicalNumberOfRows <= 1)
                     {
-                        Diagnostic.Warning("Sheet has insufficient rows: {0}", source.FileName);
+                        Logger.Warn("Sheet has insufficient rows: {0}", source.FileName);
                         continue;
                     }
                     
@@ -171,7 +174,7 @@
 
                 if (primaryKeyCheck.Contains(key))
                 {
-                    Diagnostic.Warning("Duplicate or invalid primary key data in sheet {0}: {1}", sheet.SheetName, key);
+                    Logger.Warn("Duplicate or invalid primary key data in sheet {0}: {1}", sheet.SheetName, key);
                     continue;
                 }
 

@@ -2,13 +2,13 @@
 {
     using System;
     using System.ComponentModel;
+    using System.Diagnostics;
     using System.Reflection;
     using System.Runtime.CompilerServices;
     using System.Windows;
     using System.Windows.Threading;
     
     using CarbonCore.ToolFramework.Windows.Contracts.ViewModels;
-    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.Edge.WPF;
     using JetBrains.Annotations;
 
@@ -26,7 +26,7 @@
 
         public void Initialize()
         {
-            Diagnostic.Assert(
+            Debug.Assert(
                 !this.IsInitialized,
                 string.Format("ViewModel {0} was already initialized", this.GetType()));
 
@@ -57,7 +57,7 @@
 
         protected void NotifyPropertyChangedExplicit(string propertyName)
         {
-            Diagnostic.AssertUnmanaged(!string.IsNullOrEmpty(propertyName), "Explicit notify must have value, call All instead!");
+            Debug.Assert(!string.IsNullOrEmpty(propertyName), "Explicit notify must have value, call All instead!");
 
             if (this.PropertyChanged == null)
             {
@@ -185,7 +185,7 @@
 #if DEBUG
             System.Diagnostics.Debug.Assert(info != null, "Property missing", "Property {0} does not exist on {1}", this.GetType(), propertyName);
 #else
-            Diagnostic.Warning("PropertyChanged on {0} with invalid property {1}", this.GetType(), propertyName);
+            Logger.Warn("PropertyChanged on {0} with invalid property {1}", this.GetType(), propertyName);
 #endif
         }
     }

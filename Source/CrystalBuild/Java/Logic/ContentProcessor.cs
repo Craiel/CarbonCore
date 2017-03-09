@@ -1,10 +1,10 @@
 ﻿namespace CarbonCore.CrystalBuild.Java.Logic
 {
+    using System.Diagnostics;
     using System.Text;
 
     using CarbonCore.CrystalBuild.Contracts;
     using CarbonCore.Utils;
-    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.IO;
 
     public abstract class ContentProcessor : IContentProcessor
@@ -26,13 +26,13 @@
         // -------------------------------------------------------------------
         public void Process(CarbonFile source)
         {
-            Diagnostic.Assert(this.context != null, "Context must be set!");
+            Debug.Assert(this.context != null, "Context must be set!");
             this.DoProcess(source);
         }
 
         public string GetData()
         {
-            Diagnostic.Assert(this.context != null, "Context must be set!");
+            Debug.Assert(this.context != null, "Context must be set!");
 
             this.PreprocessData();
             return this.PostProcessData(this.builder.ToString());

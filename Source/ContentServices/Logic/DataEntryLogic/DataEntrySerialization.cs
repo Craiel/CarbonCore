@@ -5,15 +5,18 @@
     using System.IO;
 
     using CarbonCore.ContentServices.Contracts;
-    using CarbonCore.Utils.Diagnostics;
 
     using JetBrains.Annotations;
 
     using Newtonsoft.Json;
     using Newtonsoft.Json.Bson;
 
+    using NLog;
+
     public static class DataEntrySerialization
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private static readonly JsonSerializer Serializer = new JsonSerializer();
         
         // -------------------------------------------------------------------
@@ -166,7 +169,7 @@
                     }
                     catch (Exception e)
                     {
-                        Diagnostic.Error("Could not set property {0} to {1}: {2}", serializationEntry.Property.PropertyName, value, e);
+                        Logger.Error("Could not set property {0} to {1}: {2}", serializationEntry.Property.PropertyName, value, e);
                         throw;
                     }
                     

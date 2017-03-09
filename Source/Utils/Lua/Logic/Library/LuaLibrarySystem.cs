@@ -1,10 +1,13 @@
 ﻿namespace CarbonCore.Utils.Lua.Logic.Library
 {
-    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.Lua.Contracts;
+
+    using NLog;
 
     public class LuaLibrarySystem : LuaLibraryBase
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly ILuaRuntimeFunction printLineFunction;
 
         private readonly ILuaRuntimeFunction infoFunction;
@@ -29,17 +32,17 @@
         // -------------------------------------------------------------------
         public void LogInfo(string message)
         {
-            Diagnostic.Info(message);
+            Logger.Info(message);
         }
 
         public void LogWarning(string message)
         {
-            Diagnostic.Warning(message);
+            Logger.Warn(message);
         }
 
         public void LogError(string message)
         {
-            Diagnostic.Error(message);
+            Logger.Error(message);
         }
 
         // -------------------------------------------------------------------

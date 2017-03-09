@@ -7,10 +7,12 @@ namespace CarbonCore.Unity.Utils.Logic.Scene
     using CarbonCore.Unity.Utils.Contracts;
     using CarbonCore.Unity.Utils.Logic.Enums;
     using CarbonCore.Unity.Utils.Logic.Resource;
-    using CarbonCore.Utils.Diagnostics;
+
+    using NLog;
 
     using UnityEngine;
 
+    using Logger = UnityEngine.Logger;
 #if UNITY_5_3 || UNITY_5_4 || UNITY_5_5 || UNITY_5_6
     using UnityEngine.SceneManagement;
 #endif
@@ -19,6 +21,8 @@ namespace CarbonCore.Unity.Utils.Logic.Scene
 
     public abstract class BaseScene : IScene
     {
+        private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly IDictionary<string, AsyncOperation> additiveLoadLevelOperations;
 
         private readonly List<PartialSceneLoadingDelegate> pendingLoadingActions;
@@ -126,7 +130,7 @@ namespace CarbonCore.Unity.Utils.Logic.Scene
             catch (Exception e)
             {
                 this.HadErrors = true;
-                Diagnostic.Error("Error in Load of Scene {0}({1}): {2}", this.GetType(), step, e);
+                Logger.Error("Error in Load of Scene {0}({1}): {2}", this.GetType(), step, e);
                 return true;
             }
         }
@@ -177,7 +181,7 @@ namespace CarbonCore.Unity.Utils.Logic.Scene
             catch (Exception e)
             {
                 this.HadErrors = true;
-                Diagnostic.Error("Error in Destroy of Scene {0}({1}): {2}", this.GetType(), step, e);
+                Logger.Error("Error in Destroy of Scene {0}({1}): {2}", this.GetType(), step, e);
                 return true;
             }
         }

@@ -3,10 +3,13 @@
     using System.Collections.Generic;
 
     using CarbonCore.Utils.Lua.Contracts;
-    using Diagnostics;
+
+    using NLog;
 
     public static class LuaLibrary
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private static readonly LuaLibrarySystem SystemLibrary = new LuaLibrarySystem();
 
         private static readonly IDictionary<string, LuaLibraryBase> LibraryRegistry = new Dictionary<string, LuaLibraryBase>();
@@ -26,7 +29,7 @@
         {
             if (LibraryRegistry.ContainsKey(library.Name))
             {
-                Diagnostic.Warning("Library already registered: {0}", library.Name);
+                Logger.Warn("Library already registered: {0}", library.Name);
                 return;
             }
 
@@ -38,7 +41,7 @@
             LuaLibraryBase library;
             if (!LibraryRegistry.TryGetValue(name, out library))
             {
-                Diagnostics.Diagnostic.Error("Library {0} does not exist in LuaLibrary", name);
+                Logger.Error("Library {0} does not exist in LuaLibrary", name);
                 return false;
             }
 

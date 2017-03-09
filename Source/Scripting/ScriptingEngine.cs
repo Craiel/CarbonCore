@@ -15,7 +15,7 @@
             dynamic foo = this.globals;
             foo.test = "abc";
             
-            CSharpScript.EvaluateAsync("var foo = 0;", null, this.globals);
+            //CSharpScript.EvaluateAsync("var foo = 0;", null, this.globals);
 
             //this.state.ContinueWithAsync()
         }

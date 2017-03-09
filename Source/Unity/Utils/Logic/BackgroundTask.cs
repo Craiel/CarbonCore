@@ -3,10 +3,12 @@
     using System;
     using System.Threading;
 
-    using CarbonCore.Utils.Diagnostics;
+    using NLog;
 
     public class BackgroundTask : IDisposable
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly Thread thread;
 
         private readonly Action threadMain;
@@ -54,7 +56,7 @@
                 return;
             }
 
-            Diagnostic.Warning("Background Task did not end gracefully!");
+            Logger.Warn("Background Task did not end gracefully!");
             this.thread.Abort();
         }
 

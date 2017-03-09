@@ -1,11 +1,11 @@
 ﻿namespace CarbonCore.Unity.Utils.Logic.BufferedData
 {
     using System;
+    using System.Diagnostics;
     using System.Threading;
 
     using CarbonCore.Unity.Utils.Contracts.BufferedData;
     using CarbonCore.Utils.Contracts.IoC;
-    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.Threading;
 
     public abstract class BufferedData : EngineComponent, IBufferedData
@@ -152,7 +152,7 @@
             }
 
             // Frame count second
-            Diagnostic.Assert(this.CommitFrameMaxThreshold > this.CommitFrameMinThreshold);
+            Debug.Assert(this.CommitFrameMaxThreshold > this.CommitFrameMinThreshold);
 
             long elapsedFrames = time.Frame - this.lastCommitFrame;
             if (elapsedFrames < this.CommitFrameMinThreshold)

@@ -2,11 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
 
     using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.Logic.Attributes;
     using CarbonCore.Utils;
-    using CarbonCore.Utils.Diagnostics;
 
     public class DataEntrySerializationDescriptor
     {
@@ -15,7 +15,7 @@
         // -------------------------------------------------------------------
         public DataEntrySerializationDescriptor(Type type)
         {
-            Diagnostic.Assert(typeof(IDataEntry).IsAssignableFrom(type));
+            Debug.Assert(typeof(IDataEntry).IsAssignableFrom(type));
 
             this.Type = type;
 

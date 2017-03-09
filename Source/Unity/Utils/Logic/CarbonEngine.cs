@@ -3,8 +3,6 @@
     using CarbonCore.Unity.Utils.Logic.Json;
     using CarbonCore.Unity.Utils.Logic.Resource;
     using CarbonCore.Utils.Contracts;
-    using CarbonCore.Utils.Diagnostics;
-    using CarbonCore.Utils.Diagnostics.Metrics;
     using CarbonCore.Utils.Json;
 
     using UnityEngine;
@@ -37,11 +35,6 @@
             {
                 UnityDebugTraceListener.Setup();
             }
-
-            Diagnostic.SetInstance(new CarbonDiagnostics<T, MetricProvider>());
-
-            Diagnostic.UnregisterThread();
-            Diagnostic.RegisterThread(this.GetType().Name);
         }
     }
 }

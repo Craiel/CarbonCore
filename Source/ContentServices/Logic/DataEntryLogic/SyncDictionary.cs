@@ -3,8 +3,7 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
-
-    using CarbonCore.Utils.Diagnostics;
+    using System.Diagnostics;
 
     public class SyncDictionary<T, TK, TV> : IDictionary<TK, TV>
         where T : IDictionary<TK, TV>
@@ -19,7 +18,7 @@
 
         public SyncDictionary(T value)
         {
-            Diagnostic.Assert(value != null);
+            Debug.Assert(value != null);
 
             this.Value = value;
             this.IsChanged = true;

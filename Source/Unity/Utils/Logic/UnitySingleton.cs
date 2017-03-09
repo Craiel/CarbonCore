@@ -1,11 +1,14 @@
 ﻿namespace CarbonCore.Unity.Utils.Logic
 {
     using CarbonCore.Unity.Utils.Contracts;
-    using CarbonCore.Utils.Diagnostics;
+
+    using NLog;
 
     public abstract class UnitySingleton<T> : IUnitySingleton
         where T : class, IUnitySingleton, new()
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
@@ -46,7 +49,7 @@
 
         public virtual void Initialize()
         {
-            Diagnostic.Info("Initializing Singleton {0}", this.GetType());
+            Logger.Info("Initializing Singleton {0}", this.GetType());
 
             this.IsInitialized = true;
         }
@@ -61,7 +64,7 @@
 
         public virtual void DestroySingleton()
         {
-            Diagnostic.Info("Destroying Singleton {0}", this.GetType());
+            Logger.Info("Destroying Singleton {0}", this.GetType());
 
             Instance = null;
         }

@@ -5,15 +5,18 @@
     using System.Globalization;
     using System.Linq;
     using System.Reflection;
-
-    using CarbonCore.Utils.Diagnostics;
+    
     using CarbonCore.Utils.IO;
+
+    using NLog;
 
     public static class AssemblyExtensions
     {
         private const char ResourceDelimiter = '.';
 
         private const string ResourceLocalIndicator = @"__.";
+
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         // -------------------------------------------------------------------
         // Public
@@ -49,7 +52,7 @@
             Assembly[] assemblies = domain.GetAssemblies();
             if (assemblies.Length <= 0)
             {
-                Diagnostic.Warning("Could not locate any assemblies in domain {0}", domain);
+                Logger.Warn("Could not locate any assemblies in domain {0}", domain);
                 return null;
             }
 
@@ -148,7 +151,7 @@
             {
                 if (stream == null)
                 {
-                    Diagnostic.Error("Could not Open Resource Stream: {0}", resourcePath);
+                    Logger.Error("Could not Open Resource Stream: {0}", resourcePath);
                     return null;
                 }
                 
@@ -165,7 +168,7 @@
             string[] resources = assembly.GetManifestResourceNames();
             if (resources.Length <= 0)
             {
-                Diagnostic.Warning("No resource to load for {0}", assembly);
+                Logger.Warn("No resource to load for {0}", assembly);
                 return null;
             }
 
@@ -196,7 +199,10 @@
         public static IList<CarbonFile> ExtractResources(this Assembly assembly, CarbonDirectory target, string path = null, bool replace = true)
         {
             CarbonDirectory location = assembly.GetDirectory();
-            Diagnostic.Assert(location.Exists);
+            if (!location.Exists)
+            {
+                throw new InvalidOperationException("ExtractResources with invalid location");
+            }
 
             target.Create();
 
@@ -216,7 +222,7 @@
                 using (var writer = targetFile.OpenCreate())
                 {
                     writer.Write(resources[file], 0, resources[file].Length);
-                    Diagnostic.Info("Extracted {0} ({1})", targetFile, targetFile.Size);
+                    Logger.Info("Extracted {0} ({1})", targetFile, targetFile.Size);
                 }
             }
 

@@ -4,10 +4,12 @@
     using System.Collections.Generic;
     using System.Threading;
 
-    using CarbonCore.Utils.Diagnostics;
+    using NLog;
 
     public class TaskPoolInstance : IDisposable
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private static int nextId;
         
         private readonly Queue<Task> queue;
@@ -134,7 +136,7 @@
                 }
                 catch (Exception e)
                 {
-                    Diagnostic.Exception(e);
+                    Logger.Error(e);
                     task.Error = e;
                     task.Status = TaskStatus.Errored;
                 }

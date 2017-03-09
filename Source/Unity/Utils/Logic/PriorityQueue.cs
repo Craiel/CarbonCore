@@ -3,9 +3,9 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics;
 
     using CarbonCore.Unity.Utils.Contracts;
-    using CarbonCore.Utils.Diagnostics;
 
     // https://github.com/BlueRaja/High-Speed-Priority-Queue-for-C-Sharp
     public class HeapPriorityQueue<T> : IPriorityQueue<T>
@@ -19,7 +19,7 @@
         // -------------------------------------------------------------------
         public HeapPriorityQueue(int maxNodes)
         {
-            Diagnostic.Assert(maxNodes > 0);
+            Debug.Assert(maxNodes > 0);
 
             this.nodes = new T[maxNodes + 1];
             this.lifetimeNodeQueueCount = 0;

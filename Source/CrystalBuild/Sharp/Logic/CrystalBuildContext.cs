@@ -5,11 +5,15 @@
     using Data;
     using Data.CSP;
     using Enums;
-    using Utils.Diagnostics;
+
+    using NLog;
+
     using Utils.IO;
 
     public class CrystalBuildContext
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
@@ -93,7 +97,7 @@
 
             if (this.Sources.Contains(relativeSource))
             {
-                Diagnostic.Warning("Skipping Duplicate Source: {0}", relativeSource);
+                Logger.Warn("Skipping Duplicate Source: {0}", relativeSource);
                 return;
             }
 
@@ -104,7 +108,7 @@
         {
             if (this.Content.Contains(relativeSource))
             {
-                Diagnostic.Warning("Skipping Duplicate Content: {0}", relativeSource);
+                Logger.Warn("Skipping Duplicate Content: {0}", relativeSource);
                 return;
             }
 
@@ -120,7 +124,7 @@
         {
             if (this.BuildConfigs.ContainsKey(id))
             {
-                Diagnostic.Error("Build configuration already exists: {0}", id);
+                Logger.Error("Build configuration already exists: {0}", id);
                 return null;
             }
 
@@ -177,7 +181,7 @@
         {
             if (this.TTSources.ContainsKey(ttScript))
             {
-                Diagnostic.Warning("Skipping Duplicate TT Source: {0}", ttScript);
+                Logger.Warn("Skipping Duplicate TT Source: {0}", ttScript);
                 return;
             }
 
@@ -188,7 +192,7 @@
         {
             if (this.XamlSources.Contains(xaml))
             {
-                Diagnostic.Warning("Skipping Duplicate Xaml Source: {0}", xaml);
+                Logger.Warn("Skipping Duplicate Xaml Source: {0}", xaml);
                 return;
             }
 

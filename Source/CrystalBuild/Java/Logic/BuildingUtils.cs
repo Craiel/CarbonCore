@@ -1,10 +1,13 @@
 ﻿namespace CarbonCore.CrystalBuild.Java.Logic
 {
     using CarbonCore.CrystalBuild.Contracts;
-    using CarbonCore.Utils.Diagnostics;
+
+    using NLog;
 
     public static class BuildingUtils
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
@@ -12,21 +15,21 @@
         {
             var context = processor.GetContext<IProcessingContext>();
 
-            Diagnostic.Info(string.Empty);
-            Diagnostic.Info("Result for {0}", name);
-            Diagnostic.Info(" -------------------");
+            Logger.Info(string.Empty);
+            Logger.Info("Result for {0}", name);
+            Logger.Info(" -------------------");
             foreach (string warning in context.Warnings)
             {
-                Diagnostic.Warning(" - WARNING: {0}", warning);
+                Logger.Warn(" - WARNING: {0}", warning);
             }
 
             foreach (string error in context.Errors)
             {
-                Diagnostic.Error(" - ERROR: {0}", error);
+                Logger.Error(" - ERROR: {0}", error);
             }
 
-            Diagnostic.Info(string.Empty);
-            Diagnostic.Info("{0} Done with {1} Errors, {2} Warnings\n\n", name, context.Errors.Count, context.Warnings.Count);
+            Logger.Info(string.Empty);
+            Logger.Info("{0} Done with {1} Errors, {2} Warnings\n\n", name, context.Errors.Count, context.Warnings.Count);
         }
     }
 }

@@ -5,13 +5,16 @@
 
     using CarbonCore.ContentServices.Logic.DataEntryLogic;
     using CarbonCore.Tests.ContentServices.Data;
-    using CarbonCore.Utils.Diagnostics;
+
+    using NLog;
 
     using NUnit.Framework;
 
     [TestFixture]
     public class DataEntryTests
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
@@ -238,69 +241,43 @@
             var clone = (DataTestEntry)DataTestData.FullTestEntry.Clone();
 
             long totalData = 0;
-            using (new ProfileRegion("DataEntry.JsonSerialization"))
+            for (var i = 0; i < cycles; i++)
             {
-                var metric = Diagnostic.BeginTimeMeasure();
-
-                for (var i = 0; i < cycles; i++)
-                {
-                    byte[] data = DataEntrySerialization.Save(clone);
-                    Assert.Greater(data.Length, 0);
-                    totalData += data.Length;
-                    DataEntrySerialization.Load<DataTestEntry>(data);
-                    Diagnostic.TakeTimeMeasure(metric);
-                }
-
-                Diagnostic.TraceMeasure(metric, "DataEntry.JsonSerialization");
+                byte[] data = DataEntrySerialization.Save(clone);
+                Assert.Greater(data.Length, 0);
+                totalData += data.Length;
+                DataEntrySerialization.Load<DataTestEntry>(data);
             }
 
-            Diagnostic.Info("JSON Serialized {0} data, average: {1}", totalData, totalData / cycles);
+            Logger.Info("JSON Serialized {0} data, average: {1}", totalData, totalData / cycles);
 
             GC.Collect();
 
             totalData = 0;
-            using (new ProfileRegion("DataEntry.CompactSerialization"))
+            for (var i = 0; i < cycles; i++)
             {
-                var metric = Diagnostic.BeginTimeMeasure();
-
-                for (var i = 0; i < cycles; i++)
-                {
-                    byte[] data = DataEntrySerialization.CompactSave(clone);
-                    Assert.Greater(data.Length, 0);
-                    totalData += data.Length;
-                    DataEntrySerialization.CompactLoad<DataTestEntry>(data);
-                    Diagnostic.TakeTimeMeasure(metric);
-                }
-
-                Diagnostic.TraceMeasure(metric, "DataEntry.CompactSerialization");
+                byte[] data = DataEntrySerialization.CompactSave(clone);
+                Assert.Greater(data.Length, 0);
+                totalData += data.Length;
+                DataEntrySerialization.CompactLoad<DataTestEntry>(data);
             }
 
-            Diagnostic.Info("Compact Serialized {0} data, average: {1}", totalData, totalData / cycles);
+            Logger.Info("Compact Serialized {0} data, average: {1}", totalData, totalData / cycles);
 
             GC.Collect();
 
             totalData = 0;
-            using (new ProfileRegion("DataEntry.SyncSerialization"))
+            for (var i = 0; i < cycles; i++)
             {
-                var metric = Diagnostic.BeginTimeMeasure();
+                byte[] data = DataEntrySerialization.SyncSave(DataTestData.SyncTestEntry);
+                Assert.Greater(data.Length, 0);
+                totalData += data.Length;
 
-                for (var i = 0; i < cycles; i++)
-                {
-                    byte[] data = DataEntrySerialization.SyncSave(DataTestData.SyncTestEntry);
-                    Assert.Greater(data.Length, 0);
-                    totalData += data.Length;
-
-                    SyncTestEntry restoredSync = new SyncTestEntry();
-                    DataEntrySerialization.SyncLoad(restoredSync, data);
-                    Diagnostic.TakeTimeMeasure(metric);
-                }
-
-                Diagnostic.TraceMeasure(metric, "DataEntry.SyncSerialization");
+                SyncTestEntry restoredSync = new SyncTestEntry();
+                DataEntrySerialization.SyncLoad(restoredSync, data);
             }
 
-            Diagnostic.Info("Sync Serialized {0} data, average: {1}", totalData, totalData / cycles);
-
-            Profiler.TraceProfilerStatistics();
+            Logger.Info("Sync Serialized {0} data, average: {1}", totalData, totalData / cycles);
         }
 
         [Test]

@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Data;
     using System.Data.SQLite;
+    using System.Diagnostics;
     using System.Linq;
     using System.Threading;
     
@@ -15,11 +16,14 @@
     using CarbonCore.Utils.Contracts;
     using CarbonCore.Utils.Contracts.IoC;
     using CarbonCore.Utils.Database;
-    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.IO;
+
+    using NLog;
 
     public class SqlLiteDatabaseService : ISqlLiteDatabaseService
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly ISqlLiteConnector connector;
 
         private readonly IDictionary<string, DatabaseEntryDescriptor> checkedTables;
@@ -111,7 +115,7 @@
 
         public T Load<T>(object key, bool loadFull = false) where T : IDatabaseEntry
         {
-            Diagnostic.Assert(key != null, "Single load must have key supplied");
+            Debug.Assert(key != null, "Single load must have key supplied");
 
             DatabaseEntryDescriptor descriptor = DatabaseEntryDescriptor.GetDescriptor<T>();
             this.CheckTable(descriptor);
@@ -120,7 +124,7 @@
 
             if (results == null || results.Count <= 0)
             {
-                Diagnostic.Warning("Load<T> returned no result for key {0} on {1}", key, descriptor.Type);
+                Logger.Warn("Load<T> returned no result for key {0} on {1}", key, descriptor.Type);
                 return default(T);
             }
 
@@ -138,7 +142,7 @@
         
         public void Delete<T>(object key, bool async = false) where T : IDatabaseEntry
         {
-            Diagnostic.Assert(key != null, "Delete needs values, Drop table if you want to clear!");
+            Debug.Assert(key != null, "Delete needs values, Drop table if you want to clear!");
 
             DatabaseEntryDescriptor descriptor = DatabaseEntryDescriptor.GetDescriptor<T>();
             this.CheckTable(descriptor);
@@ -350,7 +354,7 @@
 
             if (needRecreate)
             {
-                Diagnostic.Warning("Table {0} needs to be re-created", tableName);
+                Logger.Warn("Table {0} needs to be re-created", tableName);
 
                 SqlLiteDatabaseServiceAction action = this.CreateTable(descriptor);
                 this.ProcessPendingWrites(action);
@@ -361,7 +365,7 @@
 
         private SQLiteStatement BuildInsertStatement(DatabaseEntryDescriptor descriptor, IDatabaseEntry entry)
         {
-            Diagnostic.Assert(descriptor.PrimaryKey.Attribute.PrimaryKeyMode == PrimaryKeyMode.Autoincrement, "Primary key needs to be supplied unless AutoIncrement");
+            Debug.Assert(descriptor.PrimaryKey.Attribute.PrimaryKeyMode == PrimaryKeyMode.Autoincrement, "Primary key needs to be supplied unless AutoIncrement");
 
             // Insert if we have no primary key and auto increment
             var statement = new SQLiteStatement(SqlStatementType.Insert);
@@ -381,7 +385,7 @@
             if (descriptor.PrimaryKey.Attribute.PrimaryKeyMode != PrimaryKeyMode.Autoincrement)
             {
                 // Assigning so we have to check if the entry exists, this is not optimal!
-                Diagnostic.Warning("Performing looking for exist check on {0}", descriptor.Type);
+                Logger.Warn("Performing looking for exist check on {0}", descriptor.Type);
                 bool needUpdate = this.DoCount(descriptor, new List<object> { primaryKeyValue }) == 1;
                 statement = needUpdate ? new SQLiteStatement(SqlStatementType.Update) : new SQLiteStatement(SqlStatementType.Insert);
             }
@@ -433,7 +437,7 @@
             foreach (DatabaseEntryJoinedElementDescriptor joinedElement in descriptor.JoinedElements)
             {
                 DatabaseEntryDescriptor joinedDescriptor = DatabaseEntryDescriptor.GetDescriptor(joinedElement.InternalType);
-                Diagnostic.Assert(joinedDescriptor != null, "Joined entry must have a valid Database Descriptor");
+                Debug.Assert(joinedDescriptor != null, "Joined entry must have a valid Database Descriptor");
 
                 // Make sure to check the joined table, it may not be created yet
                 this.CheckTable(joinedDescriptor);
@@ -471,7 +475,7 @@
                 }
                 else
                 {
-                    Diagnostic.Assert(keys.Count < 1000, "More than a thousand entries might not be giving the proper result!");
+                    Debug.Assert(keys.Count < 1000, "More than a thousand entries might not be giving the proper result!");
 
                     target.WhereConstraint(new SqlStatementConstraint(descriptor.PrimaryKey.Name, keys));
                 }
@@ -544,13 +548,13 @@
             }
 
             // Make sure we don't attempt this with more than a thousand for now
-            Diagnostic.Assert(primaryKeyMap.Count > 0, "Load full does not support more than a thousand entries right now, got " + results.Count);
+            Debug.Assert(primaryKeyMap.Count > 0, "Load full does not support more than a thousand entries right now, got " + results.Count);
 
             // Process the joined properties
             foreach (DatabaseEntryJoinedElementDescriptor joinedElement in descriptor.JoinedElements)
             {
                 DatabaseEntryDescriptor joinedDescriptor = DatabaseEntryDescriptor.GetDescriptor(joinedElement.InternalType);
-                Diagnostic.Assert(joinedDescriptor != null, "Joined entry must have a valid Database Descriptor");
+                Debug.Assert(joinedDescriptor != null, "Joined entry must have a valid Database Descriptor");
 
                 // Make sure to check the joined table, it may not be created yet
                 this.CheckTable(joinedDescriptor);
@@ -575,13 +579,13 @@
 
                 // Fetch the actual instances
                 IList<IDatabaseEntry> joinedEntries = this.DoLoad(joinedDescriptor, joinedPrimaryKeys, true);
-                Diagnostic.Assert(joinedEntries.Count == joinedPrimaryKeys.Count);
+                Debug.Assert(joinedEntries.Count == joinedPrimaryKeys.Count);
 
                 // Set the classes to the loaded instances
                 foreach (IDatabaseEntry joinedEntry in joinedEntries)
                 {
                     object primaryKey = joinedElement.ForeignKeyProperty.GetValue(joinedEntry);
-                    Diagnostic.Assert(primaryKeyMap.ContainsKey(primaryKey));
+                    Debug.Assert(primaryKeyMap.ContainsKey(primaryKey));
 
                     joinedElement.SetValue(primaryKeyMap[primaryKey], joinedEntry);
                 }
@@ -604,7 +608,7 @@
 
         private IEnumerable<object[]> DoLoadFields(DatabaseEntryDescriptor descriptor, IEnumerable<KeyValuePair<string, IList<object>>> whereConstraints, params string[] fieldNames)
         {
-            Diagnostic.Assert(fieldNames != null && fieldNames.Length > 0);
+            Debug.Assert(fieldNames != null && fieldNames.Length > 0);
 
             var statement = new SQLiteStatement(SqlStatementType.Select);
             statement.Table(descriptor.TableName);
@@ -689,7 +693,7 @@
                 }
 
                 this.nextPrimaryKeyLookup[descriptor.TableName]++;
-                Diagnostic.Info(
+                Logger.Info(
                     "Handing out primary key {0} for {1}",
                     this.nextPrimaryKeyLookup[descriptor.TableName],
                     descriptor.TableName);
@@ -718,7 +722,6 @@
 
         private void WriterThreadMain()
         {
-            Diagnostic.RegisterThread("SqlLite Writer");
             while (this.writerThreadActive || this.pendingActions.Count > 0)
             {
                 if (this.pendingActions.Count <= 0)
@@ -765,25 +768,21 @@
                     this.pendingActions.Dequeue();
                 }
             }
-
-            Diagnostic.UnregisterThread();
         }
 
         private void CommitAction(SqlLiteDatabaseServiceAction action)
         {
             try
             {
-                Diagnostic.Info("Executing: {0}", action.Statement);
-                using (var profileRegion = new ProfileRegion("DBWrite") { Discard = true })
+                Logger.Info("Executing: {0}", action.Statement);
+                using (IDbCommand command = this.connector.CreateCommand(action.Statement))
                 {
-                    using (IDbCommand command = this.connector.CreateCommand(action.Statement))
-                    {
-                        action.Result = command.ExecuteNonQuery();
-                    }
-
-                    action.ExecutionTime = profileRegion.ElapsedMilliseconds;
-                    action.Success = true;
+                    action.Result = command.ExecuteNonQuery();
                 }
+
+                // TODO: execution time tracking
+                action.ExecutionTime = -1;
+                action.Success = true;
             }
             catch (SQLiteException e)
             {
@@ -801,27 +800,24 @@
             try
             {
                 System.Diagnostics.Debug.WriteLine("Executing batch: {0}", actions.Count);
-                using (var profileRegion = new ProfileRegion("DBWrite") { Discard = true })
+                IList<ISqlStatement> statements = new List<ISqlStatement>();
+                foreach (SqlLiteDatabaseServiceAction action in actions)
                 {
-                    IList<ISqlStatement> statements = new List<ISqlStatement>();
-                    foreach (SqlLiteDatabaseServiceAction action in actions)
-                    {
-                        statements.Add(action.Statement);
-                    }
+                    statements.Add(action.Statement);
+                }
 
-                    using (IDbCommand command = this.connector.CreateCommand(statements))
-                    {
-                        System.Diagnostics.Debug.WriteLine("  - {0}", command.CommandText);
-                        int result = command.ExecuteNonQuery();
-                        System.Diagnostics.Debug.WriteLine("  = {0}", result);
-                    }
+                using (IDbCommand command = this.connector.CreateCommand(statements))
+                {
+                    System.Diagnostics.Debug.WriteLine("  - {0}", command.CommandText);
+                    int result = command.ExecuteNonQuery();
+                    System.Diagnostics.Debug.WriteLine("  = {0}", result);
+                }
 
-                    foreach (SqlLiteDatabaseServiceAction action in actions)
-                    {
-                        // We divide the execution time accross the bulk, not 100% accurate but good enough for batching
-                        action.ExecutionTime = profileRegion.ElapsedMilliseconds / actions.Count;
-                        action.Success = true;
-                    }
+                foreach (SqlLiteDatabaseServiceAction action in actions)
+                {
+                    // TODO: Execution time
+                    action.ExecutionTime = -1;
+                    action.Success = true;
                 }
             }
             catch (SQLiteException e)

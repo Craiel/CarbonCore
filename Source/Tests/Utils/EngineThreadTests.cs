@@ -1,15 +1,18 @@
 ﻿namespace CarbonCore.Tests.Utils
 {
     using System.Threading;
-
-    using CarbonCore.Utils.Diagnostics;
+    
     using CarbonCore.Utils.Threading;
+
+    using NLog;
 
     using NUnit.Framework;
 
     [TestFixture]
     public class EngineThreadTests
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private int threadUpdateCount;
         private int threadUpdateResult;
 
@@ -47,7 +50,7 @@
             thread.Shutdown();
 
             int optimalFramerate = targetFrameRate * seconds;
-            Diagnostic.Info("Running {0}s @ {1}fps, Result: {2}fps, optimal: {3}fps", seconds, targetFrameRate, this.threadUpdateResult, optimalFramerate);
+            Logger.Info("Running {0}s @ {1}fps, Result: {2}fps, optimal: {3}fps", seconds, targetFrameRate, this.threadUpdateResult, optimalFramerate);
         }
 
         private void ResetMetrics()
@@ -64,7 +67,7 @@
         private bool TestThreadMain(EngineTime time)
         {
             this.threadUpdateCount++;
-            // Diagnostic.Info("{0} {1} / {2}: {3}", time.Time, time.Ticks, TimeSpan.TicksPerSecond * time.Time, this.threadUpdateCount);
+            // Logger.Info("{0} {1} / {2}: {3}", time.Time, time.Ticks, TimeSpan.TicksPerSecond * time.Time, this.threadUpdateCount);
             return true;
         }
     }

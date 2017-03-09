@@ -14,12 +14,15 @@
     using CarbonCore.ToolFramework.Windows.Logic.Actions;
     using CarbonCore.Utils;
     using CarbonCore.Utils.Contracts.IoC;
-    using CarbonCore.Utils.Diagnostics;
+
+    using NLog;
 
     using ToolActionDialog = CarbonCore.ToolFramework.Windows.View.ToolActionDialog;
 
     public abstract class WindowApplicationBase : IWindowApplicationBase
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly IFactory factory;
         
         // -------------------------------------------------------------------
@@ -28,10 +31,7 @@
         protected WindowApplicationBase(IFactory factory)
         {
             this.factory = factory;
-
-            // Configure log4net
-            log4net.Config.XmlConfigurator.Configure();
-
+            
             this.Version = AssemblyExtensions.GetVersion(this.GetType());
         }
 
@@ -48,8 +48,6 @@
 
         public virtual void Start()
         {
-            Diagnostic.RegisterThread(this.GetType().Name);
-
             Application application = Application.Current;
             bool applicationDispatcherRunning = true;
             if (application == null)
@@ -92,7 +90,7 @@
             }
             catch (Exception e)
             {
-                Diagnostic.Error("Unhandled exception in Application run: {0}", e);
+                Logger.Error("Unhandled exception in Application run: {0}", e);
                 application.Shutdown(-1);
             }
         }
@@ -119,8 +117,6 @@
                 this.MainWindow.Closed -= this.OnMainWindowClosed;
                 this.MainWindow = null;
             }
-
-            Diagnostic.UnregisterThread();
         }
 
         protected virtual void StartupInitializeLogic(IToolAction toolAction, CancellationToken cancellationToken)
@@ -162,7 +158,7 @@
 
         protected virtual IBaseViewModel DoInitializeMainViewModel()
         {
-            Diagnostic.Warning("Main Window Initialization is not implemented, Window will not have DataContext!");
+            Logger.Warn("Main Window Initialization is not implemented, Window will not have DataContext!");
             return null;
         }
 

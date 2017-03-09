@@ -8,10 +8,13 @@
 
     using CarbonCore.GrammarParser.Contracts;
     using CarbonCore.GrammarParser.Terms;
-    using CarbonCore.Utils.Diagnostics;
+
+    using NLog;
 
     public class Tokenizer : ITokenizer<Token>
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
@@ -35,13 +38,9 @@
         {
             var tokenData = new TokenizeData<Token>(grammar, data);
 
-            using (var region = new ProgressRegion("Tokenizing", data.Length))
+            while (this.TokenizeNext(tokenData))
             {
-                while (this.TokenizeNext(tokenData))
-                {
-                    region.Progress = tokenData.CurrentOffset;
-                    region.Update();
-                }
+                // TODO: hook for progress display == tokenData.CurrentOffset / data.Length
             }
 
             return tokenData.Results;
@@ -237,7 +236,7 @@
             
             if (potentialMatches.Count > 1)
             {
-                Diagnostic.Error("Conflicting keyword: " + data.PendingContent);
+                Logger.Error("Conflicting keyword: " + data.PendingContent);
             }
             
             return false;

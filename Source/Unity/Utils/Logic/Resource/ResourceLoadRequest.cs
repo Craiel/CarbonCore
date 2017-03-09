@@ -4,8 +4,6 @@
 
     using CarbonCore.Unity.Utils.Contracts;
     using CarbonCore.Unity.Utils.Logic.Enums;
-    using CarbonCore.Utils.Diagnostics;
-    using CarbonCore.Utils.Diagnostics.Metrics;
 
     using UnityEngine;
 
@@ -42,8 +40,6 @@
         protected ResourceLoadRequest(ResourceLoadInfo info)
         {
             this.Info = info;
-
-            this.Metric = Diagnostic.BeginTimeMeasure();
         }
 
         // -------------------------------------------------------------------
@@ -53,8 +49,6 @@
 
         public ResourceLoadMode Mode { get; private set; }
         
-        public MetricTime Metric { get; private set; }
-
         public bool IsDone
         {
             get

@@ -2,14 +2,17 @@
 {
     using System;
     using System.Collections.Generic;
-
-    using CarbonCore.Utils.Diagnostics;
+    
     using CarbonCore.Utils.IO;
     using CarbonCore.Utils.Lua.Contracts;
     using CarbonCore.Utils.Lua.Logic.Library;
 
+    using NLog;
+
     public class LuaRuntime : ILuaRuntime
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly IList<ILuaObject> objects;
         private readonly IList<ILuaRuntimeFunction> functions;
         private readonly IList<string> persistentScripts;
@@ -115,7 +118,7 @@
             }
             catch (Exception e)
             {
-                Diagnostic.Error("Failed to execute Script: {0}", e);
+                Logger.Error("Failed to execute Script: {0}", e);
                 result.Exception = e;
             }
 
@@ -134,7 +137,7 @@
 
                 if (!LuaLibrary.Register(this, libraryInclude))
                 {
-                    Diagnostic.Error("Aborting execution, required library {0} was not loaded", libraryInclude);
+                    Logger.Error("Aborting execution, required library {0} was not loaded", libraryInclude);
                 }
 
                 this.loadedLibraries.Add(libraryInclude);

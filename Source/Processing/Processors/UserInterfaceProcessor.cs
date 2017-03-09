@@ -9,9 +9,10 @@
     using CarbonCore.Processing.Data;
     using CarbonCore.Processing.Resource;
     using CarbonCore.Utils;
-    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.IO;
-    
+
+    using NLog;
+
     public class UserInterfaceProcessor
     {
         private const string NodeTypeImage = "image";
@@ -35,6 +36,8 @@
         private const string AttributeBottom = "bottom";
         private const string AttributeHorizontalAlignment = "horizontalalignment";
         private const string AttributeVerticalAlignment = "verticalalignment";
+
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private static readonly Regex CsamlFieldRegex = new Regex("{([a-z]+)[\\s]*([^\"]*)}", RegexOptions.IgnoreCase);
 
@@ -316,7 +319,7 @@
         {
             if (match.Captures.Count <= 0 || match.Groups.Count < 2)
             {
-                Diagnostic.Warning("Could not evaluate Resource, no capture data");
+                Logger.Warn("Could not evaluate Resource, no capture data");
                 return "ERROR";
             }
 
@@ -328,7 +331,7 @@
                     {
                         if (string.IsNullOrEmpty(fieldValue))
                         {
-                            Diagnostic.Warning("Argument missing in resource Field");
+                            Logger.Warn("Argument missing in resource Field");
                             return "ERROR";
                         }
 
@@ -336,7 +339,7 @@
                     }
             }
 
-            Diagnostic.Warning("Unknown Field in Script: " + match.Captures[0].Value);
+            Logger.Warn("Unknown Field in Script: " + match.Captures[0].Value);
             return "ERROR";
         }
     }

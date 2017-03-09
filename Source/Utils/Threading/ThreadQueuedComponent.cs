@@ -4,10 +4,13 @@
     using System.Collections.Generic;
 
     using CarbonCore.Utils.Contracts;
-    using CarbonCore.Utils.Diagnostics;
+
+    using NLog;
 
     public abstract class ThreadQueuedComponent : IThreadQueueComponent
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private static readonly long OperationWarningTimespan = TimeSpan.FromSeconds(2).Ticks;
         private static readonly long OperationErrorTimespan = TimeSpan.FromSeconds(5).Ticks;
 
@@ -95,17 +98,17 @@
 
             if (error > 0)
             {
-                Diagnostic.Error("{0} operations in {0} had errors!", error, this.GetType());
+                Logger.Error("{0} operations in {0} had errors!", error, this.GetType());
             }
 
             if (slowError > 0)
             {
-                Diagnostic.Error("{0} operations in {0} took longer then expected!", slowError, this.GetType());
+                Logger.Error("{0} operations in {0} took longer then expected!", slowError, this.GetType());
             }
 
             if (slowWarning > 0)
             {
-                Diagnostic.Error("Operation in {0} took more than 2 seconds to complete", slowWarning, this.GetType());
+                Logger.Error("Operation in {0} took more than 2 seconds to complete", slowWarning, this.GetType());
             }
         }
     }

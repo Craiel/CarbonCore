@@ -4,16 +4,13 @@
     using System.Diagnostics;
 
     using CarbonCore.ToolFramework.Windows.Contracts.ViewModels;
-    using CarbonCore.Utils.Diagnostics;
 
     public class LogEntryViewModel : BaseViewModel, ILogEntryViewModel
     {
-        private TraceEventData data;
-
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
-        public DateTime Time
+        /*public DateTime Time
         {
             get
             {
@@ -59,6 +56,14 @@
         {
             this.data = newData;
             this.NotifyPropertyChangedAll();
-        }
+        }*/
+
+        public DateTime Time { get; }
+
+        public TraceEventType Type { get; }
+
+        public string Source { get; }
+
+        public string Message { get; }
     }
 }

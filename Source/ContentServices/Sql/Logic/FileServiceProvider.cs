@@ -3,13 +3,13 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Diagnostics;
     using System.IO;
     using System.IO.Compression;
 
     using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.Data;
     using CarbonCore.ContentServices.Sql.Contracts;
-    using CarbonCore.Utils.Diagnostics;
 
     using CompressionLevel = ContentServices.Logic.Enums.CompressionLevel;
 
@@ -87,7 +87,7 @@
 
         public void Load(FileEntryKey key, out byte[] data)
         {
-            Diagnostic.Assert(this.IsInitialized);
+            Debug.Assert(this.IsInitialized);
             if (this.compressionLevel != CompressionLevel.NoCompression)
             {
                 byte[] compressed;
@@ -106,7 +106,7 @@
 
         public void Save(FileEntryKey key, byte[] data)
         {
-            Diagnostic.Assert(this.IsInitialized);
+            Debug.Assert(this.IsInitialized);
             if (this.compressionLevel != CompressionLevel.NoCompression)
             {
                 byte[] compressed;
@@ -125,7 +125,7 @@
 
         public void Delete(FileEntryKey key)
         {
-            Diagnostic.Assert(this.IsInitialized);
+            Debug.Assert(this.IsInitialized);
             this.DoDelete(key);
             this.EntriesDeleted++;
         }
@@ -137,14 +137,14 @@
 
         public void Initialize()
         {
-            Diagnostic.Assert(!this.IsInitialized);
+            Debug.Assert(!this.IsInitialized);
             this.DoInitialize();
             this.IsInitialized = true;
         }
 
         public IList<FileEntryKey> GetFiles(bool includeDeleted = false)
         {
-            Diagnostic.Assert(this.IsInitialized);
+            Debug.Assert(this.IsInitialized);
 
             return this.DoGetFiles(includeDeleted);
         }

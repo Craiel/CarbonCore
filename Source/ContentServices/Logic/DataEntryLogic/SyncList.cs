@@ -4,9 +4,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics;
-
-    using CarbonCore.Utils.Diagnostics;
-
+    
     [DebuggerDisplay("{Value}")]
     public class SyncList<T, TN> : IList<TN>
         where T : IList<TN>
@@ -21,7 +19,7 @@
 
         public SyncList(T value)
         {
-            Diagnostic.Assert(value != null);
+            Debug.Assert(value != null);
 
             this.Value = value;
             this.IsChanged = true;

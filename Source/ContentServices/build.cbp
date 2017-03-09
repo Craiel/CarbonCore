@@ -5,6 +5,7 @@
 --#include "$(PROJECT_ROOT)sys/build_unity.cbi"
 --#include "$(PROJECT_ROOT)sys/ext_json.cbi"
 --#include "$(PROJECT_ROOT)sys/ext_jetbrains.cbi"
+--#include "$(PROJECT_ROOT)sys/ext_nlog.cbi"
 
 SetFramework("v3.5")
 

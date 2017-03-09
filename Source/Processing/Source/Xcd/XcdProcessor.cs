@@ -7,13 +7,17 @@
     using CarbonCore.Processing.Resource.Stage;
     using CarbonCore.Processing.Source.Generic.Data;
     using CarbonCore.Processing.Source.Xcd.Scene;
-    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.Edge.DirectX;
     using CarbonCore.Utils.IO;
+
+    using NLog;
+
     using SharpDX;
 
     public static class XcdProcessor
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private static readonly IList<StageCameraElement> CameraElements;
         private static readonly IList<StageLightElement> LightElements;
         private static readonly IList<StageModelElement> ModelElements;
@@ -250,7 +254,7 @@
 
                 case XcdRotationType.EulerXYZ:
                     {
-                        Diagnostic.Error("Rotation in EulerXYZ, not translating!");
+                        Logger.Error("Rotation in EulerXYZ, not translating!");
                         return Quaternion.Identity;
                     }
 

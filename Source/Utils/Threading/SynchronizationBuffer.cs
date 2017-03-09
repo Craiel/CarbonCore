@@ -1,8 +1,7 @@
 ﻿namespace CarbonCore.Utils.Threading
 {
     using System.Collections.Generic;
-
-    using CarbonCore.Utils.Diagnostics;
+    using System.Diagnostics;
 
     // One-way synchronization buffer, Works only in single writer, single reader environment
     public class SynchronizationBuffer<T> 
@@ -64,7 +63,7 @@
         {
             lock (this)
             {
-                Diagnostic.Assert(this.bufferState[dataLock.Id] != State.Free, "Can't release free buffer");
+                Debug.Assert(this.bufferState[dataLock.Id] != State.Free, "Can't release free buffer");
 
                 switch (this.bufferState[dataLock.Id])
                 {
@@ -96,7 +95,7 @@
                     }
                 }
 
-                Diagnostic.Assert(bestMatch != -1, "Can't aquire buffer");
+                Debug.Assert(bestMatch != -1, "Can't aquire buffer");
 
                 this.bufferState[bestMatch] = operation;
                 return new SynchronizationDataLock<T>(this.buffer[bestMatch], bestMatch);

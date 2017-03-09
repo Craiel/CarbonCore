@@ -3,13 +3,16 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
-
-    using CarbonCore.Utils.Diagnostics;
+    using System.Diagnostics;
 
     using Newtonsoft.Json;
 
+    using NLog;
+
     public class JsonDictionaryConverter<T, TN> : JsonConverter
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
@@ -42,10 +45,10 @@
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            Diagnostic.Assert(reader.TokenType == JsonToken.StartArray);
+            Debug.Assert(reader.TokenType == JsonToken.StartArray);
 
             Type[] genericArguments = objectType.GetGenericArguments();
-            Diagnostic.Assert(genericArguments.Length == 2);
+            Debug.Assert(genericArguments.Length == 2);
 
             Type keyType = objectType.GetGenericArguments()[0];
             Type valueType = objectType.GetGenericArguments()[1];
@@ -92,8 +95,7 @@
             }
             catch (Exception e)
             {
-                Diagnostic.Exception(e);
-                Diagnostic.Error("Error reading Json Dictionary");
+                Logger.Error(e, "Error reading Json Dictionary");
             }
 
             return resultDictionary;

@@ -5,15 +5,18 @@
     using System.IO;
     using System.IO.Compression;
     using System.Text;
-
-    using CarbonCore.Utils.Diagnostics;
+    
     using CarbonCore.Utils.IO;
 
     using Newtonsoft.Json;
 
+    using NLog;
+
     public static class JsonExtensions
     {
         private const int DefaultStreamBufferSize = 4096;
+
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private static readonly IDictionary<Type, Type> GlobalConverterRegistration;
 
@@ -36,7 +39,7 @@
         {
             if (GlobalConverterRegistration.ContainsKey(typeof(T)))
             {
-                Diagnostic.Warning("Converter for type {0} already registered to {1}, skipping registration as {2}", typeof(T), GlobalConverterRegistration[typeof(T)], typeof(TN));
+                Logger.Warn("Converter for type {0} already registered to {1}, skipping registration as {2}", typeof(T), GlobalConverterRegistration[typeof(T)], typeof(TN));
                 return;
             }
 

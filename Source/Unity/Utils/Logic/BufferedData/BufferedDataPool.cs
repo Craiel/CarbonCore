@@ -5,10 +5,13 @@
 
     using CarbonCore.Unity.Utils.Contracts.BufferedData;
     using CarbonCore.Utils.Contracts.IoC;
-    using CarbonCore.Utils.Diagnostics;
+
+    using NLog;
 
     public class BufferedDataPool : IBufferedDataPool
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly IFactory factory;
 
         private readonly BufferedDataCommandQueue commandQueue;
@@ -159,18 +162,12 @@
                 }
             }
 
-            using (new ProfileRegion("BufferedDataPool.UpdateDatasetCommands()") { IncludeThreadId = true })
-            {
-                this.UpdateDatasetCommands();
-            }
+            this.UpdateDatasetCommands();
 
             // If we have a pending commit advance the active data to the next buffer
             if (this.commitPending)
             {
-                using (new ProfileRegion("BufferedDataPool.UpdateDatasetCommit()") { IncludeThreadId = true })
-                {
-                    this.UpdateDatasetCommit();
-                }
+                this.UpdateDatasetCommit();
             }
         }
 
@@ -194,7 +191,7 @@
         {
             // We queue this up in a local command buffer helper structure
             // the command will be transferred into the data instances on update tick
-            //Diagnostic.Info("{0} -> Comm: {1}", this.GetType().Name, command.GetType().Name);
+            //Logger.Info("{0} -> Comm: {1}", this.GetType().Name, command.GetType().Name);
             return this.commandQueue.Enqueue(command);
         }
 
@@ -315,7 +312,7 @@
             foreach (BufferedDataPendingCommand command in this.commandQueue.Playback(transactionState + 1))
             {
                 // Note: this trace slows things down a lot, only use when needed
-                //Diagnostic.Info("{0} Command: {1}", dataset.Id, command.Command.GetType().Name);
+                //Logger.Info("{0} Command: {1}", dataset.Id, command.Command.GetType().Name);
 
                 if (this.CommandErrors <= 0)
                 {
@@ -326,18 +323,18 @@
                     catch (Exception e)
                     {
                         // Log the error and abort whichever thread we are running in
-                        Diagnostic.Error(
+                        Logger.Error(
+                            e,
                             "Failed to execute command {0}({1}) on Dataset {2}",
                             command.Command.GetType().Name,
                             command.Id,
                             dataset.Id);
-                        Diagnostic.Exception(e);
                         this.CommandErrors++;
                     }
                 }
                 else
                 {
-                    Diagnostic.Warning(
+                    Logger.Warn(
                         "Dataset {0} is in error state, skipping command {1}({2})",
                         dataset.Id,
                         command.Command.GetType().Name,
@@ -382,14 +379,14 @@
 
             if (this.activeDataset == currentPosition)
             {
-                Diagnostic.Warning("Could not Commit DataSet! Instances are probably still referenced");
+                Logger.Warn("Could not Commit DataSet! Instances are probably still referenced");
                 return;
             }
 
             // Only lock when we are actually ready to commit to the new DataSet
             lock (this.commitLock)
             {
-                //Diagnostic.Info("Committing DataSet {0} -> {1}", this.activeDataset, currentPosition);
+                //Logger.Info("Committing DataSet {0} -> {1}", this.activeDataset, currentPosition);
                 this.activeDataset = currentPosition;
                 this.commitPending = false;
             }

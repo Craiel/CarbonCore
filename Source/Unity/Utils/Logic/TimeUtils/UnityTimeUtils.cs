@@ -3,11 +3,12 @@
     using System;
     using System.Runtime.InteropServices;
 
-    using CarbonCore.Utils.Diagnostics;
+    using NLog;
 
     public static class UnityTimeUtils
     {
         public static readonly DateTime UnixBaseTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
 #if WIN64
         [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
@@ -36,13 +37,13 @@
 
             if (timeZone == null)
             {
-                Diagnostic.Warning("Could not get current Timezone!");
+                Logger.Warn("Could not get current Timezone!");
                 return utcTime;
             }
 
             return utcTime - TimeSpan.FromMinutes(timeZone.Value.bias);
 #else
-            Diagnostic.Warning("GetLocalTimeFromTimeStamp is not implemented for the current Platform, using UTCTime!");
+            Logger.Warn("GetLocalTimeFromTimeStamp is not implemented for the current Platform, using UTCTime!");
             return utcTime;
 #endif
         }

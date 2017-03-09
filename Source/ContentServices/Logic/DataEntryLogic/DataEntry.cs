@@ -1,18 +1,22 @@
 ﻿namespace CarbonCore.ContentServices.Logic.DataEntryLogic
 {
     using System;
+    using System.Diagnostics;
     using System.Runtime.Serialization;
 
     using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.Logic.Attributes;
     using CarbonCore.Utils;
-    using CarbonCore.Utils.Diagnostics;
 
     using Newtonsoft.Json;
+
+    using NLog;
 
     [JsonObject(MemberSerialization.OptOut)]
     public abstract class DataEntry : IDataEntry
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private int? changeHashCode;
         
         // -------------------------------------------------------------------
@@ -37,11 +41,11 @@
         
         public virtual bool CopyFrom(IDataEntry source)
         {
-            Diagnostic.Assert(source != null);
+            Debug.Assert(source != null);
 
             if (source.GetType() != this.GetType())
             {
-                Diagnostic.Error("Attempt to copy from different type, expected {0} but was {1}", this.GetType(), source.GetType());
+                Logger.Error("Attempt to copy from different type, expected {0} but was {1}", this.GetType(), source.GetType());
                 return false;
             }
 

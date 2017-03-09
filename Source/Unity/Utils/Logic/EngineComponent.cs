@@ -2,13 +2,17 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
 
     using CarbonCore.Unity.Utils.Contracts;
-    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.Threading;
+
+    using NLog;
 
     public abstract class EngineComponent : IEngineComponent
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private IList<IEngineComponent> childComponents;
 
         // -------------------------------------------------------------------
@@ -51,7 +55,7 @@
 
         public virtual void Update(EngineTime time)
         {
-            Diagnostic.Assert(this.IsInitialized, "Update called before Initialize for " + this.GetType().Name);
+            Debug.Assert(this.IsInitialized, "Update called before Initialize for " + this.GetType().Name);
 
             if (this.childComponents != null)
             {
@@ -79,7 +83,7 @@
         {
             if (this.childComponents == null || !this.childComponents.Contains(component))
             {
-                Diagnostic.Warning("Tried to remove non-existing Child Component");
+                Logger.Warn("Tried to remove non-existing Child Component");
                 return;
             }
 

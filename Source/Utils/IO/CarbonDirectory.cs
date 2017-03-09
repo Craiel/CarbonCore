@@ -2,17 +2,21 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
-
-    using CarbonCore.Utils.Diagnostics;
+    
     using CarbonCore.Utils.Json;
 
     using Newtonsoft.Json;
+
+    using NLog;
 
     [JsonConverter(typeof(JsonCarbonDirectoryConverter))]
     public class CarbonDirectory : CarbonPath
     {
         public static readonly CarbonDirectory TempDirectory = new CarbonDirectory(System.IO.Path.GetTempPath());
+
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly string trimmedPath;
 
@@ -87,7 +91,7 @@
             {
                 if (filter.Directory == null || filter.Directory.IsNull || !filter.Directory.Exists)
                 {
-                    Diagnostic.Warning("Specified directory is invalid: {0}", filter.Directory);
+                    Logger.Warn("Specified directory is invalid: {0}", filter.Directory);
                     continue;
                 }
 
@@ -121,7 +125,7 @@
             {
                 if (filter.Directory.IsNull || !filter.Directory.Exists)
                 {
-                    Diagnostic.Warning("Specified directory is invalid: {0}", filter.Directory);
+                    Logger.Warn("Specified directory is invalid: {0}", filter.Directory);
                     continue;
                 }
 
@@ -150,7 +154,7 @@
 
         public static IList<CarbonDirectory> ReRootDirectories(CarbonDirectory root, IEnumerable<CarbonDirectory> directories)
         {
-            Diagnostic.Assert(root != null && !root.IsNull, "Re-root requires valid root directory");
+            Debug.Assert(root != null && !root.IsNull, "Re-root requires valid root directory");
 
             IList<CarbonDirectory> results = new List<CarbonDirectory>();
             foreach (CarbonDirectory directory in directories)
@@ -212,7 +216,7 @@
         {
             if (this.Drive == null)
             {
-                Diagnostic.Warning("GetFreeSpace called with no drive available!");
+                Logger.Warn("GetFreeSpace called with no drive available!");
                 return 0;
             }
 

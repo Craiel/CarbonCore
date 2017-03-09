@@ -6,6 +6,8 @@
 
     using CarbonCore.Utils.IO;
 
+    using NLog;
+
     public static class LuaPreProcessor
     {
         private const string LuaCommentStart = "--";
@@ -15,7 +17,9 @@
         private const char IncludeInternalStart = '<';
         private const char IncludeInternalEnd = '>';
         private const char IncludeExternal = '"';
-        
+
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private static readonly Regex LuaPreprocessorVariablesRegex = new Regex(@"\$\((\w+)\)", RegexOptions.Compiled);
 
         private static readonly IDictionary<string, string> Variables = new Dictionary<string, string>();
@@ -152,7 +156,7 @@
                 string directive = line.SubstringUntil(' ', 3);
                 if (directive == null)
                 {
-                    Diagnostics.Diagnostic.Error("Could not determine directive for line {0}: {1}", context.CurrentLineIndex, line);
+                    Logger.Error("Could not determine directive for line {0}: {1}", context.CurrentLineIndex, line);
                     return;
                 }
 
@@ -200,7 +204,7 @@
                     includeFile = context.Source.FileSource.GetDirectory().ToFile(includeName);
                 }
                 
-                Diagnostics.Diagnostic.Info("Processing Included script {0}", includeFile);
+                Logger.Info("Processing Included script {0}", includeFile);
 
                 LuaScript processedInclude = Process(includeFile);
                 if (processedInclude == null)
@@ -250,7 +254,7 @@
 
             if (context.HasError)
             {
-                Diagnostics.Diagnostic.Error("Error in script processing: {0}", context.ErrorReason);
+                Logger.Error("Error in script processing: {0}", context.ErrorReason);
                 return null;
             }
 
@@ -276,7 +280,7 @@
 
             if (context.HasError)
             {
-                Diagnostics.Diagnostic.Error("Error in script processing: {0}", context.ErrorReason);
+                Logger.Error("Error in script processing: {0}", context.ErrorReason);
                 return null;
             }
             

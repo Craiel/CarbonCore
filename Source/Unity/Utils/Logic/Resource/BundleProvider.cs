@@ -5,17 +5,19 @@
 
     using CarbonCore.Unity.Utils.Data;
     using CarbonCore.Unity.Utils.Logic.Enums;
-    using CarbonCore.Utils.Diagnostics;
-    using CarbonCore.Utils.Diagnostics.Metrics;
     using CarbonCore.Utils.IO;
 
-    using UnityEngine;
+    using NLog;
 
+    using UnityEngine;
+    
     public delegate void OnBundleLoadingDelegate(BundleLoadInfo key);
     public delegate void OnBundleLoadedDelegate(BundleLoadInfo key, long loadTime);
 
     public class BundleProvider : UnitySingleton<BundleProvider>
     {
+        private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly IDictionary<BundleLoadInfo, AssetBundle> bundles;
         private readonly IDictionary<BundleLoadInfo, CarbonFile> bundleFiles;
 
@@ -151,7 +153,7 @@
             BundleLoadInfo info;
             if (!this.loadInfoMap.TryGetValue(key, out info))
             {
-                Diagnostic.Error("Bundle was not registered, can not load immediate: {0}", key);
+                Logger.Error("Bundle was not registered, can not load immediate: {0}", key);
                 return false;
             }
             
@@ -234,26 +236,24 @@
         private void FinalizeBundle(BundleLoadRequest request)
         {
             AssetBundle bundle = request.GetBundle();
-            MetricTime metric = request.Metric;
 
             this.bundles[request.Info] = bundle;
-            Diagnostic.TakeTimeMeasure(metric);
 
             if (this.EnableHistory)
             {
                 if (this.history.ContainsKey(request.Info.Key))
                 {
-                    this.history[request.Info.Key] += metric.Total;
+                    this.history[request.Info.Key] += 1;
                 }
                 else
                 {
-                    this.history.Add(request.Info.Key, metric.Total);
+                    this.history.Add(request.Info.Key, 1);
                 }
             }
 
             if (this.BundleLoaded != null)
             {
-                this.BundleLoaded(request.Info, metric.Total);
+                this.BundleLoaded(request.Info, 1);
             }
         }
     }

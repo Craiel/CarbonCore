@@ -2,18 +2,22 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.Text;
     using System.Xml;
-
-    using CarbonCore.Utils.Diagnostics;
+    
     using CarbonCore.Utils.Json;
 
     using Newtonsoft.Json;
 
+    using NLog;
+
     [JsonConverter(typeof(JsonCarbonFileConverter))]
     public class CarbonFile : CarbonPath
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
@@ -155,7 +159,7 @@
         {
             using (FileStream stream = this.OpenRead())
             {
-                Diagnostic.Assert(stream.Length <= int.MaxValue);
+                Debug.Assert(stream.Length <= int.MaxValue);
 
                 var length = (int)stream.Length;
                 var result = new byte[length];
@@ -288,8 +292,7 @@
             }
             catch (Exception e)
             {
-                Diagnostic.Exception(e);
-                Diagnostic.Error("Failed to copy file {0} to {1}", this, target);
+                Logger.Error(e, "Failed to copy file {0} to {1}", this, target);
             }
 
             return false;

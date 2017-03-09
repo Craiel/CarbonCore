@@ -4,11 +4,14 @@
     using System.Collections.Generic;
     
     using CarbonCore.Utils.Contracts.Network;
-    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.Network.Package;
-    
+
+    using NLog;
+
     public class JsonNetPeer : IJsonNetPeer
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly IDictionary<int, Type> packageDictionary;
         private readonly IDictionary<Type, int> packageIdDictionary;
 
@@ -86,7 +89,7 @@
             }
 
             IJsonNetPackage package = JsonNetUtils.DeSerializePackage(this.packageDictionary[id], data);
-            Diagnostic.Info("Deserialized Package {0}", package.GetType());
+            Logger.Info("Deserialized Package {0}", package.GetType());
         }
     }
 }

@@ -1,9 +1,8 @@
 ﻿namespace CarbonCore.Utils
 {
     using System;
-
-    using CarbonCore.Utils.Diagnostics;
-
+    using System.Diagnostics;
+    
     // Java-like UUID structure with compatibility for GUID
     // based on https://gist.github.com/rickbeerendonk/13655dd24ec574954366
     public struct Uuid : IEquatable<Uuid>
@@ -14,7 +13,7 @@
         public Uuid(Guid guid)
             : this()
         {
-            Diagnostic.Assert(BitConverter.IsLittleEndian, "Uuid is untested in big endian systems!");
+            Debug.Assert(BitConverter.IsLittleEndian, "Uuid is untested in big endian systems!");
 
             this.Guid = guid;
 
@@ -24,7 +23,7 @@
         public Uuid(long mostSignificant, long leastSignificant)
             : this()
         {
-            Diagnostic.Assert(BitConverter.IsLittleEndian, "Uuid is untested in big endian systems!");
+            Debug.Assert(BitConverter.IsLittleEndian, "Uuid is untested in big endian systems!");
 
             this.MostSignificantBits = mostSignificant;
             this.LeastSignificantBits = leastSignificant;

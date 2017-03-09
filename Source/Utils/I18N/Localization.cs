@@ -5,16 +5,19 @@
     using System.Threading;
 
     using CarbonCore.Utils;
-    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.IO;
     using CarbonCore.Utils.Json;
 
     using Newtonsoft.Json;
 
+    using NLog;
+
     public static class Localization
     {
         private const string SubDirectory = "i18n";
         private const string DictionaryFileName = "strings.json";
+
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private static readonly IDictionary<CultureInfo, LocalizationStringDictionary> Dictionaries;
 
@@ -99,7 +102,7 @@
 
         public static void SetString(string key, string value)
         {
-            Diagnostic.Warning("Manual SetString called, prefer using the auto loaded dictionaries!");
+            Logger.Warn("Manual SetString called, prefer using the auto loaded dictionaries!");
             CheckDictionary(CurrentCulture);
             LocalizationStringDictionary dictionary = Dictionaries[CurrentCulture];
             if (!dictionary.ContainsKey(key))
@@ -125,11 +128,11 @@
 
             if (!source.Exists)
             {
-                Diagnostic.Warning("Could not load dictionary for {0}, file not found: {1}", info.Name, source);
+                Logger.Warn("Could not load dictionary for {0}, file not found: {1}", info.Name, source);
                 return;
             }
 
-            Diagnostic.Info("Loading Dictionary {0} ({1})", info.Name, source);
+            Logger.Info("Loading Dictionary {0} ({1})", info.Name, source);
             Dictionaries[info] = JsonExtensions.LoadFromFile<LocalizationStringDictionary>(source, false);
         }
 

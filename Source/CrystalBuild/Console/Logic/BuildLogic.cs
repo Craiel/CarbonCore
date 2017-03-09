@@ -4,16 +4,19 @@
     using System.Collections.Generic;
     
     using CarbonCore.Applications.CrystalBuild.CSharp.Contracts;
-    using CarbonCore.CrystalBuild.Contracts;
     using CarbonCore.CrystalBuild.Sharp.Logic;
     using CarbonCore.Utils.Contracts.IoC;
-    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.IO;
+
+    using NLog;
+
     using Utils;
     using Utils.Lua.Logic;
 
     public class BuildLogic : IBuildLogic
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         // -------------------------------------------------------------------
         // Constructor
         // -------------------------------------------------------------------
@@ -26,7 +29,7 @@
         // -------------------------------------------------------------------
         public void BuildProjectFile(IList<CarbonFile> sources, CarbonDirectory projectRoot)
         {
-            Diagnostic.Info("Building {0} Sources", sources.Count);
+            Logger.Info("Building {0} Sources", sources.Count);
 
             foreach (CarbonFile source in sources)
             {
@@ -42,35 +45,32 @@
             CarbonFile fileToBuild = file.Exists ? file : projectRoot.ToFile(file);
             if (!fileToBuild.Exists)
             {
-                Diagnostic.Warning("File to build not found: {0}", fileToBuild);
+                Logger.Warn("File to build not found: {0}", fileToBuild);
                 return;
             }
 
-            Diagnostic.Info(" ------------------------ ");
-            Diagnostic.Info(" --> Building {0}", file);
-            Diagnostic.Info(string.Empty);
+            Logger.Info(" ------------------------ ");
+            Logger.Info(" --> Building {0}", file);
+            Logger.Info(string.Empty);
 
-            using (var region = new ProfileRegion("CrystalBuild.Execute"))
+            var context = new CrystalBuildContext();
+            using (var configRuntime = new CrystalBuildConfigurationRunTime(context))
             {
-                var context = new CrystalBuildContext();
-                using (var configRuntime = new CrystalBuildConfigurationRunTime(context))
+
+                if (!this.PrepareConfigurationRuntime(context, fileToBuild, projectRoot))
                 {
-
-                    if (!this.PrepareConfigurationRuntime(context, fileToBuild, projectRoot))
-                    {
-                        return;
-                    }
-
-                    LuaExecutionResult result = configRuntime.Execute(fileToBuild);
-                    if (!result.Success)
-                    {
-                        throw new InvalidOperationException("Build failed!");
-                    }
+                    return;
                 }
-                
-                Diagnostic.Info(" --> Finished in {0}", Timer.TimeToTimeSpan(region.ElapsedTicks));
-                Diagnostic.Info(string.Empty);
+
+                LuaExecutionResult result = configRuntime.Execute(fileToBuild);
+                if (!result.Success)
+                {
+                    throw new InvalidOperationException("Build failed!");
+                }
             }
+
+            Logger.Info(" --> Finished");
+            Logger.Info(string.Empty);
         }
 
         private bool PrepareConfigurationRuntime(CrystalBuildContext context, CarbonFile file, CarbonDirectory projectRoot)

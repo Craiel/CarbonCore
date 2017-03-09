@@ -5,6 +5,7 @@
 --#include "$(PROJECT_ROOT)sys/ext_json.cbi"
 --#include "$(PROJECT_ROOT)sys/ext_sharpdx.cbi"
 --#include "$(PROJECT_ROOT)sys/ext_npoi.cbi"
+--#include "$(PROJECT_ROOT)sys/ext_nlog.cbi"
 
 print "Configuring Build with CrystalBuild version $(CB_VER) ..."
 

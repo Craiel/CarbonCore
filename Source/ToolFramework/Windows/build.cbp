@@ -2,11 +2,11 @@
 --#include "$(PROJECT_ROOT)sys/settings_common.cbi"
 --#include "$(PROJECT_ROOT)sys/settings_default.cbi"
 --#include "$(PROJECT_ROOT)sys/build_default.cbi"
---#include "$(PROJECT_ROOT)sys/ext_log4net.cbi"
 --#include "$(PROJECT_ROOT)sys/ext_mahapps.metro.cbi"
 --#include "$(PROJECT_ROOT)sys/ext_xaml.cbi"
 --#include "$(PROJECT_ROOT)sys/ext_jetbrains.cbi"
 --#include "$(PROJECT_ROOT)sys/ext_json.cbi"
+--#include "$(PROJECT_ROOT)sys/ext_nlog.cbi"
 
 print "Configuring Build with CrystalBuild version $(CB_VER) ..."
 

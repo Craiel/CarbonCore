@@ -3,7 +3,6 @@
 --#include "$(PROJECT_ROOT)sys/settings_default.cbi"
 --#include "$(PROJECT_ROOT)sys/build_default.cbi"
 --#include "$(PROJECT_ROOT)sys/ext_autofac.cbi"
---#include "$(PROJECT_ROOT)sys/ext_log4net.cbi"
 
 print "Configuring Build with CrystalBuild version $(CB_VER) ..."
 

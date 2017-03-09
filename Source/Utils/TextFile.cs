@@ -4,11 +4,14 @@
     using System.IO;
 
     using CarbonCore.Utils.Contracts;
-    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.IO;
+
+    using NLog;
 
     public class TextFile : ITextFile
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly object fileLock;
 
         private CarbonFile file;
@@ -137,8 +140,7 @@
             }
             catch (Exception e)
             {
-                Diagnostic.Exception(e);
-                Diagnostic.Error("Failed to open Log File: {0}", this.file);
+                Logger.Error(e, "Failed to open Log File: {0}", this.file);
             }
         }
     }

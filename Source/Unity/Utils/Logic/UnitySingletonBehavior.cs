@@ -4,14 +4,17 @@
 
     using CarbonCore.Unity.Utils.Contracts;
     using CarbonCore.Unity.Utils.Logic.Scene;
-    using CarbonCore.Utils.Diagnostics;
     using CarbonCore.Utils.Unity.Logic.Scene;
 
-    using UnityEngine;
+    using NLog;
 
+    using UnityEngine;
+    
     public abstract class UnitySingletonBehavior<T> : MonoBehaviour, IUnitySingletonBehavior
         where T : UnitySingletonBehavior<T>
     {
+        private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
+
         private static T instance;
 
         // -------------------------------------------------------------------
@@ -45,12 +48,12 @@
                 }
                 catch (Exception e)
                 {
-                    Diagnostic.Error("Error trying to add Singleton Component {0}: {1}", typeof(T), e);
+                    Logger.Error("Error trying to add Singleton Component {0}: {1}", typeof(T), e);
                 }
 
                 if (instance == null)
                 {
-                    Diagnostic.Error("Adding Component of type {0} returned null", typeof(T));
+                    Logger.Error("Adding Component of type {0} returned null", typeof(T));
                 }
 
                 // Only attempt Don't destroy if the object has no parent
@@ -86,7 +89,7 @@
 
             if (instance != null && instance != this)
             {
-                Diagnostic.Error("Duplicate Instance of {0} found, destroying!", this.GetType());
+                Logger.Error("Duplicate Instance of {0} found, destroying!", this.GetType());
                 DestroyImmediate(this.gameObject);
             }
         }
@@ -111,7 +114,7 @@
         
         protected void DestroySingleton()
         {
-            Diagnostic.Info("Destroying Singleton MonoBehavior {0}", this.name);
+            Logger.Info("Destroying Singleton MonoBehavior {0}", this.name);
 
             this.OnSingletonDestroying();
 

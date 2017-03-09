@@ -6,11 +6,11 @@
 
     using CarbonCore.Unity.Utils.Data;
     using CarbonCore.Unity.Utils.Logic.Enums;
-    using CarbonCore.Utils.Diagnostics;
-    using CarbonCore.Utils.Diagnostics.Metrics;
+
+    using NLog;
 
     using UnityEngine;
-
+    
     public delegate void OnResourceLoadingDelegate(ResourceLoadInfo info);
     public delegate void OnResourceLoadedDelegate(ResourceLoadInfo info, long loadTime);
 
@@ -19,6 +19,8 @@
         private const int DefaultRequestPoolSize = 30;
 
         private const int MaxConsecutiveSyncCallsInAsync = 20;
+
+        private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly ResourceMap<ResourceLoadRequest> resourceMap;
 
@@ -85,7 +87,7 @@
             IList<ResourceKey> resources = Instance.AcquireResourcesByType<T>();
             if (resources == null || resources.Count != 1)
             {
-                Diagnostic.Warning("Expected 1 result for {0}", typeof(T));
+                Logger.Warn("Expected 1 result for {0}", typeof(T));
                 return null;
             }
 
@@ -123,7 +125,7 @@
 
         public void RegisterLoadedResource(ResourceKey key, UnityEngine.Object resource)
         {
-            Diagnostic.Assert(resource != null, "Registering a loaded resource with null data!");
+            Debug.Assert(resource != null, "Registering a loaded resource with null data!");
 
             // Register the resource without queuing
             ResourceLoadRequest request = new ResourceLoadRequest(new ResourceLoadInfo(key, ResourceLoadFlags.None), resource);
@@ -153,7 +155,7 @@
         {
             if (this.fallbackResources.ContainsKey(key.Type))
             {
-                Diagnostic.Warning("Duplicate fallback resource registered for type {0}", key.Type);
+                Logger.Warn("Duplicate fallback resource registered for type {0}", key.Type);
                 return;
             }
 
@@ -182,7 +184,7 @@
             ResourceReference<T> result;
             if (!this.TryAcquireOrLoadResource(key, out result, flags))
             {
-                Diagnostic.Error("Could not load resource on-demand");
+                Logger.Error("Could not load resource on-demand");
             }
 
             return result;
@@ -226,7 +228,7 @@
                 data = this.AcquireFallbackResource<T>();
                 if (data == null)
                 {
-                    Diagnostic.Error("Resource was not loaded or registered: {0}", key);
+                    Logger.Error("Resource was not loaded or registered: {0}", key);
                     return null;
                 }
             }
@@ -275,7 +277,6 @@
             {
                 foreach (ResourceLoadRequest request in finishedRequests)
                 {
-                    Diagnostic.TakeTimeMeasure(request.Metric);
                     this.FinalizeLoadResource(request);
                 }
             }
@@ -325,8 +326,7 @@
             {
                 return;
             }
-
-            MetricTime totalTime = Diagnostic.BeginTimeMeasure();
+            
             int resourceCount = this.currentPendingLoads.Count;
             while (this.currentPendingLoads.Count > 0)
             {
@@ -337,8 +337,7 @@
                 }
             }
             
-            Diagnostic.TakeTimeMeasure(totalTime);
-            Diagnostic.Info("Immediate! Loaded {0} resources in {1}ms", resourceCount, Diagnostic.GetTimeInMS(totalTime.Total));
+            Logger.Info("Immediate! Loaded {0} resources in {1}ms", resourceCount, -1);
         }
 
         // -------------------------------------------------------------------
@@ -365,7 +364,7 @@
         {
             if (!(data is T))
             {
-                Diagnostic.Error("Type requested {0} did not match the registered key type {1} for {2}", typeof(T), key.Type, key);
+                Logger.Error("Type requested {0} did not match the registered key type {1} for {2}", typeof(T), key.Type, key);
                 return null;
             }
 
@@ -380,10 +379,8 @@
             {
                 this.ResourceLoading(info);
             }
-
-            MetricTime resourceTime = Diagnostic.BeginTimeMeasure();
+            
             UnityEngine.Object result = LoadImmediate(info.Key);
-            Diagnostic.TakeTimeMeasure(resourceTime);
 
             var request = new ResourceLoadRequest(info, result);
             this.FinalizeLoadResource(request);
@@ -419,7 +416,7 @@
 
             if (data == null)
             {
-                Diagnostic.Warning("Loading {0} returned null data", request.Info.Key);
+                Logger.Warn("Loading {0} returned null data", request.Info.Key);
                 return;
             }
 
@@ -427,11 +424,11 @@
             {
                 if (this.history.ContainsKey(request.Info.Key))
                 {
-                    this.history[request.Info.Key] += request.Metric.Total;
+                    this.history[request.Info.Key] += 1;
                 }
                 else
                 {
-                    this.history.Add(request.Info.Key, request.Metric.Total);
+                    this.history.Add(request.Info.Key, 1);
                 }
             }
 
@@ -444,7 +441,7 @@
                 }
                 catch (Exception e)
                 {
-                    Diagnostic.Error("Failed to instantiate resource {0} on load: {1}", request.Info.Key, e);
+                    Logger.Error("Failed to instantiate resource {0} on load: {1}", request.Info.Key, e);
                 }
             }
             
@@ -453,7 +450,7 @@
             this.ResourcesLoaded++;
             if (this.ResourceLoaded != null)
             {
-                this.ResourceLoaded(request.Info, request.Metric.Total);
+                this.ResourceLoaded(request.Info, 1);
             }
         }
 

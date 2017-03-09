@@ -2,12 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Reflection;
 
     using CarbonCore.ContentServices.Contracts;
     using CarbonCore.ContentServices.Logic.Attributes;
     using CarbonCore.Utils;
-    using CarbonCore.Utils.Diagnostics;
 
     public class DataEntryDescriptor
     {
@@ -16,7 +16,7 @@
         // -------------------------------------------------------------------
         public DataEntryDescriptor(Type targetType)
         {
-            Diagnostic.Assert(typeof(IDataEntry).IsAssignableFrom(targetType));
+            Debug.Assert(typeof(IDataEntry).IsAssignableFrom(targetType));
 
             this.Type = targetType;
 
