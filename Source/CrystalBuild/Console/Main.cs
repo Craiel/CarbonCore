@@ -8,9 +8,7 @@
     using Applications.CrystalBuild.CSharp.Contracts;
 
     using Contracts;
-
-    using Scripting;
-
+    
     using ToolFramework.Console.Logic;
 
     using Utils.Contracts.IoC;
@@ -33,7 +31,6 @@
         {
             this.config = factory.Resolve<IConfig>();
             this.logic = factory.Resolve<IBuildLogic>();
-            
         }
 
         // -------------------------------------------------------------------
@@ -46,9 +43,6 @@
         // -------------------------------------------------------------------
         protected override void StartFinished()
         {
-            var test = new ScriptingEngine();
-            test.Execute();
-
             if (this.projectRoot == null)
             {
                 this.Arguments.PrintArgumentUse();

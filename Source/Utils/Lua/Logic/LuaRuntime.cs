@@ -118,7 +118,7 @@
             }
             catch (Exception e)
             {
-                Logger.Error("Failed to execute Script: {0}", e);
+                Logger.Error(e, "Failed to execute Script");
                 result.Exception = e;
             }
 

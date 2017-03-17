@@ -1,0 +1,1 @@
+AddReference("YamlDotNet", "$(PROJECT_ROOT)Source/packages/YamlDotNet.4.1.0/lib/net35/YamlDotNet.dll")

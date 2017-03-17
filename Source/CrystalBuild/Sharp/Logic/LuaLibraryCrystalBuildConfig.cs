@@ -4,14 +4,21 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+
+    using Config;
+
     using Data;
     using Data.CSP;
     using Enums;
 
     using NLog;
 
+    using Utils;
     using Utils.IO;
     using Utils.Lua.Logic.Library;
+
+    using YamlDotNet.Serialization;
+    using YamlDotNet.Serialization.NamingConventions;
 
     public class LuaLibraryCrystalBuildConfig : LuaLibraryBase
     {
@@ -242,9 +249,17 @@
 
         public string WriteProjectFile()
         {
+            YamlCrystalConfig yamlConfig = new YamlCrystalConfig();
+
+            var serializer = new SerializerBuilder()
+                .WithNamingConvention(new CamelCaseNamingConvention())
+                .Build();
+            
             CarbonFile outputFile = this.context.BuildDir.ToFile(this.context.Namespace + SharpConstants.ProjectFileExtensionCSharp);
             var outData = CSPFile.Create();
             this.context.SaveAsProjectSettings(outData.AddPropertyGroup());
+
+            CarbonFile yamlOutputFile = this.context.BuildDir.ToFile(this.context.Namespace + ".cby");
 
             IList<BuildConfigObject> buildConfigs = this.context.BuildConfigs.Values.ToList();
             for (int i = 0; i < buildConfigs.Count; i++)
@@ -296,6 +311,8 @@
 
             foreach (BuildReference reference in this.context.References)
             {
+                yamlConfig.References.Add(new YamlReference { Id = reference.Name, Path = reference.HintPath });
+
                 outData.AddReference(reference);
             }
 
@@ -327,6 +344,24 @@
             outData.AddImport(@"$(MSBuildToolsPath)\Microsoft.CSharp.targets");
             
             outData.Save(outputFile);
+
+            yamlConfig.Projects.Add(new YamlProject
+                                        {
+                                            Id = this.context.Namespace,
+                                            CodeAnalysisRules = this.context.CodeAnalysisRules,
+                                            Framework = this.context.Framework,
+                                            FrameworkProfile = this.context.FrameworkProfile,
+                                            IntermediateOutputPath = this.context.DefaultIntermediateOutputPath,
+                                            OutputPath = this.context.DefaultOutputPath,
+                                            Namespace = this.context.Namespace,
+                                            TargetType = this.context.OutputType
+                                        });
+
+            using (var writer = new StringWriter())
+            {
+                serializer.Serialize(writer, yamlConfig);
+                yamlOutputFile.WriteAsString(writer.ToString());
+            }
 
             return outputFile.GetPath();
         }

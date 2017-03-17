@@ -4,7 +4,6 @@
 --#include "$(PROJECT_ROOT)sys/build_default.cbi"
 --#include "$(PROJECT_ROOT)sys/ext_json.cbi"
 --#include "$(PROJECT_ROOT)sys/ext_nlog.cbi"
---#include "$(PROJECT_ROOT)sys/ext_scripting.cbi"
 
 print "Configuring Build with CrystalBuild version $(CB_VER) ..."
 
@@ -19,7 +18,6 @@ AddProjectReference("$(PROJECT_ROOT)Source/Utils/Lua", "CarbonCore.Utils.Lua")
 AddProjectReference("$(PROJECT_ROOT)Source/Utils/Edge", "CarbonCore.Utils.Edge")
 AddProjectReference("$(PROJECT_ROOT)Source/Utils/Edge/CommandLine", "CarbonCore.Utils.Edge.CommandLine")
 AddProjectReference("$(PROJECT_ROOT)Source/CrystalBuild", "CarbonCore.CrystalBuild")
-AddProjectReference("$(PROJECT_ROOT)Source/Scripting", "CarbonCore.Scripting")
 AddProjectReference("$(PROJECT_ROOT)Source/ToolFramework", "CarbonCore.ToolFramework")
 AddProjectReference("$(PROJECT_ROOT)Source/ToolFramework/Console", "CarbonCore.ToolFramework.Console")
 
