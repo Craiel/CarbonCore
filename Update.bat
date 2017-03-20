@@ -1,4 +1,4 @@
 @echo off
 
-sys\bin\windows\CrystalBuild.CS.exe -p %~dp0
+sys\bin\windows\CarbonCore.CrystalBuild.Console.exe -p %~dp0
 

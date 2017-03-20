@@ -12,8 +12,12 @@
     using CarbonCore.Utils.Edge.WPF;
     using JetBrains.Annotations;
 
+    using NLog;
+
     public abstract class BaseViewModel : IBaseViewModel
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         // -------------------------------------------------------------------
         // Public
         // -------------------------------------------------------------------
