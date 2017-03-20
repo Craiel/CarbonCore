@@ -1,1 +1,1 @@
-AddReference("NLog", "$(PROJECT_ROOT)Source/packages/NLog.4.4.3/lib/net35/NLog.dll")
+AddReference("NLog", "$(PROJECT_ROOT)Source/packages/NLog.4.4.4/lib/net35/NLog.dll")

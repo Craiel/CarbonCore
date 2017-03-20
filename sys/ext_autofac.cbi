@@ -1,1 +1,1 @@
-AddReference("Autofac", "$(PROJECT_ROOT)Source/packages/Autofac.4.3.0/lib/net45/Autofac.dll")
+AddReference("Autofac", "$(PROJECT_ROOT)Source/packages/Autofac.4.4.0/lib/net45/Autofac.dll")

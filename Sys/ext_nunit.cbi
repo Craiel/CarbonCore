@@ -1,1 +1,1 @@
-AddReference("nunit.framework", "$(PROJECT_ROOT)Source/packages/NUnit.3.6.0/lib/net35/nunit.framework.dll")
+AddReference("nunit.framework", "$(PROJECT_ROOT)Source/packages/NUnit.3.6.1/lib/net35/nunit.framework.dll")
