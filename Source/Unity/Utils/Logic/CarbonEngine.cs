@@ -2,8 +2,9 @@
 {
     using CarbonCore.Unity.Utils.Logic.Json;
     using CarbonCore.Unity.Utils.Logic.Resource;
-    using CarbonCore.Utils.Contracts;
     using CarbonCore.Utils.Json;
+
+    using Logging;
 
     using UnityEngine;
 
@@ -20,21 +21,10 @@
             JsonExtensions.RegisterGlobalConverter<Quaternion, QuaternionConverterSmall>();
             JsonExtensions.RegisterGlobalConverter<Color, ColorConverter>();
 
-            // Initialize a default log instance
-            this.InitializeLog<DefaultEngineLog>();
-
+            UnityNLogRelay.InstantiateAndInitialize();
             ResourceProvider.InstantiateAndInitialize();
             BundleProvider.InstantiateAndInitialize();
             ResourceStreamProvider.InstantiateAndInitialize();
-        }
-
-        public void InitializeLog<T>(bool useDefaultTraceListener = false)
-            where T : ILog
-        {
-            if (useDefaultTraceListener)
-            {
-                UnityDebugTraceListener.Setup();
-            }
         }
     }
 }

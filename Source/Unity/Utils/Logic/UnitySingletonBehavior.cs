@@ -23,9 +23,21 @@
         [SerializeField]
         public bool AutoInstantiate;
 
-        public static bool IsInstanceActive => instance != default(T);
+        public static bool IsInstanceActive
+        {
+            get
+            {
+                return instance != default(T);
+            }
+        }
 
-        public static T Instance => instance;
+        public static T Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
 
         public bool IsInitialized { get; protected set; }
 

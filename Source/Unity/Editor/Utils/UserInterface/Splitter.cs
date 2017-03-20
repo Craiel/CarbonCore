@@ -1,4 +1,4 @@
-﻿namespace CarbonCore.Unity.Editor.Utils.GUI
+﻿namespace CarbonCore.Unity.Editor.Utils.UserInterface
 {
     using UnityEditor;
 
