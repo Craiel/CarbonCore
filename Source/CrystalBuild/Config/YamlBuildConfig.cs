@@ -4,11 +4,17 @@
 
     public class YamlBuildConfig : YamlConfigBase
     {
+        // -------------------------------------------------------------------
+        // Constructor
+        // -------------------------------------------------------------------
         public YamlBuildConfig()
         {
             this.Defines = new List<string>();
         }
 
+        // -------------------------------------------------------------------
+        // Public
+        // -------------------------------------------------------------------
         public string Platform { get; set; }
 
         public IList<string> Defines { get; set; }

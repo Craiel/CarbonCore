@@ -4,12 +4,18 @@
 
     public class YamlProjectSource
     {
+        // -------------------------------------------------------------------
+        // Constructor
+        // -------------------------------------------------------------------
         public YamlProjectSource()
         {
             this.IncludeFilters = new List<string>();
             this.ExcludeFilters = new List<string>();
         }
 
+        // -------------------------------------------------------------------
+        // Public
+        // -------------------------------------------------------------------
         public string Path { get; set; }
 
         public IList<string> IncludeFilters { get; set; }

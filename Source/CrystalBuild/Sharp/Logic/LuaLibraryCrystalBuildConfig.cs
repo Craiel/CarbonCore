@@ -259,7 +259,7 @@
             var outData = CSPFile.Create();
             this.context.SaveAsProjectSettings(outData.AddPropertyGroup());
 
-            CarbonFile yamlOutputFile = this.context.BuildDir.ToFile(this.context.Namespace + ".cby");
+            CarbonFile yamlOutputFile = this.context.BuildDir.ToFile("build.cby");
 
             IList<BuildConfigObject> buildConfigs = this.context.BuildConfigs.Values.ToList();
             for (int i = 0; i < buildConfigs.Count; i++)

@@ -9,7 +9,6 @@
 
         public const string FilterSource = "*" + Utils.Constants.ExtensionCSharp;
 
-        public const string ProjectExtension = ".cbp";
-        public const string IncludeExtension = ".cbi";
+        public const string BuildConfigExtension = ".cby";
     }
 }

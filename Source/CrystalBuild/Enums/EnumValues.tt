@@ -1,16 +1,16 @@
 ﻿<#@ template debug="true" hostSpecific="true" #>
 <#@ output extension=".cs" #>
 <#@ assembly name="EnvDTE" #>
-<#@ assembly name="$(CCOUTDIR)bin\Release\CodeGeneration\CarbonCore.CodeGeneration.dll" #>
+<#@ assembly name="$(TargetDir)..\..\Release\CarbonCore.CodeGeneration\CarbonCore.CodeGeneration.dll" #>
 <#@ import namespace="EnvDTE" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="CarbonCore.CodeGeneration" #>
-namespace CarbonCore.CrystalBuild.Sharp.Enums
+namespace CarbonCore.CrystalBuild.Enums
 {
     using System.Collections.Generic;
     
     using CarbonCore.Utils;
-
+	
     public static class EnumValues
     {
         // -------------------------------------------------------------------

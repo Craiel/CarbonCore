@@ -1,9 +1,9 @@
-﻿namespace CarbonCore.CrystalBuild.Sharp.Enums
+﻿namespace CarbonCore.CrystalBuild.Enums
 {
     using System.Collections.Generic;
     
     using CarbonCore.Utils;
-
+	
     public static class EnumValues
     {
         // -------------------------------------------------------------------

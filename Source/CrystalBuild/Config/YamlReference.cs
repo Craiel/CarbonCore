@@ -2,6 +2,9 @@
 {
     public class YamlReference : YamlConfigBase
     {
+        // -------------------------------------------------------------------
+        // Public
+        // -------------------------------------------------------------------
         public string NuGetId { get; set; }
 
         public string Version { get; set; }

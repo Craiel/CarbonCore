@@ -2,15 +2,22 @@
 {
     using System.Collections.Generic;
 
-    using Sharp.Enums;
-
+    using Enums;
+    
     public class YamlProject : YamlConfigBase
     {
+        // -------------------------------------------------------------------
+        // Constructor
+        // -------------------------------------------------------------------
         public YamlProject()
         {
             this.Sources = new List<YamlProjectSource>();
+            this.References = new List<string>();
         }
 
+        // -------------------------------------------------------------------
+        // Public
+        // -------------------------------------------------------------------
         public string Namespace { get; set; }
 
         public BuildTargetType TargetType { get; set; }
@@ -26,5 +33,7 @@
         public string CodeAnalysisRules { get; set; }
 
         public IList<YamlProjectSource> Sources { get; set; }
+
+        public IList<string> References { get; set; }
     }
 }

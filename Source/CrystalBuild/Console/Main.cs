@@ -5,10 +5,11 @@
 
     using Applications.CrystalBuild.Contracts;
     using Applications.CrystalBuild.CSharp;
-    using Applications.CrystalBuild.CSharp.Contracts;
 
     using Contracts;
-    
+
+    using Logic;
+
     using ToolFramework.Console.Logic;
 
     using Utils.Contracts.IoC;
@@ -18,7 +19,6 @@
     public class Main : ConsoleApplicationBase, IMain
     {
         private readonly IConfig config;
-        private readonly IBuildLogic logic;
         
         private CarbonDirectory projectRoot;
         private CarbonFile scriptFileName;
@@ -30,7 +30,6 @@
             : base(factory)
         {
             this.config = factory.Resolve<IConfig>();
-            this.logic = factory.Resolve<IBuildLogic>();
         }
 
         // -------------------------------------------------------------------
@@ -49,23 +48,23 @@
                 return;
             }
 
-            IList<CarbonFile> sources = new List<CarbonFile>();
+            var context = new BuildContext { Root = this.projectRoot };
             if (this.scriptFileName != null && this.scriptFileName.Exists)
             {
-                sources.Add(this.scriptFileName);
+                context.ConfigFiles.Add(this.scriptFileName);
             }
             else
             {
-                CarbonFileResult[] matches = this.projectRoot.GetFiles("*" + Constants.ProjectExtension, SearchOption.AllDirectories);
+                CarbonFileResult[] matches = this.projectRoot.GetFiles("*" + Constants.BuildConfigExtension, SearchOption.AllDirectories);
                 foreach (CarbonFileResult match in matches)
                 {
-                    sources.Add(match.Relative);
+                    context.ConfigFiles.Add(match.Relative);
                 }
             }
 
             this.config.Load(new CarbonFile(Constants.BuildConfigFileName));
             
-            this.logic.BuildProjectFile(sources, this.projectRoot);
+            BuildLogic.Build(context);
         }
 
         protected override bool RegisterCommandLineArguments()
