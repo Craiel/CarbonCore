@@ -84,14 +84,10 @@
                     Logger.Error($"Config File {file} not found");
                 }
             }
-            
-            using (var stream = file.OpenRead())
-            {
-                using (var reader = new StreamReader(stream))
-                {
-                    return deserializer.Deserialize<YamlCrystalConfig>(reader);
-                }
-            }
+
+            string contents = file.ReadAsString();
+            contents = contents.Replace("\t", "    ");
+            return deserializer.Deserialize<YamlCrystalConfig>(contents);
         }
 
         private static bool AnalyzeConfigs(BuildContext context)

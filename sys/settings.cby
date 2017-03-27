@@ -1,0 +1,112 @@
+variables: {}
+buildConfigs: []
+references:
+- id: MahApps.Metro
+  version: 1.4.1
+  targetFrameworks: 
+    - net45
+- id: System.Windows.Interactivity
+  version: 1.4.1
+  targetFrameworks: 
+	- net45
+- id: Newtonsoft.Json
+  version: 10.0.1
+  targetFrameworks: 
+	- net35
+- id: NLua
+  nuGet: true
+  version: 1.3.2.1
+  targetFrameworks: 
+	- net35
+	- net40
+	- net45
+  files:
+    - NLua.dll
+    - KeraLua.dll
+- id: SharpDX
+  nuGet: true
+  version: 3.1.1
+  targetFrameworks:
+    - net45
+- id: SharpDX.Direct3D11
+  nuGet: true
+  version: 3.1.1
+  targetFrameworks:
+    - net45
+- id: SharpDX.DXGI
+  nuGet: true
+  version: 3.1.1
+  targetFrameworks:
+    - net45
+- id: SharpDX.Mathematics
+  nuGet: true
+  version: 3.1.1
+  targetFrameworks:
+    - net45
+- id: Autofac
+  nuGet: true
+  version: 4.4.0
+  targetFrameworks:
+    - net45
+- path: $(ProjectRoot)External/Unity/5.5.0f3/
+  id: UnityEngine
+  version: 5.5.0f3
+  files:
+    - UnityEngine.dll
+    - UnityEditor.dll
+- id: nunit.framework
+  nuGet: true
+  version: 3.6.1
+  targetFrameworks:
+    - net20
+    - net35
+    - net40
+    - net45
+- id: JetBrains.Annotations
+  nuGet: true
+  version: 10.2.1
+  targetFrameworks:
+    - net
+- path: $(ProjectRoot)Source/packages/NPOI.2.2.1/lib/net40/NPOI.dll
+  id: NPOI
+  nuGet: true
+  version: 2.2.1
+  targetFrameworks:
+    - net20
+    - net40
+  files:
+    - NPOI.dll
+    - NPOI.OOXML.dll
+    - NPOI.OpenXml4Net.dll
+    - NPOI.OpenXmlFormats.dll
+- id: System.Data.SQLite
+  nuGet: true
+  version: 1.0.104.0
+  targetFrameworks:
+    - net20
+    - net40
+    - net45
+    - net46
+    - net451
+  children:
+    - id: System.Data.SQLite.Core
+    - id: System.Data.SQLite.EF6
+    - id: System.Data.SQLite.Linq
+projects:
+- id: base
+  framework: v3.5
+  frameworkProfile: ''
+  outputPath: $(ProjectRoot)Build/bin/$(Configuration)/$(AssemblyName)
+  intermediateOutputPath: $(ProjectRoot)Build/obj/$(Configuration)/$(AssemblyName)
+  codeAnalysisRules: $(ProjectRoot)Source/CarbonCore.ruleset
+  references:
+    - System
+    - System.Core
+    - System.Data
+    - System.Xml
+- id: base_3_5
+  inheritFrom: base
+  framework: v3.5  
+- id: base_4_6
+  inheritFrom: base
+  framework: v4.6
