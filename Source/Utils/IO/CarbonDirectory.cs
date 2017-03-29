@@ -341,5 +341,30 @@
 
             return null;
         }
+
+        public bool Move(CarbonDirectory target, bool overwrite = false, bool clearTargetWhenOverwriting = false)
+        {
+            if (!this.Exists)
+            {
+                Logger.Error("Move called on non-existing source");
+                return false;
+            }
+
+            if (target.Exists)
+            {
+                if (overwrite)
+                {
+                    target.Delete(clearTargetWhenOverwriting);
+                }
+                else
+                {
+                    Logger.Error("Can not move directory {0}, target exists: {1}", this, target);
+                    return false;
+                }
+            }
+
+            System.IO.Directory.Move(this.GetPath(), target.GetPath());
+            return target.Exists;
+        }
     }
 }
