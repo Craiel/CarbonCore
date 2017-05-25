@@ -11,7 +11,7 @@ namespace Microsoft.Xna.Framework
     /// <summary>
     /// Describes a 4D-vector.
     /// </summary>
-#if WINDOWS
+#if XNADESIGNPROVIDED
     [System.ComponentModel.TypeConverter(typeof(Microsoft.Xna.Framework.Design.Vector4TypeConverter))]
 #endif
     [DataContract]
@@ -479,7 +479,14 @@ namespace Microsoft.Xna.Framework
         /// <returns>Hash code of this <see cref="Vector4"/>.</returns>
         public override int GetHashCode()
         {
-            return (int)(this.W + this.X + this.Y + this.Y);
+            unchecked
+            {
+                var hashCode = W.GetHashCode();
+                hashCode = (hashCode * 397) ^ X.GetHashCode();
+                hashCode = (hashCode * 397) ^ Y.GetHashCode();
+                hashCode = (hashCode * 397) ^ Z.GetHashCode();
+                return hashCode;
+            }
         }
 
         /// <summary>

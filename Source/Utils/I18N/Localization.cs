@@ -58,6 +58,12 @@
             }
         }
 
+        public static void SetRoot(CarbonDirectory newRoot)
+        {
+            Root = newRoot;
+            ReloadDictionaries();
+        }
+
         public static string Localized(this string source)
         {
             return Get(source);
