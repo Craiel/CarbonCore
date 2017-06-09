@@ -2,9 +2,7 @@
 {
     using System;
     using System.Reflection;
-
-    public delegate object Foo(object other);
-
+    
     public class AttributedPropertyInfo<T>
         where T : Attribute
     {

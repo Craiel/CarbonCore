@@ -234,7 +234,7 @@
                 float current = this.deltaSinceMeasure / (float)this.framesSinceMeasure;
                 float percentage = this.frameDelayTargetOptimal / current;
 
-                this.frameDelayTarget = (long)(this.frameDelayTarget * percentage);
+                this.frameDelayTarget = (long)(this.frameDelayTargetOptimal * percentage);
                 this.framesSinceMeasure = 0;
                 this.deltaSinceMeasure = 0;
             }
