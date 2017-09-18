@@ -65,7 +65,7 @@
                 LuaExecutionResult result = configRuntime.Execute(fileToBuild);
                 if (!result.Success)
                 {
-                    throw new InvalidOperationException("Build failed!");
+                    Logger.Error("Build of {0} failed", fileToBuild);
                 }
             }
 

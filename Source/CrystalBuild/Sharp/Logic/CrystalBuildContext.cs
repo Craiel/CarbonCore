@@ -56,6 +56,10 @@
 
         public string Namespace { get; set; }
 
+        public string PreBuildEvent { get; set; }
+
+        public string PostBuildEvent { get; set; }
+
         public string Icon { get; set; }
 
         public string EntryPoint { get; set; }
@@ -172,6 +176,16 @@
             target.AddProperty("RootNamespace", this.Namespace);
             target.AddProperty("TargetFrameworkVersion", this.Framework);
             target.AddProperty("TargetFrameworkProfile", this.FrameworkProfile);
+
+            if (!string.IsNullOrEmpty(this.PreBuildEvent))
+            {
+                target.AddProperty("PreBuildEvent", this.PreBuildEvent);
+            }
+
+            if (!string.IsNullOrEmpty(this.PostBuildEvent))
+            {
+                target.AddProperty("PostBuildEvent", this.PostBuildEvent.Replace("\n", Environment.NewLine));
+            }
         }
 
         // -------------------------------------------------------------------

@@ -41,6 +41,8 @@
             this.AddLibraryFunction<string>(this.SetOutputType);
             this.AddLibraryFunction<string>(this.SetNamespace);
             this.AddLibraryFunction<string>(this.SetIcon);
+            this.AddLibraryFunction<string>(this.SetPreBuildEvent);
+            this.AddLibraryFunction<string>(this.SetPostBuildEvent);
 
             this.AddLibraryFunction(this.AddStandardReferences);
             this.AddLibraryFunction<string, string>(this.AddReference);
@@ -203,6 +205,16 @@
         public void SetNamespace(string name)
         {
             this.context.Namespace = name;
+        }
+
+        public void SetPreBuildEvent(string contents)
+        {
+            this.context.PreBuildEvent = contents;
+        }
+
+        public void SetPostBuildEvent(string contents)
+        {
+            this.context.PostBuildEvent = contents;
         }
 
         public void SetIcon(string fileName)
