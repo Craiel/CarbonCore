@@ -337,7 +337,9 @@
             }
 
             outData.AddImport(@"$(MSBuildToolsPath)\Microsoft.CSharp.targets");
-            
+
+            this.context.SaveBuildEvents(outData.AddPropertyGroup());
+
             outData.Save(outputFile);
 
             return outputFile.GetPath();

@@ -182,11 +182,7 @@
         private void CheckPropertyChange(string propertyName)
         {
             PropertyInfo info = this.GetType().GetProperty(propertyName);
-#if DEBUG
             System.Diagnostics.Debug.Assert(info != null, "Property missing", "Property {0} does not exist on {1}", this.GetType(), propertyName);
-#else
-            Logger.Warn("PropertyChanged on {0} with invalid property {1}", this.GetType(), propertyName);
-#endif
         }
     }
 }

@@ -176,7 +176,10 @@
             target.AddProperty("RootNamespace", this.Namespace);
             target.AddProperty("TargetFrameworkVersion", this.Framework);
             target.AddProperty("TargetFrameworkProfile", this.FrameworkProfile);
+        }
 
+        public void SaveBuildEvents(CSPPropertyGroup target)
+        {
             if (!string.IsNullOrEmpty(this.PreBuildEvent))
             {
                 target.AddProperty("PreBuildEvent", this.PreBuildEvent);
