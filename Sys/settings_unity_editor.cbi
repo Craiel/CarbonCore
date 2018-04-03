@@ -1,0 +1,8 @@
+print "Including Unity settings"
+
+unityEditorIncludePath = "C:/Program Files/Unity/Editor/Data/Managed/"
+
+buildUnity.SetDefine(buildUnity, "UNITY_EDITOR")
+buildUnityRelease.SetDefine(buildUnityRelease, "UNITY_EDITOR")
+
+AddReference("UnityEditor", unityEditorIncludePath .. "UnityEditor.dll")

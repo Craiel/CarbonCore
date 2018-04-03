@@ -1,10 +1,24 @@
 print "Including Unity settings"
 
-unityIncludePath = "$(PROJECT_ROOT)External/Unity/5.5.0f3/"
+unityDefines = "UNITY;UNITY_5_3_OR_NEWER;UNITY_2017;UNITY_VS"
+unityIncludePath = "C:/Program Files/Unity/Editor/Data/Managed/"
+unityGuiIncludePath = "C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/"
+unityTimelineIncludePath = "C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Timeline/Runtime/"
 
 SetFramework("v3.5")
 SetFrameworkProfile("Unity Full v3.5")
 
 AddReference("UnityEngine", unityIncludePath .. "UnityEngine.dll")
+AddReference("UnityEngine.Timeline", unityTimelineIncludePath .. "UnityEngine.Timeline.dll")
+AddReference("UnityEngine.UI", unityGuiIncludePath .. "UnityEngine.UI.dll")
 
+buildUnity = CreateBuildConfig("Unity", "x64")
+buildUnity.SetDefine(buildUnity, "TRACE")
+buildUnity.SetDefine(buildUnity, "DEBUG")
+buildUnity.SetDefine(buildUnity, unityDefines)
+buildUnity.EnableForTarget(buildUnity, "Debug");
 
+buildUnityRelease = CreateBuildConfig("UnityRelease", "x64")
+buildUnityRelease.SetDefine(buildUnityRelease, unityDefines)
+buildUnityRelease.SetOptimize(buildUnityRelease, true)
+buildUnity.EnableForTarget(buildUnityRelease, "Release");
