@@ -9,6 +9,8 @@
     {
         public const char PathEscapeCharacter = '"';
 
+        public static readonly char[] InvalidCharacters = { '\\', '/', ':', '*', '?', '"', '<', '>', '|' };
+
         public static readonly string DirectorySeparator = System.IO.Path.DirectorySeparatorChar.ToString(CultureInfo.InvariantCulture);
         public static readonly string DirectorySeparatorAlternative = System.IO.Path.AltDirectorySeparatorChar.ToString(CultureInfo.InvariantCulture);
         public static readonly string DirectorySeparatorUnity = "/";

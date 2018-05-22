@@ -181,7 +181,75 @@
         {
             Directory.Delete(this.DirectoryName, recursive);
         }
-        
+
+        public bool Move(CarbonDirectory target, bool overwrite = false, bool clearTargetWhenOverwriting = false)
+        {
+            if (!this.Exists)
+            {
+                Logger.Error("Move called on non-existing source");
+                return false;
+            }
+
+            if (target.Exists)
+            {
+                if (overwrite)
+                {
+                    target.Delete(clearTargetWhenOverwriting);
+                }
+                else
+                {
+                    Logger.Error("Can not move directory {0}, target exists: {1}", this, target);
+                    return false;
+                }
+            }
+
+            System.IO.Directory.Move(this.GetPath(), target.GetPath());
+            return target.Exists;
+        }
+
+        public int Copy(
+            CarbonDirectory target,
+            bool recursive = true,
+            bool overwrite = false,
+            bool clearTargetWhenOverwriting = false)
+        {
+            if (!this.Exists)
+            {
+                Logger.Error("Copy called on non-existing source");
+                return 0;
+            }
+
+            if (target.Exists)
+            {
+                if (overwrite && clearTargetWhenOverwriting)
+                {
+                    target.Delete(true);
+                }
+            }
+
+            CarbonFileResult[] files = this.GetFiles(options: recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
+
+            // First pass, check only
+            foreach (CarbonFileResult file in files)
+            {
+                CarbonFile targetFile = target.ToFile(file.Relative);
+                if (targetFile.Exists && !overwrite)
+                {
+                    Logger.Error("Copy would fail, target file exist and overwrite is set to false ({0})", targetFile);
+                    return 0;
+                }
+            }
+
+            // Second pass, actual copy, now we can safely overwrite
+            foreach (CarbonFileResult file in files)
+            {
+                CarbonFile targetFile = target.ToFile(file.Relative);
+                file.Absolute.CopyTo(targetFile, true);
+            }
+
+            return files.Length;
+        }
+
         public CarbonDirectory ToDirectory<T>(params T[] other)
         {
             return new CarbonDirectory(this.CombineBefore(other));
