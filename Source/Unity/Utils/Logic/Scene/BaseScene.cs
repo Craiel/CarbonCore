@@ -12,8 +12,7 @@ namespace CarbonCore.Unity.Utils.Logic.Scene
 
     using UnityEngine;
 
-    using Logger = UnityEngine.Logger;
-#if UNITY_5_3 || UNITY_5_4 || UNITY_5_5 || UNITY_5_6
+#if UNITY_5_3_OR_NEWER
     using UnityEngine.SceneManagement;
 #endif
 
