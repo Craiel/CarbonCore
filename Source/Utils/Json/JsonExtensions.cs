@@ -104,11 +104,11 @@
         {
 #if UNITY_5
             // Unity Serializer does not have formatting parameter
-            var serializer = new JsonSerializer { DefaultValueHandling = DefaultValueHandling.Ignore };
+            var serializer = new JsonSerializer { DefaultValueHandling = defaultHandling };
 #else 
             var serializer = new JsonSerializer
             {
-                DefaultValueHandling = DefaultValueHandling.Ignore,
+                DefaultValueHandling = defaultHandling,
                 Formatting = formatting
             };
 #endif
